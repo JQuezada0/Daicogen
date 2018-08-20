@@ -1,7 +1,5 @@
 version: 2
 
-# cacheKey: &cacheKey collectivehealth-{{ .Branch }}-{{ checksum "yarn.lock" }}
-
 workingDirectory: &workingDirectory /usr/src/app
 
 # defaultImage: &defaultImage
@@ -11,6 +9,9 @@ workingDirectory: &workingDirectory /usr/src/app
 
 jobs:
   deploy:
+    docker:
+        - image: node:8.10 # Keep in sync with dockerfile image
+    working_directory: *workingDirectory
     steps:
       - run:
           name: Deploy
