@@ -2,7 +2,7 @@
 
 Contains each part of the project
 
-## Prerequisites
+## Requirements
 
 1. Docker
 2. NPM
