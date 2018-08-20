@@ -1,4 +1,4 @@
 .DS_Store
 
 contract/build
-contract/eosio
+public/html
