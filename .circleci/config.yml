@@ -10,8 +10,11 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Test
+          command: ls public/html
+      - run:
           name: Deploy
-          command: aws s3 sync public/html s3://daicogen.com --delete
+          command: aws s3 sync public/html/ s3://daicogen.com/ --delete
 
 workflows:
   version: 2
