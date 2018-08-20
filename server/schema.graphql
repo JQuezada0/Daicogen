@@ -1,14 +1,13 @@
 schema {
-  query: Query!
-  mutation: Mutation!
+  query: Query
 }
 
 type Query {
   project(accountName: String!): Project!
   proposal(accountName: String!): Proposal!
 
-  projects(filter: ProjectFilter): [Project!]!
-  proposals(filter: ProposalFilter): [Proposal!]!
+  projects: [Project!]!
+  proposals: [Proposal!]!
 }
 
 type Mutation {
@@ -21,11 +20,11 @@ type Project {
   description: String!
   url: String!
   token: Token!
-  fundingStartDate: Date!
-  fundingEndDate: Date!
+  fundingStartDate: Float!
+  fundingEndDate: Float!
   fundingFrequency: Int!
-  crowdsale: Crowdsale!
-  charityDaicoConfig: CharityDaicoConfig
+  # crowdsale: Crowdsale!
+  # charityDaicoConfig: CharityDaicoConfig
 }
 
 type Account {
@@ -38,4 +37,8 @@ type Token {
   name: String!
   symbol: String!
   balance: Float!
+}
+
+type Proposal {
+  account: Account!
 }

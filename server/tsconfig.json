@@ -1,0 +1,22 @@
+{
+  "include": [
+    "./**/*.ts"
+  ],
+  "exclude": [
+    "./node_modules"
+  ],
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "target": "es5",
+    "preserveConstEnums": true,
+    "strict": true,
+    "rootDir": ".",
+    "outDir": ".build/",
+    "lib": ["esnext", "dom"],
+    "typeRoots": [
+      "./typings",
+      "./node_modules/@types"
+    ]
+  },
+  "compileOnSave": true
+}
