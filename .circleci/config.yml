@@ -8,6 +8,7 @@ jobs:
         - image: mesosphere/aws-cli:latest
     working_directory: *workingDirectory
     steps:
+      - checkout
       - run:
           name: Deploy
           command: aws s3 sync public/html s3://daicogen.com --delete
