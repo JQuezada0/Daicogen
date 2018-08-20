@@ -1,0 +1,40 @@
+version: '3'
+services:
+  eos-dev:
+    build: .
+    image: eosio
+    container_name: eosio
+    command: >
+      bash -c "
+        mongod --bind_ip 0.0.0.0 --fork --logpath /mnt/dev/mongo/mongodb.log && 
+        nodeos -e -p eosio --plugin eosio::producer_plugin --plugin eosio::history_plugin --plugin eosio::chain_api_plugin --plugin eosio::history_api_plugin --plugin eosio::http_plugin --plugin eosio::mongo_db_plugin --mongodb-uri=mongodb://0.0.0.0:27017 -d /mnt/dev/data --config-dir /mnt/dev/config --http-server-address=0.0.0.0:8888 --access-control-allow-origin=* --contracts-console --http-validate-host=false"
+    volumes:
+      - ./build:/work
+      - ./build/mongo:/mnt/dev/mongo
+      - ./build/eosio/data:/mnt/dev/data
+      - ./build/eosio/config:/mnt/dev/config eosio/eos-dev
+      - /data/db
+    working_dir: /mnt/dev/data
+    ports:
+      - "27017:27017"
+      - "8888:8888"
+      - "9876:9876"
+    environment:
+      - VIRTUAL_HOST=daicogen.dev
+    networks:
+      - dev
+
+  network:
+    image: jwilder/nginx-proxy:0.4.0
+    container_name: nginx-proxy
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - dev
+
+networks:
+  dev:
+    driver: bridge
