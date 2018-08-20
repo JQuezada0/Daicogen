@@ -23,7 +23,7 @@ The contract directory contains all contracts and supplemental classes/libraries
 
 The public directory contains the UI for the marketing site.
 
-https://www.daicogen.com
+https://daicogen.com
 
 ## Server
 
