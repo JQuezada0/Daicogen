@@ -35,7 +35,7 @@ access localhost:27017 and query for any data stored on the blockchain
 
 The public directory contains the UI for the marketing site.
 
-https://www.daicogen.com
+https://daicogen.com
 
 ## Server
 
