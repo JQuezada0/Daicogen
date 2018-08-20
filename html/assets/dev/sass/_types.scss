@@ -1,0 +1,188 @@
+/*-------------------------------
+typography
+-------------------------------*/
+
+body{
+  font-family: $base-font;
+  font-size: $base-font-size;
+  font-weight: 300;
+  line-height: 1.5;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -ms-text-size-adjust: 100%;
+  color: $black-light;
+}
+
+body, html {
+  height: 100%;
+}
+
+a {
+  color: $primary-color;
+  &:hover{
+    color: $secondary-color;
+  }
+}
+
+a,
+a:hover {
+  transition: all .3s;
+  text-decoration: none;
+  outline: 0;
+}
+
+h1, .h1,
+h2, .h2,
+h3, .h3,
+h4, .h4,
+h5, .h5,
+h6, .h6 {
+  font-family: $secondary-font;
+  font-weight: bold;
+}
+
+.h1, h1 {
+  font-size: 3rem;
+}
+
+.h2, h2 {
+  font-size: 2.3rem;
+}
+
+p{
+  margin-bottom: 3rem;
+}
+
+.text-purple-color{
+  color: $primary-color;
+}
+
+.text-paste-color {
+  color: $secondary-color;
+}
+
+.text-primary {
+  color: #0f95d7 !important;
+}
+
+a.text-primary:focus, a.text-primary:hover{
+  color: #0e86c2 !important;
+}
+
+.sm-txt{
+  font-size: $base-font-size - 2;
+}
+
+.gray-txt{
+  color: $gray-dark;
+}
+
+img {
+  outline: 0;
+  border: 0 none;
+  max-width: 100%;
+  height: auto;
+  vertical-align: top;
+}
+
+.view-link {
+  color: $black-light;
+  position: relative;
+  &:after{
+    content: "\f105";
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    top: 0;
+    right: -20px;
+    font-family: 'fontawesome';
+    transition: all .3s;
+    color: $black-light;
+  }
+
+  &:hover{
+    &:after{
+      right: -30px;
+      transition: all .3s;
+      color: $secondary-color;
+    }
+  }
+}
+
+.view-link-light {
+  color: $white;
+  position: relative;
+  &:after{
+    content: "\f105";
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    top: 0;
+    right: -20px;
+    font-family: 'fontawesome';
+    transition: all .3s;
+    color: $white;
+  }
+
+  &:hover{
+    color: $white;
+    &:after{
+      right: -30px;
+      transition: all .3s;
+      color: $white;
+    }
+  }
+}
+
+.rounded {
+  border-radius: .4rem !important;
+}
+
+.ls2 {
+  letter-spacing: 2px;
+}
+
+.pre-title {
+  font-size: 12px;
+}
+
+.card{
+  border-radius: .5rem;
+}
+
+.card-img-top {
+  border-top-left-radius: calc(.5rem - 1px);
+  border-top-right-radius: calc(.5rem - 1px);
+}
+
+
+/*-------------------------------
+dark theme
+-------------------------------*/
+
+.dark-theme {
+  background: $dark-bg;
+  color: $white;
+  .gray-txt {
+    color: $white;
+    a {
+      color: #8969ff;
+      &:hover{
+        color: $secondary-color;
+      }
+    }
+
+  }
+
+  .view-link, .view-link:after{
+    color: $white;
+
+  }
+
+  .view-link:hover, .view-link:hover:after{
+    color: $secondary-color;
+
+  }
+
+}
