@@ -1,0 +1,26 @@
+version: 2
+
+# cacheKey: &cacheKey collectivehealth-{{ .Branch }}-{{ checksum "yarn.lock" }}
+
+workingDirectory: &workingDirectory /usr/src/app
+
+# defaultImage: &defaultImage
+  docker:
+    - image: node:8.10 # Keep in sync with dockerfile image
+  working_directory: *workingDirectory
+
+jobs:
+  deploy:
+    steps:
+      - run:
+          name: Deploy
+          command: aws s3 sync public/html s3://daicogen.com --delete
+
+workflows:
+  version: 2
+  deploy:
+    jobs:
+      - deploy:
+          filters:
+            branches:
+              only: master

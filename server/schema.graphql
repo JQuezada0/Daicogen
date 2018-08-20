@@ -1,0 +1,41 @@
+schema {
+  query: Query!
+  mutation: Mutation!
+}
+
+type Query {
+  project(accountName: String!): Project!
+  proposal(accountName: String!): Proposal!
+
+  projects(filter: ProjectFilter): [Project!]!
+  proposals(filter: ProposalFilter): [Proposal!]!
+}
+
+type Mutation {
+  noOp: Int
+}
+
+type Project {
+  account: Account!
+  name: String!
+  description: String!
+  url: String!
+  token: Token!
+  fundingStartDate: Date!
+  fundingEndDate: Date!
+  fundingFrequency: Int!
+  crowdsale: Crowdsale!
+  charityDaicoConfig: CharityDaicoConfig
+}
+
+type Account {
+  name: String!
+  portfolio: [Project!]!
+  dgnBalance: Float!
+}
+
+type Token {
+  name: String!
+  symbol: String!
+  balance: Float!
+}
