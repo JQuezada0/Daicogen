@@ -1,0 +1,122 @@
+
+/*-------------------------------
+form
+-------------------------------*/
+
+.contact-form, .login-form {
+  .form-control {
+    border-color: $border-color;
+    line-height: 2.2;
+    &:focus{
+      border-color: $primary-color;
+      box-shadow: none;
+    }
+  }
+  .btn.disabled, .btn:disabled{
+    opacity: 1;
+  }
+}
+
+.telegram-section {
+  margin-bottom: 230px;
+}
+
+#contact-box{
+  margin-top: -320px;
+}
+
+
+.subscribe-from {
+  .form-control {
+    border-radius: 40px;
+    padding: .5rem 1.5rem;
+    background: transparent;
+    color: $white;
+    border: 2px solid rgba(255,255,255,.5);
+    line-height: 2;
+    &:focus{
+      box-shadow: none;
+    }
+  }
+  button{
+    border-radius: 40px;
+    line-height: 2;
+  }
+}
+
+.help-block {
+  font-size: 14px;
+}
+
+.help-block.with-errors {
+  color: $danger-color;
+}
+
+#msgSubmit {
+  margin-top: 2rem;
+  font-weight: normal;
+  font-size: 14px;
+  color: $danger-color !important;
+}
+
+
+.subscribe-from .form-control::-webkit-input-placeholder {
+  color: $white;
+}
+.subscribe-from .form-control:-moz-placeholder {
+  color: $white;
+  opacity:  1;
+}
+.subscribe-from .form-control::-moz-placeholder {
+  color: $white;
+  opacity:  1;
+}
+.subscribe-from .form-control:-ms-input-placeholder {
+  color: $white;
+}
+.subscribe-from .form-control::-ms-input-placeholder {
+  color: $white;
+}
+
+.subscribe-from .form-control::placeholder {
+  color: $white;
+}
+
+//login form
+
+.login-banner-img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.forgot-link {
+  color: $black-light;
+}
+
+.modal-content {
+  border: none;
+  border-radius: .5rem;
+  overflow: hidden;
+}
+
+@media (min-width: 576px){
+  .modal-dialog {
+    max-width: 700px;
+  }
+}
+
+
+/*-------------------------------
+dark theme
+-------------------------------*/
+
+.dark-theme {
+
+  .login-form{
+    color: $black-light;
+  }
+
+}
+
+

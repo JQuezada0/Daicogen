@@ -1,0 +1,123 @@
+/*-------------------------------
+buttons
+-------------------------------*/
+
+.btn {
+  padding: .8rem 3rem;
+  display: inline-block;
+  font: {
+    size: 12px;
+    weight: bold;
+    family: $secondary-font;
+  };
+  &:focus{
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+.btn-group-sm>.btn, .btn-sm {
+  padding: .6rem 1.5rem !important;
+}
+
+.btn-pill{
+  border-radius: 50px;
+}
+
+.btn-purple{
+  background: $purple-color;
+  color: $white;
+  &:hover{
+    background: $secondary-color;
+    color: $white;
+  }
+}
+
+.btn-purple-default{
+  background: $purple-color;
+  color: $white;
+  &:hover{
+    background: $purple-color-deep1;
+    color: $white;
+  }
+}
+
+
+.btn-white{
+  background: $white;
+  color: $black-light;
+  box-shadow: 0 0 50px 0 rgba(0, 0, 0, .05);
+  &:hover{
+    background: $purple-color;
+    color: $white;
+  }
+}
+
+.btn-purple-shadow {
+  box-shadow: 5px 5px 40px 0px rgba(121, 84, 255, .72);
+  &:hover{
+    box-shadow: 5px 5px 40px 0px rgba(110, 220, 170, .72);
+  }
+}
+
+
+.btn-gradient{
+  color: $white;
+  border: none;
+  box-shadow: 5px 5px 40px 0px rgba(110, 220, 170, .72);
+  background-image: linear-gradient(to right, $green-gradient-primary 0%, $green-gradient-secondary 100%);
+
+  &:hover{
+    color: $white;
+    background-image: linear-gradient(to right, $green-gradient-secondary  0%, $green-gradient-primary 100%);
+  }
+}
+
+.btn-gradient.btn:not(:disabled):not(.disabled):active{
+  color: $white;
+  background-image: linear-gradient(to right, $green-gradient-secondary  0%, $green-gradient-primary 100%);
+}
+
+
+.btn-green{
+  color: $white;
+  border: none;
+  background-image: linear-gradient(to right, $green-gradient-primary 0%, $green-gradient-secondary 100%);
+
+  &:hover{
+    color: $white;
+    background-image: linear-gradient(to right, $green-gradient-secondary  0%, $green-gradient-primary 100%);
+  }
+}
+
+.buy-token {
+  position: relative;
+  top: -8px;
+  background: $white;
+  color: $dark-bg-light!important;
+  &:hover{
+    background: $green-gradient-primary;
+    color: $white !important;
+  }
+}
+
+
+/*-------------------------------
+dark theme
+-------------------------------*/
+
+.dark-theme {
+  .btn-gradient{
+    box-shadow: none;
+  }
+  .btn-white{
+    background: $dark-bg-light;
+    color: $white;
+    &:hover{
+      background: $purple-color;
+      color: $white;
+    }
+  }
+
+
+}
