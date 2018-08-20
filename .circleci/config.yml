@@ -2,11 +2,6 @@ version: 2
 
 workingDirectory: &workingDirectory /usr/src/app
 
-# defaultImage: &defaultImage
-  docker:
-    - image: node:8.10 # Keep in sync with dockerfile image
-  working_directory: *workingDirectory
-
 jobs:
   deploy:
     docker:
