@@ -32,7 +32,7 @@ and the blockchain. This will make it easier for the UI to talk to an API
 that is more familiar to web developers, and the server will handle
 all logic around querying for and mutating data on the blockchain.
 
-### Getting Started
+## Getting Started
 
 1. `docker-compose build` (Only for first time)
 2. `docker-compose up`
