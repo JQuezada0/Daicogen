@@ -5,7 +5,7 @@ workingDirectory: &workingDirectory /usr/src/app
 jobs:
   deploy:
     docker:
-        - image: node:8.10 # Keep in sync with dockerfile image
+        - image: mesosphere/aws-cli:latest
     working_directory: *workingDirectory
     steps:
       - run:
