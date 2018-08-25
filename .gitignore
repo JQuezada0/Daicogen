@@ -3,3 +3,9 @@
 contract/build
 server/build
 server/node_modules
+
+app/elm-stuff
+app/_bundle
+app/node_modules
+
+yarn-error.log

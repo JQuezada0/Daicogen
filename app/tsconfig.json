@@ -1,0 +1,19 @@
+{
+  "include": [
+    "gulpfile.ts"
+  ],
+  "exclude": [
+    "./node_modules"
+  ],
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "target": "es5",
+    "preserveConstEnums": true,
+    "strict": true,
+    "rootDir": ".",
+    "typeRoots": [
+      "./typings",
+    ]
+  },
+  "compileOnSave": true
+}
