@@ -15,5 +15,8 @@
     "gulper": "0.1.3",
     "ts-node": "7.0.1",
     "typescript": "3.0.1"
+  },
+  "dependencies": {
+    "elm": "0.18.0"
   }
 }
