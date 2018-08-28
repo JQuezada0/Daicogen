@@ -7,7 +7,6 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 
 import Bootstrap.Grid as Grid
-import Bootstrap.Grid.Row as Row
 import Bootstrap.Grid.Col as Col
 import Bootstrap.Card as Card
 import Bootstrap.Card.Block as Block
@@ -132,12 +131,12 @@ descriptionForm =
       div [class "input-group"] [
         span [class "input-group-addon"] [
           i [class "material-icons"] [
-            text "emaul"
+            text "Name"
           ]
         ],
-        div [class "form-group label-floating"] [
+        div [class "form-group label-floating m-0 w-75"] [
           label [class "control-label"] [
-            text "Your Email"
+            text "The name of your project"
           ],
           input [class "form-control", name "name", type_ "text"] []
         ]    
@@ -145,15 +144,41 @@ descriptionForm =
       div [class "input-group"] [
         span [class "input-group-addon"] [
           i [class "material-icons"] [
-            text "lock_outline"
+            text "Description"
           ]
         ],
-        div [class "form-group label-floating"] [
-          label [ class "control-label" ] [
-            text "Your Password"
+        div [class "form-group label-floating m-0 w-75"] [
+          label [class "control-label"] [
+            text "A description of your project"
           ],
-          input [ class "form-control", name "name2", type_ "password" ] []
-        ]
+          input [class "form-control", name "name", type_ "text"] []
+        ]    
+      ],
+      div [class "input-group"] [
+        span [class "input-group-addon"] [
+          i [class "material-icons"] [
+            text "Url"
+          ]
+        ],
+        div [class "form-group label-floating m-0 w-75"] [
+          label [class "control-label"] [
+            text "A link to your project"
+          ],
+          input [class "form-control", name "name", type_ "text"] []
+        ]    
+      ],
+      div [class "input-group"] [
+        span [class "input-group-addon"] [
+          i [class "material-icons"] [
+            text "Whitepaper Url"
+          ]
+        ],
+        div [class "form-group label-floating m-0 w-75"] [
+          label [class "control-label"] [
+            text "A link to your whitepaper"
+          ],
+          input [class "form-control", name "name", type_ "text"] []
+        ]    
       ]
     ]
   ]
@@ -170,12 +195,12 @@ tokenSaleForm =
       div [class "input-group"] [
         span [class "input-group-addon"] [
           i [class "material-icons"] [
-            text "emaul"
+            text "Token Name"
           ]
         ],
-        div [class "form-group label-floating"] [
+        div [class "form-group label-floating m-0 w-75"] [
           label [class "control-label"] [
-            text "Your Email"
+            text "The name of your Token"
           ],
           input [class "form-control", name "name", type_ "text"] []
         ]    
@@ -183,15 +208,120 @@ tokenSaleForm =
       div [class "input-group"] [
         span [class "input-group-addon"] [
           i [class "material-icons"] [
-            text "lock_outline"
+            text "Symbol"
           ]
         ],
-        div [class "form-group label-floating"] [
-          label [ class "control-label" ] [
-            text "Your Password"
+        div [class "form-group label-floating m-0 w-75"] [
+          label [class "control-label"] [
+            text "Token Symbol"
           ],
-          input [ class "form-control", name "name2", type_ "password" ] []
-        ]
+          input [class "form-control", name "name", type_ "text"] []
+        ]    
+      ]
+    ],
+    Grid.col [Col.sm6] [
+      div [class "input-group"] [
+        span [class "input-group-addon"] [
+          i [class "material-icons"] [
+            text "Toke Supply"
+          ]
+        ],
+        div [class "form-group label-floating m-0 w-75"] [
+          label [class "control-label"] [
+            text "Total supply of your token"
+          ],
+          input [class "form-control", name "name", type_ "text"] []
+        ]    
+      ]
+    ],
+    Grid.col [Col.sm6] [
+      div [class "input-group"] [
+        span [class "input-group-addon"] [
+          i [class "material-icons"] [
+            text "Tokensale Allocation"
+          ]
+        ],
+        div [class "form-group label-floating m-0 w-75"] [
+          label [class "control-label"] [
+            text "How many tokens of the total supply will be distributed during your token sale?"
+          ],
+          input [class "form-control", name "name", type_ "text"] []
+        ]    
+      ]
+    ],
+    Grid.col [Col.sm12] [
+      div [class "input-group"] [
+        span [class "input-group-addon"] [
+          i [class "material-icons"] [
+            text "Token Value"
+          ]
+        ],
+        div [class "form-group label-floating m-0 w-75"] [
+          label [class "control-label"] [
+            text "How much is your token worth in EOS"
+          ],
+          input [class "form-control", name "name", type_ "text"] []
+        ]    
+      ]
+    ],
+    Grid.col [Col.sm12] [
+      div [class "input-group"] [
+        span [class "input-group-addon"] [
+          i [class "material-icons"] [
+            text "Softcap"
+          ]
+        ],
+        div [class "form-group label-floating m-0 w-75"] [
+          label [class "control-label"] [
+            text "Minimum funds to raise during your tokensale"
+          ],
+          input [class "form-control", name "name", type_ "text"] []
+        ]    
+      ]
+    ],
+    Grid.col [Col.sm12] [
+      div [class "input-group"] [
+        span [class "input-group-addon"] [
+          i [class "material-icons"] [
+            text "Hardcap"
+          ]
+        ],
+        div [class "form-group label-floating m-0 w-75"] [
+          label [class "control-label"] [
+            text "The upper limit of funds to raise during your tokensale"
+          ],
+          input [class "form-control", name "name", type_ "text"] []
+        ]    
+      ]
+    ],
+    Grid.col [Col.sm12] [
+      div [class "input-group"] [
+        span [class "input-group-addon"] [
+          i [class "material-icons"] [
+            text "Start Date"
+          ]
+        ],
+        div [class "form-group label-floating m-0 w-75"] [
+          label [class "control-label"] [
+            text "When does your tokensale begin?"
+          ],
+          input [class "form-control", name "name", type_ "text"] []
+        ]    
+      ]
+    ],
+    Grid.col [Col.sm12] [
+      div [class "input-group"] [
+        span [class "input-group-addon"] [
+          i [class "material-icons"] [
+            text "End Date"
+          ]
+        ],
+        div [class "form-group label-floating m-0 w-75"] [
+          label [class "control-label"] [
+            text "When does your tokensale end?"
+          ],
+          input [class "form-control", name "name", type_ "text"] []
+        ]    
       ]
     ]
   ]
@@ -217,19 +347,6 @@ fundingForm =
           ],
           input [class "form-control", name "name", type_ "text"] []
         ]    
-      ],
-      div [class "input-group"] [
-        span [class "input-group-addon"] [
-          i [class "material-icons"] [
-            text "lock_outline"
-          ]
-        ],
-        div [class "form-group label-floating"] [
-          label [ class "control-label" ] [
-            text "Your Password"
-          ],
-          input [ class "form-control", name "name2", type_ "password" ] []
-        ]
       ]
     ]
   ]

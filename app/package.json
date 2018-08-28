@@ -12,6 +12,7 @@
     "gulp": "4.0.0",
     "gulp-elm": "0.7.2",
     "gulp-server-livereload": "1.9.2",
+    "gulper": "0.1.3",
     "ts-node": "7.0.1",
     "typescript": "3.0.1"
   }
