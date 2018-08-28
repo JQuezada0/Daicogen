@@ -38,6 +38,20 @@ services:
     networks:
       - dev
 
+  app:
+    build: ./app
+    image: daicogen-app
+    container_name: app
+    volumes:
+      - ./app:/usr/src/app
+    working_dir: /usr/src/app
+    ports:
+      - "8000:8000"
+    environment:
+      - VIRTUAL_HOST=app.daicogen.dev
+    networks:
+      - dev
+
   # network:
   #   image: jwilder/nginx-proxy:0.4.0
   #   container_name: daicogen-network
