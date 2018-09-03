@@ -46,22 +46,22 @@ services:
       - ./app:/usr/src/app
     working_dir: /usr/src/app
     ports:
-      - "8000:8000"
+      - "8787:8787"
     environment:
       - VIRTUAL_HOST=app.daicogen.dev
     networks:
       - dev
 
-  # network:
-  #   image: jwilder/nginx-proxy:0.4.0
-  #   container_name: daicogen-network
-  #   volumes:
-  #     - /var/run/docker.sock:/tmp/docker.sock
-  #   ports:
-  #     - "80:80"
-  #     - "443:443"
-  #   networks:
-  #     - dev
+  network:
+    image: jwilder/nginx-proxy:0.4.0
+    container_name: daicogen-network
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - dev
 
 networks:
   dev:

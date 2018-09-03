@@ -1,0 +1,22 @@
+{
+  "master": {
+    "owner": {
+      "privateKey": "5K3Kr8pkmPm9TUUgqALRLBfEAza58QreJEDU8YffMHs7cdyUR86",
+      "publicKey": "EOS8Ur949U9cPR4NAAGZ6W5xQfapqbmUC9cjmR1KnLDBmxut2u5SV"
+    },
+    "active": {
+      "privateKey": "5K3NLoCSpUKLMmqiYMYMrJXKPxdh2xbNDgUZZxhx8mAkgsHBvof",
+      "publicKey": "EOS61cdtbPHFcTrXjyibZnQQVpuSCs1kbHNhipBMi5QsfCwb6UKq8"
+    }
+  },
+  "helloworld": {
+    "owner": {
+      "privateKey": "5J379YgwpnZrZhZVcyoLLHiHfRdUGYHRFX33r8L2Yqses6qgGbB",
+      "publicKey": "EOS54pf2sxK4H48DMtUzzRXDsu8mhn2PUdi3GNi6jVGBwdNLSAJz3"
+    },
+    "active": {
+      "privateKey": "5JnXAod4zumvUy7KD2HiaEpTF7MWUjhvvN7GQWZZgEqn1FgjQKC",
+      "publicKey": "EOS8N9FNS1jKpQbWVRKopDA42RNRVHhaJ1SP66RuybEdEFokJgJ95"
+    }
+  }
+}

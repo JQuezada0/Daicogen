@@ -338,15 +338,45 @@ fundingForm =
       div [class "input-group"] [
         span [class "input-group-addon"] [
           i [class "material-icons"] [
-            text "email"
+            text "Token Sale Start"
           ]
         ],
         div [class "form-group label-floating"] [
           label [class "control-label"] [
-            text "Your Email"
+            text "Length of time after token sale to begin initial funding cycle"
           ],
           input [class "form-control", name "name", type_ "text"] []
         ]    
+      ]
+    ],
+    Grid.col [Col.sm12] [
+      div [class "input-group"] [
+        span [class "input-group-addon"] [
+          i [class "material-icons"] [
+            text "Funding cycle period"
+          ]
+        ],
+        div [class "form-group label-floating"] [
+          label [class "control-label"] [
+            text "How long would you like each funding cycle to be?"
+          ],
+          input [class "form-control", name "name", type_ "text"] []
+        ]  
+      ]
+    ],
+    Grid.col [Col.sm12] [
+      div [class "input-group"] [
+        span [class "input-group-addon"] [
+          i [class "material-icons"] [
+            text "Initial Tap"
+          ]
+        ],
+        div [class "form-group label-floating"] [
+          label [class "control-label"] [
+            text "How large will your initial funding cycle be?"
+          ],
+          input [class "form-control", name "name", type_ "text"] []
+        ]  
       ]
     ]
   ]
@@ -356,35 +386,155 @@ votingForm =
   Grid.row [] [
     Grid.col [Col.sm12] [
       h4 [class "info-text"] [
-        text "Let's start with the basic details."
+        text "Set your voting parameters"
+      ]
+    ],
+    Grid.col [Col.sm12] [
+      h5 [class "info-text"] [
+        text "Tap Poll"
       ]
     ],
     Grid.col [Col.sm12] [
       div [class "input-group"] [
         span [class "input-group-addon"] [
           i [class "material-icons"] [
-            text "emaul"
+            text "Minimum Turnout"
           ]
         ],
         div [class "form-group label-floating"] [
           label [class "control-label"] [
-            text "Your Email"
+            text "Minimum Voter Turnout as % of previous voter turnout"
           ],
           input [class "form-control", name "name", type_ "text"] []
         ]    
-      ],
+      ]
+    ],
+    Grid.col [Col.sm12] [
       div [class "input-group"] [
         span [class "input-group-addon"] [
           i [class "material-icons"] [
-            text "lock_outline"
+            text "Pass Threshold"
           ]
         ],
         div [class "form-group label-floating"] [
-          label [ class "control-label" ] [
-            text "Your Password"
+          label [class "control-label"] [
+            text "Minimum Vote Yes % for vote pass"
           ],
-          input [ class "form-control", name "name2", type_ "password" ] []
-        ]
+          input [class "form-control", name "name", type_ "text"] []
+        ]    
+      ]
+    ],
+    Grid.col [Col.sm12] [
+      div [class "input-group"] [
+        span [class "input-group-addon"] [
+          i [class "material-icons"] [
+            text "Maximum Tap Increase"
+          ]
+        ],
+        div [class "form-group label-floating"] [
+          label [class "control-label"] [
+            text "% Max tap increase relative to current tap (Optional)"
+          ],
+          input [class "form-control", name "name", type_ "text"] []
+        ]    
+      ]
+    ],
+    Grid.col [Col.sm12] [
+      div [class "input-group"] [
+        span [class "input-group-addon"] [
+          i [class "material-icons"] [
+            text "Vote Duration"
+          ]
+        ],
+        div [class "form-group label-floating"] [
+          label [class "control-label"] [
+            text "Tap Increase Voting Period Duration (Min: 3 days)"
+          ],
+          input [class "form-control", name "name", type_ "text"] []
+        ]    
+      ]
+    ],
+    Grid.col [Col.sm12] [
+      hr [] []
+    ],
+    Grid.col [Col.sm12] [
+      h5 [class "info-text"] [
+        text "Refund Poll"
+      ]
+    ],
+    Grid.col [Col.sm12] [
+      div [class "input-group"] [
+        span [class "input-group-addon"] [
+          i [class "material-icons"] [
+            text "Refund Election Frequency"
+          ]
+        ],
+        div [class "form-group label-floating"] [
+          label [class "control-label"] [
+            text "How frequently can refund elections be activated"
+          ],
+          input [class "form-control", name "name", type_ "text"] []
+        ]    
+      ]
+    ],
+    Grid.col [Col.sm12] [
+      div [class "input-group"] [
+        span [class "input-group-addon"] [
+          i [class "material-icons"] [
+            text "Max Elections"
+          ]
+        ],
+        div [class "form-group label-floating"] [
+          label [class "control-label"] [
+            text "Max number of refund elections (optional)"
+          ],
+          input [class "form-control", name "name", type_ "text"] []
+        ]    
+      ]
+    ],
+    Grid.col [Col.sm12] [
+      div [class "input-group"] [
+        span [class "input-group-addon"] [
+          i [class "material-icons"] [
+            text "Voting Duration"
+          ]
+        ],
+        div [class "form-group label-floating"] [
+          label [class "control-label"] [
+            text "Election Voting Duration (Min: 1 month)"
+          ],
+          input [class "form-control", name "name", type_ "text"] []
+        ]    
+      ]
+    ],
+    Grid.col [Col.sm12] [
+      div [class "input-group"] [
+        span [class "input-group-addon"] [
+          i [class "material-icons"] [
+            text "Minimum Turnout"
+          ]
+        ],
+        div [class "form-group label-floating"] [
+          label [class "control-label"] [
+            text "Minimum Voter Turnout as % of previous voter turnout"
+          ],
+          input [class "form-control", name "name", type_ "text"] []
+        ]    
+      ]
+    ],
+    Grid.col [Col.sm12] [
+      div [class "input-group"] [
+        span [class "input-group-addon"] [
+          i [class "material-icons"] [
+            text "Pass Threshold"
+          ]
+        ],
+        div [class "form-group label-floating"] [
+          label [class "control-label"] [
+            text "Minimum Vote Yes % for vote pass"
+          ],
+          input [class "form-control", name "name", type_ "text"] []
+        ]    
       ]
     ]
   ]
@@ -394,35 +544,52 @@ charityForm =
   Grid.row [] [
     Grid.col [Col.sm12] [
       h4 [class "info-text"] [
-        text "Let's start with the basic details."
+        text "Charity Daico"
       ]
     ],
     Grid.col [Col.sm12] [
       div [class "input-group"] [
         span [class "input-group-addon"] [
           i [class "material-icons"] [
-            text "emaul"
+            text "Allocation"
           ]
         ],
         div [class "form-group label-floating"] [
           label [class "control-label"] [
-            text "Your Email"
+            text "% of Tokensale allocated to Charity DAICO"
           ],
           input [class "form-control", name "name", type_ "text"] []
         ]    
-      ],
+      ]
+    ],
+    Grid.col [Col.sm12] [
       div [class "input-group"] [
         span [class "input-group-addon"] [
           i [class "material-icons"] [
-            text "lock_outline"
+            text "Number of charities"
           ]
         ],
         div [class "form-group label-floating"] [
-          label [ class "control-label" ] [
-            text "Your Password"
+          label [class "control-label"] [
+            text "# of charities that you want it distributed to"
           ],
-          input [ class "form-control", name "name2", type_ "password" ] []
-        ]
+          input [class "form-control", name "name", type_ "text"] []
+        ]    
+      ]
+    ],
+    Grid.col [Col.sm12] [
+      div [class "input-group"] [
+        span [class "input-group-addon"] [
+          i [class "material-icons"] [
+            text "Duration"
+          ]
+        ],
+        div [class "form-group label-floating"] [
+          label [class "control-label"] [
+            text "Charity DAICO duration"
+          ],
+          input [class "form-control", name "name", type_ "text"] []
+        ]    
       ]
     ]
   ]

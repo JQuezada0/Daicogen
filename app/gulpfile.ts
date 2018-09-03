@@ -21,6 +21,7 @@ export function webserver () {
     .src("_bundle")
     .pipe(server({
       livereload: true,
+      port: 8787,
      // open: true
     }))
 }
