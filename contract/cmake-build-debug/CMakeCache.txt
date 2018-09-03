@@ -147,7 +147,7 @@ CMAKE_OSX_DEPLOYMENT_TARGET:STRING=
 CMAKE_OSX_SYSROOT:STRING=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=contract
+CMAKE_PROJECT_NAME:STATIC=daicogen
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=/usr/bin/ranlib
@@ -206,6 +206,12 @@ contract_BINARY_DIR:STATIC=/Users/johnilquezada/Daicogen/contract/cmake-build-de
 
 //Value Computed by CMake
 contract_SOURCE_DIR:STATIC=/Users/johnilquezada/Daicogen/contract
+
+//Value Computed by CMake
+daicogen_BINARY_DIR:STATIC=/Users/johnilquezada/Daicogen/contract/cmake-build-debug
+
+//Value Computed by CMake
+daicogen_SOURCE_DIR:STATIC=/Users/johnilquezada/Daicogen/contract
 
 
 ########################
