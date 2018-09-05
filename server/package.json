@@ -15,7 +15,9 @@
     "graphql": "0.13.2",
     "graphql-import": "0.6.0",
     "graphql-tools": "3.0.5",
-    "massive": "5.2.0"
+    "massive": "5.2.0",
+    "pg": "7.4.3",
+    "typeorm": "0.2.7"
   },
   "scripts": {
     "docker": "docker exec goldcobra sh -c ",
@@ -26,10 +28,12 @@
     "@types/gulp-concat": "0.0.32",
     "@types/gulp-rename": "0.0.33",
     "@types/gulp-sourcemaps": "0.0.32",
+    "@types/massive": "4.6.1",
     "@types/merge-stream": "1.1.1",
     "graphql-cli": "2.16.4",
     "gulp": "v4.0.0",
     "gulp-concat": "2.6.1",
+    "gulp-live-server": "0.0.31",
     "gulp-sourcemaps": "2.6.4",
     "gulp-typescript": "5.0.0-alpha.3",
     "gulper": "0.1.3",

@@ -5,6 +5,7 @@ import * as util from 'util'
 import * as sourcemaps from 'gulp-sourcemaps'
 // tslint:disable-next-line:no-duplicate-imports
 import { ExecException } from 'child_process'
+const gls = require('gulp-live-server')
 
 const exec: any = util.promisify(childProcess.exec)
 
@@ -24,12 +25,13 @@ export function copyGraphQL () {
   return gulp.src('./**/*.graphql').pipe(gulp.dest('build'))
 }
 
+export function copyJSON () {
+  return gulp.src(['./ormconfig.json']).pipe(gulp.dest('build'))
+}
+
 export function serve (cb: (val: any) => void) {
-  exec('node ./build/index.js', (error: ExecException | null, stdout: string, stderr: string) => {
-    console.log(stdout)
-    console.log(stderr)
-    cb(error)
-  })
+  const server = gls.new('build/index.js');
+  server.start()
 }
 
 export function watch () {
@@ -39,4 +41,4 @@ export function watch () {
 
 export const compile = gulp.series(buildTS, copyGraphQL)
 
-export default gulp.series(buildTS, copyGraphQL, serve, watch)
+export default gulp.series(buildTS, copyGraphQL, copyJSON, gulp.parallel(serve, watch))
