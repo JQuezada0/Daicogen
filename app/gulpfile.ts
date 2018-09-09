@@ -1,7 +1,7 @@
 import * as gulp from 'gulp'
 
-const server = require('gulp-server-livereload')
 const elm = require('gulp-elm')
+import * as connect from "gulp-connect"
 
 export function compileElm () {
   return gulp
@@ -17,13 +17,14 @@ export function html () {
 }
 
 export function webserver () {
-  return gulp
-    .src("_bundle")
-    .pipe(server({
-      livereload: true,
-      port: 8787,
-     // open: true
-    }))
+  connect.server({
+    root: '_bundle',
+    host: "0.0.0.0",
+    livereload: {
+      port: 58493
+    },
+    port: 9000
+  })
 }
 
 export function assets () {
@@ -38,4 +39,4 @@ function watch () {
   gulp.watch("assets/**/*.*", assets)
 }
 
-export default gulp.series(compileElm, assets, html, webserver, watch)
+export default gulp.series(compileElm, assets, html, gulp.parallel(webserver, watch))
