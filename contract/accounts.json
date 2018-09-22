@@ -1,0 +1,42 @@
+{
+  "master": {
+    "owner": {
+      "privateKey": "5K3Kr8pkmPm9TUUgqALRLBfEAza58QreJEDU8YffMHs7cdyUR86",
+      "publicKey": "EOS8Ur949U9cPR4NAAGZ6W5xQfapqbmUC9cjmR1KnLDBmxut2u5SV"
+    },
+    "active": {
+      "privateKey": "5K3NLoCSpUKLMmqiYMYMrJXKPxdh2xbNDgUZZxhx8mAkgsHBvof",
+      "publicKey": "EOS61cdtbPHFcTrXjyibZnQQVpuSCs1kbHNhipBMi5QsfCwb6UKq8"
+    }
+  },
+  "helloworld": {
+    "owner": {
+      "privateKey": "5J379YgwpnZrZhZVcyoLLHiHfRdUGYHRFX33r8L2Yqses6qgGbB",
+      "publicKey": "EOS54pf2sxK4H48DMtUzzRXDsu8mhn2PUdi3GNi6jVGBwdNLSAJz3"
+    },
+    "active": {
+      "privateKey": "5JnXAod4zumvUy7KD2HiaEpTF7MWUjhvvN7GQWZZgEqn1FgjQKC",
+      "publicKey": "EOS8N9FNS1jKpQbWVRKopDA42RNRVHhaJ1SP66RuybEdEFokJgJ95"
+    }
+  },
+  "crowdsale": {
+    "owner": {
+      "privateKey": "5K28PE1TzfHsHbNCP1xW3WUDPS2hjspJJNPukwC16jjsFEQQMCE",
+      "publicKey": "EOS57MYVP8DDZman5fSsG7cN6JmpyaXQF8UsE9PF3xnyep5Sy3JQo"
+    },
+    "active": {
+      "privateKey": "5KRvXW5D4Xu5fgpTDjaEcPfrdTuuaUkqNGyg1N25tMG88hcS8se",
+      "publicKey": "EOS5TzMjVvkDCcEx8aC89Ld3gigzKnzLFeBUnAUtqFSvTS2q89YLV"
+    }
+  },
+  "token": {
+    "owner": {
+      "privateKey": "5Kek4V6VMcFfm4cWyaTpgHJhdZJEMrrZGSPkA45d4rTt5x3vvYH",
+      "publicKey": "EOS7zm65pJWkBixVS736WCC1vJxN2N8cayor75g1ikFLoKnqVFdY5"
+    },
+    "active": {
+      "privateKey": "5JNBKByjLAL3Ud5kBUcL2EPJNrTFZgJ9gmV9iopC4jru5Berur4",
+      "publicKey": "EOS6kvJB5ezbHftYBvRLELiXFhzyLVNgonaD7U8qsP4HW3nqa7mBs"
+    }
+  }
+}
