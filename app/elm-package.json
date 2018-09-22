@@ -1,7 +1,7 @@
 {
   "version": "0.0.1",
   "summary": "Daicogen UI",
-  "repository": "https://github.com/JQuezada0/EOSLondonHackathon.git",
+  "repository": "https://github.com/JQuezada0/eoslondonhackathon.git",
   "license": "UNLICENSED",
   "source-directories": [
       "src"
