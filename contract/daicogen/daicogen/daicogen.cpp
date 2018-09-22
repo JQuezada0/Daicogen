@@ -40,7 +40,6 @@ namespace daico {
 			daicogen.min_vote_yes_r = t.min_vote_yes_r;
 		  });
 
-		createvoting(t.account, "Cucomber");
 	}
 	
 	void daicogen::removeico(const account_name account) {
@@ -55,34 +54,6 @@ namespace daico {
 		  daico.erase( itr );
 	}
 
-	void daicogen::createvoting(const account_name icoaccount, const string proposal) {
-		voting_index voting(_self, _self);
-
-		voting.emplace(ico.account, [&](auto& vote) {
-			vote.icocreator = icoaccount;
-			vote.proposal = proposal;
-			vote.yesvotes = 0;
-			vote.novotes = 0;
-		});
-	}
-
-	void daicogen::vote(const account_name icoaccount, const account_name voter, bool is_support) {
-		voters_index voters(_self, _self);
-		
-		// add find-assert to prevent double voting
-		if (is_support == true) {
-			voters.emplace(icoaccount, [&](auto& vote) {
-				vote.account = icoaccount;
-				vote.is_support = is_support;
-			});
-		} else {
-			voters.emplace(icoaccount, [&](auto& vote) {
-				vote.account = icoaccount;
-				vote.is_support = is_support;
-			});
-		}
-			
-	}
 
 	void daicogen::apply(const account_name contract, const account_name act) {
 

@@ -38,26 +38,26 @@ namespace daico {
 		/* token sale */
 			uint64_t			raised;
 			uint64_t			issued;
-			uint32_t			soft_cap;
-			uint32_t			hard_cap;
-			uint32_t			start_date;
+			uint64_t			soft_cap;
+			uint64_t			hard_cap;
+			uint64_t			start_date;
 			uint64_t			end_date;
 		 /* funding */
-			uint32_t			charity_ico_percent;
-			uint32_t			num_of_charities_distr;
-			uint32_t			charity_ico_duration;
+			uint64_t			charity_ico_percent;
+			uint64_t			num_of_charities_distr;
+			uint64_t			charity_ico_duration;
 		  /* voting */
 		  /*tap poll*/
-			uint32_t			min_vote_turn_out;
-			uint32_t			min_vote_yes;
-			uint32_t			max_tap_increase;
-			uint32_t			tap_increase;
+			uint64_t			min_vote_turn_out;
+			uint64_t			min_vote_yes;
+			uint64_t			max_tap_increase;
+			uint64_t			tap_increase;
 		  /*refund poll */
-			uint32_t			how_frequently;
-			uint32_t			max_num_refund;
-			uint32_t			election_voting_duration;
-			uint32_t			min_vote_turn_out_r;
-			uint32_t			min_vote_yes_r;
+			uint64_t			how_frequently;
+			uint64_t			max_num_refund;
+			uint64_t			election_voting_duration;
+			uint64_t			min_vote_turn_out_r;
+			uint64_t			min_vote_yes_r;
 
 			uint64_t primary_key() const { return account; }
 
@@ -98,18 +98,12 @@ namespace daico {
 		// @abi action
 		void createico(const dataico& t);
 
-		//@abi action
+		// @abi action
 		void removeico(const account_name account);
 		
 		void apply(const account_name contract, const account_name act);
 
 		void transferReceived(const currency::transfer &transfer, const account_name code);
-
-		// @abi action
-		void createvoting(const dataico& ico, const string proposal);
-
-		// @abi action
-		void createvoting(const dataico& ico, const string proposal);
 
 		/*typedef singleton<N(config), config> configs;
 		typedef singleton<N(icoconfig), icoconfig> icoconfigs;
