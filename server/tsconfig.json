@@ -1,0 +1,24 @@
+{
+  "include": [
+    "./**/*.ts"
+  ],
+  "exclude": [
+    "./node_modules",
+    "./build"
+  ],
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "preserveConstEnums": true,
+    "strict": true,
+    "rootDir": ".",
+    "lib": ["es6", "esnext", "dom"],
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "typeRoots": [
+      "./typings",
+      "./node_modules/@types"
+    ]
+  },
+  "compileOnSave": true
+}
