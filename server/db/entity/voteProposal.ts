@@ -4,7 +4,7 @@ import { Poll } from "./poll"
 
 @Entity()
 @ObjectType()
-export class Vote extends BaseEntity {
+export class VoteProposal extends BaseEntity {
   @PrimaryColumn()
   @Field()
   idVoter!: string // id account name

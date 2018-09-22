@@ -27,4 +27,9 @@ export class PollResolver {
   votes(@Root() poll: Poll) {
     return poll.votes
   }
+
+  @FieldResolver()
+  voteProposals(@Root() poll: Poll) {
+    return poll.voteProposals
+  }
 }

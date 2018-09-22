@@ -2,6 +2,7 @@ import { Entity, Column, BaseEntity, OneToOne, JoinColumn, PrimaryGeneratedColum
 import { ObjectType, Field } from "type-graphql"
 import { Project } from "./project"
 import { Vote } from "./vote"
+import { VoteProposal } from "./voteProposal"
 
 enum PollKind {
   FundsPerCycle = "FundPerCycle"
@@ -31,4 +32,7 @@ export class Poll extends BaseEntity {
 
   @ManyToOne(type => Vote, vote => vote.poll)
   votes!: Vote[] 
+
+  @ManyToOne(type => VoteProposal, voteProposal => voteProposal.poll)
+  voteProposals!: VoteProposal[]
 }
