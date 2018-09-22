@@ -25,7 +25,7 @@ export class Poll extends BaseEntity {
   @Field()
   pollFinalized!: boolean
 
-  @OneToOne(type => Project, project => project.tokenSale)
+  @OneToOne(type => Project, project => project.polls)
   @JoinColumn()
   project!: Project
 

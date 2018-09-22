@@ -1,6 +1,7 @@
-import { Entity, Column, BaseEntity, OneToOne, PrimaryGeneratedColumn } from "typeorm"
+import { Entity, Column, BaseEntity, OneToOne, PrimaryGeneratedColumn, OneToMany } from "typeorm"
 import { ObjectType, Field } from "type-graphql"
 import { TokenSale } from "./tokenSale"
+import { Poll } from "./poll"
 
 @Entity()
 @ObjectType()
@@ -66,4 +67,7 @@ export class Project extends BaseEntity {
 
   @OneToOne(type => TokenSale, tokenSale => tokenSale.project)
   tokenSale!: TokenSale
+
+  @OneToMany(type => Poll, poll => poll.project)
+  polls!: Poll[]
 }
