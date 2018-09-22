@@ -49,15 +49,42 @@ namespace vote {
 		});
 	}
 
-	void voting::vote(const account_name icoaccount, const account_name voter, bool pick) {
+	void voting::vote(const account_name icoaccount, const account_name idvoter, const account_name trvoter, bool pick) {
 		votes_index votes(_self, _self);
+		voters_index voters(_self, _self);
+
 		
 		// add find-assert to prevent double voting
-		votes.emplace(icoaccount, [&](auto& vote) {
-			vote.iconame = icoaccount;
-			vote.votername = voter;
-			vote.pick = pick;
-		});	
+		if (trvoter != idvoter) {
+			votes.emplace(icoaccount, [&](auto& vote) {
+				vote.iconame = icoaccount;
+				vote.votername = trvoter;
+				vote.pick = pick;
+			});
+		}
+		else {
+			votes.emplace(icoaccount, [&](auto& vote) {
+				vote.iconame = icoaccount;
+				vote.votername = idvoter;
+				vote.pick = pick;
+			});
+		}
+		
+
+		auto itr = voters.find(idvoter);
+		eosio_assert(itr == voters.end(), "This idvoter is already voted");
+		voters.emplace(idvoter, [&](auto& vote){
+			vote.account = idvoter;
+			vote.is_voted = true;
+		});
+		if (trvoter != idvoter) {
+			auto itr = voters.find(trvoter);
+			eosio_assert(itr == voters.end(), "This trvoter is already voted");
+			voters.emplace(trvoter, [&](auto& vote){
+				vote.account = trvoter;
+				vote.is_voted = true;
+			});
+		}
 	}
 
 	// need to update remove of vote by other key

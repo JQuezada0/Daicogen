@@ -23,11 +23,11 @@ namespace vote {
 		// @abi table
 		struct voters {	
 			account_name		account;
-			bool				is_vote;
+			bool				is_voted;
 
 			uint64_t primary_key() const { return account; }
 
-			EOSLIB_SERIALIZE( voters, (account)(is_vote))
+			EOSLIB_SERIALIZE( voters, (account)(is_voted))
 		};
 		typedef multi_index<N(voters), voters> voters_index;
 
@@ -37,7 +37,7 @@ namespace vote {
 			account_name		votername;
 			bool				pick;
 
-			uint64_t primary_key() const { return iconame; }
+			uint64_t primary_key() const { return votername; }
 
 			EOSLIB_SERIALIZE( votes, (iconame)(votername)(pick))
 		};
@@ -76,7 +76,7 @@ namespace vote {
 		// @abi action
 		void removevoting(const account_name account);
 		// @abi action
-		void vote(const account_name icoaccount, const account_name voter, bool pick);
+		void vote(const account_name icoaccount, const account_name trvoter, const account_name idvoter, bool pick);
 		// @abi action
 		void removevote(const account_name icoaccount);
 		// @abi action
