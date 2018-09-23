@@ -19,7 +19,7 @@ namespace daico {
 
 		while (iter != daico.end())
 		{
-			eosio::print(iter->account, "  ");
+			eosio::print(iter->account, " ");
 			iter++;
 			i++;
 		}

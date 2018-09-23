@@ -7,11 +7,14 @@ namespace vote {
 	//	 require_auth(account); // make sure authorized by account
 
 		 sugg_index sugg(_self, _self); // code, scope
-
-		  // verify already exist
-		  auto itr = sugg.find(from);
-		  eosio_assert(itr != sugg.end(), "Suggestions for this account not found");
-		  sugg.erase( itr );
+		
+		for (auto itr = sugg.cbegin(); itr != sugg.cend(); )
+		{
+			auto next = itr;
+			next++;
+			sugg.erase( itr );
+			itr = next;
+		}
 	}
 
 	void voting::createsugg(const account_name icoaccount, const account_name from, const string to, string pick) {
@@ -30,23 +33,14 @@ namespace vote {
 	//	 require_auth(account); // make sure authorized by account
 
 		voting_index voting(_self, _self); // code, scope
-		auto itr = voting.find(account);
-		eosio_assert(itr != voting.end(), "Daico for this id not found");
 		
-		uint64_t	daicoid = itr->id;
-		  // verify already exist
-		itr = voting.find(account);
-		eosio_assert(itr != voting.end(), "Voting for this account not found");
-
-		itr = voting.begin();
-		while (itr != voting.end()) {
-			if (itr->id == daicoid) {
-				voting.erase( itr );
-			} else {
-				voting.erase( itr );
-			}
-			
-		}	
+		for (auto itr = voting.cbegin(); itr != voting.cend(); )
+		{
+			auto next = itr;
+			next++;
+			voting.erase( itr );
+			itr = next;
+		}
 	}
 
 	void voting::createvoting(const account_name icoaccount, const string proposal) {
@@ -139,17 +133,18 @@ namespace vote {
 		votes_index votes(_self, _self);
 
 		  // verify already exist
-		  auto itr = votes.find(icoaccount);
-		  eosio_assert(itr != votes.end(), "Voter for this account not found");
-		  votes.erase( itr );
+		
+		
+		for (auto itr = votes.cbegin(); itr != votes.cend(); )
+		{
+			auto next = itr;
+			next++;
+			votes.erase( itr );
+			itr = next;
+		}
 	}
 
 	void voting::apply(const account_name contract, const account_name act) {
-
-		// if (act == N(transfer)) {
-			// transferReceived(unpack_action_data<currency::transfer>(), contract);
-			// return;
-		// }
 
 		auto &thiscontract = *this;
 

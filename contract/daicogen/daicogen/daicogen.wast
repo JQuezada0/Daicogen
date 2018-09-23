@@ -38,7 +38,7 @@
  (data (i32.const 32) "active\00")
  (data (i32.const 48) "create\00")
  (data (i32.const 64) "write\00")
- (data (i32.const 80) "  \00")
+ (data (i32.const 80) " \00")
  (data (i32.const 96) "cannot increment end iterator\00")
  (data (i32.const 128) "cannot create objects in table of another contract\00")
  (data (i32.const 192) "magnitude of asset amount must be less than 2^62\00")
