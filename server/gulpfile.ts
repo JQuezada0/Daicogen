@@ -1,7 +1,5 @@
 import * as gulp from 'gulp'
-import * as childProcess from 'child_process'
 import * as ts from 'gulp-typescript'
-import * as util from 'util'
 import * as sourcemaps from 'gulp-sourcemaps'
 const gls = require('gulp-live-server')
 
@@ -24,12 +22,11 @@ export function copyJSON () {
 export function serve (cb: (val: any) => void) {
   const server = gls.new('build/index.js')
   server.start()
-}
 
-export function watch () {
   gulp.watch(['./**/*.ts', '!gulpfile.ts'], buildTS)
+  gulp.watch(['./ormconfig.json'], copyJSON)
 }
 
 export const compile = gulp.series(buildTS)
 
-export default gulp.series(buildTS, copyJSON, gulp.parallel(serve, watch))
+export default gulp.series(buildTS, copyJSON, serve)

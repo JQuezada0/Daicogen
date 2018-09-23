@@ -1,5 +1,10 @@
 module Main exposing (..)
 
+import Html exposing (..)
+import Model exposing (Model, Msg)
+import Update
+import View
+
 main : Program Never Model Msg
 main =
   Html.program

@@ -1,0 +1,1 @@
+yarn docker 'graphqelm http://server:5555/graphql --base Api';

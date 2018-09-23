@@ -6,8 +6,10 @@
   "password": "",
   "database": "postgres",
   "synchronize": true,
-  "logging": false,
-  "entities": [],
+  "logging": true,
+  "entities": [
+    "./build/db/entity/**/*.js"
+  ],
   "migrations": [],
   "subscribers": []
 }

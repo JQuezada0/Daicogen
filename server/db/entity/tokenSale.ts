@@ -8,10 +8,6 @@ export class TokenSale extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @OneToOne(type => Project, project => project.tokenSale)
-  @JoinColumn()
-  project!: Project
-
   @Column()
   @Field()
   name!: string;

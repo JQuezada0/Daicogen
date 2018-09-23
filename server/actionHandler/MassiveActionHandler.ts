@@ -24,8 +24,6 @@ export class MassiveActionHandler extends AbstractActionHandler {
 
   protected async handleWithState(handle: (state: any, context?: any) => void): Promise<void> {
     await this.massiveInstance.withTransaction(async (tx: any) => {
-      const txid = (await tx.instance.one("select txid_current()")).txid_current
-      const context = { txid }
       let db
       if (this.dbSchema === "public") {
         db = tx
@@ -33,7 +31,7 @@ export class MassiveActionHandler extends AbstractActionHandler {
         db = tx[this.dbSchema]
       }
       try {
-        await handle(db, context)
+        await handle(db)
       } catch (err) {
         throw err // Throw error to trigger ROLLBACK
       }
@@ -44,9 +42,9 @@ export class MassiveActionHandler extends AbstractActionHandler {
     })
   }
 
-  protected async updateIndexState(state: any, block: Block, isReplay: boolean, context: any) {
+  protected async updateIndexState(state: any, block: Block, isReplay: boolean) {
     const { blockInfo } = block
-    const fromDb = (await state._index_state.findOne({ id: 1 })) || {}
+    const fromDb = (await state._index_state.findOne({ block_number: blockInfo.blockNumber })) || {}
     const toSave = {
       ...fromDb,
       block_number: blockInfo.blockNumber,
@@ -54,11 +52,6 @@ export class MassiveActionHandler extends AbstractActionHandler {
       is_replay: isReplay,
     }
     await state._index_state.save(toSave)
-
-    await state._block_number_txid.insert({
-      block_number: blockInfo.blockNumber,
-      txid: context.txid,
-    })
   }
 
   protected async loadIndexState(): Promise<IndexState> {

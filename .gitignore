@@ -1,5 +1,10 @@
 .DS_Store
 
 server/node_modules
+server/build
+app/node_modules
+app/dist
+app/elm-stuff
+contract/build
 
 yarn-error.log

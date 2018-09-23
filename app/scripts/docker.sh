@@ -1,0 +1,1 @@
+docker exec app sh -c "$1";

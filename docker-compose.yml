@@ -1,10 +1,10 @@
 version: '3'
 services:
-  eos:
+  eosio:
     build: ./contract
     image: eosio
     container_name: eosio
-    command: nodeos -e -p eosio --plugin eosio::producer_plugin --plugin eosio::history_plugin --plugin eosio::chain_api_plugin --plugin eosio::history_api_plugin --plugin eosio::http_plugin -d /mnt/dev/data --config-dir /mnt/dev/config --http-server-address=0.0.0.0:8888 --access-control-allow-origin=* --contracts-console --http-validate-host=false
+    command: nodeos -e -p eosio --plugin eosio::producer_plugin --plugin eosio::history_plugin --plugin eosio::chain_api_plugin --plugin eosio::history_api_plugin --plugin eosio::http_plugin -d /mnt/dev/data --config-dir /mnt/dev/config --http-server-address=0.0.0.0:8888 --access-control-allow-origin=* --contracts-console --http-validate-host=false --hard-replay-blockchain 
     volumes:
       - ./contract/build:/work
       - ./contract/build/eosio/data:/mnt/dev/data
@@ -26,6 +26,18 @@ services:
     working_dir: /usr/src/app
     ports:
       - "5555:5555"
+    networks:
+      - dev
+
+  app:
+    build: ./app
+    image: app
+    container_name: app
+    volumes:
+      - ./app:/usr/src/app
+    working_dir: /usr/src/app
+    ports:
+      - "9000:9000"
     networks:
       - dev
 

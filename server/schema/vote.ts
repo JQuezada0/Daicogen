@@ -4,17 +4,22 @@ import { Vote } from "../db/entity/vote"
 @Resolver(Vote)
 export class VoteResolver {
   @FieldResolver()
-  voter(@Root() vote: Vote) {
-    return vote.voter
+  iconame(@Root() vote: Vote) {
+    return vote.iconame
   }
 
   @FieldResolver()
-  confirmed(@Root() vote: Vote) {
-    return vote.confirmed
+  idvoter(@Root() vote: Vote) {
+    return vote.idvoter
   }
 
   @FieldResolver()
-  poll(@Root() vote: Vote) {
-    return vote.poll
+  trvoter(@Root() vote: Vote) {
+    return vote.trvoter
+  }
+
+  @FieldResolver()
+  pick(@Root() vote: Vote) {
+    return vote.pick
   }
 }

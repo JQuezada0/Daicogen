@@ -1,0 +1,22 @@
+{
+  "include": [
+    "assets/**/*",
+    "typings/*"
+  ],
+  "exclude": [
+    "./node_modules"
+  ],
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "target": "es5",
+    "preserveConstEnums": true,
+    "strict": true,
+    "rootDir": ".",
+    "lib": ["es2015", "esnext", "dom"]
+  },
+  "typeRoots": [
+    "./typings",
+    "./node_modules/@types"
+  ],
+  "compileOnSave": true
+}

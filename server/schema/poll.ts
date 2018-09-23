@@ -1,35 +1,37 @@
 import { Resolver, FieldResolver, Root } from "type-graphql"
 import { Poll } from "../db/entity/poll"
+import { Vote } from "../db/entity/vote"
+import { VoteProposal } from "../db/entity/voteProposal"
 
 @Resolver(Poll)
 export class PollResolver {
   @FieldResolver()
-  kind(@Root() poll: Poll) {
-    return poll.kind
+  icocreator(@Root() poll: Poll): string {
+    return poll.icocreator
   }
 
   @FieldResolver()
-  symbol(@Root() poll: Poll) {
-    return poll.pollPassed
+  proposal(@Root() poll: Poll): string {
+    return poll.proposal
   }
 
   @FieldResolver()
-  supply(@Root() poll: Poll) {
-    return poll.pollFinalized
+  yesvotes(@Root() poll: Poll): number {
+    return poll.yesvotes
   }
 
   @FieldResolver()
-  project(@Root() poll: Poll) {
-    return poll.project
+  novotes(@Root() poll: Poll): number {
+    return poll.novotes
   }
 
-  @FieldResolver()
-  votes(@Root() poll: Poll) {
+  @FieldResolver(type => [Vote])
+  votes(@Root() poll: Poll): Vote[] {
     return poll.votes
   }
 
-  @FieldResolver()
-  voteProposals(@Root() poll: Poll) {
+  @FieldResolver(type => [VoteProposal])
+  voteProposals(@Root() poll: Poll): VoteProposal[] {
     return poll.voteProposals
   }
 }

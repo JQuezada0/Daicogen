@@ -1,38 +1,39 @@
-import { Entity, Column, BaseEntity, OneToOne, JoinColumn, PrimaryGeneratedColumn, ManyToOne } from "typeorm"
+import { Entity, Column, BaseEntity, OneToOne, JoinColumn, ManyToOne, PrimaryColumn, RelationId, OneToMany } from "typeorm"
 import { ObjectType, Field } from "type-graphql"
 import { Project } from "./project"
 import { Vote } from "./vote"
 import { VoteProposal } from "./voteProposal"
 
 enum PollKind {
-  FundsPerCycle = "FundPerCycle"
+  FundsPerCycle = "FundsPerCycle"
 }
 
 @Entity()
 @ObjectType()
 export class Poll extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id!: number;
+  @PrimaryColumn()
+  @RelationId((poll: Poll) => poll.project)
+  icocreator!: string
 
   @Column()
   @Field()
-  kind!: PollKind;
+  proposal!: PollKind
 
   @Column()
   @Field()
-  pollPassed!: boolean
+  yesvotes!: number
 
   @Column()
   @Field()
-  pollFinalized!: boolean
+  novotes!: number
 
-  @OneToOne(type => Project, project => project.polls)
-  @JoinColumn()
+  @ManyToOne(type => Project, project => project.polls, { onDelete: "CASCADE"})
+  @JoinColumn({ name: "icocreator" })
   project!: Project
 
-  @ManyToOne(type => Vote, vote => vote.poll)
+  @OneToMany(type => Vote, vote => vote.poll, { eager: true, onDelete: "CASCADE" })
   votes!: Vote[] 
 
-  @ManyToOne(type => VoteProposal, voteProposal => voteProposal.poll)
+  @OneToMany(type => VoteProposal, voteProposal => voteProposal.poll, { eager: true, onDelete: "CASCADE" })
   voteProposals!: VoteProposal[]
 }

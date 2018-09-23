@@ -1,0 +1,66 @@
+{
+  "master": {
+    "owner": {
+      "privateKey": "5K3Kr8pkmPm9TUUgqALRLBfEAza58QreJEDU8YffMHs7cdyUR86",
+      "publicKey": "EOS8Ur949U9cPR4NAAGZ6W5xQfapqbmUC9cjmR1KnLDBmxut2u5SV"
+    },
+    "active": {
+      "privateKey": "5K3NLoCSpUKLMmqiYMYMrJXKPxdh2xbNDgUZZxhx8mAkgsHBvof",
+      "publicKey": "EOS61cdtbPHFcTrXjyibZnQQVpuSCs1kbHNhipBMi5QsfCwb6UKq8"
+    }
+  },
+  "crowdsale": {
+    "owner": {
+      "privateKey": "5K28PE1TzfHsHbNCP1xW3WUDPS2hjspJJNPukwC16jjsFEQQMCE",
+      "publicKey": "EOS57MYVP8DDZman5fSsG7cN6JmpyaXQF8UsE9PF3xnyep5Sy3JQo"
+    },
+    "active": {
+      "privateKey": "5KRvXW5D4Xu5fgpTDjaEcPfrdTuuaUkqNGyg1N25tMG88hcS8se",
+      "publicKey": "EOS5TzMjVvkDCcEx8aC89Ld3gigzKnzLFeBUnAUtqFSvTS2q89YLV"
+    }
+  },
+  "voting": {
+    "owner": {
+      "privateKey": "5KRJ4VS18M73twao5X5h2dMoNy4rsP3oK5SS3tafxYTMjE3M87j",
+      "publicKey": "EOS5RQFBJc77gku8Emw7e3NjneNLcyRe1X6sRzFZfD7M55XvXpC2u"
+    },
+    "active": {
+      "privateKey": "5JkziVZLdWSdWDmhoUAUUEmufaHhw6qmWnRQQ68bqoREqMV1C5v",
+      "publicKey": "EOS5XB4Xf7qKi6ArHPPBchAFccTXNdSR82UtMTRetv3QVNvG6NoDc"
+    }
+  },
+  "token": {
+    "owner": {
+      "privateKey": "5JfRRAuB7qUAfHQHiXitZmxs1A95rP2T4M6WonVeTetfvEGqSce",
+      "publicKey": "EOS5NN3ABG32gCvmSBMP2v7DpsaLcJYxpPevecrVSB2GwkbFRqfiQ"
+    },
+    "active": {
+      "privateKey": "5HyG9xumdtN6sfAZ76jMQvTNmuKiTP23icb11od8ertQza5fzaF",
+      "publicKey": "EOS7odKrCTwP8DKHxBhrzZc3fDwtVHpnAFVutywYFEaPxzDRr8CV6"
+    },
+    "extra": {
+      "privateKey": "5K739f8v7J6XUkboSwoVKrr8u1pGn21ELE1TCC2dwXZu1hckqF8",
+      "publicKey": "EOS5KxT6hJSWCZmL7bbdXJc5PtAeEzR12PoPSL1FuZihm5ZZrLjnA"
+    }
+  },
+  "idaccount": {
+    "owner": {
+      "privateKey": "5Jmd3qXfwcEMj9qq5Fn7QsHG6mD1zLMPAckRrrpEpagcvgUvq5h",
+      "publicKey": "EOS5TXkKgQKHQgaQQVe6ns9WsZV8sLAPRTX1GNtcAootmCnHRogBN"
+    },
+    "active": {
+      "privateKey": "5K814S5vVuwq9v9BXr6kcyL2gif812aVAozBQM2L3aFjLTxDJpV",
+      "publicKey": "EOS7nYD6oBXS6o2qh9RRYzCHYoXuBev2rtc1x45gFqwFLNpFXt41a"
+    }
+  },
+  "delegate": {
+    "owner": {
+      "privateKey": "5JUwn5BT6j7egWGHDxmSAzBa3zzWmQzzkSnZf2aQ4hLr8BiXDAH",
+      "publicKey": "EOS5oxxwEsLWtDttgS8sUyrwrsQTaqzZZ6dfcLiFoWeoye2xijLfX"
+    },
+    "active": {
+      "privateKey": "5Jp7SgE8fToXGLrGRJtAu6orQkoJPXEqS1ssAofsjhAwajhLfae",
+      "publicKey": "EOS7DcimgPNwsTnbq9VymJAJ1mTFGGBA8w9XMg4xJYMzGCT3mhjA1"
+    }
+  }
+}

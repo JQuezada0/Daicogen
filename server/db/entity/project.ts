@@ -1,4 +1,4 @@
-import { Entity, Column, BaseEntity, OneToOne, PrimaryGeneratedColumn, OneToMany } from "typeorm"
+import { Entity, Column, BaseEntity, OneToOne, PrimaryGeneratedColumn, OneToMany, PrimaryColumn } from "typeorm"
 import { ObjectType, Field } from "type-graphql"
 import { TokenSale } from "./tokenSale"
 import { Poll } from "./poll"
@@ -6,10 +6,7 @@ import { Poll } from "./poll"
 @Entity()
 @ObjectType()
 export class Project extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id!: number;
-
-  @Column()
+  @PrimaryColumn()
   @Field()
   owner!: string;
 
@@ -65,9 +62,9 @@ export class Project extends BaseEntity {
   @Field()
   refundThreshold!: number;
 
-  @OneToOne(type => TokenSale, tokenSale => tokenSale.project)
-  tokenSale!: TokenSale
+  // @OneToOne(type => TokenSale, tokenSale => tokenSale.project)
+  // tokenSale!: TokenSale
 
-  @OneToMany(type => Poll, poll => poll.project)
+  @OneToMany(type => Poll, poll => poll.project, { onDelete: 'CASCADE' })
   polls!: Poll[]
 }

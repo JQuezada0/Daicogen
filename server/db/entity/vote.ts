@@ -1,4 +1,4 @@
-import { Entity, Column, BaseEntity, JoinColumn, OneToMany, PrimaryColumn } from "typeorm"
+import { Entity, Column, BaseEntity, JoinColumn, OneToMany, PrimaryColumn, ManyToOne } from "typeorm"
 import { ObjectType, Field } from "type-graphql"
 import { Poll } from "./poll"
 
@@ -7,13 +7,21 @@ import { Poll } from "./poll"
 export class Vote extends BaseEntity {
   @PrimaryColumn()
   @Field()
-  voter!: string // account name
+  iconame!: string
+
+  @PrimaryColumn()
+  @Field()
+  idvoter!: string
 
   @Column()
   @Field()
-  confirmed!: boolean
+  trvoter!: string
 
-  @OneToMany(type => Poll, poll => poll.votes)
-  @JoinColumn()
+  @Column()
+  @Field()
+  pick!: boolean
+
+  @ManyToOne(type => Poll, poll => poll.votes, { onDelete: "CASCADE"})
+  @JoinColumn({ name: "iconame" })
   poll!: Poll
 }

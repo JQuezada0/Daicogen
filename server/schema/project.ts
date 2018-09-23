@@ -1,18 +1,17 @@
 import { Project } from "../db/entity/project"
 import { Resolver, Query, FieldResolver, Root, Arg } from "type-graphql"
-import { TokenSale } from "../db/entity/tokenSale"
 import { Poll } from "../db/entity/poll"
 
 @Resolver(Project)
 export class ProjectResolver {
   @Query(() => [Project])
   async projects() {
-    return Project.find({ relations: ["tokenSale"] })
+    return Project.find({ relations: ["polls"] })
   }
 
   @Query(() => Project)
   async project(@Arg("accountName") accountName: string) {
-    const [ project ] = await Project.find({ owner: accountName })
+    const [ project ] = await Project.find(<any>{ owner: accountName, relations: ["polls"] })
     return project
   }
 
@@ -76,13 +75,8 @@ export class ProjectResolver {
     return project.refundThreshold
   }
 
-  @FieldResolver()
-  tokenSale(@Root() project: Project): TokenSale {
-    return project.tokenSale
-  }
-
-  @FieldResolver()
-  Poll(@Root() project: Project): Poll[] {
+  @FieldResolver(type => [Poll])
+  polls(@Root() project: Project): Poll[] {
     return project.polls
   }
 }

@@ -1,27 +1,28 @@
-import { Entity, Column, BaseEntity, JoinColumn, OneToMany, PrimaryColumn } from "typeorm"
+import { Entity, Column, BaseEntity, JoinColumn, OneToMany, PrimaryColumn, ManyToOne } from "typeorm"
 import { ObjectType, Field } from "type-graphql"
 import { Poll } from "./poll"
 
 @Entity()
 @ObjectType()
 export class VoteProposal extends BaseEntity {
-  @PrimaryColumn()
-  @Field()
-  idVoter!: string // id account name
 
   @PrimaryColumn()
   @Field()
-  delegatedVoter!: string // account_name
+  iconame!: string
+
+  @PrimaryColumn()
+  @Field()
+  from!: string
 
   @Column()
   @Field()
-  choice!: boolean 
+  to!: string
 
   @Column()
   @Field()
-  voteCompleted!: boolean
+  pick!: boolean
 
-  @OneToMany(type => Poll, poll => poll.votes)
-  @JoinColumn()
+  @ManyToOne(type => Poll, poll => poll.voteProposals, { onDelete: "CASCADE" })
+  @JoinColumn({ name: "iconame" })
   poll!: Poll
 }
