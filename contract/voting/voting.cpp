@@ -15,7 +15,7 @@ namespace vote {
 		  sugg.erase( itr );
 	}
 
-	void voting::createsugg(const account_name icoaccount, const account_name from, const account_name to, bool pick) {
+	void voting::createsugg(const account_name icoaccount, const account_name from, const string to, string pick) {
 		sugg_index sugg(_self, _self); // code, scope
 
 		sugg.emplace(icoaccount, [&](auto& suggestions) {

@@ -47,8 +47,8 @@ namespace vote {
 		struct sugg {
 			account_name	iconame;
 			account_name	from;
-			account_name	to;
-			bool			pick;
+			string			to;
+			string			pick;
 
 			uint64_t primary_key() const { return iconame; }
 			EOSLIB_SERIALIZE(sugg, (iconame)(from)(to)(pick))
@@ -80,7 +80,7 @@ namespace vote {
 		// @abi action
 		void removevote(const account_name icoaccount);
 		// @abi action
-		void createsugg(const account_name icoaccount, const account_name from, const account_name to, bool pick);
+		void createsugg(const account_name icoaccount, const account_name from, const string to, string pick);
 		// @abi action
 		void removesugg(const account_name from);
 
