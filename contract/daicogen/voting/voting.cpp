@@ -84,9 +84,8 @@ namespace vote {
 		});
 	}
 
-	void voting::removevotes(const account_name acc) {
+	void voting::removevoters(const account_name acc) {
 		voters_index voters(_self, _self);
-		
 		
 		for (auto itr = voters.cbegin(); itr != voters.cend(); )
 		{
@@ -155,7 +154,7 @@ namespace vote {
 		auto &thiscontract = *this;
 
 		switch (act) {
-			EOSIO_API(voting,  (createvoting)(removevoting)(vote)(removevote)(createsugg)(removesugg))
+			EOSIO_API(voting,  (createvoting)(removevoting)(vote)(removevote)(removevoters)(createsugg)(removesugg))
 		};
 	}
  

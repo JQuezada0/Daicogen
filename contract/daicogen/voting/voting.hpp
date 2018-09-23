@@ -88,7 +88,7 @@ namespace vote {
 		// @abi action
 		void removesugg(const account_name from);
 		// @abi action
-		void removevotes(const account_name acc);
+		void removevoters(const account_name acc);
 
 
 		void apply(const account_name contract, const account_name act);
