@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true" buildAllGenerated="true">
+    <generated>
+      <config projectName="coinstarter" targetName="crowdfund.wasm" />
+    </generated>
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="8d8fa40f-22e4-40cc-9381-19892ecd6817" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crowdfund/crowdfund.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crowdfund/crowdfund.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/accounts.json" beforeDir="false" afterPath="$PROJECT_DIR$/../app/accounts.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/assets/fonts/nucleo-icons.eot" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/assets/fonts/nucleo-icons.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/assets/fonts/nucleo-icons.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/assets/fonts/nucleo-icons.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/assets/js/contracts/crowdsale.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/assets/js/contracts/voting.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/assets/js/elm/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../app/assets/js/elm/index.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/assets/js/elm/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../app/assets/js/elm/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/assets/js/lib/bootstrap-datetimepicker.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/assets/js/lib/bootstrap-switch.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/assets/js/lib/bootstrap.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/assets/js/lib/jquery-3.2.1.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/assets/js/lib/jquery-ui-1.12.1.custom.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/assets/js/lib/moment.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/assets/js/lib/nouislider.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/assets/js/lib/paper-bootstrap-wizard.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/assets/js/lib/paper-kit.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/assets/js/lib/popper.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/assets/js/main.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../app/assets/js/main.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/assets/style/lib/bootstrap.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/../app/assets/style/lib/bootstrap.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/assets/style/lib/nucleo-icons.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/assets/style/lib/paper-bootstrap-wizard.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/assets/style/lib/paper-kit.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/assets/style/lib/themify-icons.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/assets/style/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/../app/assets/style/main.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/elm-package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../app/elm-package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../app/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/Api.elm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/DaicoTemplate/Model.elm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/DaicoTemplate/Update.elm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/DaicoTemplate/View.elm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/Model.elm" beforeDir="false" afterPath="$PROJECT_DIR$/../app/src/Model.elm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/Ports.elm" beforeDir="false" afterPath="$PROJECT_DIR$/../app/src/Ports.elm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/Project/Api.elm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/Project/Model.elm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/Project/Update.elm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/Project/View.elm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/Spinner.elm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/Update.elm" beforeDir="false" afterPath="$PROJECT_DIR$/../app/src/Update.elm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/View.elm" beforeDir="false" afterPath="$PROJECT_DIR$/../app/src/View.elm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/daicogen/daicogen/daicogen.abi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/daicogen/daicogen/daicogen.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/daicogen/daicogen/daicogen.hpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/daicogen/daicogen/daicogen.wasm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/daicogen/daicogen/daicogen.wast" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/daicogen/token/token.abi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/daicogen/token/token.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/daicogen/token/token.hpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/daicogen/token/token.wasm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/daicogen/token/token.wast" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/daicogen/voting/daicoWalletSecret" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/daicogen/voting/voting.abi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/daicogen/voting/voting.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/daicogen/voting/voting.hpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/daicogen/voting/voting.wasm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/daicogen/voting/voting.wast" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/actionHandler/MassiveActionHandler.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../server/actionHandler/MassiveActionHandler.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/actionReader/updaters.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../server/actionReader/updaters.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/db/entity/poll.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/db/entity/project.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/db/entity/tokenSale.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/db/entity/vote.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/db/entity/voteProposal.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../server/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/ormconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/../server/ormconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/schema/poll.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/schema/project.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/schema/tokenSale.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/schema/vote.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/schema/voteProposal.ts" beforeDir="false" />
+    </list>
+    <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="FUSProjectUsageTrigger">
+    <session id="-650188706">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="12" />
+          <entry key="project.open.time.0" value="1" />
+          <entry key="project.open.time.10" value="1" />
+          <entry key="project.open.time.2" value="2" />
+          <entry key="project.open.time.20" value="1" />
+          <entry key="project.open.time.5" value="3" />
+          <entry key="project.open.time.6" value="1" />
+          <entry key="project.open.time.7" value="1" />
+          <entry key="project.open.time.8" value="1" />
+          <entry key="project.open.time.9" value="1" />
+          <entry key="project.opened" value="12" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="Dockerfile" value="2" />
+          <entry key="Makefile" value="1" />
+          <entry key="cbp" value="2" />
+          <entry key="cmake" value="1" />
+          <entry key="cpp" value="2" />
+          <entry key="hpp" value="4" />
+          <entry key="json" value="1" />
+          <entry key="log" value="1" />
+          <entry key="txt" value="13" />
+          <entry key="wasm" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="CMakeCache.txt" value="4" />
+          <entry key="CMakeLists.txt" value="10" />
+          <entry key="Dockerfile" value="1" />
+          <entry key="JSON" value="1" />
+          <entry key="ObjectiveC" value="6" />
+          <entry key="PLAIN_TEXT" value="6" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="cpp" value="963" />
+          <entry key="hpp" value="898" />
+          <entry key="txt" value="139" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="CMakeCache.txt" value="5" />
+          <entry key="CMakeLists.txt" value="134" />
+          <entry key="ObjectiveC" value="1861" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>const_mem_fun</find>
+      <find>debug</find>
+      <find>clang</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/Dockerfile" />
+        <option value="$PROJECT_DIR$/crowdfund/crowdfund.hpp" />
+        <option value="$PROJECT_DIR$/crowdfund/crowdfund.cpp" />
+        <option value="$PROJECT_DIR$/cmake-build-debug/CMakeCache.txt" />
+        <option value="$PROJECT_DIR$/CMakeLists.txt" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="width" value="1680" />
+    <option name="height" value="1050" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="coinstarter" type="b2602c69:ProjectViewProjectNode" />
+              <item name="contract" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="coinstarter" type="b2602c69:ProjectViewProjectNode" />
+              <item name="contract" type="462c0819:PsiDirectoryNode" />
+              <item name="crowdfund" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.appearance" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/crowdfund" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Application.Build All">
+    <configuration name="Build All" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" CONFIG_NAME="Debug" EXPLICIT_BUILD_TARGET_NAME="all">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="crowdfund.wasm" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="coinstarter" TARGET_NAME="crowdfund.wasm" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="coinstarter" RUN_TARGET_NAME="crowdfund.wasm">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.Build All" />
+      <item itemvalue="Application.crowdfund.wasm" />
+    </list>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8d8fa40f-22e4-40cc-9381-19892ecd6817" name="Default Changelist" comment="" />
+      <created>1538791054965</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1538791054965</updated>
+      <workItem from="1538791056251" duration="3998000" />
+      <workItem from="1538974667014" duration="6109000" />
+      <workItem from="1539006757594" duration="337000" />
+      <workItem from="1539027571665" duration="2378000" />
+      <workItem from="1539063634583" duration="510000" />
+      <workItem from="1539064258632" duration="310000" />
+      <workItem from="1539064717297" duration="13000" />
+      <workItem from="1539064760972" duration="89000" />
+      <workItem from="1539064870484" duration="10000" />
+      <workItem from="1539064922096" duration="244000" />
+      <workItem from="1539065202292" duration="2166000" />
+      <workItem from="1539145915143" duration="327000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="16491000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="23" width="1680" height="973" extended-state="6" />
+    <layout>
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2832723" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32959184" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Terminal" order="8" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
+      <window_info anchor="bottom" id="Version Control" order="10" />
+      <window_info active="true" anchor="bottom" id="CMake" order="11" visible="true" weight="0.36662883" />
+      <window_info anchor="bottom" id="Docker" order="12" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Messages" order="13" weight="0.32959184" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Database" order="3" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/daicogen/daicogen/daicogen.cpp" />
+    <entry file="file://$PROJECT_DIR$/daicogen/daicogen/daicogen.hpp" />
+    <entry file="file://$PROJECT_DIR$/wallets.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="1" lean-forward="true" selection-start-line="2" selection-start-column="1" selection-end-line="2" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Dockerfile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/include/eosiolib/contract.hpp" />
+    <entry file="file://$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" />
+    <entry file="file://$PROJECT_DIR$/cmake-build-debug/coinstarter.cbp" />
+    <entry file="file://$PROJECT_DIR$/cmake-build-debug/crowdfund.wasm" />
+    <entry file="file://$PROJECT_DIR$/cmake-build-debug/Makefile" />
+    <entry file="file://$PROJECT_DIR$/cmake-build-debug/CMakeCache.txt" />
+    <entry file="file://$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeError.log" />
+    <entry file="file://$PROJECT_DIR$/crowdfund/crowdfund.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="20" column="50" selection-start-line="20" selection-start-column="50" selection-end-line="20" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crowdfund/crowdfund.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="28" selection-start-line="16" selection-start-column="28" selection-end-line="16" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="26" selection-start-line="9" selection-start-column="26" selection-end-line="9" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

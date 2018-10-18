@@ -5,11 +5,16 @@
   "username": "postgres",
   "password": "",
   "database": "postgres",
-  "synchronize": true,
   "logging": true,
+  "synchronize": true,
   "entities": [
     "./build/db/entity/**/*.js"
   ],
-  "migrations": [],
+  "migrations": [
+    "./db/migration/**/*.js"
+  ],
+  "cli": {
+    "migrationsDir": "./db/migration"
+  },
   "subscribers": []
 }

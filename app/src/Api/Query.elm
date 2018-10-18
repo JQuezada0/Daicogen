@@ -27,15 +27,15 @@ selection constructor =
     Object.selection constructor
 
 
-projects : SelectionSet decodesTo Api.Object.Project -> Field (List decodesTo) RootQuery
-projects object =
-    Object.selectionField "projects" [] object (identity >> Decode.list)
+campaigns : SelectionSet decodesTo Api.Object.Campaign -> Field (List decodesTo) RootQuery
+campaigns object =
+    Object.selectionField "campaigns" [] object (identity >> Decode.list)
 
 
-type alias ProjectRequiredArguments =
-    { accountName : String }
+type alias CampaignRequiredArguments =
+    { id : Float }
 
 
-project : ProjectRequiredArguments -> SelectionSet decodesTo Api.Object.Project -> Field decodesTo RootQuery
-project requiredArgs object =
-    Object.selectionField "project" [ Argument.required "accountName" requiredArgs.accountName Encode.string ] object identity
+campaign : CampaignRequiredArguments -> SelectionSet decodesTo Api.Object.Campaign -> Field decodesTo RootQuery
+campaign requiredArgs object =
+    Object.selectionField "campaign" [ Argument.required "id" requiredArgs.id Encode.float ] object identity

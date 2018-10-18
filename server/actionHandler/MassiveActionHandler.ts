@@ -55,7 +55,7 @@ export class MassiveActionHandler extends AbstractActionHandler {
   }
 
   protected async loadIndexState(): Promise<IndexState> {
-    const indexState = await this.schemaInstance._index_state.findOne({ id: 1 })
+    const indexState = await this.schemaInstance._index_state.findOne({}, { order: [{ field: "id", direction: "DESC" }] })
     if (indexState) {
       return {
         blockNumber: indexState.block_number,

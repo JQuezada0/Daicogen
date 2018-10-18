@@ -1,28 +1,19 @@
 module Model exposing (..)
 
-import DaicoTemplate.Model as DaicoTemplate
-import Project.Model as TokenSale
-import Graphqelm.Http exposing (..)
+import CreateCrowdfund.Model as CreateCrowdfund
 
 type Msg
   = SetActivePage PageType
   | ChildMsg ChildMsg
-  | ExistingProjects (Result (Error Int) Int)
 
 type ChildMsg
-  = DaicoTemplateMsg DaicoTemplate.Msg
-  | TokensaleMsg TokenSale.Msg
+  = CreateCrowdfundMsg CreateCrowdfund.Msg
 
 type PageType
-  = LandingPage
-  | DaicoTemplatePage
-  | DaicoPage
+  = CreateCrowdfund
 
 type Page
-  = Loading
-  | Landing
-  | DaicoTemplate DaicoTemplate.Model
-  | Daico TokenSale.Model
+  = CreateCrowdfundPage CreateCrowdfund.Model
 
 type alias Model =
   {

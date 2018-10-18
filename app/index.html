@@ -14,10 +14,7 @@
 
   <link rel="stylesheet" href="assets/style/main.css">
   <link rel="stylesheet" href="assets/style/lib/bootstrap.min.css">
-  <link rel="stylesheet" href="assets/style/lib/paper-kit.css">
-  <link rel="stylesheet" href="assets/style/lib/nucleo-icons.css">
-  <link rel="stylesheet" href="assets/style/lib/themify-icons.css">
-  <link rel="stylesheet" href="assets/style/lib/paper-bootstrap-wizard.css">
+  <link rel="stylesheet" href="assets/style/lib/now-ui-kit.min.css">
 </head>
 
 <body>
@@ -25,16 +22,24 @@
   <div id="main"></div>
 
   <script src="assets/js/main.js" defer></script>
-  <script src="assets/js/lib/moment.min.js"></script>
-  <script src="assets/js/lib/jquery-3.2.1.js"></script>
-  <script src="assets/js/lib/jquery-ui-1.12.1.custom.min.js"></script>
-  <script src="assets/js/lib/popper.js"></script>
-  <script src="assets/js/lib/bootstrap.min.js"></script>
-  <script src="assets/js/lib/bootstrap-switch.min.js"></script>
-  <script src="assets/js/lib/bootstrap-datetimepicker.min.js"></script>
-  <script src="assets/js/lib/nouislider.js"></script>
-  <script src="assets/js/lib/paper-kit.js"></script>
-  <script src="assets/js/lib/paper-bootstrap-wizard.js"></script>
+   <!--   Core JS Files   -->
+   <script src="assets/js/lib/core/jquery.min.js" type="text/javascript"></script>
+   <script src="assets/js/lib/core/popper.min.js" type="text/javascript"></script>
+   <script src="assets/js/lib/core/bootstrap.min.js" type="text/javascript"></script>
+   <!--  Plugin for Switches, full documentation here: http://www.jque.re/plugins/version3/bootstrap.switch/ -->
+   <script src="assets/js/lib/plugins/bootstrap-switch.js"></script>
+   <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
+   <script src="assets/js/lib/plugins/nouislider.min.js" type="text/javascript"></script>
+   <!--  Plugin for the DatePicker, full documentation here: https://github.com/uxsolutions/bootstrap-datepicker -->
+   <script src="assets/js/lib/plugins/bootstrap-datepicker.js" type="text/javascript"></script>
+   <!-- Control Center for Now Ui Kit: parallax effects, scripts for the example pages etc -->
+   <script src="assets/js/lib/now-ui-kit.js?" type="text/javascript"></script>
+   <script>
+     $(document).ready(function() {
+       // the body of this function is in assets/js/now-ui-kit.js
+       nowuiKit.initSliders();
+     });
+   </script>
 </body>
 
 </html>

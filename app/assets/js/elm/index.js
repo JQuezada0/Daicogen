@@ -135,6 +135,39 @@ function A9(fun, a, b, c, d, e, f, g, h, i)
     : fun(a)(b)(c)(d)(e)(f)(g)(h)(i);
 }
 
+//import Result //
+
+var _elm_lang$core$Native_Date = function() {
+
+function fromString(str)
+{
+	var date = new Date(str);
+	return isNaN(date.getTime())
+		? _elm_lang$core$Result$Err('Unable to parse \'' + str + '\' as a date. Dates must be in the ISO 8601 format.')
+		: _elm_lang$core$Result$Ok(date);
+}
+
+var dayTable = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+var monthTable =
+	['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+	 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+
+return {
+	fromString: fromString,
+	year: function(d) { return d.getFullYear(); },
+	month: function(d) { return { ctor: monthTable[d.getMonth()] }; },
+	day: function(d) { return d.getDate(); },
+	hour: function(d) { return d.getHours(); },
+	minute: function(d) { return d.getMinutes(); },
+	second: function(d) { return d.getSeconds(); },
+	millisecond: function(d) { return d.getMilliseconds(); },
+	toTime: function(d) { return d.getTime(); },
+	fromTime: function(t) { return new Date(t); },
+	dayOfWeek: function(d) { return { ctor: dayTable[d.getDay()] }; }
+};
+
+}();
 //import Native.Utils //
 
 var _elm_lang$core$Native_Basics = function() {
@@ -889,39 +922,6 @@ var _elm_lang$core$Basics$LT = {ctor: 'LT'};
 var _elm_lang$core$Basics$JustOneMore = function (a) {
 	return {ctor: 'JustOneMore', _0: a};
 };
-
-//import Native.Utils //
-
-var _elm_lang$core$Native_Debug = function() {
-
-function log(tag, value)
-{
-	var msg = tag + ': ' + _elm_lang$core$Native_Utils.toString(value);
-	var process = process || {};
-	if (process.stdout)
-	{
-		process.stdout.write(msg);
-	}
-	else
-	{
-		console.log(msg);
-	}
-	return value;
-}
-
-function crash(message)
-{
-	throw new Error(message);
-}
-
-return {
-	crash: crash,
-	log: F2(log)
-};
-
-}();
-var _elm_lang$core$Debug$crash = _elm_lang$core$Native_Debug.crash;
-var _elm_lang$core$Debug$log = _elm_lang$core$Native_Debug.log;
 
 var _elm_lang$core$Maybe$withDefault = F2(
 	function ($default, maybe) {
@@ -1686,616 +1686,287 @@ var _elm_lang$core$List$indexedMap = F2(
 			xs);
 	});
 
-var _elm_lang$core$Result$toMaybe = function (result) {
-	var _p0 = result;
-	if (_p0.ctor === 'Ok') {
-		return _elm_lang$core$Maybe$Just(_p0._0);
-	} else {
-		return _elm_lang$core$Maybe$Nothing;
-	}
-};
-var _elm_lang$core$Result$withDefault = F2(
-	function (def, result) {
-		var _p1 = result;
-		if (_p1.ctor === 'Ok') {
-			return _p1._0;
-		} else {
-			return def;
-		}
-	});
-var _elm_lang$core$Result$Err = function (a) {
-	return {ctor: 'Err', _0: a};
-};
-var _elm_lang$core$Result$andThen = F2(
-	function (callback, result) {
-		var _p2 = result;
-		if (_p2.ctor === 'Ok') {
-			return callback(_p2._0);
-		} else {
-			return _elm_lang$core$Result$Err(_p2._0);
-		}
-	});
-var _elm_lang$core$Result$Ok = function (a) {
-	return {ctor: 'Ok', _0: a};
-};
-var _elm_lang$core$Result$map = F2(
-	function (func, ra) {
-		var _p3 = ra;
-		if (_p3.ctor === 'Ok') {
-			return _elm_lang$core$Result$Ok(
-				func(_p3._0));
-		} else {
-			return _elm_lang$core$Result$Err(_p3._0);
-		}
-	});
-var _elm_lang$core$Result$map2 = F3(
-	function (func, ra, rb) {
-		var _p4 = {ctor: '_Tuple2', _0: ra, _1: rb};
-		if (_p4._0.ctor === 'Ok') {
-			if (_p4._1.ctor === 'Ok') {
-				return _elm_lang$core$Result$Ok(
-					A2(func, _p4._0._0, _p4._1._0));
-			} else {
-				return _elm_lang$core$Result$Err(_p4._1._0);
-			}
-		} else {
-			return _elm_lang$core$Result$Err(_p4._0._0);
-		}
-	});
-var _elm_lang$core$Result$map3 = F4(
-	function (func, ra, rb, rc) {
-		var _p5 = {ctor: '_Tuple3', _0: ra, _1: rb, _2: rc};
-		if (_p5._0.ctor === 'Ok') {
-			if (_p5._1.ctor === 'Ok') {
-				if (_p5._2.ctor === 'Ok') {
-					return _elm_lang$core$Result$Ok(
-						A3(func, _p5._0._0, _p5._1._0, _p5._2._0));
-				} else {
-					return _elm_lang$core$Result$Err(_p5._2._0);
-				}
-			} else {
-				return _elm_lang$core$Result$Err(_p5._1._0);
-			}
-		} else {
-			return _elm_lang$core$Result$Err(_p5._0._0);
-		}
-	});
-var _elm_lang$core$Result$map4 = F5(
-	function (func, ra, rb, rc, rd) {
-		var _p6 = {ctor: '_Tuple4', _0: ra, _1: rb, _2: rc, _3: rd};
-		if (_p6._0.ctor === 'Ok') {
-			if (_p6._1.ctor === 'Ok') {
-				if (_p6._2.ctor === 'Ok') {
-					if (_p6._3.ctor === 'Ok') {
-						return _elm_lang$core$Result$Ok(
-							A4(func, _p6._0._0, _p6._1._0, _p6._2._0, _p6._3._0));
-					} else {
-						return _elm_lang$core$Result$Err(_p6._3._0);
-					}
-				} else {
-					return _elm_lang$core$Result$Err(_p6._2._0);
-				}
-			} else {
-				return _elm_lang$core$Result$Err(_p6._1._0);
-			}
-		} else {
-			return _elm_lang$core$Result$Err(_p6._0._0);
-		}
-	});
-var _elm_lang$core$Result$map5 = F6(
-	function (func, ra, rb, rc, rd, re) {
-		var _p7 = {ctor: '_Tuple5', _0: ra, _1: rb, _2: rc, _3: rd, _4: re};
-		if (_p7._0.ctor === 'Ok') {
-			if (_p7._1.ctor === 'Ok') {
-				if (_p7._2.ctor === 'Ok') {
-					if (_p7._3.ctor === 'Ok') {
-						if (_p7._4.ctor === 'Ok') {
-							return _elm_lang$core$Result$Ok(
-								A5(func, _p7._0._0, _p7._1._0, _p7._2._0, _p7._3._0, _p7._4._0));
-						} else {
-							return _elm_lang$core$Result$Err(_p7._4._0);
-						}
-					} else {
-						return _elm_lang$core$Result$Err(_p7._3._0);
-					}
-				} else {
-					return _elm_lang$core$Result$Err(_p7._2._0);
-				}
-			} else {
-				return _elm_lang$core$Result$Err(_p7._1._0);
-			}
-		} else {
-			return _elm_lang$core$Result$Err(_p7._0._0);
-		}
-	});
-var _elm_lang$core$Result$mapError = F2(
-	function (f, result) {
-		var _p8 = result;
-		if (_p8.ctor === 'Ok') {
-			return _elm_lang$core$Result$Ok(_p8._0);
-		} else {
-			return _elm_lang$core$Result$Err(
-				f(_p8._0));
-		}
-	});
-var _elm_lang$core$Result$fromMaybe = F2(
-	function (err, maybe) {
-		var _p9 = maybe;
-		if (_p9.ctor === 'Just') {
-			return _elm_lang$core$Result$Ok(_p9._0);
-		} else {
-			return _elm_lang$core$Result$Err(err);
-		}
-	});
-
-//import Maybe, Native.List, Native.Utils, Result //
-
-var _elm_lang$core$Native_String = function() {
-
-function isEmpty(str)
-{
-	return str.length === 0;
-}
-function cons(chr, str)
-{
-	return chr + str;
-}
-function uncons(str)
-{
-	var hd = str[0];
-	if (hd)
-	{
-		return _elm_lang$core$Maybe$Just(_elm_lang$core$Native_Utils.Tuple2(_elm_lang$core$Native_Utils.chr(hd), str.slice(1)));
-	}
-	return _elm_lang$core$Maybe$Nothing;
-}
-function append(a, b)
-{
-	return a + b;
-}
-function concat(strs)
-{
-	return _elm_lang$core$Native_List.toArray(strs).join('');
-}
-function length(str)
-{
-	return str.length;
-}
-function map(f, str)
-{
-	var out = str.split('');
-	for (var i = out.length; i--; )
-	{
-		out[i] = f(_elm_lang$core$Native_Utils.chr(out[i]));
-	}
-	return out.join('');
-}
-function filter(pred, str)
-{
-	return str.split('').map(_elm_lang$core$Native_Utils.chr).filter(pred).join('');
-}
-function reverse(str)
-{
-	return str.split('').reverse().join('');
-}
-function foldl(f, b, str)
-{
-	var len = str.length;
-	for (var i = 0; i < len; ++i)
-	{
-		b = A2(f, _elm_lang$core$Native_Utils.chr(str[i]), b);
-	}
-	return b;
-}
-function foldr(f, b, str)
-{
-	for (var i = str.length; i--; )
-	{
-		b = A2(f, _elm_lang$core$Native_Utils.chr(str[i]), b);
-	}
-	return b;
-}
-function split(sep, str)
-{
-	return _elm_lang$core$Native_List.fromArray(str.split(sep));
-}
-function join(sep, strs)
-{
-	return _elm_lang$core$Native_List.toArray(strs).join(sep);
-}
-function repeat(n, str)
-{
-	var result = '';
-	while (n > 0)
-	{
-		if (n & 1)
-		{
-			result += str;
-		}
-		n >>= 1, str += str;
-	}
-	return result;
-}
-function slice(start, end, str)
-{
-	return str.slice(start, end);
-}
-function left(n, str)
-{
-	return n < 1 ? '' : str.slice(0, n);
-}
-function right(n, str)
-{
-	return n < 1 ? '' : str.slice(-n);
-}
-function dropLeft(n, str)
-{
-	return n < 1 ? str : str.slice(n);
-}
-function dropRight(n, str)
-{
-	return n < 1 ? str : str.slice(0, -n);
-}
-function pad(n, chr, str)
-{
-	var half = (n - str.length) / 2;
-	return repeat(Math.ceil(half), chr) + str + repeat(half | 0, chr);
-}
-function padRight(n, chr, str)
-{
-	return str + repeat(n - str.length, chr);
-}
-function padLeft(n, chr, str)
-{
-	return repeat(n - str.length, chr) + str;
-}
-
-function trim(str)
-{
-	return str.trim();
-}
-function trimLeft(str)
-{
-	return str.replace(/^\s+/, '');
-}
-function trimRight(str)
-{
-	return str.replace(/\s+$/, '');
-}
-
-function words(str)
-{
-	return _elm_lang$core$Native_List.fromArray(str.trim().split(/\s+/g));
-}
-function lines(str)
-{
-	return _elm_lang$core$Native_List.fromArray(str.split(/\r\n|\r|\n/g));
-}
-
-function toUpper(str)
-{
-	return str.toUpperCase();
-}
-function toLower(str)
-{
-	return str.toLowerCase();
-}
-
-function any(pred, str)
-{
-	for (var i = str.length; i--; )
-	{
-		if (pred(_elm_lang$core$Native_Utils.chr(str[i])))
-		{
-			return true;
-		}
-	}
-	return false;
-}
-function all(pred, str)
-{
-	for (var i = str.length; i--; )
-	{
-		if (!pred(_elm_lang$core$Native_Utils.chr(str[i])))
-		{
-			return false;
-		}
-	}
-	return true;
-}
-
-function contains(sub, str)
-{
-	return str.indexOf(sub) > -1;
-}
-function startsWith(sub, str)
-{
-	return str.indexOf(sub) === 0;
-}
-function endsWith(sub, str)
-{
-	return str.length >= sub.length &&
-		str.lastIndexOf(sub) === str.length - sub.length;
-}
-function indexes(sub, str)
-{
-	var subLen = sub.length;
-
-	if (subLen < 1)
-	{
-		return _elm_lang$core$Native_List.Nil;
-	}
-
-	var i = 0;
-	var is = [];
-
-	while ((i = str.indexOf(sub, i)) > -1)
-	{
-		is.push(i);
-		i = i + subLen;
-	}
-
-	return _elm_lang$core$Native_List.fromArray(is);
-}
-
-
-function toInt(s)
-{
-	var len = s.length;
-
-	// if empty
-	if (len === 0)
-	{
-		return intErr(s);
-	}
-
-	// if hex
-	var c = s[0];
-	if (c === '0' && s[1] === 'x')
-	{
-		for (var i = 2; i < len; ++i)
-		{
-			var c = s[i];
-			if (('0' <= c && c <= '9') || ('A' <= c && c <= 'F') || ('a' <= c && c <= 'f'))
-			{
-				continue;
-			}
-			return intErr(s);
-		}
-		return _elm_lang$core$Result$Ok(parseInt(s, 16));
-	}
-
-	// is decimal
-	if (c > '9' || (c < '0' && c !== '-' && c !== '+'))
-	{
-		return intErr(s);
-	}
-	for (var i = 1; i < len; ++i)
-	{
-		var c = s[i];
-		if (c < '0' || '9' < c)
-		{
-			return intErr(s);
-		}
-	}
-
-	return _elm_lang$core$Result$Ok(parseInt(s, 10));
-}
-
-function intErr(s)
-{
-	return _elm_lang$core$Result$Err("could not convert string '" + s + "' to an Int");
-}
-
-
-function toFloat(s)
-{
-	// check if it is a hex, octal, or binary number
-	if (s.length === 0 || /[\sxbo]/.test(s))
-	{
-		return floatErr(s);
-	}
-	var n = +s;
-	// faster isNaN check
-	return n === n ? _elm_lang$core$Result$Ok(n) : floatErr(s);
-}
-
-function floatErr(s)
-{
-	return _elm_lang$core$Result$Err("could not convert string '" + s + "' to a Float");
-}
-
-
-function toList(str)
-{
-	return _elm_lang$core$Native_List.fromArray(str.split('').map(_elm_lang$core$Native_Utils.chr));
-}
-function fromList(chars)
-{
-	return _elm_lang$core$Native_List.toArray(chars).join('');
-}
-
-return {
-	isEmpty: isEmpty,
-	cons: F2(cons),
-	uncons: uncons,
-	append: F2(append),
-	concat: concat,
-	length: length,
-	map: F2(map),
-	filter: F2(filter),
-	reverse: reverse,
-	foldl: F3(foldl),
-	foldr: F3(foldr),
-
-	split: F2(split),
-	join: F2(join),
-	repeat: F2(repeat),
-
-	slice: F3(slice),
-	left: F2(left),
-	right: F2(right),
-	dropLeft: F2(dropLeft),
-	dropRight: F2(dropRight),
-
-	pad: F3(pad),
-	padLeft: F3(padLeft),
-	padRight: F3(padRight),
-
-	trim: trim,
-	trimLeft: trimLeft,
-	trimRight: trimRight,
-
-	words: words,
-	lines: lines,
-
-	toUpper: toUpper,
-	toLower: toLower,
-
-	any: F2(any),
-	all: F2(all),
-
-	contains: F2(contains),
-	startsWith: F2(startsWith),
-	endsWith: F2(endsWith),
-	indexes: F2(indexes),
-
-	toInt: toInt,
-	toFloat: toFloat,
-	toList: toList,
-	fromList: fromList
-};
-
-}();
-
 //import Native.Utils //
 
-var _elm_lang$core$Native_Char = function() {
+var _elm_lang$core$Native_Scheduler = function() {
+
+var MAX_STEPS = 10000;
+
+
+// TASKS
+
+function succeed(value)
+{
+	return {
+		ctor: '_Task_succeed',
+		value: value
+	};
+}
+
+function fail(error)
+{
+	return {
+		ctor: '_Task_fail',
+		value: error
+	};
+}
+
+function nativeBinding(callback)
+{
+	return {
+		ctor: '_Task_nativeBinding',
+		callback: callback,
+		cancel: null
+	};
+}
+
+function andThen(callback, task)
+{
+	return {
+		ctor: '_Task_andThen',
+		callback: callback,
+		task: task
+	};
+}
+
+function onError(callback, task)
+{
+	return {
+		ctor: '_Task_onError',
+		callback: callback,
+		task: task
+	};
+}
+
+function receive(callback)
+{
+	return {
+		ctor: '_Task_receive',
+		callback: callback
+	};
+}
+
+
+// PROCESSES
+
+function rawSpawn(task)
+{
+	var process = {
+		ctor: '_Process',
+		id: _elm_lang$core$Native_Utils.guid(),
+		root: task,
+		stack: null,
+		mailbox: []
+	};
+
+	enqueue(process);
+
+	return process;
+}
+
+function spawn(task)
+{
+	return nativeBinding(function(callback) {
+		var process = rawSpawn(task);
+		callback(succeed(process));
+	});
+}
+
+function rawSend(process, msg)
+{
+	process.mailbox.push(msg);
+	enqueue(process);
+}
+
+function send(process, msg)
+{
+	return nativeBinding(function(callback) {
+		rawSend(process, msg);
+		callback(succeed(_elm_lang$core$Native_Utils.Tuple0));
+	});
+}
+
+function kill(process)
+{
+	return nativeBinding(function(callback) {
+		var root = process.root;
+		if (root.ctor === '_Task_nativeBinding' && root.cancel)
+		{
+			root.cancel();
+		}
+
+		process.root = null;
+
+		callback(succeed(_elm_lang$core$Native_Utils.Tuple0));
+	});
+}
+
+function sleep(time)
+{
+	return nativeBinding(function(callback) {
+		var id = setTimeout(function() {
+			callback(succeed(_elm_lang$core$Native_Utils.Tuple0));
+		}, time);
+
+		return function() { clearTimeout(id); };
+	});
+}
+
+
+// STEP PROCESSES
+
+function step(numSteps, process)
+{
+	while (numSteps < MAX_STEPS)
+	{
+		var ctor = process.root.ctor;
+
+		if (ctor === '_Task_succeed')
+		{
+			while (process.stack && process.stack.ctor === '_Task_onError')
+			{
+				process.stack = process.stack.rest;
+			}
+			if (process.stack === null)
+			{
+				break;
+			}
+			process.root = process.stack.callback(process.root.value);
+			process.stack = process.stack.rest;
+			++numSteps;
+			continue;
+		}
+
+		if (ctor === '_Task_fail')
+		{
+			while (process.stack && process.stack.ctor === '_Task_andThen')
+			{
+				process.stack = process.stack.rest;
+			}
+			if (process.stack === null)
+			{
+				break;
+			}
+			process.root = process.stack.callback(process.root.value);
+			process.stack = process.stack.rest;
+			++numSteps;
+			continue;
+		}
+
+		if (ctor === '_Task_andThen')
+		{
+			process.stack = {
+				ctor: '_Task_andThen',
+				callback: process.root.callback,
+				rest: process.stack
+			};
+			process.root = process.root.task;
+			++numSteps;
+			continue;
+		}
+
+		if (ctor === '_Task_onError')
+		{
+			process.stack = {
+				ctor: '_Task_onError',
+				callback: process.root.callback,
+				rest: process.stack
+			};
+			process.root = process.root.task;
+			++numSteps;
+			continue;
+		}
+
+		if (ctor === '_Task_nativeBinding')
+		{
+			process.root.cancel = process.root.callback(function(newRoot) {
+				process.root = newRoot;
+				enqueue(process);
+			});
+
+			break;
+		}
+
+		if (ctor === '_Task_receive')
+		{
+			var mailbox = process.mailbox;
+			if (mailbox.length === 0)
+			{
+				break;
+			}
+
+			process.root = process.root.callback(mailbox.shift());
+			++numSteps;
+			continue;
+		}
+
+		throw new Error(ctor);
+	}
+
+	if (numSteps < MAX_STEPS)
+	{
+		return numSteps + 1;
+	}
+	enqueue(process);
+
+	return numSteps;
+}
+
+
+// WORK QUEUE
+
+var working = false;
+var workQueue = [];
+
+function enqueue(process)
+{
+	workQueue.push(process);
+
+	if (!working)
+	{
+		setTimeout(work, 0);
+		working = true;
+	}
+}
+
+function work()
+{
+	var numSteps = 0;
+	var process;
+	while (numSteps < MAX_STEPS && (process = workQueue.shift()))
+	{
+		if (process.root)
+		{
+			numSteps = step(numSteps, process);
+		}
+	}
+	if (!process)
+	{
+		working = false;
+		return;
+	}
+	setTimeout(work, 0);
+}
+
 
 return {
-	fromCode: function(c) { return _elm_lang$core$Native_Utils.chr(String.fromCharCode(c)); },
-	toCode: function(c) { return c.charCodeAt(0); },
-	toUpper: function(c) { return _elm_lang$core$Native_Utils.chr(c.toUpperCase()); },
-	toLower: function(c) { return _elm_lang$core$Native_Utils.chr(c.toLowerCase()); },
-	toLocaleUpper: function(c) { return _elm_lang$core$Native_Utils.chr(c.toLocaleUpperCase()); },
-	toLocaleLower: function(c) { return _elm_lang$core$Native_Utils.chr(c.toLocaleLowerCase()); }
+	succeed: succeed,
+	fail: fail,
+	nativeBinding: nativeBinding,
+	andThen: F2(andThen),
+	onError: F2(onError),
+	receive: receive,
+
+	spawn: spawn,
+	kill: kill,
+	sleep: sleep,
+	send: F2(send),
+
+	rawSpawn: rawSpawn,
+	rawSend: rawSend
 };
 
 }();
-var _elm_lang$core$Char$fromCode = _elm_lang$core$Native_Char.fromCode;
-var _elm_lang$core$Char$toCode = _elm_lang$core$Native_Char.toCode;
-var _elm_lang$core$Char$toLocaleLower = _elm_lang$core$Native_Char.toLocaleLower;
-var _elm_lang$core$Char$toLocaleUpper = _elm_lang$core$Native_Char.toLocaleUpper;
-var _elm_lang$core$Char$toLower = _elm_lang$core$Native_Char.toLower;
-var _elm_lang$core$Char$toUpper = _elm_lang$core$Native_Char.toUpper;
-var _elm_lang$core$Char$isBetween = F3(
-	function (low, high, $char) {
-		var code = _elm_lang$core$Char$toCode($char);
-		return (_elm_lang$core$Native_Utils.cmp(
-			code,
-			_elm_lang$core$Char$toCode(low)) > -1) && (_elm_lang$core$Native_Utils.cmp(
-			code,
-			_elm_lang$core$Char$toCode(high)) < 1);
-	});
-var _elm_lang$core$Char$isUpper = A2(
-	_elm_lang$core$Char$isBetween,
-	_elm_lang$core$Native_Utils.chr('A'),
-	_elm_lang$core$Native_Utils.chr('Z'));
-var _elm_lang$core$Char$isLower = A2(
-	_elm_lang$core$Char$isBetween,
-	_elm_lang$core$Native_Utils.chr('a'),
-	_elm_lang$core$Native_Utils.chr('z'));
-var _elm_lang$core$Char$isDigit = A2(
-	_elm_lang$core$Char$isBetween,
-	_elm_lang$core$Native_Utils.chr('0'),
-	_elm_lang$core$Native_Utils.chr('9'));
-var _elm_lang$core$Char$isOctDigit = A2(
-	_elm_lang$core$Char$isBetween,
-	_elm_lang$core$Native_Utils.chr('0'),
-	_elm_lang$core$Native_Utils.chr('7'));
-var _elm_lang$core$Char$isHexDigit = function ($char) {
-	return _elm_lang$core$Char$isDigit($char) || (A3(
-		_elm_lang$core$Char$isBetween,
-		_elm_lang$core$Native_Utils.chr('a'),
-		_elm_lang$core$Native_Utils.chr('f'),
-		$char) || A3(
-		_elm_lang$core$Char$isBetween,
-		_elm_lang$core$Native_Utils.chr('A'),
-		_elm_lang$core$Native_Utils.chr('F'),
-		$char));
-};
-
-var _elm_lang$core$String$fromList = _elm_lang$core$Native_String.fromList;
-var _elm_lang$core$String$toList = _elm_lang$core$Native_String.toList;
-var _elm_lang$core$String$toFloat = _elm_lang$core$Native_String.toFloat;
-var _elm_lang$core$String$toInt = _elm_lang$core$Native_String.toInt;
-var _elm_lang$core$String$indices = _elm_lang$core$Native_String.indexes;
-var _elm_lang$core$String$indexes = _elm_lang$core$Native_String.indexes;
-var _elm_lang$core$String$endsWith = _elm_lang$core$Native_String.endsWith;
-var _elm_lang$core$String$startsWith = _elm_lang$core$Native_String.startsWith;
-var _elm_lang$core$String$contains = _elm_lang$core$Native_String.contains;
-var _elm_lang$core$String$all = _elm_lang$core$Native_String.all;
-var _elm_lang$core$String$any = _elm_lang$core$Native_String.any;
-var _elm_lang$core$String$toLower = _elm_lang$core$Native_String.toLower;
-var _elm_lang$core$String$toUpper = _elm_lang$core$Native_String.toUpper;
-var _elm_lang$core$String$lines = _elm_lang$core$Native_String.lines;
-var _elm_lang$core$String$words = _elm_lang$core$Native_String.words;
-var _elm_lang$core$String$trimRight = _elm_lang$core$Native_String.trimRight;
-var _elm_lang$core$String$trimLeft = _elm_lang$core$Native_String.trimLeft;
-var _elm_lang$core$String$trim = _elm_lang$core$Native_String.trim;
-var _elm_lang$core$String$padRight = _elm_lang$core$Native_String.padRight;
-var _elm_lang$core$String$padLeft = _elm_lang$core$Native_String.padLeft;
-var _elm_lang$core$String$pad = _elm_lang$core$Native_String.pad;
-var _elm_lang$core$String$dropRight = _elm_lang$core$Native_String.dropRight;
-var _elm_lang$core$String$dropLeft = _elm_lang$core$Native_String.dropLeft;
-var _elm_lang$core$String$right = _elm_lang$core$Native_String.right;
-var _elm_lang$core$String$left = _elm_lang$core$Native_String.left;
-var _elm_lang$core$String$slice = _elm_lang$core$Native_String.slice;
-var _elm_lang$core$String$repeat = _elm_lang$core$Native_String.repeat;
-var _elm_lang$core$String$join = _elm_lang$core$Native_String.join;
-var _elm_lang$core$String$split = _elm_lang$core$Native_String.split;
-var _elm_lang$core$String$foldr = _elm_lang$core$Native_String.foldr;
-var _elm_lang$core$String$foldl = _elm_lang$core$Native_String.foldl;
-var _elm_lang$core$String$reverse = _elm_lang$core$Native_String.reverse;
-var _elm_lang$core$String$filter = _elm_lang$core$Native_String.filter;
-var _elm_lang$core$String$map = _elm_lang$core$Native_String.map;
-var _elm_lang$core$String$length = _elm_lang$core$Native_String.length;
-var _elm_lang$core$String$concat = _elm_lang$core$Native_String.concat;
-var _elm_lang$core$String$append = _elm_lang$core$Native_String.append;
-var _elm_lang$core$String$uncons = _elm_lang$core$Native_String.uncons;
-var _elm_lang$core$String$cons = _elm_lang$core$Native_String.cons;
-var _elm_lang$core$String$fromChar = function ($char) {
-	return A2(_elm_lang$core$String$cons, $char, '');
-};
-var _elm_lang$core$String$isEmpty = _elm_lang$core$Native_String.isEmpty;
-
-var _elm_lang$core$Tuple$mapSecond = F2(
-	function (func, _p0) {
-		var _p1 = _p0;
-		return {
-			ctor: '_Tuple2',
-			_0: _p1._0,
-			_1: func(_p1._1)
-		};
-	});
-var _elm_lang$core$Tuple$mapFirst = F2(
-	function (func, _p2) {
-		var _p3 = _p2;
-		return {
-			ctor: '_Tuple2',
-			_0: func(_p3._0),
-			_1: _p3._1
-		};
-	});
-var _elm_lang$core$Tuple$second = function (_p4) {
-	var _p5 = _p4;
-	return _p5._1;
-};
-var _elm_lang$core$Tuple$first = function (_p6) {
-	var _p7 = _p6;
-	return _p7._0;
-};
-
 //import //
 
 var _elm_lang$core$Native_Platform = function() {
@@ -2856,287 +2527,6 @@ return {
 
 }();
 
-//import Native.Utils //
-
-var _elm_lang$core$Native_Scheduler = function() {
-
-var MAX_STEPS = 10000;
-
-
-// TASKS
-
-function succeed(value)
-{
-	return {
-		ctor: '_Task_succeed',
-		value: value
-	};
-}
-
-function fail(error)
-{
-	return {
-		ctor: '_Task_fail',
-		value: error
-	};
-}
-
-function nativeBinding(callback)
-{
-	return {
-		ctor: '_Task_nativeBinding',
-		callback: callback,
-		cancel: null
-	};
-}
-
-function andThen(callback, task)
-{
-	return {
-		ctor: '_Task_andThen',
-		callback: callback,
-		task: task
-	};
-}
-
-function onError(callback, task)
-{
-	return {
-		ctor: '_Task_onError',
-		callback: callback,
-		task: task
-	};
-}
-
-function receive(callback)
-{
-	return {
-		ctor: '_Task_receive',
-		callback: callback
-	};
-}
-
-
-// PROCESSES
-
-function rawSpawn(task)
-{
-	var process = {
-		ctor: '_Process',
-		id: _elm_lang$core$Native_Utils.guid(),
-		root: task,
-		stack: null,
-		mailbox: []
-	};
-
-	enqueue(process);
-
-	return process;
-}
-
-function spawn(task)
-{
-	return nativeBinding(function(callback) {
-		var process = rawSpawn(task);
-		callback(succeed(process));
-	});
-}
-
-function rawSend(process, msg)
-{
-	process.mailbox.push(msg);
-	enqueue(process);
-}
-
-function send(process, msg)
-{
-	return nativeBinding(function(callback) {
-		rawSend(process, msg);
-		callback(succeed(_elm_lang$core$Native_Utils.Tuple0));
-	});
-}
-
-function kill(process)
-{
-	return nativeBinding(function(callback) {
-		var root = process.root;
-		if (root.ctor === '_Task_nativeBinding' && root.cancel)
-		{
-			root.cancel();
-		}
-
-		process.root = null;
-
-		callback(succeed(_elm_lang$core$Native_Utils.Tuple0));
-	});
-}
-
-function sleep(time)
-{
-	return nativeBinding(function(callback) {
-		var id = setTimeout(function() {
-			callback(succeed(_elm_lang$core$Native_Utils.Tuple0));
-		}, time);
-
-		return function() { clearTimeout(id); };
-	});
-}
-
-
-// STEP PROCESSES
-
-function step(numSteps, process)
-{
-	while (numSteps < MAX_STEPS)
-	{
-		var ctor = process.root.ctor;
-
-		if (ctor === '_Task_succeed')
-		{
-			while (process.stack && process.stack.ctor === '_Task_onError')
-			{
-				process.stack = process.stack.rest;
-			}
-			if (process.stack === null)
-			{
-				break;
-			}
-			process.root = process.stack.callback(process.root.value);
-			process.stack = process.stack.rest;
-			++numSteps;
-			continue;
-		}
-
-		if (ctor === '_Task_fail')
-		{
-			while (process.stack && process.stack.ctor === '_Task_andThen')
-			{
-				process.stack = process.stack.rest;
-			}
-			if (process.stack === null)
-			{
-				break;
-			}
-			process.root = process.stack.callback(process.root.value);
-			process.stack = process.stack.rest;
-			++numSteps;
-			continue;
-		}
-
-		if (ctor === '_Task_andThen')
-		{
-			process.stack = {
-				ctor: '_Task_andThen',
-				callback: process.root.callback,
-				rest: process.stack
-			};
-			process.root = process.root.task;
-			++numSteps;
-			continue;
-		}
-
-		if (ctor === '_Task_onError')
-		{
-			process.stack = {
-				ctor: '_Task_onError',
-				callback: process.root.callback,
-				rest: process.stack
-			};
-			process.root = process.root.task;
-			++numSteps;
-			continue;
-		}
-
-		if (ctor === '_Task_nativeBinding')
-		{
-			process.root.cancel = process.root.callback(function(newRoot) {
-				process.root = newRoot;
-				enqueue(process);
-			});
-
-			break;
-		}
-
-		if (ctor === '_Task_receive')
-		{
-			var mailbox = process.mailbox;
-			if (mailbox.length === 0)
-			{
-				break;
-			}
-
-			process.root = process.root.callback(mailbox.shift());
-			++numSteps;
-			continue;
-		}
-
-		throw new Error(ctor);
-	}
-
-	if (numSteps < MAX_STEPS)
-	{
-		return numSteps + 1;
-	}
-	enqueue(process);
-
-	return numSteps;
-}
-
-
-// WORK QUEUE
-
-var working = false;
-var workQueue = [];
-
-function enqueue(process)
-{
-	workQueue.push(process);
-
-	if (!working)
-	{
-		setTimeout(work, 0);
-		working = true;
-	}
-}
-
-function work()
-{
-	var numSteps = 0;
-	var process;
-	while (numSteps < MAX_STEPS && (process = workQueue.shift()))
-	{
-		if (process.root)
-		{
-			numSteps = step(numSteps, process);
-		}
-	}
-	if (!process)
-	{
-		working = false;
-		return;
-	}
-	setTimeout(work, 0);
-}
-
-
-return {
-	succeed: succeed,
-	fail: fail,
-	nativeBinding: nativeBinding,
-	andThen: F2(andThen),
-	onError: F2(onError),
-	receive: receive,
-
-	spawn: spawn,
-	kill: kill,
-	sleep: sleep,
-	send: F2(send),
-
-	rawSpawn: rawSpawn,
-	rawSend: rawSend
-};
-
-}();
 var _elm_lang$core$Platform_Cmd$batch = _elm_lang$core$Native_Platform.batch;
 var _elm_lang$core$Platform_Cmd$none = _elm_lang$core$Platform_Cmd$batch(
 	{ctor: '[]'});
@@ -3168,33 +2558,2537 @@ var _elm_lang$core$Platform$Task = {ctor: 'Task'};
 var _elm_lang$core$Platform$ProcessId = {ctor: 'ProcessId'};
 var _elm_lang$core$Platform$Router = {ctor: 'Router'};
 
-var _JQuezada0$eoslondonhackathon$Api_InputObject$placeholder = '';
-
-var _JQuezada0$eoslondonhackathon$Api_Interface$placeholder = '';
-
-var _JQuezada0$eoslondonhackathon$Api_Object$Poll = {ctor: 'Poll'};
-var _JQuezada0$eoslondonhackathon$Api_Object$Project = {ctor: 'Project'};
-var _JQuezada0$eoslondonhackathon$Api_Object$TokenSale = {ctor: 'TokenSale'};
-var _JQuezada0$eoslondonhackathon$Api_Object$Vote = {ctor: 'Vote'};
-var _JQuezada0$eoslondonhackathon$Api_Object$VoteProposal = {ctor: 'VoteProposal'};
-
-var _JQuezada0$eoslondonhackathon$Api_Scalar$placeholder = '';
-
-var _JQuezada0$eoslondonhackathon$Api_Union$placeholder = '';
-
-var _dillonkearns$graphqelm$Graphqelm_OptionalArgument$Null = {ctor: 'Null'};
-var _dillonkearns$graphqelm$Graphqelm_OptionalArgument$Absent = {ctor: 'Absent'};
-var _dillonkearns$graphqelm$Graphqelm_OptionalArgument$Present = function (a) {
-	return {ctor: 'Present', _0: a};
-};
-var _dillonkearns$graphqelm$Graphqelm_OptionalArgument$fromMaybe = function (maybeValue) {
-	var _p0 = maybeValue;
-	if (_p0.ctor === 'Just') {
-		return _dillonkearns$graphqelm$Graphqelm_OptionalArgument$Present(_p0._0);
+var _elm_lang$core$Result$toMaybe = function (result) {
+	var _p0 = result;
+	if (_p0.ctor === 'Ok') {
+		return _elm_lang$core$Maybe$Just(_p0._0);
 	} else {
-		return _dillonkearns$graphqelm$Graphqelm_OptionalArgument$Absent;
+		return _elm_lang$core$Maybe$Nothing;
 	}
 };
+var _elm_lang$core$Result$withDefault = F2(
+	function (def, result) {
+		var _p1 = result;
+		if (_p1.ctor === 'Ok') {
+			return _p1._0;
+		} else {
+			return def;
+		}
+	});
+var _elm_lang$core$Result$Err = function (a) {
+	return {ctor: 'Err', _0: a};
+};
+var _elm_lang$core$Result$andThen = F2(
+	function (callback, result) {
+		var _p2 = result;
+		if (_p2.ctor === 'Ok') {
+			return callback(_p2._0);
+		} else {
+			return _elm_lang$core$Result$Err(_p2._0);
+		}
+	});
+var _elm_lang$core$Result$Ok = function (a) {
+	return {ctor: 'Ok', _0: a};
+};
+var _elm_lang$core$Result$map = F2(
+	function (func, ra) {
+		var _p3 = ra;
+		if (_p3.ctor === 'Ok') {
+			return _elm_lang$core$Result$Ok(
+				func(_p3._0));
+		} else {
+			return _elm_lang$core$Result$Err(_p3._0);
+		}
+	});
+var _elm_lang$core$Result$map2 = F3(
+	function (func, ra, rb) {
+		var _p4 = {ctor: '_Tuple2', _0: ra, _1: rb};
+		if (_p4._0.ctor === 'Ok') {
+			if (_p4._1.ctor === 'Ok') {
+				return _elm_lang$core$Result$Ok(
+					A2(func, _p4._0._0, _p4._1._0));
+			} else {
+				return _elm_lang$core$Result$Err(_p4._1._0);
+			}
+		} else {
+			return _elm_lang$core$Result$Err(_p4._0._0);
+		}
+	});
+var _elm_lang$core$Result$map3 = F4(
+	function (func, ra, rb, rc) {
+		var _p5 = {ctor: '_Tuple3', _0: ra, _1: rb, _2: rc};
+		if (_p5._0.ctor === 'Ok') {
+			if (_p5._1.ctor === 'Ok') {
+				if (_p5._2.ctor === 'Ok') {
+					return _elm_lang$core$Result$Ok(
+						A3(func, _p5._0._0, _p5._1._0, _p5._2._0));
+				} else {
+					return _elm_lang$core$Result$Err(_p5._2._0);
+				}
+			} else {
+				return _elm_lang$core$Result$Err(_p5._1._0);
+			}
+		} else {
+			return _elm_lang$core$Result$Err(_p5._0._0);
+		}
+	});
+var _elm_lang$core$Result$map4 = F5(
+	function (func, ra, rb, rc, rd) {
+		var _p6 = {ctor: '_Tuple4', _0: ra, _1: rb, _2: rc, _3: rd};
+		if (_p6._0.ctor === 'Ok') {
+			if (_p6._1.ctor === 'Ok') {
+				if (_p6._2.ctor === 'Ok') {
+					if (_p6._3.ctor === 'Ok') {
+						return _elm_lang$core$Result$Ok(
+							A4(func, _p6._0._0, _p6._1._0, _p6._2._0, _p6._3._0));
+					} else {
+						return _elm_lang$core$Result$Err(_p6._3._0);
+					}
+				} else {
+					return _elm_lang$core$Result$Err(_p6._2._0);
+				}
+			} else {
+				return _elm_lang$core$Result$Err(_p6._1._0);
+			}
+		} else {
+			return _elm_lang$core$Result$Err(_p6._0._0);
+		}
+	});
+var _elm_lang$core$Result$map5 = F6(
+	function (func, ra, rb, rc, rd, re) {
+		var _p7 = {ctor: '_Tuple5', _0: ra, _1: rb, _2: rc, _3: rd, _4: re};
+		if (_p7._0.ctor === 'Ok') {
+			if (_p7._1.ctor === 'Ok') {
+				if (_p7._2.ctor === 'Ok') {
+					if (_p7._3.ctor === 'Ok') {
+						if (_p7._4.ctor === 'Ok') {
+							return _elm_lang$core$Result$Ok(
+								A5(func, _p7._0._0, _p7._1._0, _p7._2._0, _p7._3._0, _p7._4._0));
+						} else {
+							return _elm_lang$core$Result$Err(_p7._4._0);
+						}
+					} else {
+						return _elm_lang$core$Result$Err(_p7._3._0);
+					}
+				} else {
+					return _elm_lang$core$Result$Err(_p7._2._0);
+				}
+			} else {
+				return _elm_lang$core$Result$Err(_p7._1._0);
+			}
+		} else {
+			return _elm_lang$core$Result$Err(_p7._0._0);
+		}
+	});
+var _elm_lang$core$Result$mapError = F2(
+	function (f, result) {
+		var _p8 = result;
+		if (_p8.ctor === 'Ok') {
+			return _elm_lang$core$Result$Ok(_p8._0);
+		} else {
+			return _elm_lang$core$Result$Err(
+				f(_p8._0));
+		}
+	});
+var _elm_lang$core$Result$fromMaybe = F2(
+	function (err, maybe) {
+		var _p9 = maybe;
+		if (_p9.ctor === 'Just') {
+			return _elm_lang$core$Result$Ok(_p9._0);
+		} else {
+			return _elm_lang$core$Result$Err(err);
+		}
+	});
+
+var _elm_lang$core$Task$onError = _elm_lang$core$Native_Scheduler.onError;
+var _elm_lang$core$Task$andThen = _elm_lang$core$Native_Scheduler.andThen;
+var _elm_lang$core$Task$spawnCmd = F2(
+	function (router, _p0) {
+		var _p1 = _p0;
+		return _elm_lang$core$Native_Scheduler.spawn(
+			A2(
+				_elm_lang$core$Task$andThen,
+				_elm_lang$core$Platform$sendToApp(router),
+				_p1._0));
+	});
+var _elm_lang$core$Task$fail = _elm_lang$core$Native_Scheduler.fail;
+var _elm_lang$core$Task$mapError = F2(
+	function (convert, task) {
+		return A2(
+			_elm_lang$core$Task$onError,
+			function (_p2) {
+				return _elm_lang$core$Task$fail(
+					convert(_p2));
+			},
+			task);
+	});
+var _elm_lang$core$Task$succeed = _elm_lang$core$Native_Scheduler.succeed;
+var _elm_lang$core$Task$map = F2(
+	function (func, taskA) {
+		return A2(
+			_elm_lang$core$Task$andThen,
+			function (a) {
+				return _elm_lang$core$Task$succeed(
+					func(a));
+			},
+			taskA);
+	});
+var _elm_lang$core$Task$map2 = F3(
+	function (func, taskA, taskB) {
+		return A2(
+			_elm_lang$core$Task$andThen,
+			function (a) {
+				return A2(
+					_elm_lang$core$Task$andThen,
+					function (b) {
+						return _elm_lang$core$Task$succeed(
+							A2(func, a, b));
+					},
+					taskB);
+			},
+			taskA);
+	});
+var _elm_lang$core$Task$map3 = F4(
+	function (func, taskA, taskB, taskC) {
+		return A2(
+			_elm_lang$core$Task$andThen,
+			function (a) {
+				return A2(
+					_elm_lang$core$Task$andThen,
+					function (b) {
+						return A2(
+							_elm_lang$core$Task$andThen,
+							function (c) {
+								return _elm_lang$core$Task$succeed(
+									A3(func, a, b, c));
+							},
+							taskC);
+					},
+					taskB);
+			},
+			taskA);
+	});
+var _elm_lang$core$Task$map4 = F5(
+	function (func, taskA, taskB, taskC, taskD) {
+		return A2(
+			_elm_lang$core$Task$andThen,
+			function (a) {
+				return A2(
+					_elm_lang$core$Task$andThen,
+					function (b) {
+						return A2(
+							_elm_lang$core$Task$andThen,
+							function (c) {
+								return A2(
+									_elm_lang$core$Task$andThen,
+									function (d) {
+										return _elm_lang$core$Task$succeed(
+											A4(func, a, b, c, d));
+									},
+									taskD);
+							},
+							taskC);
+					},
+					taskB);
+			},
+			taskA);
+	});
+var _elm_lang$core$Task$map5 = F6(
+	function (func, taskA, taskB, taskC, taskD, taskE) {
+		return A2(
+			_elm_lang$core$Task$andThen,
+			function (a) {
+				return A2(
+					_elm_lang$core$Task$andThen,
+					function (b) {
+						return A2(
+							_elm_lang$core$Task$andThen,
+							function (c) {
+								return A2(
+									_elm_lang$core$Task$andThen,
+									function (d) {
+										return A2(
+											_elm_lang$core$Task$andThen,
+											function (e) {
+												return _elm_lang$core$Task$succeed(
+													A5(func, a, b, c, d, e));
+											},
+											taskE);
+									},
+									taskD);
+							},
+							taskC);
+					},
+					taskB);
+			},
+			taskA);
+	});
+var _elm_lang$core$Task$sequence = function (tasks) {
+	var _p3 = tasks;
+	if (_p3.ctor === '[]') {
+		return _elm_lang$core$Task$succeed(
+			{ctor: '[]'});
+	} else {
+		return A3(
+			_elm_lang$core$Task$map2,
+			F2(
+				function (x, y) {
+					return {ctor: '::', _0: x, _1: y};
+				}),
+			_p3._0,
+			_elm_lang$core$Task$sequence(_p3._1));
+	}
+};
+var _elm_lang$core$Task$onEffects = F3(
+	function (router, commands, state) {
+		return A2(
+			_elm_lang$core$Task$map,
+			function (_p4) {
+				return {ctor: '_Tuple0'};
+			},
+			_elm_lang$core$Task$sequence(
+				A2(
+					_elm_lang$core$List$map,
+					_elm_lang$core$Task$spawnCmd(router),
+					commands)));
+	});
+var _elm_lang$core$Task$init = _elm_lang$core$Task$succeed(
+	{ctor: '_Tuple0'});
+var _elm_lang$core$Task$onSelfMsg = F3(
+	function (_p7, _p6, _p5) {
+		return _elm_lang$core$Task$succeed(
+			{ctor: '_Tuple0'});
+	});
+var _elm_lang$core$Task$command = _elm_lang$core$Native_Platform.leaf('Task');
+var _elm_lang$core$Task$Perform = function (a) {
+	return {ctor: 'Perform', _0: a};
+};
+var _elm_lang$core$Task$perform = F2(
+	function (toMessage, task) {
+		return _elm_lang$core$Task$command(
+			_elm_lang$core$Task$Perform(
+				A2(_elm_lang$core$Task$map, toMessage, task)));
+	});
+var _elm_lang$core$Task$attempt = F2(
+	function (resultToMessage, task) {
+		return _elm_lang$core$Task$command(
+			_elm_lang$core$Task$Perform(
+				A2(
+					_elm_lang$core$Task$onError,
+					function (_p8) {
+						return _elm_lang$core$Task$succeed(
+							resultToMessage(
+								_elm_lang$core$Result$Err(_p8)));
+					},
+					A2(
+						_elm_lang$core$Task$andThen,
+						function (_p9) {
+							return _elm_lang$core$Task$succeed(
+								resultToMessage(
+									_elm_lang$core$Result$Ok(_p9)));
+						},
+						task))));
+	});
+var _elm_lang$core$Task$cmdMap = F2(
+	function (tagger, _p10) {
+		var _p11 = _p10;
+		return _elm_lang$core$Task$Perform(
+			A2(_elm_lang$core$Task$map, tagger, _p11._0));
+	});
+_elm_lang$core$Native_Platform.effectManagers['Task'] = {pkg: 'elm-lang/core', init: _elm_lang$core$Task$init, onEffects: _elm_lang$core$Task$onEffects, onSelfMsg: _elm_lang$core$Task$onSelfMsg, tag: 'cmd', cmdMap: _elm_lang$core$Task$cmdMap};
+
+//import Native.Utils //
+
+var _elm_lang$core$Native_Debug = function() {
+
+function log(tag, value)
+{
+	var msg = tag + ': ' + _elm_lang$core$Native_Utils.toString(value);
+	var process = process || {};
+	if (process.stdout)
+	{
+		process.stdout.write(msg);
+	}
+	else
+	{
+		console.log(msg);
+	}
+	return value;
+}
+
+function crash(message)
+{
+	throw new Error(message);
+}
+
+return {
+	crash: crash,
+	log: F2(log)
+};
+
+}();
+//import Maybe, Native.List, Native.Utils, Result //
+
+var _elm_lang$core$Native_String = function() {
+
+function isEmpty(str)
+{
+	return str.length === 0;
+}
+function cons(chr, str)
+{
+	return chr + str;
+}
+function uncons(str)
+{
+	var hd = str[0];
+	if (hd)
+	{
+		return _elm_lang$core$Maybe$Just(_elm_lang$core$Native_Utils.Tuple2(_elm_lang$core$Native_Utils.chr(hd), str.slice(1)));
+	}
+	return _elm_lang$core$Maybe$Nothing;
+}
+function append(a, b)
+{
+	return a + b;
+}
+function concat(strs)
+{
+	return _elm_lang$core$Native_List.toArray(strs).join('');
+}
+function length(str)
+{
+	return str.length;
+}
+function map(f, str)
+{
+	var out = str.split('');
+	for (var i = out.length; i--; )
+	{
+		out[i] = f(_elm_lang$core$Native_Utils.chr(out[i]));
+	}
+	return out.join('');
+}
+function filter(pred, str)
+{
+	return str.split('').map(_elm_lang$core$Native_Utils.chr).filter(pred).join('');
+}
+function reverse(str)
+{
+	return str.split('').reverse().join('');
+}
+function foldl(f, b, str)
+{
+	var len = str.length;
+	for (var i = 0; i < len; ++i)
+	{
+		b = A2(f, _elm_lang$core$Native_Utils.chr(str[i]), b);
+	}
+	return b;
+}
+function foldr(f, b, str)
+{
+	for (var i = str.length; i--; )
+	{
+		b = A2(f, _elm_lang$core$Native_Utils.chr(str[i]), b);
+	}
+	return b;
+}
+function split(sep, str)
+{
+	return _elm_lang$core$Native_List.fromArray(str.split(sep));
+}
+function join(sep, strs)
+{
+	return _elm_lang$core$Native_List.toArray(strs).join(sep);
+}
+function repeat(n, str)
+{
+	var result = '';
+	while (n > 0)
+	{
+		if (n & 1)
+		{
+			result += str;
+		}
+		n >>= 1, str += str;
+	}
+	return result;
+}
+function slice(start, end, str)
+{
+	return str.slice(start, end);
+}
+function left(n, str)
+{
+	return n < 1 ? '' : str.slice(0, n);
+}
+function right(n, str)
+{
+	return n < 1 ? '' : str.slice(-n);
+}
+function dropLeft(n, str)
+{
+	return n < 1 ? str : str.slice(n);
+}
+function dropRight(n, str)
+{
+	return n < 1 ? str : str.slice(0, -n);
+}
+function pad(n, chr, str)
+{
+	var half = (n - str.length) / 2;
+	return repeat(Math.ceil(half), chr) + str + repeat(half | 0, chr);
+}
+function padRight(n, chr, str)
+{
+	return str + repeat(n - str.length, chr);
+}
+function padLeft(n, chr, str)
+{
+	return repeat(n - str.length, chr) + str;
+}
+
+function trim(str)
+{
+	return str.trim();
+}
+function trimLeft(str)
+{
+	return str.replace(/^\s+/, '');
+}
+function trimRight(str)
+{
+	return str.replace(/\s+$/, '');
+}
+
+function words(str)
+{
+	return _elm_lang$core$Native_List.fromArray(str.trim().split(/\s+/g));
+}
+function lines(str)
+{
+	return _elm_lang$core$Native_List.fromArray(str.split(/\r\n|\r|\n/g));
+}
+
+function toUpper(str)
+{
+	return str.toUpperCase();
+}
+function toLower(str)
+{
+	return str.toLowerCase();
+}
+
+function any(pred, str)
+{
+	for (var i = str.length; i--; )
+	{
+		if (pred(_elm_lang$core$Native_Utils.chr(str[i])))
+		{
+			return true;
+		}
+	}
+	return false;
+}
+function all(pred, str)
+{
+	for (var i = str.length; i--; )
+	{
+		if (!pred(_elm_lang$core$Native_Utils.chr(str[i])))
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+function contains(sub, str)
+{
+	return str.indexOf(sub) > -1;
+}
+function startsWith(sub, str)
+{
+	return str.indexOf(sub) === 0;
+}
+function endsWith(sub, str)
+{
+	return str.length >= sub.length &&
+		str.lastIndexOf(sub) === str.length - sub.length;
+}
+function indexes(sub, str)
+{
+	var subLen = sub.length;
+
+	if (subLen < 1)
+	{
+		return _elm_lang$core$Native_List.Nil;
+	}
+
+	var i = 0;
+	var is = [];
+
+	while ((i = str.indexOf(sub, i)) > -1)
+	{
+		is.push(i);
+		i = i + subLen;
+	}
+
+	return _elm_lang$core$Native_List.fromArray(is);
+}
+
+
+function toInt(s)
+{
+	var len = s.length;
+
+	// if empty
+	if (len === 0)
+	{
+		return intErr(s);
+	}
+
+	// if hex
+	var c = s[0];
+	if (c === '0' && s[1] === 'x')
+	{
+		for (var i = 2; i < len; ++i)
+		{
+			var c = s[i];
+			if (('0' <= c && c <= '9') || ('A' <= c && c <= 'F') || ('a' <= c && c <= 'f'))
+			{
+				continue;
+			}
+			return intErr(s);
+		}
+		return _elm_lang$core$Result$Ok(parseInt(s, 16));
+	}
+
+	// is decimal
+	if (c > '9' || (c < '0' && c !== '-' && c !== '+'))
+	{
+		return intErr(s);
+	}
+	for (var i = 1; i < len; ++i)
+	{
+		var c = s[i];
+		if (c < '0' || '9' < c)
+		{
+			return intErr(s);
+		}
+	}
+
+	return _elm_lang$core$Result$Ok(parseInt(s, 10));
+}
+
+function intErr(s)
+{
+	return _elm_lang$core$Result$Err("could not convert string '" + s + "' to an Int");
+}
+
+
+function toFloat(s)
+{
+	// check if it is a hex, octal, or binary number
+	if (s.length === 0 || /[\sxbo]/.test(s))
+	{
+		return floatErr(s);
+	}
+	var n = +s;
+	// faster isNaN check
+	return n === n ? _elm_lang$core$Result$Ok(n) : floatErr(s);
+}
+
+function floatErr(s)
+{
+	return _elm_lang$core$Result$Err("could not convert string '" + s + "' to a Float");
+}
+
+
+function toList(str)
+{
+	return _elm_lang$core$Native_List.fromArray(str.split('').map(_elm_lang$core$Native_Utils.chr));
+}
+function fromList(chars)
+{
+	return _elm_lang$core$Native_List.toArray(chars).join('');
+}
+
+return {
+	isEmpty: isEmpty,
+	cons: F2(cons),
+	uncons: uncons,
+	append: F2(append),
+	concat: concat,
+	length: length,
+	map: F2(map),
+	filter: F2(filter),
+	reverse: reverse,
+	foldl: F3(foldl),
+	foldr: F3(foldr),
+
+	split: F2(split),
+	join: F2(join),
+	repeat: F2(repeat),
+
+	slice: F3(slice),
+	left: F2(left),
+	right: F2(right),
+	dropLeft: F2(dropLeft),
+	dropRight: F2(dropRight),
+
+	pad: F3(pad),
+	padLeft: F3(padLeft),
+	padRight: F3(padRight),
+
+	trim: trim,
+	trimLeft: trimLeft,
+	trimRight: trimRight,
+
+	words: words,
+	lines: lines,
+
+	toUpper: toUpper,
+	toLower: toLower,
+
+	any: F2(any),
+	all: F2(all),
+
+	contains: F2(contains),
+	startsWith: F2(startsWith),
+	endsWith: F2(endsWith),
+	indexes: F2(indexes),
+
+	toInt: toInt,
+	toFloat: toFloat,
+	toList: toList,
+	fromList: fromList
+};
+
+}();
+
+//import Native.Utils //
+
+var _elm_lang$core$Native_Char = function() {
+
+return {
+	fromCode: function(c) { return _elm_lang$core$Native_Utils.chr(String.fromCharCode(c)); },
+	toCode: function(c) { return c.charCodeAt(0); },
+	toUpper: function(c) { return _elm_lang$core$Native_Utils.chr(c.toUpperCase()); },
+	toLower: function(c) { return _elm_lang$core$Native_Utils.chr(c.toLowerCase()); },
+	toLocaleUpper: function(c) { return _elm_lang$core$Native_Utils.chr(c.toLocaleUpperCase()); },
+	toLocaleLower: function(c) { return _elm_lang$core$Native_Utils.chr(c.toLocaleLowerCase()); }
+};
+
+}();
+var _elm_lang$core$Char$fromCode = _elm_lang$core$Native_Char.fromCode;
+var _elm_lang$core$Char$toCode = _elm_lang$core$Native_Char.toCode;
+var _elm_lang$core$Char$toLocaleLower = _elm_lang$core$Native_Char.toLocaleLower;
+var _elm_lang$core$Char$toLocaleUpper = _elm_lang$core$Native_Char.toLocaleUpper;
+var _elm_lang$core$Char$toLower = _elm_lang$core$Native_Char.toLower;
+var _elm_lang$core$Char$toUpper = _elm_lang$core$Native_Char.toUpper;
+var _elm_lang$core$Char$isBetween = F3(
+	function (low, high, $char) {
+		var code = _elm_lang$core$Char$toCode($char);
+		return (_elm_lang$core$Native_Utils.cmp(
+			code,
+			_elm_lang$core$Char$toCode(low)) > -1) && (_elm_lang$core$Native_Utils.cmp(
+			code,
+			_elm_lang$core$Char$toCode(high)) < 1);
+	});
+var _elm_lang$core$Char$isUpper = A2(
+	_elm_lang$core$Char$isBetween,
+	_elm_lang$core$Native_Utils.chr('A'),
+	_elm_lang$core$Native_Utils.chr('Z'));
+var _elm_lang$core$Char$isLower = A2(
+	_elm_lang$core$Char$isBetween,
+	_elm_lang$core$Native_Utils.chr('a'),
+	_elm_lang$core$Native_Utils.chr('z'));
+var _elm_lang$core$Char$isDigit = A2(
+	_elm_lang$core$Char$isBetween,
+	_elm_lang$core$Native_Utils.chr('0'),
+	_elm_lang$core$Native_Utils.chr('9'));
+var _elm_lang$core$Char$isOctDigit = A2(
+	_elm_lang$core$Char$isBetween,
+	_elm_lang$core$Native_Utils.chr('0'),
+	_elm_lang$core$Native_Utils.chr('7'));
+var _elm_lang$core$Char$isHexDigit = function ($char) {
+	return _elm_lang$core$Char$isDigit($char) || (A3(
+		_elm_lang$core$Char$isBetween,
+		_elm_lang$core$Native_Utils.chr('a'),
+		_elm_lang$core$Native_Utils.chr('f'),
+		$char) || A3(
+		_elm_lang$core$Char$isBetween,
+		_elm_lang$core$Native_Utils.chr('A'),
+		_elm_lang$core$Native_Utils.chr('F'),
+		$char));
+};
+
+var _elm_lang$core$String$fromList = _elm_lang$core$Native_String.fromList;
+var _elm_lang$core$String$toList = _elm_lang$core$Native_String.toList;
+var _elm_lang$core$String$toFloat = _elm_lang$core$Native_String.toFloat;
+var _elm_lang$core$String$toInt = _elm_lang$core$Native_String.toInt;
+var _elm_lang$core$String$indices = _elm_lang$core$Native_String.indexes;
+var _elm_lang$core$String$indexes = _elm_lang$core$Native_String.indexes;
+var _elm_lang$core$String$endsWith = _elm_lang$core$Native_String.endsWith;
+var _elm_lang$core$String$startsWith = _elm_lang$core$Native_String.startsWith;
+var _elm_lang$core$String$contains = _elm_lang$core$Native_String.contains;
+var _elm_lang$core$String$all = _elm_lang$core$Native_String.all;
+var _elm_lang$core$String$any = _elm_lang$core$Native_String.any;
+var _elm_lang$core$String$toLower = _elm_lang$core$Native_String.toLower;
+var _elm_lang$core$String$toUpper = _elm_lang$core$Native_String.toUpper;
+var _elm_lang$core$String$lines = _elm_lang$core$Native_String.lines;
+var _elm_lang$core$String$words = _elm_lang$core$Native_String.words;
+var _elm_lang$core$String$trimRight = _elm_lang$core$Native_String.trimRight;
+var _elm_lang$core$String$trimLeft = _elm_lang$core$Native_String.trimLeft;
+var _elm_lang$core$String$trim = _elm_lang$core$Native_String.trim;
+var _elm_lang$core$String$padRight = _elm_lang$core$Native_String.padRight;
+var _elm_lang$core$String$padLeft = _elm_lang$core$Native_String.padLeft;
+var _elm_lang$core$String$pad = _elm_lang$core$Native_String.pad;
+var _elm_lang$core$String$dropRight = _elm_lang$core$Native_String.dropRight;
+var _elm_lang$core$String$dropLeft = _elm_lang$core$Native_String.dropLeft;
+var _elm_lang$core$String$right = _elm_lang$core$Native_String.right;
+var _elm_lang$core$String$left = _elm_lang$core$Native_String.left;
+var _elm_lang$core$String$slice = _elm_lang$core$Native_String.slice;
+var _elm_lang$core$String$repeat = _elm_lang$core$Native_String.repeat;
+var _elm_lang$core$String$join = _elm_lang$core$Native_String.join;
+var _elm_lang$core$String$split = _elm_lang$core$Native_String.split;
+var _elm_lang$core$String$foldr = _elm_lang$core$Native_String.foldr;
+var _elm_lang$core$String$foldl = _elm_lang$core$Native_String.foldl;
+var _elm_lang$core$String$reverse = _elm_lang$core$Native_String.reverse;
+var _elm_lang$core$String$filter = _elm_lang$core$Native_String.filter;
+var _elm_lang$core$String$map = _elm_lang$core$Native_String.map;
+var _elm_lang$core$String$length = _elm_lang$core$Native_String.length;
+var _elm_lang$core$String$concat = _elm_lang$core$Native_String.concat;
+var _elm_lang$core$String$append = _elm_lang$core$Native_String.append;
+var _elm_lang$core$String$uncons = _elm_lang$core$Native_String.uncons;
+var _elm_lang$core$String$cons = _elm_lang$core$Native_String.cons;
+var _elm_lang$core$String$fromChar = function ($char) {
+	return A2(_elm_lang$core$String$cons, $char, '');
+};
+var _elm_lang$core$String$isEmpty = _elm_lang$core$Native_String.isEmpty;
+
+var _elm_lang$core$Dict$foldr = F3(
+	function (f, acc, t) {
+		foldr:
+		while (true) {
+			var _p0 = t;
+			if (_p0.ctor === 'RBEmpty_elm_builtin') {
+				return acc;
+			} else {
+				var _v1 = f,
+					_v2 = A3(
+					f,
+					_p0._1,
+					_p0._2,
+					A3(_elm_lang$core$Dict$foldr, f, acc, _p0._4)),
+					_v3 = _p0._3;
+				f = _v1;
+				acc = _v2;
+				t = _v3;
+				continue foldr;
+			}
+		}
+	});
+var _elm_lang$core$Dict$keys = function (dict) {
+	return A3(
+		_elm_lang$core$Dict$foldr,
+		F3(
+			function (key, value, keyList) {
+				return {ctor: '::', _0: key, _1: keyList};
+			}),
+		{ctor: '[]'},
+		dict);
+};
+var _elm_lang$core$Dict$values = function (dict) {
+	return A3(
+		_elm_lang$core$Dict$foldr,
+		F3(
+			function (key, value, valueList) {
+				return {ctor: '::', _0: value, _1: valueList};
+			}),
+		{ctor: '[]'},
+		dict);
+};
+var _elm_lang$core$Dict$toList = function (dict) {
+	return A3(
+		_elm_lang$core$Dict$foldr,
+		F3(
+			function (key, value, list) {
+				return {
+					ctor: '::',
+					_0: {ctor: '_Tuple2', _0: key, _1: value},
+					_1: list
+				};
+			}),
+		{ctor: '[]'},
+		dict);
+};
+var _elm_lang$core$Dict$foldl = F3(
+	function (f, acc, dict) {
+		foldl:
+		while (true) {
+			var _p1 = dict;
+			if (_p1.ctor === 'RBEmpty_elm_builtin') {
+				return acc;
+			} else {
+				var _v5 = f,
+					_v6 = A3(
+					f,
+					_p1._1,
+					_p1._2,
+					A3(_elm_lang$core$Dict$foldl, f, acc, _p1._3)),
+					_v7 = _p1._4;
+				f = _v5;
+				acc = _v6;
+				dict = _v7;
+				continue foldl;
+			}
+		}
+	});
+var _elm_lang$core$Dict$merge = F6(
+	function (leftStep, bothStep, rightStep, leftDict, rightDict, initialResult) {
+		var stepState = F3(
+			function (rKey, rValue, _p2) {
+				stepState:
+				while (true) {
+					var _p3 = _p2;
+					var _p9 = _p3._1;
+					var _p8 = _p3._0;
+					var _p4 = _p8;
+					if (_p4.ctor === '[]') {
+						return {
+							ctor: '_Tuple2',
+							_0: _p8,
+							_1: A3(rightStep, rKey, rValue, _p9)
+						};
+					} else {
+						var _p7 = _p4._1;
+						var _p6 = _p4._0._1;
+						var _p5 = _p4._0._0;
+						if (_elm_lang$core$Native_Utils.cmp(_p5, rKey) < 0) {
+							var _v10 = rKey,
+								_v11 = rValue,
+								_v12 = {
+								ctor: '_Tuple2',
+								_0: _p7,
+								_1: A3(leftStep, _p5, _p6, _p9)
+							};
+							rKey = _v10;
+							rValue = _v11;
+							_p2 = _v12;
+							continue stepState;
+						} else {
+							if (_elm_lang$core$Native_Utils.cmp(_p5, rKey) > 0) {
+								return {
+									ctor: '_Tuple2',
+									_0: _p8,
+									_1: A3(rightStep, rKey, rValue, _p9)
+								};
+							} else {
+								return {
+									ctor: '_Tuple2',
+									_0: _p7,
+									_1: A4(bothStep, _p5, _p6, rValue, _p9)
+								};
+							}
+						}
+					}
+				}
+			});
+		var _p10 = A3(
+			_elm_lang$core$Dict$foldl,
+			stepState,
+			{
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Dict$toList(leftDict),
+				_1: initialResult
+			},
+			rightDict);
+		var leftovers = _p10._0;
+		var intermediateResult = _p10._1;
+		return A3(
+			_elm_lang$core$List$foldl,
+			F2(
+				function (_p11, result) {
+					var _p12 = _p11;
+					return A3(leftStep, _p12._0, _p12._1, result);
+				}),
+			intermediateResult,
+			leftovers);
+	});
+var _elm_lang$core$Dict$reportRemBug = F4(
+	function (msg, c, lgot, rgot) {
+		return _elm_lang$core$Native_Debug.crash(
+			_elm_lang$core$String$concat(
+				{
+					ctor: '::',
+					_0: 'Internal red-black tree invariant violated, expected ',
+					_1: {
+						ctor: '::',
+						_0: msg,
+						_1: {
+							ctor: '::',
+							_0: ' and got ',
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$core$Basics$toString(c),
+								_1: {
+									ctor: '::',
+									_0: '/',
+									_1: {
+										ctor: '::',
+										_0: lgot,
+										_1: {
+											ctor: '::',
+											_0: '/',
+											_1: {
+												ctor: '::',
+												_0: rgot,
+												_1: {
+													ctor: '::',
+													_0: '\nPlease report this bug to <https://github.com/elm-lang/core/issues>',
+													_1: {ctor: '[]'}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}));
+	});
+var _elm_lang$core$Dict$isBBlack = function (dict) {
+	var _p13 = dict;
+	_v14_2:
+	do {
+		if (_p13.ctor === 'RBNode_elm_builtin') {
+			if (_p13._0.ctor === 'BBlack') {
+				return true;
+			} else {
+				break _v14_2;
+			}
+		} else {
+			if (_p13._0.ctor === 'LBBlack') {
+				return true;
+			} else {
+				break _v14_2;
+			}
+		}
+	} while(false);
+	return false;
+};
+var _elm_lang$core$Dict$sizeHelp = F2(
+	function (n, dict) {
+		sizeHelp:
+		while (true) {
+			var _p14 = dict;
+			if (_p14.ctor === 'RBEmpty_elm_builtin') {
+				return n;
+			} else {
+				var _v16 = A2(_elm_lang$core$Dict$sizeHelp, n + 1, _p14._4),
+					_v17 = _p14._3;
+				n = _v16;
+				dict = _v17;
+				continue sizeHelp;
+			}
+		}
+	});
+var _elm_lang$core$Dict$size = function (dict) {
+	return A2(_elm_lang$core$Dict$sizeHelp, 0, dict);
+};
+var _elm_lang$core$Dict$get = F2(
+	function (targetKey, dict) {
+		get:
+		while (true) {
+			var _p15 = dict;
+			if (_p15.ctor === 'RBEmpty_elm_builtin') {
+				return _elm_lang$core$Maybe$Nothing;
+			} else {
+				var _p16 = A2(_elm_lang$core$Basics$compare, targetKey, _p15._1);
+				switch (_p16.ctor) {
+					case 'LT':
+						var _v20 = targetKey,
+							_v21 = _p15._3;
+						targetKey = _v20;
+						dict = _v21;
+						continue get;
+					case 'EQ':
+						return _elm_lang$core$Maybe$Just(_p15._2);
+					default:
+						var _v22 = targetKey,
+							_v23 = _p15._4;
+						targetKey = _v22;
+						dict = _v23;
+						continue get;
+				}
+			}
+		}
+	});
+var _elm_lang$core$Dict$member = F2(
+	function (key, dict) {
+		var _p17 = A2(_elm_lang$core$Dict$get, key, dict);
+		if (_p17.ctor === 'Just') {
+			return true;
+		} else {
+			return false;
+		}
+	});
+var _elm_lang$core$Dict$maxWithDefault = F3(
+	function (k, v, r) {
+		maxWithDefault:
+		while (true) {
+			var _p18 = r;
+			if (_p18.ctor === 'RBEmpty_elm_builtin') {
+				return {ctor: '_Tuple2', _0: k, _1: v};
+			} else {
+				var _v26 = _p18._1,
+					_v27 = _p18._2,
+					_v28 = _p18._4;
+				k = _v26;
+				v = _v27;
+				r = _v28;
+				continue maxWithDefault;
+			}
+		}
+	});
+var _elm_lang$core$Dict$NBlack = {ctor: 'NBlack'};
+var _elm_lang$core$Dict$BBlack = {ctor: 'BBlack'};
+var _elm_lang$core$Dict$Black = {ctor: 'Black'};
+var _elm_lang$core$Dict$blackish = function (t) {
+	var _p19 = t;
+	if (_p19.ctor === 'RBNode_elm_builtin') {
+		var _p20 = _p19._0;
+		return _elm_lang$core$Native_Utils.eq(_p20, _elm_lang$core$Dict$Black) || _elm_lang$core$Native_Utils.eq(_p20, _elm_lang$core$Dict$BBlack);
+	} else {
+		return true;
+	}
+};
+var _elm_lang$core$Dict$Red = {ctor: 'Red'};
+var _elm_lang$core$Dict$moreBlack = function (color) {
+	var _p21 = color;
+	switch (_p21.ctor) {
+		case 'Black':
+			return _elm_lang$core$Dict$BBlack;
+		case 'Red':
+			return _elm_lang$core$Dict$Black;
+		case 'NBlack':
+			return _elm_lang$core$Dict$Red;
+		default:
+			return _elm_lang$core$Native_Debug.crash('Can\'t make a double black node more black!');
+	}
+};
+var _elm_lang$core$Dict$lessBlack = function (color) {
+	var _p22 = color;
+	switch (_p22.ctor) {
+		case 'BBlack':
+			return _elm_lang$core$Dict$Black;
+		case 'Black':
+			return _elm_lang$core$Dict$Red;
+		case 'Red':
+			return _elm_lang$core$Dict$NBlack;
+		default:
+			return _elm_lang$core$Native_Debug.crash('Can\'t make a negative black node less black!');
+	}
+};
+var _elm_lang$core$Dict$LBBlack = {ctor: 'LBBlack'};
+var _elm_lang$core$Dict$LBlack = {ctor: 'LBlack'};
+var _elm_lang$core$Dict$RBEmpty_elm_builtin = function (a) {
+	return {ctor: 'RBEmpty_elm_builtin', _0: a};
+};
+var _elm_lang$core$Dict$empty = _elm_lang$core$Dict$RBEmpty_elm_builtin(_elm_lang$core$Dict$LBlack);
+var _elm_lang$core$Dict$isEmpty = function (dict) {
+	return _elm_lang$core$Native_Utils.eq(dict, _elm_lang$core$Dict$empty);
+};
+var _elm_lang$core$Dict$RBNode_elm_builtin = F5(
+	function (a, b, c, d, e) {
+		return {ctor: 'RBNode_elm_builtin', _0: a, _1: b, _2: c, _3: d, _4: e};
+	});
+var _elm_lang$core$Dict$ensureBlackRoot = function (dict) {
+	var _p23 = dict;
+	if ((_p23.ctor === 'RBNode_elm_builtin') && (_p23._0.ctor === 'Red')) {
+		return A5(_elm_lang$core$Dict$RBNode_elm_builtin, _elm_lang$core$Dict$Black, _p23._1, _p23._2, _p23._3, _p23._4);
+	} else {
+		return dict;
+	}
+};
+var _elm_lang$core$Dict$lessBlackTree = function (dict) {
+	var _p24 = dict;
+	if (_p24.ctor === 'RBNode_elm_builtin') {
+		return A5(
+			_elm_lang$core$Dict$RBNode_elm_builtin,
+			_elm_lang$core$Dict$lessBlack(_p24._0),
+			_p24._1,
+			_p24._2,
+			_p24._3,
+			_p24._4);
+	} else {
+		return _elm_lang$core$Dict$RBEmpty_elm_builtin(_elm_lang$core$Dict$LBlack);
+	}
+};
+var _elm_lang$core$Dict$balancedTree = function (col) {
+	return function (xk) {
+		return function (xv) {
+			return function (yk) {
+				return function (yv) {
+					return function (zk) {
+						return function (zv) {
+							return function (a) {
+								return function (b) {
+									return function (c) {
+										return function (d) {
+											return A5(
+												_elm_lang$core$Dict$RBNode_elm_builtin,
+												_elm_lang$core$Dict$lessBlack(col),
+												yk,
+												yv,
+												A5(_elm_lang$core$Dict$RBNode_elm_builtin, _elm_lang$core$Dict$Black, xk, xv, a, b),
+												A5(_elm_lang$core$Dict$RBNode_elm_builtin, _elm_lang$core$Dict$Black, zk, zv, c, d));
+										};
+									};
+								};
+							};
+						};
+					};
+				};
+			};
+		};
+	};
+};
+var _elm_lang$core$Dict$blacken = function (t) {
+	var _p25 = t;
+	if (_p25.ctor === 'RBEmpty_elm_builtin') {
+		return _elm_lang$core$Dict$RBEmpty_elm_builtin(_elm_lang$core$Dict$LBlack);
+	} else {
+		return A5(_elm_lang$core$Dict$RBNode_elm_builtin, _elm_lang$core$Dict$Black, _p25._1, _p25._2, _p25._3, _p25._4);
+	}
+};
+var _elm_lang$core$Dict$redden = function (t) {
+	var _p26 = t;
+	if (_p26.ctor === 'RBEmpty_elm_builtin') {
+		return _elm_lang$core$Native_Debug.crash('can\'t make a Leaf red');
+	} else {
+		return A5(_elm_lang$core$Dict$RBNode_elm_builtin, _elm_lang$core$Dict$Red, _p26._1, _p26._2, _p26._3, _p26._4);
+	}
+};
+var _elm_lang$core$Dict$balanceHelp = function (tree) {
+	var _p27 = tree;
+	_v36_6:
+	do {
+		_v36_5:
+		do {
+			_v36_4:
+			do {
+				_v36_3:
+				do {
+					_v36_2:
+					do {
+						_v36_1:
+						do {
+							_v36_0:
+							do {
+								if (_p27.ctor === 'RBNode_elm_builtin') {
+									if (_p27._3.ctor === 'RBNode_elm_builtin') {
+										if (_p27._4.ctor === 'RBNode_elm_builtin') {
+											switch (_p27._3._0.ctor) {
+												case 'Red':
+													switch (_p27._4._0.ctor) {
+														case 'Red':
+															if ((_p27._3._3.ctor === 'RBNode_elm_builtin') && (_p27._3._3._0.ctor === 'Red')) {
+																break _v36_0;
+															} else {
+																if ((_p27._3._4.ctor === 'RBNode_elm_builtin') && (_p27._3._4._0.ctor === 'Red')) {
+																	break _v36_1;
+																} else {
+																	if ((_p27._4._3.ctor === 'RBNode_elm_builtin') && (_p27._4._3._0.ctor === 'Red')) {
+																		break _v36_2;
+																	} else {
+																		if ((_p27._4._4.ctor === 'RBNode_elm_builtin') && (_p27._4._4._0.ctor === 'Red')) {
+																			break _v36_3;
+																		} else {
+																			break _v36_6;
+																		}
+																	}
+																}
+															}
+														case 'NBlack':
+															if ((_p27._3._3.ctor === 'RBNode_elm_builtin') && (_p27._3._3._0.ctor === 'Red')) {
+																break _v36_0;
+															} else {
+																if ((_p27._3._4.ctor === 'RBNode_elm_builtin') && (_p27._3._4._0.ctor === 'Red')) {
+																	break _v36_1;
+																} else {
+																	if (((((_p27._0.ctor === 'BBlack') && (_p27._4._3.ctor === 'RBNode_elm_builtin')) && (_p27._4._3._0.ctor === 'Black')) && (_p27._4._4.ctor === 'RBNode_elm_builtin')) && (_p27._4._4._0.ctor === 'Black')) {
+																		break _v36_4;
+																	} else {
+																		break _v36_6;
+																	}
+																}
+															}
+														default:
+															if ((_p27._3._3.ctor === 'RBNode_elm_builtin') && (_p27._3._3._0.ctor === 'Red')) {
+																break _v36_0;
+															} else {
+																if ((_p27._3._4.ctor === 'RBNode_elm_builtin') && (_p27._3._4._0.ctor === 'Red')) {
+																	break _v36_1;
+																} else {
+																	break _v36_6;
+																}
+															}
+													}
+												case 'NBlack':
+													switch (_p27._4._0.ctor) {
+														case 'Red':
+															if ((_p27._4._3.ctor === 'RBNode_elm_builtin') && (_p27._4._3._0.ctor === 'Red')) {
+																break _v36_2;
+															} else {
+																if ((_p27._4._4.ctor === 'RBNode_elm_builtin') && (_p27._4._4._0.ctor === 'Red')) {
+																	break _v36_3;
+																} else {
+																	if (((((_p27._0.ctor === 'BBlack') && (_p27._3._3.ctor === 'RBNode_elm_builtin')) && (_p27._3._3._0.ctor === 'Black')) && (_p27._3._4.ctor === 'RBNode_elm_builtin')) && (_p27._3._4._0.ctor === 'Black')) {
+																		break _v36_5;
+																	} else {
+																		break _v36_6;
+																	}
+																}
+															}
+														case 'NBlack':
+															if (_p27._0.ctor === 'BBlack') {
+																if ((((_p27._4._3.ctor === 'RBNode_elm_builtin') && (_p27._4._3._0.ctor === 'Black')) && (_p27._4._4.ctor === 'RBNode_elm_builtin')) && (_p27._4._4._0.ctor === 'Black')) {
+																	break _v36_4;
+																} else {
+																	if ((((_p27._3._3.ctor === 'RBNode_elm_builtin') && (_p27._3._3._0.ctor === 'Black')) && (_p27._3._4.ctor === 'RBNode_elm_builtin')) && (_p27._3._4._0.ctor === 'Black')) {
+																		break _v36_5;
+																	} else {
+																		break _v36_6;
+																	}
+																}
+															} else {
+																break _v36_6;
+															}
+														default:
+															if (((((_p27._0.ctor === 'BBlack') && (_p27._3._3.ctor === 'RBNode_elm_builtin')) && (_p27._3._3._0.ctor === 'Black')) && (_p27._3._4.ctor === 'RBNode_elm_builtin')) && (_p27._3._4._0.ctor === 'Black')) {
+																break _v36_5;
+															} else {
+																break _v36_6;
+															}
+													}
+												default:
+													switch (_p27._4._0.ctor) {
+														case 'Red':
+															if ((_p27._4._3.ctor === 'RBNode_elm_builtin') && (_p27._4._3._0.ctor === 'Red')) {
+																break _v36_2;
+															} else {
+																if ((_p27._4._4.ctor === 'RBNode_elm_builtin') && (_p27._4._4._0.ctor === 'Red')) {
+																	break _v36_3;
+																} else {
+																	break _v36_6;
+																}
+															}
+														case 'NBlack':
+															if (((((_p27._0.ctor === 'BBlack') && (_p27._4._3.ctor === 'RBNode_elm_builtin')) && (_p27._4._3._0.ctor === 'Black')) && (_p27._4._4.ctor === 'RBNode_elm_builtin')) && (_p27._4._4._0.ctor === 'Black')) {
+																break _v36_4;
+															} else {
+																break _v36_6;
+															}
+														default:
+															break _v36_6;
+													}
+											}
+										} else {
+											switch (_p27._3._0.ctor) {
+												case 'Red':
+													if ((_p27._3._3.ctor === 'RBNode_elm_builtin') && (_p27._3._3._0.ctor === 'Red')) {
+														break _v36_0;
+													} else {
+														if ((_p27._3._4.ctor === 'RBNode_elm_builtin') && (_p27._3._4._0.ctor === 'Red')) {
+															break _v36_1;
+														} else {
+															break _v36_6;
+														}
+													}
+												case 'NBlack':
+													if (((((_p27._0.ctor === 'BBlack') && (_p27._3._3.ctor === 'RBNode_elm_builtin')) && (_p27._3._3._0.ctor === 'Black')) && (_p27._3._4.ctor === 'RBNode_elm_builtin')) && (_p27._3._4._0.ctor === 'Black')) {
+														break _v36_5;
+													} else {
+														break _v36_6;
+													}
+												default:
+													break _v36_6;
+											}
+										}
+									} else {
+										if (_p27._4.ctor === 'RBNode_elm_builtin') {
+											switch (_p27._4._0.ctor) {
+												case 'Red':
+													if ((_p27._4._3.ctor === 'RBNode_elm_builtin') && (_p27._4._3._0.ctor === 'Red')) {
+														break _v36_2;
+													} else {
+														if ((_p27._4._4.ctor === 'RBNode_elm_builtin') && (_p27._4._4._0.ctor === 'Red')) {
+															break _v36_3;
+														} else {
+															break _v36_6;
+														}
+													}
+												case 'NBlack':
+													if (((((_p27._0.ctor === 'BBlack') && (_p27._4._3.ctor === 'RBNode_elm_builtin')) && (_p27._4._3._0.ctor === 'Black')) && (_p27._4._4.ctor === 'RBNode_elm_builtin')) && (_p27._4._4._0.ctor === 'Black')) {
+														break _v36_4;
+													} else {
+														break _v36_6;
+													}
+												default:
+													break _v36_6;
+											}
+										} else {
+											break _v36_6;
+										}
+									}
+								} else {
+									break _v36_6;
+								}
+							} while(false);
+							return _elm_lang$core$Dict$balancedTree(_p27._0)(_p27._3._3._1)(_p27._3._3._2)(_p27._3._1)(_p27._3._2)(_p27._1)(_p27._2)(_p27._3._3._3)(_p27._3._3._4)(_p27._3._4)(_p27._4);
+						} while(false);
+						return _elm_lang$core$Dict$balancedTree(_p27._0)(_p27._3._1)(_p27._3._2)(_p27._3._4._1)(_p27._3._4._2)(_p27._1)(_p27._2)(_p27._3._3)(_p27._3._4._3)(_p27._3._4._4)(_p27._4);
+					} while(false);
+					return _elm_lang$core$Dict$balancedTree(_p27._0)(_p27._1)(_p27._2)(_p27._4._3._1)(_p27._4._3._2)(_p27._4._1)(_p27._4._2)(_p27._3)(_p27._4._3._3)(_p27._4._3._4)(_p27._4._4);
+				} while(false);
+				return _elm_lang$core$Dict$balancedTree(_p27._0)(_p27._1)(_p27._2)(_p27._4._1)(_p27._4._2)(_p27._4._4._1)(_p27._4._4._2)(_p27._3)(_p27._4._3)(_p27._4._4._3)(_p27._4._4._4);
+			} while(false);
+			return A5(
+				_elm_lang$core$Dict$RBNode_elm_builtin,
+				_elm_lang$core$Dict$Black,
+				_p27._4._3._1,
+				_p27._4._3._2,
+				A5(_elm_lang$core$Dict$RBNode_elm_builtin, _elm_lang$core$Dict$Black, _p27._1, _p27._2, _p27._3, _p27._4._3._3),
+				A5(
+					_elm_lang$core$Dict$balance,
+					_elm_lang$core$Dict$Black,
+					_p27._4._1,
+					_p27._4._2,
+					_p27._4._3._4,
+					_elm_lang$core$Dict$redden(_p27._4._4)));
+		} while(false);
+		return A5(
+			_elm_lang$core$Dict$RBNode_elm_builtin,
+			_elm_lang$core$Dict$Black,
+			_p27._3._4._1,
+			_p27._3._4._2,
+			A5(
+				_elm_lang$core$Dict$balance,
+				_elm_lang$core$Dict$Black,
+				_p27._3._1,
+				_p27._3._2,
+				_elm_lang$core$Dict$redden(_p27._3._3),
+				_p27._3._4._3),
+			A5(_elm_lang$core$Dict$RBNode_elm_builtin, _elm_lang$core$Dict$Black, _p27._1, _p27._2, _p27._3._4._4, _p27._4));
+	} while(false);
+	return tree;
+};
+var _elm_lang$core$Dict$balance = F5(
+	function (c, k, v, l, r) {
+		var tree = A5(_elm_lang$core$Dict$RBNode_elm_builtin, c, k, v, l, r);
+		return _elm_lang$core$Dict$blackish(tree) ? _elm_lang$core$Dict$balanceHelp(tree) : tree;
+	});
+var _elm_lang$core$Dict$bubble = F5(
+	function (c, k, v, l, r) {
+		return (_elm_lang$core$Dict$isBBlack(l) || _elm_lang$core$Dict$isBBlack(r)) ? A5(
+			_elm_lang$core$Dict$balance,
+			_elm_lang$core$Dict$moreBlack(c),
+			k,
+			v,
+			_elm_lang$core$Dict$lessBlackTree(l),
+			_elm_lang$core$Dict$lessBlackTree(r)) : A5(_elm_lang$core$Dict$RBNode_elm_builtin, c, k, v, l, r);
+	});
+var _elm_lang$core$Dict$removeMax = F5(
+	function (c, k, v, l, r) {
+		var _p28 = r;
+		if (_p28.ctor === 'RBEmpty_elm_builtin') {
+			return A3(_elm_lang$core$Dict$rem, c, l, r);
+		} else {
+			return A5(
+				_elm_lang$core$Dict$bubble,
+				c,
+				k,
+				v,
+				l,
+				A5(_elm_lang$core$Dict$removeMax, _p28._0, _p28._1, _p28._2, _p28._3, _p28._4));
+		}
+	});
+var _elm_lang$core$Dict$rem = F3(
+	function (color, left, right) {
+		var _p29 = {ctor: '_Tuple2', _0: left, _1: right};
+		if (_p29._0.ctor === 'RBEmpty_elm_builtin') {
+			if (_p29._1.ctor === 'RBEmpty_elm_builtin') {
+				var _p30 = color;
+				switch (_p30.ctor) {
+					case 'Red':
+						return _elm_lang$core$Dict$RBEmpty_elm_builtin(_elm_lang$core$Dict$LBlack);
+					case 'Black':
+						return _elm_lang$core$Dict$RBEmpty_elm_builtin(_elm_lang$core$Dict$LBBlack);
+					default:
+						return _elm_lang$core$Native_Debug.crash('cannot have bblack or nblack nodes at this point');
+				}
+			} else {
+				var _p33 = _p29._1._0;
+				var _p32 = _p29._0._0;
+				var _p31 = {ctor: '_Tuple3', _0: color, _1: _p32, _2: _p33};
+				if ((((_p31.ctor === '_Tuple3') && (_p31._0.ctor === 'Black')) && (_p31._1.ctor === 'LBlack')) && (_p31._2.ctor === 'Red')) {
+					return A5(_elm_lang$core$Dict$RBNode_elm_builtin, _elm_lang$core$Dict$Black, _p29._1._1, _p29._1._2, _p29._1._3, _p29._1._4);
+				} else {
+					return A4(
+						_elm_lang$core$Dict$reportRemBug,
+						'Black/LBlack/Red',
+						color,
+						_elm_lang$core$Basics$toString(_p32),
+						_elm_lang$core$Basics$toString(_p33));
+				}
+			}
+		} else {
+			if (_p29._1.ctor === 'RBEmpty_elm_builtin') {
+				var _p36 = _p29._1._0;
+				var _p35 = _p29._0._0;
+				var _p34 = {ctor: '_Tuple3', _0: color, _1: _p35, _2: _p36};
+				if ((((_p34.ctor === '_Tuple3') && (_p34._0.ctor === 'Black')) && (_p34._1.ctor === 'Red')) && (_p34._2.ctor === 'LBlack')) {
+					return A5(_elm_lang$core$Dict$RBNode_elm_builtin, _elm_lang$core$Dict$Black, _p29._0._1, _p29._0._2, _p29._0._3, _p29._0._4);
+				} else {
+					return A4(
+						_elm_lang$core$Dict$reportRemBug,
+						'Black/Red/LBlack',
+						color,
+						_elm_lang$core$Basics$toString(_p35),
+						_elm_lang$core$Basics$toString(_p36));
+				}
+			} else {
+				var _p40 = _p29._0._2;
+				var _p39 = _p29._0._4;
+				var _p38 = _p29._0._1;
+				var newLeft = A5(_elm_lang$core$Dict$removeMax, _p29._0._0, _p38, _p40, _p29._0._3, _p39);
+				var _p37 = A3(_elm_lang$core$Dict$maxWithDefault, _p38, _p40, _p39);
+				var k = _p37._0;
+				var v = _p37._1;
+				return A5(_elm_lang$core$Dict$bubble, color, k, v, newLeft, right);
+			}
+		}
+	});
+var _elm_lang$core$Dict$map = F2(
+	function (f, dict) {
+		var _p41 = dict;
+		if (_p41.ctor === 'RBEmpty_elm_builtin') {
+			return _elm_lang$core$Dict$RBEmpty_elm_builtin(_elm_lang$core$Dict$LBlack);
+		} else {
+			var _p42 = _p41._1;
+			return A5(
+				_elm_lang$core$Dict$RBNode_elm_builtin,
+				_p41._0,
+				_p42,
+				A2(f, _p42, _p41._2),
+				A2(_elm_lang$core$Dict$map, f, _p41._3),
+				A2(_elm_lang$core$Dict$map, f, _p41._4));
+		}
+	});
+var _elm_lang$core$Dict$Same = {ctor: 'Same'};
+var _elm_lang$core$Dict$Remove = {ctor: 'Remove'};
+var _elm_lang$core$Dict$Insert = {ctor: 'Insert'};
+var _elm_lang$core$Dict$update = F3(
+	function (k, alter, dict) {
+		var up = function (dict) {
+			var _p43 = dict;
+			if (_p43.ctor === 'RBEmpty_elm_builtin') {
+				var _p44 = alter(_elm_lang$core$Maybe$Nothing);
+				if (_p44.ctor === 'Nothing') {
+					return {ctor: '_Tuple2', _0: _elm_lang$core$Dict$Same, _1: _elm_lang$core$Dict$empty};
+				} else {
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Dict$Insert,
+						_1: A5(_elm_lang$core$Dict$RBNode_elm_builtin, _elm_lang$core$Dict$Red, k, _p44._0, _elm_lang$core$Dict$empty, _elm_lang$core$Dict$empty)
+					};
+				}
+			} else {
+				var _p55 = _p43._2;
+				var _p54 = _p43._4;
+				var _p53 = _p43._3;
+				var _p52 = _p43._1;
+				var _p51 = _p43._0;
+				var _p45 = A2(_elm_lang$core$Basics$compare, k, _p52);
+				switch (_p45.ctor) {
+					case 'EQ':
+						var _p46 = alter(
+							_elm_lang$core$Maybe$Just(_p55));
+						if (_p46.ctor === 'Nothing') {
+							return {
+								ctor: '_Tuple2',
+								_0: _elm_lang$core$Dict$Remove,
+								_1: A3(_elm_lang$core$Dict$rem, _p51, _p53, _p54)
+							};
+						} else {
+							return {
+								ctor: '_Tuple2',
+								_0: _elm_lang$core$Dict$Same,
+								_1: A5(_elm_lang$core$Dict$RBNode_elm_builtin, _p51, _p52, _p46._0, _p53, _p54)
+							};
+						}
+					case 'LT':
+						var _p47 = up(_p53);
+						var flag = _p47._0;
+						var newLeft = _p47._1;
+						var _p48 = flag;
+						switch (_p48.ctor) {
+							case 'Same':
+								return {
+									ctor: '_Tuple2',
+									_0: _elm_lang$core$Dict$Same,
+									_1: A5(_elm_lang$core$Dict$RBNode_elm_builtin, _p51, _p52, _p55, newLeft, _p54)
+								};
+							case 'Insert':
+								return {
+									ctor: '_Tuple2',
+									_0: _elm_lang$core$Dict$Insert,
+									_1: A5(_elm_lang$core$Dict$balance, _p51, _p52, _p55, newLeft, _p54)
+								};
+							default:
+								return {
+									ctor: '_Tuple2',
+									_0: _elm_lang$core$Dict$Remove,
+									_1: A5(_elm_lang$core$Dict$bubble, _p51, _p52, _p55, newLeft, _p54)
+								};
+						}
+					default:
+						var _p49 = up(_p54);
+						var flag = _p49._0;
+						var newRight = _p49._1;
+						var _p50 = flag;
+						switch (_p50.ctor) {
+							case 'Same':
+								return {
+									ctor: '_Tuple2',
+									_0: _elm_lang$core$Dict$Same,
+									_1: A5(_elm_lang$core$Dict$RBNode_elm_builtin, _p51, _p52, _p55, _p53, newRight)
+								};
+							case 'Insert':
+								return {
+									ctor: '_Tuple2',
+									_0: _elm_lang$core$Dict$Insert,
+									_1: A5(_elm_lang$core$Dict$balance, _p51, _p52, _p55, _p53, newRight)
+								};
+							default:
+								return {
+									ctor: '_Tuple2',
+									_0: _elm_lang$core$Dict$Remove,
+									_1: A5(_elm_lang$core$Dict$bubble, _p51, _p52, _p55, _p53, newRight)
+								};
+						}
+				}
+			}
+		};
+		var _p56 = up(dict);
+		var flag = _p56._0;
+		var updatedDict = _p56._1;
+		var _p57 = flag;
+		switch (_p57.ctor) {
+			case 'Same':
+				return updatedDict;
+			case 'Insert':
+				return _elm_lang$core$Dict$ensureBlackRoot(updatedDict);
+			default:
+				return _elm_lang$core$Dict$blacken(updatedDict);
+		}
+	});
+var _elm_lang$core$Dict$insert = F3(
+	function (key, value, dict) {
+		return A3(
+			_elm_lang$core$Dict$update,
+			key,
+			_elm_lang$core$Basics$always(
+				_elm_lang$core$Maybe$Just(value)),
+			dict);
+	});
+var _elm_lang$core$Dict$singleton = F2(
+	function (key, value) {
+		return A3(_elm_lang$core$Dict$insert, key, value, _elm_lang$core$Dict$empty);
+	});
+var _elm_lang$core$Dict$union = F2(
+	function (t1, t2) {
+		return A3(_elm_lang$core$Dict$foldl, _elm_lang$core$Dict$insert, t2, t1);
+	});
+var _elm_lang$core$Dict$filter = F2(
+	function (predicate, dictionary) {
+		var add = F3(
+			function (key, value, dict) {
+				return A2(predicate, key, value) ? A3(_elm_lang$core$Dict$insert, key, value, dict) : dict;
+			});
+		return A3(_elm_lang$core$Dict$foldl, add, _elm_lang$core$Dict$empty, dictionary);
+	});
+var _elm_lang$core$Dict$intersect = F2(
+	function (t1, t2) {
+		return A2(
+			_elm_lang$core$Dict$filter,
+			F2(
+				function (k, _p58) {
+					return A2(_elm_lang$core$Dict$member, k, t2);
+				}),
+			t1);
+	});
+var _elm_lang$core$Dict$partition = F2(
+	function (predicate, dict) {
+		var add = F3(
+			function (key, value, _p59) {
+				var _p60 = _p59;
+				var _p62 = _p60._1;
+				var _p61 = _p60._0;
+				return A2(predicate, key, value) ? {
+					ctor: '_Tuple2',
+					_0: A3(_elm_lang$core$Dict$insert, key, value, _p61),
+					_1: _p62
+				} : {
+					ctor: '_Tuple2',
+					_0: _p61,
+					_1: A3(_elm_lang$core$Dict$insert, key, value, _p62)
+				};
+			});
+		return A3(
+			_elm_lang$core$Dict$foldl,
+			add,
+			{ctor: '_Tuple2', _0: _elm_lang$core$Dict$empty, _1: _elm_lang$core$Dict$empty},
+			dict);
+	});
+var _elm_lang$core$Dict$fromList = function (assocs) {
+	return A3(
+		_elm_lang$core$List$foldl,
+		F2(
+			function (_p63, dict) {
+				var _p64 = _p63;
+				return A3(_elm_lang$core$Dict$insert, _p64._0, _p64._1, dict);
+			}),
+		_elm_lang$core$Dict$empty,
+		assocs);
+};
+var _elm_lang$core$Dict$remove = F2(
+	function (key, dict) {
+		return A3(
+			_elm_lang$core$Dict$update,
+			key,
+			_elm_lang$core$Basics$always(_elm_lang$core$Maybe$Nothing),
+			dict);
+	});
+var _elm_lang$core$Dict$diff = F2(
+	function (t1, t2) {
+		return A3(
+			_elm_lang$core$Dict$foldl,
+			F3(
+				function (k, v, t) {
+					return A2(_elm_lang$core$Dict$remove, k, t);
+				}),
+			t1,
+			t2);
+	});
+
+//import Native.Scheduler //
+
+var _elm_lang$core$Native_Time = function() {
+
+var now = _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)
+{
+	callback(_elm_lang$core$Native_Scheduler.succeed(Date.now()));
+});
+
+function setInterval_(interval, task)
+{
+	return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)
+	{
+		var id = setInterval(function() {
+			_elm_lang$core$Native_Scheduler.rawSpawn(task);
+		}, interval);
+
+		return function() { clearInterval(id); };
+	});
+}
+
+return {
+	now: now,
+	setInterval_: F2(setInterval_)
+};
+
+}();
+var _elm_lang$core$Time$setInterval = _elm_lang$core$Native_Time.setInterval_;
+var _elm_lang$core$Time$spawnHelp = F3(
+	function (router, intervals, processes) {
+		var _p0 = intervals;
+		if (_p0.ctor === '[]') {
+			return _elm_lang$core$Task$succeed(processes);
+		} else {
+			var _p1 = _p0._0;
+			var spawnRest = function (id) {
+				return A3(
+					_elm_lang$core$Time$spawnHelp,
+					router,
+					_p0._1,
+					A3(_elm_lang$core$Dict$insert, _p1, id, processes));
+			};
+			var spawnTimer = _elm_lang$core$Native_Scheduler.spawn(
+				A2(
+					_elm_lang$core$Time$setInterval,
+					_p1,
+					A2(_elm_lang$core$Platform$sendToSelf, router, _p1)));
+			return A2(_elm_lang$core$Task$andThen, spawnRest, spawnTimer);
+		}
+	});
+var _elm_lang$core$Time$addMySub = F2(
+	function (_p2, state) {
+		var _p3 = _p2;
+		var _p6 = _p3._1;
+		var _p5 = _p3._0;
+		var _p4 = A2(_elm_lang$core$Dict$get, _p5, state);
+		if (_p4.ctor === 'Nothing') {
+			return A3(
+				_elm_lang$core$Dict$insert,
+				_p5,
+				{
+					ctor: '::',
+					_0: _p6,
+					_1: {ctor: '[]'}
+				},
+				state);
+		} else {
+			return A3(
+				_elm_lang$core$Dict$insert,
+				_p5,
+				{ctor: '::', _0: _p6, _1: _p4._0},
+				state);
+		}
+	});
+var _elm_lang$core$Time$inMilliseconds = function (t) {
+	return t;
+};
+var _elm_lang$core$Time$millisecond = 1;
+var _elm_lang$core$Time$second = 1000 * _elm_lang$core$Time$millisecond;
+var _elm_lang$core$Time$minute = 60 * _elm_lang$core$Time$second;
+var _elm_lang$core$Time$hour = 60 * _elm_lang$core$Time$minute;
+var _elm_lang$core$Time$inHours = function (t) {
+	return t / _elm_lang$core$Time$hour;
+};
+var _elm_lang$core$Time$inMinutes = function (t) {
+	return t / _elm_lang$core$Time$minute;
+};
+var _elm_lang$core$Time$inSeconds = function (t) {
+	return t / _elm_lang$core$Time$second;
+};
+var _elm_lang$core$Time$now = _elm_lang$core$Native_Time.now;
+var _elm_lang$core$Time$onSelfMsg = F3(
+	function (router, interval, state) {
+		var _p7 = A2(_elm_lang$core$Dict$get, interval, state.taggers);
+		if (_p7.ctor === 'Nothing') {
+			return _elm_lang$core$Task$succeed(state);
+		} else {
+			var tellTaggers = function (time) {
+				return _elm_lang$core$Task$sequence(
+					A2(
+						_elm_lang$core$List$map,
+						function (tagger) {
+							return A2(
+								_elm_lang$core$Platform$sendToApp,
+								router,
+								tagger(time));
+						},
+						_p7._0));
+			};
+			return A2(
+				_elm_lang$core$Task$andThen,
+				function (_p8) {
+					return _elm_lang$core$Task$succeed(state);
+				},
+				A2(_elm_lang$core$Task$andThen, tellTaggers, _elm_lang$core$Time$now));
+		}
+	});
+var _elm_lang$core$Time$subscription = _elm_lang$core$Native_Platform.leaf('Time');
+var _elm_lang$core$Time$State = F2(
+	function (a, b) {
+		return {taggers: a, processes: b};
+	});
+var _elm_lang$core$Time$init = _elm_lang$core$Task$succeed(
+	A2(_elm_lang$core$Time$State, _elm_lang$core$Dict$empty, _elm_lang$core$Dict$empty));
+var _elm_lang$core$Time$onEffects = F3(
+	function (router, subs, _p9) {
+		var _p10 = _p9;
+		var rightStep = F3(
+			function (_p12, id, _p11) {
+				var _p13 = _p11;
+				return {
+					ctor: '_Tuple3',
+					_0: _p13._0,
+					_1: _p13._1,
+					_2: A2(
+						_elm_lang$core$Task$andThen,
+						function (_p14) {
+							return _p13._2;
+						},
+						_elm_lang$core$Native_Scheduler.kill(id))
+				};
+			});
+		var bothStep = F4(
+			function (interval, taggers, id, _p15) {
+				var _p16 = _p15;
+				return {
+					ctor: '_Tuple3',
+					_0: _p16._0,
+					_1: A3(_elm_lang$core$Dict$insert, interval, id, _p16._1),
+					_2: _p16._2
+				};
+			});
+		var leftStep = F3(
+			function (interval, taggers, _p17) {
+				var _p18 = _p17;
+				return {
+					ctor: '_Tuple3',
+					_0: {ctor: '::', _0: interval, _1: _p18._0},
+					_1: _p18._1,
+					_2: _p18._2
+				};
+			});
+		var newTaggers = A3(_elm_lang$core$List$foldl, _elm_lang$core$Time$addMySub, _elm_lang$core$Dict$empty, subs);
+		var _p19 = A6(
+			_elm_lang$core$Dict$merge,
+			leftStep,
+			bothStep,
+			rightStep,
+			newTaggers,
+			_p10.processes,
+			{
+				ctor: '_Tuple3',
+				_0: {ctor: '[]'},
+				_1: _elm_lang$core$Dict$empty,
+				_2: _elm_lang$core$Task$succeed(
+					{ctor: '_Tuple0'})
+			});
+		var spawnList = _p19._0;
+		var existingDict = _p19._1;
+		var killTask = _p19._2;
+		return A2(
+			_elm_lang$core$Task$andThen,
+			function (newProcesses) {
+				return _elm_lang$core$Task$succeed(
+					A2(_elm_lang$core$Time$State, newTaggers, newProcesses));
+			},
+			A2(
+				_elm_lang$core$Task$andThen,
+				function (_p20) {
+					return A3(_elm_lang$core$Time$spawnHelp, router, spawnList, existingDict);
+				},
+				killTask));
+	});
+var _elm_lang$core$Time$Every = F2(
+	function (a, b) {
+		return {ctor: 'Every', _0: a, _1: b};
+	});
+var _elm_lang$core$Time$every = F2(
+	function (interval, tagger) {
+		return _elm_lang$core$Time$subscription(
+			A2(_elm_lang$core$Time$Every, interval, tagger));
+	});
+var _elm_lang$core$Time$subMap = F2(
+	function (f, _p21) {
+		var _p22 = _p21;
+		return A2(
+			_elm_lang$core$Time$Every,
+			_p22._0,
+			function (_p23) {
+				return f(
+					_p22._1(_p23));
+			});
+	});
+_elm_lang$core$Native_Platform.effectManagers['Time'] = {pkg: 'elm-lang/core', init: _elm_lang$core$Time$init, onEffects: _elm_lang$core$Time$onEffects, onSelfMsg: _elm_lang$core$Time$onSelfMsg, tag: 'sub', subMap: _elm_lang$core$Time$subMap};
+
+var _elm_lang$core$Date$millisecond = _elm_lang$core$Native_Date.millisecond;
+var _elm_lang$core$Date$second = _elm_lang$core$Native_Date.second;
+var _elm_lang$core$Date$minute = _elm_lang$core$Native_Date.minute;
+var _elm_lang$core$Date$hour = _elm_lang$core$Native_Date.hour;
+var _elm_lang$core$Date$dayOfWeek = _elm_lang$core$Native_Date.dayOfWeek;
+var _elm_lang$core$Date$day = _elm_lang$core$Native_Date.day;
+var _elm_lang$core$Date$month = _elm_lang$core$Native_Date.month;
+var _elm_lang$core$Date$year = _elm_lang$core$Native_Date.year;
+var _elm_lang$core$Date$fromTime = _elm_lang$core$Native_Date.fromTime;
+var _elm_lang$core$Date$toTime = _elm_lang$core$Native_Date.toTime;
+var _elm_lang$core$Date$fromString = _elm_lang$core$Native_Date.fromString;
+var _elm_lang$core$Date$now = A2(_elm_lang$core$Task$map, _elm_lang$core$Date$fromTime, _elm_lang$core$Time$now);
+var _elm_lang$core$Date$Date = {ctor: 'Date'};
+var _elm_lang$core$Date$Sun = {ctor: 'Sun'};
+var _elm_lang$core$Date$Sat = {ctor: 'Sat'};
+var _elm_lang$core$Date$Fri = {ctor: 'Fri'};
+var _elm_lang$core$Date$Thu = {ctor: 'Thu'};
+var _elm_lang$core$Date$Wed = {ctor: 'Wed'};
+var _elm_lang$core$Date$Tue = {ctor: 'Tue'};
+var _elm_lang$core$Date$Mon = {ctor: 'Mon'};
+var _elm_lang$core$Date$Dec = {ctor: 'Dec'};
+var _elm_lang$core$Date$Nov = {ctor: 'Nov'};
+var _elm_lang$core$Date$Oct = {ctor: 'Oct'};
+var _elm_lang$core$Date$Sep = {ctor: 'Sep'};
+var _elm_lang$core$Date$Aug = {ctor: 'Aug'};
+var _elm_lang$core$Date$Jul = {ctor: 'Jul'};
+var _elm_lang$core$Date$Jun = {ctor: 'Jun'};
+var _elm_lang$core$Date$May = {ctor: 'May'};
+var _elm_lang$core$Date$Apr = {ctor: 'Apr'};
+var _elm_lang$core$Date$Mar = {ctor: 'Mar'};
+var _elm_lang$core$Date$Feb = {ctor: 'Feb'};
+var _elm_lang$core$Date$Jan = {ctor: 'Jan'};
+
+var _elm_lang$core$Debug$crash = _elm_lang$core$Native_Debug.crash;
+var _elm_lang$core$Debug$log = _elm_lang$core$Native_Debug.log;
+
+var _elm_lang$core$Tuple$mapSecond = F2(
+	function (func, _p0) {
+		var _p1 = _p0;
+		return {
+			ctor: '_Tuple2',
+			_0: _p1._0,
+			_1: func(_p1._1)
+		};
+	});
+var _elm_lang$core$Tuple$mapFirst = F2(
+	function (func, _p2) {
+		var _p3 = _p2;
+		return {
+			ctor: '_Tuple2',
+			_0: func(_p3._0),
+			_1: _p3._1
+		};
+	});
+var _elm_lang$core$Tuple$second = function (_p4) {
+	var _p5 = _p4;
+	return _p5._1;
+};
+var _elm_lang$core$Tuple$first = function (_p6) {
+	var _p7 = _p6;
+	return _p7._0;
+};
+
+var _elm_community$elm_datepicker$DatePicker_Date$yearRange = F2(
+	function (_p0, range) {
+		var _p1 = _p0;
+		var _p5 = _p1.today;
+		var _p4 = _p1.currentMonth;
+		var _p2 = range;
+		switch (_p2.ctor) {
+			case 'MoreOrLess':
+				var _p3 = _p2._0;
+				return A2(
+					_elm_lang$core$List$range,
+					_elm_lang$core$Date$year(_p4) - _p3,
+					_elm_lang$core$Date$year(_p4) + _p3);
+			case 'Between':
+				return A2(_elm_lang$core$List$range, _p2._0, _p2._1);
+			case 'From':
+				return A2(
+					_elm_lang$core$List$range,
+					_p2._0,
+					_elm_lang$core$Date$year(_p5));
+			case 'To':
+				return A2(
+					_elm_lang$core$List$range,
+					_elm_lang$core$Date$year(_p5),
+					_p2._0);
+			default:
+				return {ctor: '[]'};
+		}
+	});
+var _elm_community$elm_datepicker$DatePicker_Date$unsafeDate = function (date) {
+	var _p6 = _elm_lang$core$Date$fromString(date);
+	if (_p6.ctor === 'Err') {
+		return _elm_lang$core$Native_Utils.crashCase(
+			'DatePicker.Date',
+			{
+				start: {line: 552, column: 5},
+				end: {line: 557, column: 17}
+			},
+			_p6)(
+			A2(_elm_lang$core$Basics_ops['++'], 'unsafeDate: failed to parse date:', _p6._0));
+	} else {
+		return _p6._0;
+	}
+};
+var _elm_community$elm_datepicker$DatePicker_Date$isLeapYear = function (y) {
+	return _elm_lang$core$Native_Utils.eq(
+		A2(_elm_lang$core$Basics_ops['%'], y, 400),
+		0) || ((!_elm_lang$core$Native_Utils.eq(
+		A2(_elm_lang$core$Basics_ops['%'], y, 100),
+		0)) && _elm_lang$core$Native_Utils.eq(
+		A2(_elm_lang$core$Basics_ops['%'], y, 4),
+		0));
+};
+var _elm_community$elm_datepicker$DatePicker_Date$daysInMonth = F2(
+	function (year, month) {
+		var _p8 = month;
+		switch (_p8.ctor) {
+			case 'Jan':
+				return 31;
+			case 'Feb':
+				return _elm_community$elm_datepicker$DatePicker_Date$isLeapYear(year) ? 29 : 28;
+			case 'Mar':
+				return 31;
+			case 'Apr':
+				return 30;
+			case 'May':
+				return 31;
+			case 'Jun':
+				return 30;
+			case 'Jul':
+				return 31;
+			case 'Aug':
+				return 31;
+			case 'Sep':
+				return 30;
+			case 'Oct':
+				return 31;
+			case 'Nov':
+				return 30;
+			default:
+				return 31;
+		}
+	});
+var _elm_community$elm_datepicker$DatePicker_Date$monthFromInt = function (month) {
+	var _p9 = month;
+	switch (_p9) {
+		case 1:
+			return _elm_lang$core$Date$Jan;
+		case 2:
+			return _elm_lang$core$Date$Feb;
+		case 3:
+			return _elm_lang$core$Date$Mar;
+		case 4:
+			return _elm_lang$core$Date$Apr;
+		case 5:
+			return _elm_lang$core$Date$May;
+		case 6:
+			return _elm_lang$core$Date$Jun;
+		case 7:
+			return _elm_lang$core$Date$Jul;
+		case 8:
+			return _elm_lang$core$Date$Aug;
+		case 9:
+			return _elm_lang$core$Date$Sep;
+		case 10:
+			return _elm_lang$core$Date$Oct;
+		case 11:
+			return _elm_lang$core$Date$Nov;
+		case 12:
+			return _elm_lang$core$Date$Dec;
+		default:
+			return _elm_lang$core$Native_Utils.crashCase(
+				'DatePicker.Date',
+				{
+					start: {line: 451, column: 5},
+					end: {line: 489, column: 72}
+				},
+				_p9)(
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'monthFromInt: invalid month: ',
+					_elm_lang$core$Basics$toString(_p9)));
+	}
+};
+var _elm_community$elm_datepicker$DatePicker_Date$monthToInt = function (month) {
+	var _p11 = month;
+	switch (_p11.ctor) {
+		case 'Jan':
+			return 1;
+		case 'Feb':
+			return 2;
+		case 'Mar':
+			return 3;
+		case 'Apr':
+			return 4;
+		case 'May':
+			return 5;
+		case 'Jun':
+			return 6;
+		case 'Jul':
+			return 7;
+		case 'Aug':
+			return 8;
+		case 'Sep':
+			return 9;
+		case 'Oct':
+			return 10;
+		case 'Nov':
+			return 11;
+		default:
+			return 12;
+	}
+};
+var _elm_community$elm_datepicker$DatePicker_Date$succMonth = function (month) {
+	return _elm_community$elm_datepicker$DatePicker_Date$monthFromInt(
+		A2(
+			F2(
+				function (x, y) {
+					return x + y;
+				}),
+			1,
+			A3(
+				_elm_lang$core$Basics$flip,
+				_elm_lang$core$Basics$rem,
+				12,
+				_elm_community$elm_datepicker$DatePicker_Date$monthToInt(month))));
+};
+var _elm_community$elm_datepicker$DatePicker_Date$predMonth = function (month) {
+	var prev = A3(
+		_elm_lang$core$Basics$flip,
+		_elm_lang$core$Basics$rem,
+		12,
+		_elm_community$elm_datepicker$DatePicker_Date$monthToInt(month) - 1);
+	return _elm_lang$core$Native_Utils.eq(prev, 0) ? _elm_lang$core$Date$Dec : _elm_community$elm_datepicker$DatePicker_Date$monthFromInt(prev);
+};
+var _elm_community$elm_datepicker$DatePicker_Date$monthToString = function (month) {
+	var $int = _elm_community$elm_datepicker$DatePicker_Date$monthToInt(month);
+	return (_elm_lang$core$Native_Utils.cmp($int, 10) < 0) ? A2(
+		_elm_lang$core$Basics_ops['++'],
+		'0',
+		_elm_lang$core$Basics$toString($int)) : _elm_lang$core$Basics$toString($int);
+};
+var _elm_community$elm_datepicker$DatePicker_Date$dayFromInt = function (day) {
+	var _p12 = day;
+	switch (_p12) {
+		case 1:
+			return _elm_lang$core$Date$Mon;
+		case 2:
+			return _elm_lang$core$Date$Tue;
+		case 3:
+			return _elm_lang$core$Date$Wed;
+		case 4:
+			return _elm_lang$core$Date$Thu;
+		case 5:
+			return _elm_lang$core$Date$Fri;
+		case 6:
+			return _elm_lang$core$Date$Sat;
+		case 7:
+			return _elm_lang$core$Date$Sun;
+		default:
+			return _elm_lang$core$Native_Utils.crashCase(
+				'DatePicker.Date',
+				{
+					start: {line: 350, column: 5},
+					end: {line: 373, column: 70}
+				},
+				_p12)(
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'dayFromInt: invalid day: ',
+					_elm_lang$core$Basics$toString(day)));
+	}
+};
+var _elm_community$elm_datepicker$DatePicker_Date$dayToInt = function (day) {
+	var _p14 = day;
+	switch (_p14.ctor) {
+		case 'Mon':
+			return 1;
+		case 'Tue':
+			return 2;
+		case 'Wed':
+			return 3;
+		case 'Thu':
+			return 4;
+		case 'Fri':
+			return 5;
+		case 'Sat':
+			return 6;
+		default:
+			return 7;
+	}
+};
+var _elm_community$elm_datepicker$DatePicker_Date$dayToString = function (day) {
+	return (_elm_lang$core$Native_Utils.cmp(day, 10) < 0) ? A2(
+		_elm_lang$core$Basics_ops['++'],
+		'0',
+		_elm_lang$core$Basics$toString(day)) : _elm_lang$core$Basics$toString(day);
+};
+var _elm_community$elm_datepicker$DatePicker_Date$mkDate = F3(
+	function (year, month, day) {
+		return _elm_community$elm_datepicker$DatePicker_Date$unsafeDate(
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_elm_lang$core$Basics$toString(year),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'/',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_elm_community$elm_datepicker$DatePicker_Date$monthToString(month),
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							'/',
+							_elm_community$elm_datepicker$DatePicker_Date$dayToString(day))))));
+	});
+var _elm_community$elm_datepicker$DatePicker_Date$newYear = F2(
+	function (currentMonth, newYear) {
+		var _p15 = _elm_lang$core$String$toInt(newYear);
+		if (_p15.ctor === 'Ok') {
+			return A3(
+				_elm_community$elm_datepicker$DatePicker_Date$mkDate,
+				_p15._0,
+				_elm_lang$core$Date$month(currentMonth),
+				_elm_lang$core$Date$day(currentMonth));
+		} else {
+			return _elm_lang$core$Native_Utils.crashCase(
+				'DatePicker.Date',
+				{
+					start: {line: 562, column: 5},
+					end: {line: 567, column: 70}
+				},
+				_p15)(
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'Unknown Month ',
+					_elm_lang$core$Basics$toString(currentMonth)));
+		}
+	});
+var _elm_community$elm_datepicker$DatePicker_Date$predDow = function (day) {
+	var prev = A3(
+		_elm_lang$core$Basics$flip,
+		_elm_lang$core$Basics$rem,
+		7,
+		_elm_community$elm_datepicker$DatePicker_Date$dayToInt(day) - 1);
+	return _elm_lang$core$Native_Utils.eq(prev, 0) ? _elm_lang$core$Date$Sun : _elm_community$elm_datepicker$DatePicker_Date$dayFromInt(prev);
+};
+var _elm_community$elm_datepicker$DatePicker_Date$succDow = function (day) {
+	return _elm_community$elm_datepicker$DatePicker_Date$dayFromInt(
+		A2(
+			F2(
+				function (x, y) {
+					return x + y;
+				}),
+			1,
+			A3(
+				_elm_lang$core$Basics$flip,
+				_elm_lang$core$Basics$rem,
+				7,
+				_elm_community$elm_datepicker$DatePicker_Date$dayToInt(day))));
+};
+var _elm_community$elm_datepicker$DatePicker_Date$subDay = function (date) {
+	var day = _elm_lang$core$Date$day(date) - 1;
+	var year = _elm_lang$core$Date$year(date);
+	var month = _elm_lang$core$Date$month(date);
+	var pred = _elm_community$elm_datepicker$DatePicker_Date$predMonth(month);
+	var predYear = _elm_lang$core$Native_Utils.eq(pred, _elm_lang$core$Date$Dec) ? (year - 1) : year;
+	return (_elm_lang$core$Native_Utils.cmp(day, 1) < 0) ? A3(
+		_elm_community$elm_datepicker$DatePicker_Date$mkDate,
+		predYear,
+		pred,
+		A2(_elm_community$elm_datepicker$DatePicker_Date$daysInMonth, predYear, pred)) : A3(_elm_community$elm_datepicker$DatePicker_Date$mkDate, year, month, day);
+};
+var _elm_community$elm_datepicker$DatePicker_Date$addDay = function (date) {
+	var day = _elm_lang$core$Date$day(date) + 1;
+	var year = _elm_lang$core$Date$year(date);
+	var month = _elm_lang$core$Date$month(date);
+	var dim = A2(_elm_community$elm_datepicker$DatePicker_Date$daysInMonth, year, month);
+	var succ = _elm_community$elm_datepicker$DatePicker_Date$succMonth(month);
+	var succYear = _elm_lang$core$Native_Utils.eq(succ, _elm_lang$core$Date$Jan) ? (year + 1) : year;
+	return (_elm_lang$core$Native_Utils.cmp(day, dim) > 0) ? A3(_elm_community$elm_datepicker$DatePicker_Date$mkDate, succYear, succ, 1) : A3(_elm_community$elm_datepicker$DatePicker_Date$mkDate, year, month, day);
+};
+var _elm_community$elm_datepicker$DatePicker_Date$prevMonth = function (date) {
+	var prevMonth = _elm_community$elm_datepicker$DatePicker_Date$predMonth(
+		_elm_lang$core$Date$month(date));
+	var prevYear = _elm_lang$core$Native_Utils.eq(prevMonth, _elm_lang$core$Date$Dec) ? (_elm_lang$core$Date$year(date) - 1) : _elm_lang$core$Date$year(date);
+	return A3(_elm_community$elm_datepicker$DatePicker_Date$mkDate, prevYear, prevMonth, 1);
+};
+var _elm_community$elm_datepicker$DatePicker_Date$nextMonth = function (date) {
+	var nextMonth = _elm_community$elm_datepicker$DatePicker_Date$succMonth(
+		_elm_lang$core$Date$month(date));
+	var nextYear = _elm_lang$core$Native_Utils.eq(nextMonth, _elm_lang$core$Date$Jan) ? (_elm_lang$core$Date$year(date) + 1) : _elm_lang$core$Date$year(date);
+	return A3(_elm_community$elm_datepicker$DatePicker_Date$mkDate, nextYear, nextMonth, 1);
+};
+var _elm_community$elm_datepicker$DatePicker_Date$firstOfMonth = function (date) {
+	return A3(
+		_elm_community$elm_datepicker$DatePicker_Date$mkDate,
+		_elm_lang$core$Date$year(date),
+		_elm_lang$core$Date$month(date),
+		1);
+};
+var _elm_community$elm_datepicker$DatePicker_Date$repeat = function (f) {
+	var go = F2(
+		function (n, x) {
+			go:
+			while (true) {
+				if (_elm_lang$core$Native_Utils.eq(n, 0)) {
+					return x;
+				} else {
+					var _v9 = n - 1,
+						_v10 = f(x);
+					n = _v9;
+					x = _v10;
+					continue go;
+				}
+			}
+		});
+	return go;
+};
+var _elm_community$elm_datepicker$DatePicker_Date$addDays = _elm_community$elm_datepicker$DatePicker_Date$repeat(_elm_community$elm_datepicker$DatePicker_Date$addDay);
+var _elm_community$elm_datepicker$DatePicker_Date$subDays = _elm_community$elm_datepicker$DatePicker_Date$repeat(_elm_community$elm_datepicker$DatePicker_Date$subDay);
+var _elm_community$elm_datepicker$DatePicker_Date$addDows = _elm_community$elm_datepicker$DatePicker_Date$repeat(_elm_community$elm_datepicker$DatePicker_Date$succDow);
+var _elm_community$elm_datepicker$DatePicker_Date$subDows = _elm_community$elm_datepicker$DatePicker_Date$repeat(_elm_community$elm_datepicker$DatePicker_Date$succDow);
+var _elm_community$elm_datepicker$DatePicker_Date$dateTuple = function (date) {
+	return {
+		ctor: '_Tuple3',
+		_0: _elm_lang$core$Date$year(date),
+		_1: _elm_community$elm_datepicker$DatePicker_Date$monthToInt(
+			_elm_lang$core$Date$month(date)),
+		_2: _elm_lang$core$Date$day(date)
+	};
+};
+var _elm_community$elm_datepicker$DatePicker_Date$trimDates = F2(
+	function (firstDay, dates) {
+		var dl = function (dates) {
+			dl:
+			while (true) {
+				var _p17 = dates;
+				if (_p17.ctor === '[]') {
+					return {ctor: '[]'};
+				} else {
+					if (_elm_lang$core$Native_Utils.eq(
+						_elm_lang$core$Date$dayOfWeek(_p17._0),
+						firstDay)) {
+						return dates;
+					} else {
+						var _v12 = _p17._1;
+						dates = _v12;
+						continue dl;
+					}
+				}
+			}
+		};
+		var lastDay = _elm_community$elm_datepicker$DatePicker_Date$predDow(firstDay);
+		var dr = function (dates) {
+			dr:
+			while (true) {
+				var _p18 = dates;
+				if (_p18.ctor === '[]') {
+					return {ctor: '[]'};
+				} else {
+					if (_elm_lang$core$Native_Utils.eq(
+						_elm_lang$core$Date$dayOfWeek(_p18._0),
+						lastDay)) {
+						return dates;
+					} else {
+						var _v14 = _p18._1;
+						dates = _v14;
+						continue dr;
+					}
+				}
+			}
+		};
+		return _elm_lang$core$List$reverse(
+			dr(
+				_elm_lang$core$List$reverse(
+					dl(dates))));
+	});
+var _elm_community$elm_datepicker$DatePicker_Date$datesInRange = F3(
+	function (firstDay, min, max) {
+		var go = F2(
+			function (x, acc) {
+				go:
+				while (true) {
+					var y = _elm_community$elm_datepicker$DatePicker_Date$subDay(x);
+					if (_elm_lang$core$Native_Utils.eq(
+						_elm_community$elm_datepicker$DatePicker_Date$dateTuple(y),
+						_elm_community$elm_datepicker$DatePicker_Date$dateTuple(min))) {
+						return {ctor: '::', _0: y, _1: acc};
+					} else {
+						var _v15 = y,
+							_v16 = {ctor: '::', _0: y, _1: acc};
+						x = _v15;
+						acc = _v16;
+						continue go;
+					}
+				}
+			});
+		return A2(
+			_elm_community$elm_datepicker$DatePicker_Date$trimDates,
+			firstDay,
+			A2(
+				go,
+				max,
+				{ctor: '[]'}));
+	});
+var _elm_community$elm_datepicker$DatePicker_Date$formatMonth = function (month) {
+	var _p19 = month;
+	switch (_p19.ctor) {
+		case 'Jan':
+			return 'January';
+		case 'Feb':
+			return 'February';
+		case 'Mar':
+			return 'March';
+		case 'Apr':
+			return 'April';
+		case 'May':
+			return 'May';
+		case 'Jun':
+			return 'June';
+		case 'Jul':
+			return 'July';
+		case 'Aug':
+			return 'August';
+		case 'Sep':
+			return 'September';
+		case 'Oct':
+			return 'October';
+		case 'Nov':
+			return 'November';
+		default:
+			return 'December';
+	}
+};
+var _elm_community$elm_datepicker$DatePicker_Date$formatDay = function (day) {
+	var _p20 = day;
+	switch (_p20.ctor) {
+		case 'Mon':
+			return 'Mo';
+		case 'Tue':
+			return 'Tu';
+		case 'Wed':
+			return 'We';
+		case 'Thu':
+			return 'Th';
+		case 'Fri':
+			return 'Fr';
+		case 'Sat':
+			return 'Sa';
+		default:
+			return 'Su';
+	}
+};
+var _elm_community$elm_datepicker$DatePicker_Date$formatDate = function (date) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		_elm_lang$core$Basics$toString(
+			_elm_lang$core$Date$year(date)),
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			'/',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_elm_community$elm_datepicker$DatePicker_Date$monthToString(
+					_elm_lang$core$Date$month(date)),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'/',
+					_elm_community$elm_datepicker$DatePicker_Date$dayToString(
+						_elm_lang$core$Date$day(date))))));
+};
+var _elm_community$elm_datepicker$DatePicker_Date$initDate = A3(_elm_community$elm_datepicker$DatePicker_Date$mkDate, 1992, _elm_lang$core$Date$May, 29);
+var _elm_community$elm_datepicker$DatePicker_Date$To = function (a) {
+	return {ctor: 'To', _0: a};
+};
+var _elm_community$elm_datepicker$DatePicker_Date$From = function (a) {
+	return {ctor: 'From', _0: a};
+};
+var _elm_community$elm_datepicker$DatePicker_Date$Between = F2(
+	function (a, b) {
+		return {ctor: 'Between', _0: a, _1: b};
+	});
+var _elm_community$elm_datepicker$DatePicker_Date$MoreOrLess = function (a) {
+	return {ctor: 'MoreOrLess', _0: a};
+};
+var _elm_community$elm_datepicker$DatePicker_Date$Off = {ctor: 'Off'};
 
 //import Native.List //
 
@@ -4805,1092 +6699,6 @@ var _elm_lang$core$Json_Encode$string = _elm_lang$core$Native_Json.identity;
 var _elm_lang$core$Json_Encode$encode = _elm_lang$core$Native_Json.encode;
 var _elm_lang$core$Json_Encode$Value = {ctor: 'Value'};
 
-var _dillonkearns$graphqelm$Graphqelm_Internal_Encode$serialize = function (value) {
-	var _p0 = value;
-	switch (_p0.ctor) {
-		case 'EnumValue':
-			return _p0._0;
-		case 'Json':
-			return A2(_elm_lang$core$Json_Encode$encode, 0, _p0._0);
-		case 'List':
-			return A2(
-				_elm_lang$core$Basics_ops['++'],
-				'[',
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					A2(
-						_elm_lang$core$String$join,
-						', ',
-						A2(_elm_lang$core$List$map, _dillonkearns$graphqelm$Graphqelm_Internal_Encode$serialize, _p0._0)),
-					']'));
-		default:
-			return A2(
-				_elm_lang$core$Basics_ops['++'],
-				'{',
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					A2(
-						_elm_lang$core$String$join,
-						', ',
-						A2(
-							_elm_lang$core$List$map,
-							function (_p1) {
-								var _p2 = _p1;
-								return A2(
-									_elm_lang$core$Basics_ops['++'],
-									_p2._0,
-									A2(
-										_elm_lang$core$Basics_ops['++'],
-										': ',
-										_dillonkearns$graphqelm$Graphqelm_Internal_Encode$serialize(_p2._1)));
-							},
-							_p0._0)),
-					'}'));
-	}
-};
-var _dillonkearns$graphqelm$Graphqelm_Internal_Encode$Object = function (a) {
-	return {ctor: 'Object', _0: a};
-};
-var _dillonkearns$graphqelm$Graphqelm_Internal_Encode$object = function (value) {
-	return _dillonkearns$graphqelm$Graphqelm_Internal_Encode$Object(value);
-};
-var _dillonkearns$graphqelm$Graphqelm_Internal_Encode$maybeObject = function (maybeValues) {
-	return _dillonkearns$graphqelm$Graphqelm_Internal_Encode$Object(
-		A2(
-			_elm_lang$core$List$filterMap,
-			function (_p3) {
-				var _p4 = _p3;
-				var _p5 = _p4._1;
-				if (_p5.ctor === 'Just') {
-					return _elm_lang$core$Maybe$Just(
-						{ctor: '_Tuple2', _0: _p4._0, _1: _p5._0});
-				} else {
-					return _elm_lang$core$Maybe$Nothing;
-				}
-			},
-			maybeValues));
-};
-var _dillonkearns$graphqelm$Graphqelm_Internal_Encode$List = function (a) {
-	return {ctor: 'List', _0: a};
-};
-var _dillonkearns$graphqelm$Graphqelm_Internal_Encode$list = F2(
-	function (toValue, list) {
-		return _dillonkearns$graphqelm$Graphqelm_Internal_Encode$List(
-			A2(_elm_lang$core$List$map, toValue, list));
-	});
-var _dillonkearns$graphqelm$Graphqelm_Internal_Encode$Json = function (a) {
-	return {ctor: 'Json', _0: a};
-};
-var _dillonkearns$graphqelm$Graphqelm_Internal_Encode$int = function (value) {
-	return _dillonkearns$graphqelm$Graphqelm_Internal_Encode$Json(
-		_elm_lang$core$Json_Encode$int(value));
-};
-var _dillonkearns$graphqelm$Graphqelm_Internal_Encode$float = function (value) {
-	return _dillonkearns$graphqelm$Graphqelm_Internal_Encode$Json(
-		_elm_lang$core$Json_Encode$float(value));
-};
-var _dillonkearns$graphqelm$Graphqelm_Internal_Encode$null = _dillonkearns$graphqelm$Graphqelm_Internal_Encode$Json(_elm_lang$core$Json_Encode$null);
-var _dillonkearns$graphqelm$Graphqelm_Internal_Encode$optional = F2(
-	function (optionalValue, toValue) {
-		var _p6 = optionalValue;
-		switch (_p6.ctor) {
-			case 'Present':
-				return _elm_lang$core$Maybe$Just(
-					toValue(_p6._0));
-			case 'Absent':
-				return _elm_lang$core$Maybe$Nothing;
-			default:
-				return _elm_lang$core$Maybe$Just(_dillonkearns$graphqelm$Graphqelm_Internal_Encode$null);
-		}
-	});
-var _dillonkearns$graphqelm$Graphqelm_Internal_Encode$maybe = function (encoder) {
-	return function (_p7) {
-		return A2(
-			_elm_lang$core$Maybe$withDefault,
-			_dillonkearns$graphqelm$Graphqelm_Internal_Encode$null,
-			A2(_elm_lang$core$Maybe$map, encoder, _p7));
-	};
-};
-var _dillonkearns$graphqelm$Graphqelm_Internal_Encode$bool = function (bool) {
-	return _dillonkearns$graphqelm$Graphqelm_Internal_Encode$Json(
-		_elm_lang$core$Json_Encode$bool(bool));
-};
-var _dillonkearns$graphqelm$Graphqelm_Internal_Encode$string = function (string) {
-	return _dillonkearns$graphqelm$Graphqelm_Internal_Encode$Json(
-		_elm_lang$core$Json_Encode$string(string));
-};
-var _dillonkearns$graphqelm$Graphqelm_Internal_Encode$EnumValue = function (a) {
-	return {ctor: 'EnumValue', _0: a};
-};
-var _dillonkearns$graphqelm$Graphqelm_Internal_Encode$enum = F2(
-	function (enumToString, $enum) {
-		return _dillonkearns$graphqelm$Graphqelm_Internal_Encode$EnumValue(
-			enumToString($enum));
-	});
-
-var _dillonkearns$graphqelm$Graphqelm_Internal_Builder_Argument$Argument = F2(
-	function (a, b) {
-		return {ctor: 'Argument', _0: a, _1: b};
-	});
-var _dillonkearns$graphqelm$Graphqelm_Internal_Builder_Argument$optional = F3(
-	function (fieldName, maybeValue, toValue) {
-		var _p0 = maybeValue;
-		switch (_p0.ctor) {
-			case 'Present':
-				return _elm_lang$core$Maybe$Just(
-					A2(
-						_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Argument$Argument,
-						fieldName,
-						toValue(_p0._0)));
-			case 'Absent':
-				return _elm_lang$core$Maybe$Nothing;
-			default:
-				return _elm_lang$core$Maybe$Just(
-					A2(_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Argument$Argument, fieldName, _dillonkearns$graphqelm$Graphqelm_Internal_Encode$null));
-		}
-	});
-var _dillonkearns$graphqelm$Graphqelm_Internal_Builder_Argument$required = F3(
-	function (fieldName, raw, encode) {
-		return A2(
-			_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Argument$Argument,
-			fieldName,
-			encode(raw));
-	});
-
-var _dillonkearns$graphqelm$Graphqelm_RawField$name = function (field) {
-	var _p0 = field;
-	if (_p0.ctor === 'Composite') {
-		return _p0._0;
-	} else {
-		return _p0._0;
-	}
-};
-var _dillonkearns$graphqelm$Graphqelm_RawField$Leaf = F2(
-	function (a, b) {
-		return {ctor: 'Leaf', _0: a, _1: b};
-	});
-var _dillonkearns$graphqelm$Graphqelm_RawField$Composite = F3(
-	function (a, b, c) {
-		return {ctor: 'Composite', _0: a, _1: b, _2: c};
-	});
-
-var _elm_lang$core$Dict$foldr = F3(
-	function (f, acc, t) {
-		foldr:
-		while (true) {
-			var _p0 = t;
-			if (_p0.ctor === 'RBEmpty_elm_builtin') {
-				return acc;
-			} else {
-				var _v1 = f,
-					_v2 = A3(
-					f,
-					_p0._1,
-					_p0._2,
-					A3(_elm_lang$core$Dict$foldr, f, acc, _p0._4)),
-					_v3 = _p0._3;
-				f = _v1;
-				acc = _v2;
-				t = _v3;
-				continue foldr;
-			}
-		}
-	});
-var _elm_lang$core$Dict$keys = function (dict) {
-	return A3(
-		_elm_lang$core$Dict$foldr,
-		F3(
-			function (key, value, keyList) {
-				return {ctor: '::', _0: key, _1: keyList};
-			}),
-		{ctor: '[]'},
-		dict);
-};
-var _elm_lang$core$Dict$values = function (dict) {
-	return A3(
-		_elm_lang$core$Dict$foldr,
-		F3(
-			function (key, value, valueList) {
-				return {ctor: '::', _0: value, _1: valueList};
-			}),
-		{ctor: '[]'},
-		dict);
-};
-var _elm_lang$core$Dict$toList = function (dict) {
-	return A3(
-		_elm_lang$core$Dict$foldr,
-		F3(
-			function (key, value, list) {
-				return {
-					ctor: '::',
-					_0: {ctor: '_Tuple2', _0: key, _1: value},
-					_1: list
-				};
-			}),
-		{ctor: '[]'},
-		dict);
-};
-var _elm_lang$core$Dict$foldl = F3(
-	function (f, acc, dict) {
-		foldl:
-		while (true) {
-			var _p1 = dict;
-			if (_p1.ctor === 'RBEmpty_elm_builtin') {
-				return acc;
-			} else {
-				var _v5 = f,
-					_v6 = A3(
-					f,
-					_p1._1,
-					_p1._2,
-					A3(_elm_lang$core$Dict$foldl, f, acc, _p1._3)),
-					_v7 = _p1._4;
-				f = _v5;
-				acc = _v6;
-				dict = _v7;
-				continue foldl;
-			}
-		}
-	});
-var _elm_lang$core$Dict$merge = F6(
-	function (leftStep, bothStep, rightStep, leftDict, rightDict, initialResult) {
-		var stepState = F3(
-			function (rKey, rValue, _p2) {
-				stepState:
-				while (true) {
-					var _p3 = _p2;
-					var _p9 = _p3._1;
-					var _p8 = _p3._0;
-					var _p4 = _p8;
-					if (_p4.ctor === '[]') {
-						return {
-							ctor: '_Tuple2',
-							_0: _p8,
-							_1: A3(rightStep, rKey, rValue, _p9)
-						};
-					} else {
-						var _p7 = _p4._1;
-						var _p6 = _p4._0._1;
-						var _p5 = _p4._0._0;
-						if (_elm_lang$core$Native_Utils.cmp(_p5, rKey) < 0) {
-							var _v10 = rKey,
-								_v11 = rValue,
-								_v12 = {
-								ctor: '_Tuple2',
-								_0: _p7,
-								_1: A3(leftStep, _p5, _p6, _p9)
-							};
-							rKey = _v10;
-							rValue = _v11;
-							_p2 = _v12;
-							continue stepState;
-						} else {
-							if (_elm_lang$core$Native_Utils.cmp(_p5, rKey) > 0) {
-								return {
-									ctor: '_Tuple2',
-									_0: _p8,
-									_1: A3(rightStep, rKey, rValue, _p9)
-								};
-							} else {
-								return {
-									ctor: '_Tuple2',
-									_0: _p7,
-									_1: A4(bothStep, _p5, _p6, rValue, _p9)
-								};
-							}
-						}
-					}
-				}
-			});
-		var _p10 = A3(
-			_elm_lang$core$Dict$foldl,
-			stepState,
-			{
-				ctor: '_Tuple2',
-				_0: _elm_lang$core$Dict$toList(leftDict),
-				_1: initialResult
-			},
-			rightDict);
-		var leftovers = _p10._0;
-		var intermediateResult = _p10._1;
-		return A3(
-			_elm_lang$core$List$foldl,
-			F2(
-				function (_p11, result) {
-					var _p12 = _p11;
-					return A3(leftStep, _p12._0, _p12._1, result);
-				}),
-			intermediateResult,
-			leftovers);
-	});
-var _elm_lang$core$Dict$reportRemBug = F4(
-	function (msg, c, lgot, rgot) {
-		return _elm_lang$core$Native_Debug.crash(
-			_elm_lang$core$String$concat(
-				{
-					ctor: '::',
-					_0: 'Internal red-black tree invariant violated, expected ',
-					_1: {
-						ctor: '::',
-						_0: msg,
-						_1: {
-							ctor: '::',
-							_0: ' and got ',
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$core$Basics$toString(c),
-								_1: {
-									ctor: '::',
-									_0: '/',
-									_1: {
-										ctor: '::',
-										_0: lgot,
-										_1: {
-											ctor: '::',
-											_0: '/',
-											_1: {
-												ctor: '::',
-												_0: rgot,
-												_1: {
-													ctor: '::',
-													_0: '\nPlease report this bug to <https://github.com/elm-lang/core/issues>',
-													_1: {ctor: '[]'}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}));
-	});
-var _elm_lang$core$Dict$isBBlack = function (dict) {
-	var _p13 = dict;
-	_v14_2:
-	do {
-		if (_p13.ctor === 'RBNode_elm_builtin') {
-			if (_p13._0.ctor === 'BBlack') {
-				return true;
-			} else {
-				break _v14_2;
-			}
-		} else {
-			if (_p13._0.ctor === 'LBBlack') {
-				return true;
-			} else {
-				break _v14_2;
-			}
-		}
-	} while(false);
-	return false;
-};
-var _elm_lang$core$Dict$sizeHelp = F2(
-	function (n, dict) {
-		sizeHelp:
-		while (true) {
-			var _p14 = dict;
-			if (_p14.ctor === 'RBEmpty_elm_builtin') {
-				return n;
-			} else {
-				var _v16 = A2(_elm_lang$core$Dict$sizeHelp, n + 1, _p14._4),
-					_v17 = _p14._3;
-				n = _v16;
-				dict = _v17;
-				continue sizeHelp;
-			}
-		}
-	});
-var _elm_lang$core$Dict$size = function (dict) {
-	return A2(_elm_lang$core$Dict$sizeHelp, 0, dict);
-};
-var _elm_lang$core$Dict$get = F2(
-	function (targetKey, dict) {
-		get:
-		while (true) {
-			var _p15 = dict;
-			if (_p15.ctor === 'RBEmpty_elm_builtin') {
-				return _elm_lang$core$Maybe$Nothing;
-			} else {
-				var _p16 = A2(_elm_lang$core$Basics$compare, targetKey, _p15._1);
-				switch (_p16.ctor) {
-					case 'LT':
-						var _v20 = targetKey,
-							_v21 = _p15._3;
-						targetKey = _v20;
-						dict = _v21;
-						continue get;
-					case 'EQ':
-						return _elm_lang$core$Maybe$Just(_p15._2);
-					default:
-						var _v22 = targetKey,
-							_v23 = _p15._4;
-						targetKey = _v22;
-						dict = _v23;
-						continue get;
-				}
-			}
-		}
-	});
-var _elm_lang$core$Dict$member = F2(
-	function (key, dict) {
-		var _p17 = A2(_elm_lang$core$Dict$get, key, dict);
-		if (_p17.ctor === 'Just') {
-			return true;
-		} else {
-			return false;
-		}
-	});
-var _elm_lang$core$Dict$maxWithDefault = F3(
-	function (k, v, r) {
-		maxWithDefault:
-		while (true) {
-			var _p18 = r;
-			if (_p18.ctor === 'RBEmpty_elm_builtin') {
-				return {ctor: '_Tuple2', _0: k, _1: v};
-			} else {
-				var _v26 = _p18._1,
-					_v27 = _p18._2,
-					_v28 = _p18._4;
-				k = _v26;
-				v = _v27;
-				r = _v28;
-				continue maxWithDefault;
-			}
-		}
-	});
-var _elm_lang$core$Dict$NBlack = {ctor: 'NBlack'};
-var _elm_lang$core$Dict$BBlack = {ctor: 'BBlack'};
-var _elm_lang$core$Dict$Black = {ctor: 'Black'};
-var _elm_lang$core$Dict$blackish = function (t) {
-	var _p19 = t;
-	if (_p19.ctor === 'RBNode_elm_builtin') {
-		var _p20 = _p19._0;
-		return _elm_lang$core$Native_Utils.eq(_p20, _elm_lang$core$Dict$Black) || _elm_lang$core$Native_Utils.eq(_p20, _elm_lang$core$Dict$BBlack);
-	} else {
-		return true;
-	}
-};
-var _elm_lang$core$Dict$Red = {ctor: 'Red'};
-var _elm_lang$core$Dict$moreBlack = function (color) {
-	var _p21 = color;
-	switch (_p21.ctor) {
-		case 'Black':
-			return _elm_lang$core$Dict$BBlack;
-		case 'Red':
-			return _elm_lang$core$Dict$Black;
-		case 'NBlack':
-			return _elm_lang$core$Dict$Red;
-		default:
-			return _elm_lang$core$Native_Debug.crash('Can\'t make a double black node more black!');
-	}
-};
-var _elm_lang$core$Dict$lessBlack = function (color) {
-	var _p22 = color;
-	switch (_p22.ctor) {
-		case 'BBlack':
-			return _elm_lang$core$Dict$Black;
-		case 'Black':
-			return _elm_lang$core$Dict$Red;
-		case 'Red':
-			return _elm_lang$core$Dict$NBlack;
-		default:
-			return _elm_lang$core$Native_Debug.crash('Can\'t make a negative black node less black!');
-	}
-};
-var _elm_lang$core$Dict$LBBlack = {ctor: 'LBBlack'};
-var _elm_lang$core$Dict$LBlack = {ctor: 'LBlack'};
-var _elm_lang$core$Dict$RBEmpty_elm_builtin = function (a) {
-	return {ctor: 'RBEmpty_elm_builtin', _0: a};
-};
-var _elm_lang$core$Dict$empty = _elm_lang$core$Dict$RBEmpty_elm_builtin(_elm_lang$core$Dict$LBlack);
-var _elm_lang$core$Dict$isEmpty = function (dict) {
-	return _elm_lang$core$Native_Utils.eq(dict, _elm_lang$core$Dict$empty);
-};
-var _elm_lang$core$Dict$RBNode_elm_builtin = F5(
-	function (a, b, c, d, e) {
-		return {ctor: 'RBNode_elm_builtin', _0: a, _1: b, _2: c, _3: d, _4: e};
-	});
-var _elm_lang$core$Dict$ensureBlackRoot = function (dict) {
-	var _p23 = dict;
-	if ((_p23.ctor === 'RBNode_elm_builtin') && (_p23._0.ctor === 'Red')) {
-		return A5(_elm_lang$core$Dict$RBNode_elm_builtin, _elm_lang$core$Dict$Black, _p23._1, _p23._2, _p23._3, _p23._4);
-	} else {
-		return dict;
-	}
-};
-var _elm_lang$core$Dict$lessBlackTree = function (dict) {
-	var _p24 = dict;
-	if (_p24.ctor === 'RBNode_elm_builtin') {
-		return A5(
-			_elm_lang$core$Dict$RBNode_elm_builtin,
-			_elm_lang$core$Dict$lessBlack(_p24._0),
-			_p24._1,
-			_p24._2,
-			_p24._3,
-			_p24._4);
-	} else {
-		return _elm_lang$core$Dict$RBEmpty_elm_builtin(_elm_lang$core$Dict$LBlack);
-	}
-};
-var _elm_lang$core$Dict$balancedTree = function (col) {
-	return function (xk) {
-		return function (xv) {
-			return function (yk) {
-				return function (yv) {
-					return function (zk) {
-						return function (zv) {
-							return function (a) {
-								return function (b) {
-									return function (c) {
-										return function (d) {
-											return A5(
-												_elm_lang$core$Dict$RBNode_elm_builtin,
-												_elm_lang$core$Dict$lessBlack(col),
-												yk,
-												yv,
-												A5(_elm_lang$core$Dict$RBNode_elm_builtin, _elm_lang$core$Dict$Black, xk, xv, a, b),
-												A5(_elm_lang$core$Dict$RBNode_elm_builtin, _elm_lang$core$Dict$Black, zk, zv, c, d));
-										};
-									};
-								};
-							};
-						};
-					};
-				};
-			};
-		};
-	};
-};
-var _elm_lang$core$Dict$blacken = function (t) {
-	var _p25 = t;
-	if (_p25.ctor === 'RBEmpty_elm_builtin') {
-		return _elm_lang$core$Dict$RBEmpty_elm_builtin(_elm_lang$core$Dict$LBlack);
-	} else {
-		return A5(_elm_lang$core$Dict$RBNode_elm_builtin, _elm_lang$core$Dict$Black, _p25._1, _p25._2, _p25._3, _p25._4);
-	}
-};
-var _elm_lang$core$Dict$redden = function (t) {
-	var _p26 = t;
-	if (_p26.ctor === 'RBEmpty_elm_builtin') {
-		return _elm_lang$core$Native_Debug.crash('can\'t make a Leaf red');
-	} else {
-		return A5(_elm_lang$core$Dict$RBNode_elm_builtin, _elm_lang$core$Dict$Red, _p26._1, _p26._2, _p26._3, _p26._4);
-	}
-};
-var _elm_lang$core$Dict$balanceHelp = function (tree) {
-	var _p27 = tree;
-	_v36_6:
-	do {
-		_v36_5:
-		do {
-			_v36_4:
-			do {
-				_v36_3:
-				do {
-					_v36_2:
-					do {
-						_v36_1:
-						do {
-							_v36_0:
-							do {
-								if (_p27.ctor === 'RBNode_elm_builtin') {
-									if (_p27._3.ctor === 'RBNode_elm_builtin') {
-										if (_p27._4.ctor === 'RBNode_elm_builtin') {
-											switch (_p27._3._0.ctor) {
-												case 'Red':
-													switch (_p27._4._0.ctor) {
-														case 'Red':
-															if ((_p27._3._3.ctor === 'RBNode_elm_builtin') && (_p27._3._3._0.ctor === 'Red')) {
-																break _v36_0;
-															} else {
-																if ((_p27._3._4.ctor === 'RBNode_elm_builtin') && (_p27._3._4._0.ctor === 'Red')) {
-																	break _v36_1;
-																} else {
-																	if ((_p27._4._3.ctor === 'RBNode_elm_builtin') && (_p27._4._3._0.ctor === 'Red')) {
-																		break _v36_2;
-																	} else {
-																		if ((_p27._4._4.ctor === 'RBNode_elm_builtin') && (_p27._4._4._0.ctor === 'Red')) {
-																			break _v36_3;
-																		} else {
-																			break _v36_6;
-																		}
-																	}
-																}
-															}
-														case 'NBlack':
-															if ((_p27._3._3.ctor === 'RBNode_elm_builtin') && (_p27._3._3._0.ctor === 'Red')) {
-																break _v36_0;
-															} else {
-																if ((_p27._3._4.ctor === 'RBNode_elm_builtin') && (_p27._3._4._0.ctor === 'Red')) {
-																	break _v36_1;
-																} else {
-																	if (((((_p27._0.ctor === 'BBlack') && (_p27._4._3.ctor === 'RBNode_elm_builtin')) && (_p27._4._3._0.ctor === 'Black')) && (_p27._4._4.ctor === 'RBNode_elm_builtin')) && (_p27._4._4._0.ctor === 'Black')) {
-																		break _v36_4;
-																	} else {
-																		break _v36_6;
-																	}
-																}
-															}
-														default:
-															if ((_p27._3._3.ctor === 'RBNode_elm_builtin') && (_p27._3._3._0.ctor === 'Red')) {
-																break _v36_0;
-															} else {
-																if ((_p27._3._4.ctor === 'RBNode_elm_builtin') && (_p27._3._4._0.ctor === 'Red')) {
-																	break _v36_1;
-																} else {
-																	break _v36_6;
-																}
-															}
-													}
-												case 'NBlack':
-													switch (_p27._4._0.ctor) {
-														case 'Red':
-															if ((_p27._4._3.ctor === 'RBNode_elm_builtin') && (_p27._4._3._0.ctor === 'Red')) {
-																break _v36_2;
-															} else {
-																if ((_p27._4._4.ctor === 'RBNode_elm_builtin') && (_p27._4._4._0.ctor === 'Red')) {
-																	break _v36_3;
-																} else {
-																	if (((((_p27._0.ctor === 'BBlack') && (_p27._3._3.ctor === 'RBNode_elm_builtin')) && (_p27._3._3._0.ctor === 'Black')) && (_p27._3._4.ctor === 'RBNode_elm_builtin')) && (_p27._3._4._0.ctor === 'Black')) {
-																		break _v36_5;
-																	} else {
-																		break _v36_6;
-																	}
-																}
-															}
-														case 'NBlack':
-															if (_p27._0.ctor === 'BBlack') {
-																if ((((_p27._4._3.ctor === 'RBNode_elm_builtin') && (_p27._4._3._0.ctor === 'Black')) && (_p27._4._4.ctor === 'RBNode_elm_builtin')) && (_p27._4._4._0.ctor === 'Black')) {
-																	break _v36_4;
-																} else {
-																	if ((((_p27._3._3.ctor === 'RBNode_elm_builtin') && (_p27._3._3._0.ctor === 'Black')) && (_p27._3._4.ctor === 'RBNode_elm_builtin')) && (_p27._3._4._0.ctor === 'Black')) {
-																		break _v36_5;
-																	} else {
-																		break _v36_6;
-																	}
-																}
-															} else {
-																break _v36_6;
-															}
-														default:
-															if (((((_p27._0.ctor === 'BBlack') && (_p27._3._3.ctor === 'RBNode_elm_builtin')) && (_p27._3._3._0.ctor === 'Black')) && (_p27._3._4.ctor === 'RBNode_elm_builtin')) && (_p27._3._4._0.ctor === 'Black')) {
-																break _v36_5;
-															} else {
-																break _v36_6;
-															}
-													}
-												default:
-													switch (_p27._4._0.ctor) {
-														case 'Red':
-															if ((_p27._4._3.ctor === 'RBNode_elm_builtin') && (_p27._4._3._0.ctor === 'Red')) {
-																break _v36_2;
-															} else {
-																if ((_p27._4._4.ctor === 'RBNode_elm_builtin') && (_p27._4._4._0.ctor === 'Red')) {
-																	break _v36_3;
-																} else {
-																	break _v36_6;
-																}
-															}
-														case 'NBlack':
-															if (((((_p27._0.ctor === 'BBlack') && (_p27._4._3.ctor === 'RBNode_elm_builtin')) && (_p27._4._3._0.ctor === 'Black')) && (_p27._4._4.ctor === 'RBNode_elm_builtin')) && (_p27._4._4._0.ctor === 'Black')) {
-																break _v36_4;
-															} else {
-																break _v36_6;
-															}
-														default:
-															break _v36_6;
-													}
-											}
-										} else {
-											switch (_p27._3._0.ctor) {
-												case 'Red':
-													if ((_p27._3._3.ctor === 'RBNode_elm_builtin') && (_p27._3._3._0.ctor === 'Red')) {
-														break _v36_0;
-													} else {
-														if ((_p27._3._4.ctor === 'RBNode_elm_builtin') && (_p27._3._4._0.ctor === 'Red')) {
-															break _v36_1;
-														} else {
-															break _v36_6;
-														}
-													}
-												case 'NBlack':
-													if (((((_p27._0.ctor === 'BBlack') && (_p27._3._3.ctor === 'RBNode_elm_builtin')) && (_p27._3._3._0.ctor === 'Black')) && (_p27._3._4.ctor === 'RBNode_elm_builtin')) && (_p27._3._4._0.ctor === 'Black')) {
-														break _v36_5;
-													} else {
-														break _v36_6;
-													}
-												default:
-													break _v36_6;
-											}
-										}
-									} else {
-										if (_p27._4.ctor === 'RBNode_elm_builtin') {
-											switch (_p27._4._0.ctor) {
-												case 'Red':
-													if ((_p27._4._3.ctor === 'RBNode_elm_builtin') && (_p27._4._3._0.ctor === 'Red')) {
-														break _v36_2;
-													} else {
-														if ((_p27._4._4.ctor === 'RBNode_elm_builtin') && (_p27._4._4._0.ctor === 'Red')) {
-															break _v36_3;
-														} else {
-															break _v36_6;
-														}
-													}
-												case 'NBlack':
-													if (((((_p27._0.ctor === 'BBlack') && (_p27._4._3.ctor === 'RBNode_elm_builtin')) && (_p27._4._3._0.ctor === 'Black')) && (_p27._4._4.ctor === 'RBNode_elm_builtin')) && (_p27._4._4._0.ctor === 'Black')) {
-														break _v36_4;
-													} else {
-														break _v36_6;
-													}
-												default:
-													break _v36_6;
-											}
-										} else {
-											break _v36_6;
-										}
-									}
-								} else {
-									break _v36_6;
-								}
-							} while(false);
-							return _elm_lang$core$Dict$balancedTree(_p27._0)(_p27._3._3._1)(_p27._3._3._2)(_p27._3._1)(_p27._3._2)(_p27._1)(_p27._2)(_p27._3._3._3)(_p27._3._3._4)(_p27._3._4)(_p27._4);
-						} while(false);
-						return _elm_lang$core$Dict$balancedTree(_p27._0)(_p27._3._1)(_p27._3._2)(_p27._3._4._1)(_p27._3._4._2)(_p27._1)(_p27._2)(_p27._3._3)(_p27._3._4._3)(_p27._3._4._4)(_p27._4);
-					} while(false);
-					return _elm_lang$core$Dict$balancedTree(_p27._0)(_p27._1)(_p27._2)(_p27._4._3._1)(_p27._4._3._2)(_p27._4._1)(_p27._4._2)(_p27._3)(_p27._4._3._3)(_p27._4._3._4)(_p27._4._4);
-				} while(false);
-				return _elm_lang$core$Dict$balancedTree(_p27._0)(_p27._1)(_p27._2)(_p27._4._1)(_p27._4._2)(_p27._4._4._1)(_p27._4._4._2)(_p27._3)(_p27._4._3)(_p27._4._4._3)(_p27._4._4._4);
-			} while(false);
-			return A5(
-				_elm_lang$core$Dict$RBNode_elm_builtin,
-				_elm_lang$core$Dict$Black,
-				_p27._4._3._1,
-				_p27._4._3._2,
-				A5(_elm_lang$core$Dict$RBNode_elm_builtin, _elm_lang$core$Dict$Black, _p27._1, _p27._2, _p27._3, _p27._4._3._3),
-				A5(
-					_elm_lang$core$Dict$balance,
-					_elm_lang$core$Dict$Black,
-					_p27._4._1,
-					_p27._4._2,
-					_p27._4._3._4,
-					_elm_lang$core$Dict$redden(_p27._4._4)));
-		} while(false);
-		return A5(
-			_elm_lang$core$Dict$RBNode_elm_builtin,
-			_elm_lang$core$Dict$Black,
-			_p27._3._4._1,
-			_p27._3._4._2,
-			A5(
-				_elm_lang$core$Dict$balance,
-				_elm_lang$core$Dict$Black,
-				_p27._3._1,
-				_p27._3._2,
-				_elm_lang$core$Dict$redden(_p27._3._3),
-				_p27._3._4._3),
-			A5(_elm_lang$core$Dict$RBNode_elm_builtin, _elm_lang$core$Dict$Black, _p27._1, _p27._2, _p27._3._4._4, _p27._4));
-	} while(false);
-	return tree;
-};
-var _elm_lang$core$Dict$balance = F5(
-	function (c, k, v, l, r) {
-		var tree = A5(_elm_lang$core$Dict$RBNode_elm_builtin, c, k, v, l, r);
-		return _elm_lang$core$Dict$blackish(tree) ? _elm_lang$core$Dict$balanceHelp(tree) : tree;
-	});
-var _elm_lang$core$Dict$bubble = F5(
-	function (c, k, v, l, r) {
-		return (_elm_lang$core$Dict$isBBlack(l) || _elm_lang$core$Dict$isBBlack(r)) ? A5(
-			_elm_lang$core$Dict$balance,
-			_elm_lang$core$Dict$moreBlack(c),
-			k,
-			v,
-			_elm_lang$core$Dict$lessBlackTree(l),
-			_elm_lang$core$Dict$lessBlackTree(r)) : A5(_elm_lang$core$Dict$RBNode_elm_builtin, c, k, v, l, r);
-	});
-var _elm_lang$core$Dict$removeMax = F5(
-	function (c, k, v, l, r) {
-		var _p28 = r;
-		if (_p28.ctor === 'RBEmpty_elm_builtin') {
-			return A3(_elm_lang$core$Dict$rem, c, l, r);
-		} else {
-			return A5(
-				_elm_lang$core$Dict$bubble,
-				c,
-				k,
-				v,
-				l,
-				A5(_elm_lang$core$Dict$removeMax, _p28._0, _p28._1, _p28._2, _p28._3, _p28._4));
-		}
-	});
-var _elm_lang$core$Dict$rem = F3(
-	function (color, left, right) {
-		var _p29 = {ctor: '_Tuple2', _0: left, _1: right};
-		if (_p29._0.ctor === 'RBEmpty_elm_builtin') {
-			if (_p29._1.ctor === 'RBEmpty_elm_builtin') {
-				var _p30 = color;
-				switch (_p30.ctor) {
-					case 'Red':
-						return _elm_lang$core$Dict$RBEmpty_elm_builtin(_elm_lang$core$Dict$LBlack);
-					case 'Black':
-						return _elm_lang$core$Dict$RBEmpty_elm_builtin(_elm_lang$core$Dict$LBBlack);
-					default:
-						return _elm_lang$core$Native_Debug.crash('cannot have bblack or nblack nodes at this point');
-				}
-			} else {
-				var _p33 = _p29._1._0;
-				var _p32 = _p29._0._0;
-				var _p31 = {ctor: '_Tuple3', _0: color, _1: _p32, _2: _p33};
-				if ((((_p31.ctor === '_Tuple3') && (_p31._0.ctor === 'Black')) && (_p31._1.ctor === 'LBlack')) && (_p31._2.ctor === 'Red')) {
-					return A5(_elm_lang$core$Dict$RBNode_elm_builtin, _elm_lang$core$Dict$Black, _p29._1._1, _p29._1._2, _p29._1._3, _p29._1._4);
-				} else {
-					return A4(
-						_elm_lang$core$Dict$reportRemBug,
-						'Black/LBlack/Red',
-						color,
-						_elm_lang$core$Basics$toString(_p32),
-						_elm_lang$core$Basics$toString(_p33));
-				}
-			}
-		} else {
-			if (_p29._1.ctor === 'RBEmpty_elm_builtin') {
-				var _p36 = _p29._1._0;
-				var _p35 = _p29._0._0;
-				var _p34 = {ctor: '_Tuple3', _0: color, _1: _p35, _2: _p36};
-				if ((((_p34.ctor === '_Tuple3') && (_p34._0.ctor === 'Black')) && (_p34._1.ctor === 'Red')) && (_p34._2.ctor === 'LBlack')) {
-					return A5(_elm_lang$core$Dict$RBNode_elm_builtin, _elm_lang$core$Dict$Black, _p29._0._1, _p29._0._2, _p29._0._3, _p29._0._4);
-				} else {
-					return A4(
-						_elm_lang$core$Dict$reportRemBug,
-						'Black/Red/LBlack',
-						color,
-						_elm_lang$core$Basics$toString(_p35),
-						_elm_lang$core$Basics$toString(_p36));
-				}
-			} else {
-				var _p40 = _p29._0._2;
-				var _p39 = _p29._0._4;
-				var _p38 = _p29._0._1;
-				var newLeft = A5(_elm_lang$core$Dict$removeMax, _p29._0._0, _p38, _p40, _p29._0._3, _p39);
-				var _p37 = A3(_elm_lang$core$Dict$maxWithDefault, _p38, _p40, _p39);
-				var k = _p37._0;
-				var v = _p37._1;
-				return A5(_elm_lang$core$Dict$bubble, color, k, v, newLeft, right);
-			}
-		}
-	});
-var _elm_lang$core$Dict$map = F2(
-	function (f, dict) {
-		var _p41 = dict;
-		if (_p41.ctor === 'RBEmpty_elm_builtin') {
-			return _elm_lang$core$Dict$RBEmpty_elm_builtin(_elm_lang$core$Dict$LBlack);
-		} else {
-			var _p42 = _p41._1;
-			return A5(
-				_elm_lang$core$Dict$RBNode_elm_builtin,
-				_p41._0,
-				_p42,
-				A2(f, _p42, _p41._2),
-				A2(_elm_lang$core$Dict$map, f, _p41._3),
-				A2(_elm_lang$core$Dict$map, f, _p41._4));
-		}
-	});
-var _elm_lang$core$Dict$Same = {ctor: 'Same'};
-var _elm_lang$core$Dict$Remove = {ctor: 'Remove'};
-var _elm_lang$core$Dict$Insert = {ctor: 'Insert'};
-var _elm_lang$core$Dict$update = F3(
-	function (k, alter, dict) {
-		var up = function (dict) {
-			var _p43 = dict;
-			if (_p43.ctor === 'RBEmpty_elm_builtin') {
-				var _p44 = alter(_elm_lang$core$Maybe$Nothing);
-				if (_p44.ctor === 'Nothing') {
-					return {ctor: '_Tuple2', _0: _elm_lang$core$Dict$Same, _1: _elm_lang$core$Dict$empty};
-				} else {
-					return {
-						ctor: '_Tuple2',
-						_0: _elm_lang$core$Dict$Insert,
-						_1: A5(_elm_lang$core$Dict$RBNode_elm_builtin, _elm_lang$core$Dict$Red, k, _p44._0, _elm_lang$core$Dict$empty, _elm_lang$core$Dict$empty)
-					};
-				}
-			} else {
-				var _p55 = _p43._2;
-				var _p54 = _p43._4;
-				var _p53 = _p43._3;
-				var _p52 = _p43._1;
-				var _p51 = _p43._0;
-				var _p45 = A2(_elm_lang$core$Basics$compare, k, _p52);
-				switch (_p45.ctor) {
-					case 'EQ':
-						var _p46 = alter(
-							_elm_lang$core$Maybe$Just(_p55));
-						if (_p46.ctor === 'Nothing') {
-							return {
-								ctor: '_Tuple2',
-								_0: _elm_lang$core$Dict$Remove,
-								_1: A3(_elm_lang$core$Dict$rem, _p51, _p53, _p54)
-							};
-						} else {
-							return {
-								ctor: '_Tuple2',
-								_0: _elm_lang$core$Dict$Same,
-								_1: A5(_elm_lang$core$Dict$RBNode_elm_builtin, _p51, _p52, _p46._0, _p53, _p54)
-							};
-						}
-					case 'LT':
-						var _p47 = up(_p53);
-						var flag = _p47._0;
-						var newLeft = _p47._1;
-						var _p48 = flag;
-						switch (_p48.ctor) {
-							case 'Same':
-								return {
-									ctor: '_Tuple2',
-									_0: _elm_lang$core$Dict$Same,
-									_1: A5(_elm_lang$core$Dict$RBNode_elm_builtin, _p51, _p52, _p55, newLeft, _p54)
-								};
-							case 'Insert':
-								return {
-									ctor: '_Tuple2',
-									_0: _elm_lang$core$Dict$Insert,
-									_1: A5(_elm_lang$core$Dict$balance, _p51, _p52, _p55, newLeft, _p54)
-								};
-							default:
-								return {
-									ctor: '_Tuple2',
-									_0: _elm_lang$core$Dict$Remove,
-									_1: A5(_elm_lang$core$Dict$bubble, _p51, _p52, _p55, newLeft, _p54)
-								};
-						}
-					default:
-						var _p49 = up(_p54);
-						var flag = _p49._0;
-						var newRight = _p49._1;
-						var _p50 = flag;
-						switch (_p50.ctor) {
-							case 'Same':
-								return {
-									ctor: '_Tuple2',
-									_0: _elm_lang$core$Dict$Same,
-									_1: A5(_elm_lang$core$Dict$RBNode_elm_builtin, _p51, _p52, _p55, _p53, newRight)
-								};
-							case 'Insert':
-								return {
-									ctor: '_Tuple2',
-									_0: _elm_lang$core$Dict$Insert,
-									_1: A5(_elm_lang$core$Dict$balance, _p51, _p52, _p55, _p53, newRight)
-								};
-							default:
-								return {
-									ctor: '_Tuple2',
-									_0: _elm_lang$core$Dict$Remove,
-									_1: A5(_elm_lang$core$Dict$bubble, _p51, _p52, _p55, _p53, newRight)
-								};
-						}
-				}
-			}
-		};
-		var _p56 = up(dict);
-		var flag = _p56._0;
-		var updatedDict = _p56._1;
-		var _p57 = flag;
-		switch (_p57.ctor) {
-			case 'Same':
-				return updatedDict;
-			case 'Insert':
-				return _elm_lang$core$Dict$ensureBlackRoot(updatedDict);
-			default:
-				return _elm_lang$core$Dict$blacken(updatedDict);
-		}
-	});
-var _elm_lang$core$Dict$insert = F3(
-	function (key, value, dict) {
-		return A3(
-			_elm_lang$core$Dict$update,
-			key,
-			_elm_lang$core$Basics$always(
-				_elm_lang$core$Maybe$Just(value)),
-			dict);
-	});
-var _elm_lang$core$Dict$singleton = F2(
-	function (key, value) {
-		return A3(_elm_lang$core$Dict$insert, key, value, _elm_lang$core$Dict$empty);
-	});
-var _elm_lang$core$Dict$union = F2(
-	function (t1, t2) {
-		return A3(_elm_lang$core$Dict$foldl, _elm_lang$core$Dict$insert, t2, t1);
-	});
-var _elm_lang$core$Dict$filter = F2(
-	function (predicate, dictionary) {
-		var add = F3(
-			function (key, value, dict) {
-				return A2(predicate, key, value) ? A3(_elm_lang$core$Dict$insert, key, value, dict) : dict;
-			});
-		return A3(_elm_lang$core$Dict$foldl, add, _elm_lang$core$Dict$empty, dictionary);
-	});
-var _elm_lang$core$Dict$intersect = F2(
-	function (t1, t2) {
-		return A2(
-			_elm_lang$core$Dict$filter,
-			F2(
-				function (k, _p58) {
-					return A2(_elm_lang$core$Dict$member, k, t2);
-				}),
-			t1);
-	});
-var _elm_lang$core$Dict$partition = F2(
-	function (predicate, dict) {
-		var add = F3(
-			function (key, value, _p59) {
-				var _p60 = _p59;
-				var _p62 = _p60._1;
-				var _p61 = _p60._0;
-				return A2(predicate, key, value) ? {
-					ctor: '_Tuple2',
-					_0: A3(_elm_lang$core$Dict$insert, key, value, _p61),
-					_1: _p62
-				} : {
-					ctor: '_Tuple2',
-					_0: _p61,
-					_1: A3(_elm_lang$core$Dict$insert, key, value, _p62)
-				};
-			});
-		return A3(
-			_elm_lang$core$Dict$foldl,
-			add,
-			{ctor: '_Tuple2', _0: _elm_lang$core$Dict$empty, _1: _elm_lang$core$Dict$empty},
-			dict);
-	});
-var _elm_lang$core$Dict$fromList = function (assocs) {
-	return A3(
-		_elm_lang$core$List$foldl,
-		F2(
-			function (_p63, dict) {
-				var _p64 = _p63;
-				return A3(_elm_lang$core$Dict$insert, _p64._0, _p64._1, dict);
-			}),
-		_elm_lang$core$Dict$empty,
-		assocs);
-};
-var _elm_lang$core$Dict$remove = F2(
-	function (key, dict) {
-		return A3(
-			_elm_lang$core$Dict$update,
-			key,
-			_elm_lang$core$Basics$always(_elm_lang$core$Maybe$Nothing),
-			dict);
-	});
-var _elm_lang$core$Dict$diff = F2(
-	function (t1, t2) {
-		return A3(
-			_elm_lang$core$Dict$foldl,
-			F3(
-				function (k, v, t) {
-					return A2(_elm_lang$core$Dict$remove, k, t);
-				}),
-			t1,
-			t2);
-	});
-
 var _elm_lang$core$Json_Decode$null = _elm_lang$core$Native_Json.decodeNull;
 var _elm_lang$core$Json_Decode$value = _elm_lang$core$Native_Json.decodePrimitive('value');
 var _elm_lang$core$Json_Decode$andThen = _elm_lang$core$Native_Json.andThen;
@@ -5953,4132 +6761,6 @@ var _elm_lang$core$Json_Decode$int = _elm_lang$core$Native_Json.decodePrimitive(
 var _elm_lang$core$Json_Decode$bool = _elm_lang$core$Native_Json.decodePrimitive('bool');
 var _elm_lang$core$Json_Decode$string = _elm_lang$core$Native_Json.decodePrimitive('string');
 var _elm_lang$core$Json_Decode$Decoder = {ctor: 'Decoder'};
-
-var _dillonkearns$graphqelm$Graphqelm_Field$combineMaybeList = function (listOfMaybes) {
-	var step = F2(
-		function (maybeElement, accumulator) {
-			var _p0 = maybeElement;
-			if (_p0.ctor === 'Nothing') {
-				return _elm_lang$core$Maybe$Nothing;
-			} else {
-				return A2(
-					_elm_lang$core$Maybe$map,
-					F2(
-						function (x, y) {
-							return {ctor: '::', _0: x, _1: y};
-						})(_p0._0),
-					accumulator);
-			}
-		});
-	return A3(
-		_elm_lang$core$List$foldr,
-		step,
-		_elm_lang$core$Maybe$Just(
-			{ctor: '[]'}),
-		listOfMaybes);
-};
-var _dillonkearns$graphqelm$Graphqelm_Field$Field = F2(
-	function (a, b) {
-		return {ctor: 'Field', _0: a, _1: b};
-	});
-var _dillonkearns$graphqelm$Graphqelm_Field$map = F2(
-	function (mapFunction, _p1) {
-		var _p2 = _p1;
-		return A2(
-			_dillonkearns$graphqelm$Graphqelm_Field$Field,
-			_p2._0,
-			A2(_elm_lang$core$Json_Decode$map, mapFunction, _p2._1));
-	});
-var _dillonkearns$graphqelm$Graphqelm_Field$mapOrFail = F2(
-	function (mapFunction, _p3) {
-		var _p4 = _p3;
-		return A2(
-			_dillonkearns$graphqelm$Graphqelm_Field$Field,
-			_p4._0,
-			A2(
-				_elm_lang$core$Json_Decode$andThen,
-				function (result) {
-					var _p5 = result;
-					if (_p5.ctor === 'Ok') {
-						return _elm_lang$core$Json_Decode$succeed(_p5._0);
-					} else {
-						return _elm_lang$core$Json_Decode$fail(
-							A2(_elm_lang$core$Basics_ops['++'], 'Check your code for calls to mapOrFail, your map function returned an `Err` with the message: ', _p5._0));
-					}
-				},
-				A2(_elm_lang$core$Json_Decode$map, mapFunction, _p4._1)));
-	});
-var _dillonkearns$graphqelm$Graphqelm_Field$nonNullOrFail = function (_p6) {
-	var _p7 = _p6;
-	return A2(
-		_dillonkearns$graphqelm$Graphqelm_Field$Field,
-		_p7._0,
-		A2(
-			_elm_lang$core$Json_Decode$andThen,
-			function (result) {
-				var _p8 = result;
-				if (_p8.ctor === 'Just') {
-					return _elm_lang$core$Json_Decode$succeed(_p8._0);
-				} else {
-					return _elm_lang$core$Json_Decode$fail('Expected non-null but got null, check for calls to nonNullOrFail in your code. Ideally your schema should indicate that this is non-nullable so you don\'t need to use nonNullOrFail at all.');
-				}
-			},
-			_p7._1));
-};
-var _dillonkearns$graphqelm$Graphqelm_Field$nonNullElementsOrFail = function (_p9) {
-	var _p10 = _p9;
-	return A2(
-		_dillonkearns$graphqelm$Graphqelm_Field$Field,
-		_p10._0,
-		A2(
-			_elm_lang$core$Json_Decode$andThen,
-			function (result) {
-				var _p11 = _dillonkearns$graphqelm$Graphqelm_Field$combineMaybeList(result);
-				if (_p11.ctor === 'Nothing') {
-					return _elm_lang$core$Json_Decode$fail('Expected only non-null list elements but found a null. Check for calls to nonNullElementsOrFail in your code. Ideally your schema should indicate that this is non-nullable so you don\'t need to use nonNullElementsOrFail at all.');
-				} else {
-					return _elm_lang$core$Json_Decode$succeed(_p11._0);
-				}
-			},
-			_p10._1));
-};
-
-var _elm_lang$core$Set$foldr = F3(
-	function (f, b, _p0) {
-		var _p1 = _p0;
-		return A3(
-			_elm_lang$core$Dict$foldr,
-			F3(
-				function (k, _p2, b) {
-					return A2(f, k, b);
-				}),
-			b,
-			_p1._0);
-	});
-var _elm_lang$core$Set$foldl = F3(
-	function (f, b, _p3) {
-		var _p4 = _p3;
-		return A3(
-			_elm_lang$core$Dict$foldl,
-			F3(
-				function (k, _p5, b) {
-					return A2(f, k, b);
-				}),
-			b,
-			_p4._0);
-	});
-var _elm_lang$core$Set$toList = function (_p6) {
-	var _p7 = _p6;
-	return _elm_lang$core$Dict$keys(_p7._0);
-};
-var _elm_lang$core$Set$size = function (_p8) {
-	var _p9 = _p8;
-	return _elm_lang$core$Dict$size(_p9._0);
-};
-var _elm_lang$core$Set$member = F2(
-	function (k, _p10) {
-		var _p11 = _p10;
-		return A2(_elm_lang$core$Dict$member, k, _p11._0);
-	});
-var _elm_lang$core$Set$isEmpty = function (_p12) {
-	var _p13 = _p12;
-	return _elm_lang$core$Dict$isEmpty(_p13._0);
-};
-var _elm_lang$core$Set$Set_elm_builtin = function (a) {
-	return {ctor: 'Set_elm_builtin', _0: a};
-};
-var _elm_lang$core$Set$empty = _elm_lang$core$Set$Set_elm_builtin(_elm_lang$core$Dict$empty);
-var _elm_lang$core$Set$singleton = function (k) {
-	return _elm_lang$core$Set$Set_elm_builtin(
-		A2(
-			_elm_lang$core$Dict$singleton,
-			k,
-			{ctor: '_Tuple0'}));
-};
-var _elm_lang$core$Set$insert = F2(
-	function (k, _p14) {
-		var _p15 = _p14;
-		return _elm_lang$core$Set$Set_elm_builtin(
-			A3(
-				_elm_lang$core$Dict$insert,
-				k,
-				{ctor: '_Tuple0'},
-				_p15._0));
-	});
-var _elm_lang$core$Set$fromList = function (xs) {
-	return A3(_elm_lang$core$List$foldl, _elm_lang$core$Set$insert, _elm_lang$core$Set$empty, xs);
-};
-var _elm_lang$core$Set$map = F2(
-	function (f, s) {
-		return _elm_lang$core$Set$fromList(
-			A2(
-				_elm_lang$core$List$map,
-				f,
-				_elm_lang$core$Set$toList(s)));
-	});
-var _elm_lang$core$Set$remove = F2(
-	function (k, _p16) {
-		var _p17 = _p16;
-		return _elm_lang$core$Set$Set_elm_builtin(
-			A2(_elm_lang$core$Dict$remove, k, _p17._0));
-	});
-var _elm_lang$core$Set$union = F2(
-	function (_p19, _p18) {
-		var _p20 = _p19;
-		var _p21 = _p18;
-		return _elm_lang$core$Set$Set_elm_builtin(
-			A2(_elm_lang$core$Dict$union, _p20._0, _p21._0));
-	});
-var _elm_lang$core$Set$intersect = F2(
-	function (_p23, _p22) {
-		var _p24 = _p23;
-		var _p25 = _p22;
-		return _elm_lang$core$Set$Set_elm_builtin(
-			A2(_elm_lang$core$Dict$intersect, _p24._0, _p25._0));
-	});
-var _elm_lang$core$Set$diff = F2(
-	function (_p27, _p26) {
-		var _p28 = _p27;
-		var _p29 = _p26;
-		return _elm_lang$core$Set$Set_elm_builtin(
-			A2(_elm_lang$core$Dict$diff, _p28._0, _p29._0));
-	});
-var _elm_lang$core$Set$filter = F2(
-	function (p, _p30) {
-		var _p31 = _p30;
-		return _elm_lang$core$Set$Set_elm_builtin(
-			A2(
-				_elm_lang$core$Dict$filter,
-				F2(
-					function (k, _p32) {
-						return p(k);
-					}),
-				_p31._0));
-	});
-var _elm_lang$core$Set$partition = F2(
-	function (p, _p33) {
-		var _p34 = _p33;
-		var _p35 = A2(
-			_elm_lang$core$Dict$partition,
-			F2(
-				function (k, _p36) {
-					return p(k);
-				}),
-			_p34._0);
-		var p1 = _p35._0;
-		var p2 = _p35._1;
-		return {
-			ctor: '_Tuple2',
-			_0: _elm_lang$core$Set$Set_elm_builtin(p1),
-			_1: _elm_lang$core$Set$Set_elm_builtin(p2)
-		};
-	});
-
-var _elm_community$list_extra$List_Extra$greedyGroupsOfWithStep = F3(
-	function (size, step, xs) {
-		var okayXs = _elm_lang$core$Native_Utils.cmp(
-			_elm_lang$core$List$length(xs),
-			0) > 0;
-		var okayArgs = (_elm_lang$core$Native_Utils.cmp(size, 0) > 0) && (_elm_lang$core$Native_Utils.cmp(step, 0) > 0);
-		var xs_ = A2(_elm_lang$core$List$drop, step, xs);
-		var group = A2(_elm_lang$core$List$take, size, xs);
-		return (okayArgs && okayXs) ? {
-			ctor: '::',
-			_0: group,
-			_1: A3(_elm_community$list_extra$List_Extra$greedyGroupsOfWithStep, size, step, xs_)
-		} : {ctor: '[]'};
-	});
-var _elm_community$list_extra$List_Extra$greedyGroupsOf = F2(
-	function (size, xs) {
-		return A3(_elm_community$list_extra$List_Extra$greedyGroupsOfWithStep, size, size, xs);
-	});
-var _elm_community$list_extra$List_Extra$groupsOfWithStep = F3(
-	function (size, step, xs) {
-		var okayArgs = (_elm_lang$core$Native_Utils.cmp(size, 0) > 0) && (_elm_lang$core$Native_Utils.cmp(step, 0) > 0);
-		var xs_ = A2(_elm_lang$core$List$drop, step, xs);
-		var group = A2(_elm_lang$core$List$take, size, xs);
-		var okayLength = _elm_lang$core$Native_Utils.eq(
-			size,
-			_elm_lang$core$List$length(group));
-		return (okayArgs && okayLength) ? {
-			ctor: '::',
-			_0: group,
-			_1: A3(_elm_community$list_extra$List_Extra$groupsOfWithStep, size, step, xs_)
-		} : {ctor: '[]'};
-	});
-var _elm_community$list_extra$List_Extra$groupsOf = F2(
-	function (size, xs) {
-		return A3(_elm_community$list_extra$List_Extra$groupsOfWithStep, size, size, xs);
-	});
-var _elm_community$list_extra$List_Extra$zip5 = _elm_lang$core$List$map5(
-	F5(
-		function (v0, v1, v2, v3, v4) {
-			return {ctor: '_Tuple5', _0: v0, _1: v1, _2: v2, _3: v3, _4: v4};
-		}));
-var _elm_community$list_extra$List_Extra$zip4 = _elm_lang$core$List$map4(
-	F4(
-		function (v0, v1, v2, v3) {
-			return {ctor: '_Tuple4', _0: v0, _1: v1, _2: v2, _3: v3};
-		}));
-var _elm_community$list_extra$List_Extra$zip3 = _elm_lang$core$List$map3(
-	F3(
-		function (v0, v1, v2) {
-			return {ctor: '_Tuple3', _0: v0, _1: v1, _2: v2};
-		}));
-var _elm_community$list_extra$List_Extra$zip = _elm_lang$core$List$map2(
-	F2(
-		function (v0, v1) {
-			return {ctor: '_Tuple2', _0: v0, _1: v1};
-		}));
-var _elm_community$list_extra$List_Extra$isSubsequenceOf = F2(
-	function (subseq, list) {
-		isSubsequenceOf:
-		while (true) {
-			var _p0 = {ctor: '_Tuple2', _0: subseq, _1: list};
-			if (_p0._0.ctor === '[]') {
-				return true;
-			} else {
-				if (_p0._1.ctor === '[]') {
-					return false;
-				} else {
-					var _p1 = _p0._1._1;
-					if (_elm_lang$core$Native_Utils.eq(_p0._0._0, _p0._1._0)) {
-						var _v1 = _p0._0._1,
-							_v2 = _p1;
-						subseq = _v1;
-						list = _v2;
-						continue isSubsequenceOf;
-					} else {
-						var _v3 = subseq,
-							_v4 = _p1;
-						subseq = _v3;
-						list = _v4;
-						continue isSubsequenceOf;
-					}
-				}
-			}
-		}
-	});
-var _elm_community$list_extra$List_Extra$isPrefixOf = F2(
-	function (prefix, xs) {
-		var _p2 = {ctor: '_Tuple2', _0: prefix, _1: xs};
-		if (_p2._0.ctor === '[]') {
-			return true;
-		} else {
-			if (_p2._1.ctor === '[]') {
-				return false;
-			} else {
-				return _elm_lang$core$Native_Utils.eq(_p2._0._0, _p2._1._0) && A2(_elm_community$list_extra$List_Extra$isPrefixOf, _p2._0._1, _p2._1._1);
-			}
-		}
-	});
-var _elm_community$list_extra$List_Extra$isSuffixOf = F2(
-	function (suffix, xs) {
-		return A2(
-			_elm_community$list_extra$List_Extra$isPrefixOf,
-			_elm_lang$core$List$reverse(suffix),
-			_elm_lang$core$List$reverse(xs));
-	});
-var _elm_community$list_extra$List_Extra$isInfixOfHelp = F3(
-	function (infixHead, infixTail, list) {
-		isInfixOfHelp:
-		while (true) {
-			var _p3 = list;
-			if (_p3.ctor === '[]') {
-				return false;
-			} else {
-				var _p4 = _p3._1;
-				if (_elm_lang$core$Native_Utils.eq(_p3._0, infixHead)) {
-					return A2(_elm_community$list_extra$List_Extra$isPrefixOf, infixTail, _p4);
-				} else {
-					var _v7 = infixHead,
-						_v8 = infixTail,
-						_v9 = _p4;
-					infixHead = _v7;
-					infixTail = _v8;
-					list = _v9;
-					continue isInfixOfHelp;
-				}
-			}
-		}
-	});
-var _elm_community$list_extra$List_Extra$isInfixOf = F2(
-	function (infixList, list) {
-		var _p5 = infixList;
-		if (_p5.ctor === '[]') {
-			return true;
-		} else {
-			return A3(_elm_community$list_extra$List_Extra$isInfixOfHelp, _p5._0, _p5._1, list);
-		}
-	});
-var _elm_community$list_extra$List_Extra$selectSplit = function (xs) {
-	var _p6 = xs;
-	if (_p6.ctor === '[]') {
-		return {ctor: '[]'};
-	} else {
-		var _p10 = _p6._1;
-		var _p9 = _p6._0;
-		return {
-			ctor: '::',
-			_0: {
-				ctor: '_Tuple3',
-				_0: {ctor: '[]'},
-				_1: _p9,
-				_2: _p10
-			},
-			_1: A2(
-				_elm_lang$core$List$map,
-				function (_p7) {
-					var _p8 = _p7;
-					return {
-						ctor: '_Tuple3',
-						_0: {ctor: '::', _0: _p9, _1: _p8._0},
-						_1: _p8._1,
-						_2: _p8._2
-					};
-				},
-				_elm_community$list_extra$List_Extra$selectSplit(_p10))
-		};
-	}
-};
-var _elm_community$list_extra$List_Extra$select = function (xs) {
-	var _p11 = xs;
-	if (_p11.ctor === '[]') {
-		return {ctor: '[]'};
-	} else {
-		var _p15 = _p11._1;
-		var _p14 = _p11._0;
-		return {
-			ctor: '::',
-			_0: {ctor: '_Tuple2', _0: _p14, _1: _p15},
-			_1: A2(
-				_elm_lang$core$List$map,
-				function (_p12) {
-					var _p13 = _p12;
-					return {
-						ctor: '_Tuple2',
-						_0: _p13._0,
-						_1: {ctor: '::', _0: _p14, _1: _p13._1}
-					};
-				},
-				_elm_community$list_extra$List_Extra$select(_p15))
-		};
-	}
-};
-var _elm_community$list_extra$List_Extra$tailsHelp = F2(
-	function (e, list) {
-		var _p16 = list;
-		if (_p16.ctor === '::') {
-			var _p17 = _p16._0;
-			return {
-				ctor: '::',
-				_0: {ctor: '::', _0: e, _1: _p17},
-				_1: {ctor: '::', _0: _p17, _1: _p16._1}
-			};
-		} else {
-			return {ctor: '[]'};
-		}
-	});
-var _elm_community$list_extra$List_Extra$tails = A2(
-	_elm_lang$core$List$foldr,
-	_elm_community$list_extra$List_Extra$tailsHelp,
-	{
-		ctor: '::',
-		_0: {ctor: '[]'},
-		_1: {ctor: '[]'}
-	});
-var _elm_community$list_extra$List_Extra$inits = A2(
-	_elm_lang$core$List$foldr,
-	F2(
-		function (e, acc) {
-			return {
-				ctor: '::',
-				_0: {ctor: '[]'},
-				_1: A2(
-					_elm_lang$core$List$map,
-					F2(
-						function (x, y) {
-							return {ctor: '::', _0: x, _1: y};
-						})(e),
-					acc)
-			};
-		}),
-	{
-		ctor: '::',
-		_0: {ctor: '[]'},
-		_1: {ctor: '[]'}
-	});
-var _elm_community$list_extra$List_Extra$groupWhileTransitivelyHelp = F4(
-	function (result, currentGroup, compare, list) {
-		groupWhileTransitivelyHelp:
-		while (true) {
-			var _p18 = list;
-			if (_p18.ctor === '[]') {
-				return _elm_lang$core$List$reverse(
-					_elm_lang$core$List$isEmpty(currentGroup) ? result : _elm_lang$core$List$reverse(
-						{ctor: '::', _0: currentGroup, _1: result}));
-			} else {
-				if (_p18._1.ctor === '[]') {
-					return _elm_lang$core$List$reverse(
-						{
-							ctor: '::',
-							_0: _elm_lang$core$List$reverse(
-								{ctor: '::', _0: _p18._0, _1: currentGroup}),
-							_1: result
-						});
-				} else {
-					var _p20 = _p18._1;
-					var _p19 = _p18._0;
-					if (A2(compare, _p19, _p18._1._0)) {
-						var _v17 = result,
-							_v18 = {ctor: '::', _0: _p19, _1: currentGroup},
-							_v19 = compare,
-							_v20 = _p20;
-						result = _v17;
-						currentGroup = _v18;
-						compare = _v19;
-						list = _v20;
-						continue groupWhileTransitivelyHelp;
-					} else {
-						var _v21 = {
-							ctor: '::',
-							_0: _elm_lang$core$List$reverse(
-								{ctor: '::', _0: _p19, _1: currentGroup}),
-							_1: result
-						},
-							_v22 = {ctor: '[]'},
-							_v23 = compare,
-							_v24 = _p20;
-						result = _v21;
-						currentGroup = _v22;
-						compare = _v23;
-						list = _v24;
-						continue groupWhileTransitivelyHelp;
-					}
-				}
-			}
-		}
-	});
-var _elm_community$list_extra$List_Extra$groupWhileTransitively = F2(
-	function (compare, list) {
-		return A4(
-			_elm_community$list_extra$List_Extra$groupWhileTransitivelyHelp,
-			{ctor: '[]'},
-			{ctor: '[]'},
-			compare,
-			list);
-	});
-var _elm_community$list_extra$List_Extra$stripPrefix = F2(
-	function (prefix, xs) {
-		var step = F2(
-			function (e, m) {
-				var _p21 = m;
-				if (_p21.ctor === 'Nothing') {
-					return _elm_lang$core$Maybe$Nothing;
-				} else {
-					if (_p21._0.ctor === '[]') {
-						return _elm_lang$core$Maybe$Nothing;
-					} else {
-						return _elm_lang$core$Native_Utils.eq(e, _p21._0._0) ? _elm_lang$core$Maybe$Just(_p21._0._1) : _elm_lang$core$Maybe$Nothing;
-					}
-				}
-			});
-		return A3(
-			_elm_lang$core$List$foldl,
-			step,
-			_elm_lang$core$Maybe$Just(xs),
-			prefix);
-	});
-var _elm_community$list_extra$List_Extra$dropWhileRight = function (p) {
-	return A2(
-		_elm_lang$core$List$foldr,
-		F2(
-			function (x, xs) {
-				return (p(x) && _elm_lang$core$List$isEmpty(xs)) ? {ctor: '[]'} : {ctor: '::', _0: x, _1: xs};
-			}),
-		{ctor: '[]'});
-};
-var _elm_community$list_extra$List_Extra$takeWhileRight = function (p) {
-	var step = F2(
-		function (x, _p22) {
-			var _p23 = _p22;
-			var _p24 = _p23._0;
-			return (p(x) && _p23._1) ? {
-				ctor: '_Tuple2',
-				_0: {ctor: '::', _0: x, _1: _p24},
-				_1: true
-			} : {ctor: '_Tuple2', _0: _p24, _1: false};
-		});
-	return function (_p25) {
-		return _elm_lang$core$Tuple$first(
-			A3(
-				_elm_lang$core$List$foldr,
-				step,
-				{
-					ctor: '_Tuple2',
-					_0: {ctor: '[]'},
-					_1: true
-				},
-				_p25));
-	};
-};
-var _elm_community$list_extra$List_Extra$splitAt = F2(
-	function (n, xs) {
-		return {
-			ctor: '_Tuple2',
-			_0: A2(_elm_lang$core$List$take, n, xs),
-			_1: A2(_elm_lang$core$List$drop, n, xs)
-		};
-	});
-var _elm_community$list_extra$List_Extra$groupsOfVarying_ = F3(
-	function (listOflengths, list, accu) {
-		groupsOfVarying_:
-		while (true) {
-			var _p26 = {ctor: '_Tuple2', _0: listOflengths, _1: list};
-			if (((_p26.ctor === '_Tuple2') && (_p26._0.ctor === '::')) && (_p26._1.ctor === '::')) {
-				var _p27 = A2(_elm_community$list_extra$List_Extra$splitAt, _p26._0._0, list);
-				var head = _p27._0;
-				var tail = _p27._1;
-				var _v28 = _p26._0._1,
-					_v29 = tail,
-					_v30 = {ctor: '::', _0: head, _1: accu};
-				listOflengths = _v28;
-				list = _v29;
-				accu = _v30;
-				continue groupsOfVarying_;
-			} else {
-				return _elm_lang$core$List$reverse(accu);
-			}
-		}
-	});
-var _elm_community$list_extra$List_Extra$groupsOfVarying = F2(
-	function (listOflengths, list) {
-		return A3(
-			_elm_community$list_extra$List_Extra$groupsOfVarying_,
-			listOflengths,
-			list,
-			{ctor: '[]'});
-	});
-var _elm_community$list_extra$List_Extra$unfoldr = F2(
-	function (f, seed) {
-		var _p28 = f(seed);
-		if (_p28.ctor === 'Nothing') {
-			return {ctor: '[]'};
-		} else {
-			return {
-				ctor: '::',
-				_0: _p28._0._0,
-				_1: A2(_elm_community$list_extra$List_Extra$unfoldr, f, _p28._0._1)
-			};
-		}
-	});
-var _elm_community$list_extra$List_Extra$mapAccumr = F3(
-	function (f, acc0, list) {
-		return A3(
-			_elm_lang$core$List$foldr,
-			F2(
-				function (x, _p29) {
-					var _p30 = _p29;
-					var _p31 = A2(f, _p30._0, x);
-					var acc2 = _p31._0;
-					var y = _p31._1;
-					return {
-						ctor: '_Tuple2',
-						_0: acc2,
-						_1: {ctor: '::', _0: y, _1: _p30._1}
-					};
-				}),
-			{
-				ctor: '_Tuple2',
-				_0: acc0,
-				_1: {ctor: '[]'}
-			},
-			list);
-	});
-var _elm_community$list_extra$List_Extra$mapAccuml = F3(
-	function (f, acc0, list) {
-		var _p32 = A3(
-			_elm_lang$core$List$foldl,
-			F2(
-				function (x, _p33) {
-					var _p34 = _p33;
-					var _p35 = A2(f, _p34._0, x);
-					var acc2 = _p35._0;
-					var y = _p35._1;
-					return {
-						ctor: '_Tuple2',
-						_0: acc2,
-						_1: {ctor: '::', _0: y, _1: _p34._1}
-					};
-				}),
-			{
-				ctor: '_Tuple2',
-				_0: acc0,
-				_1: {ctor: '[]'}
-			},
-			list);
-		var accFinal = _p32._0;
-		var generatedList = _p32._1;
-		return {
-			ctor: '_Tuple2',
-			_0: accFinal,
-			_1: _elm_lang$core$List$reverse(generatedList)
-		};
-	});
-var _elm_community$list_extra$List_Extra$scanr1 = F2(
-	function (f, xs_) {
-		var _p36 = xs_;
-		if (_p36.ctor === '[]') {
-			return {ctor: '[]'};
-		} else {
-			if (_p36._1.ctor === '[]') {
-				return {
-					ctor: '::',
-					_0: _p36._0,
-					_1: {ctor: '[]'}
-				};
-			} else {
-				var _p37 = A2(_elm_community$list_extra$List_Extra$scanr1, f, _p36._1);
-				if (_p37.ctor === '::') {
-					return {
-						ctor: '::',
-						_0: A2(f, _p36._0, _p37._0),
-						_1: _p37
-					};
-				} else {
-					return {ctor: '[]'};
-				}
-			}
-		}
-	});
-var _elm_community$list_extra$List_Extra$scanr = F3(
-	function (f, acc, xs_) {
-		var _p38 = xs_;
-		if (_p38.ctor === '[]') {
-			return {
-				ctor: '::',
-				_0: acc,
-				_1: {ctor: '[]'}
-			};
-		} else {
-			var _p39 = A3(_elm_community$list_extra$List_Extra$scanr, f, acc, _p38._1);
-			if (_p39.ctor === '::') {
-				return {
-					ctor: '::',
-					_0: A2(f, _p38._0, _p39._0),
-					_1: _p39
-				};
-			} else {
-				return {ctor: '[]'};
-			}
-		}
-	});
-var _elm_community$list_extra$List_Extra$scanl1 = F2(
-	function (f, xs_) {
-		var _p40 = xs_;
-		if (_p40.ctor === '[]') {
-			return {ctor: '[]'};
-		} else {
-			return A3(_elm_lang$core$List$scanl, f, _p40._0, _p40._1);
-		}
-	});
-var _elm_community$list_extra$List_Extra$indexedFoldr = F3(
-	function (func, acc, list) {
-		var step = F2(
-			function (x, _p41) {
-				var _p42 = _p41;
-				var _p43 = _p42._0;
-				return {
-					ctor: '_Tuple2',
-					_0: _p43 - 1,
-					_1: A3(func, _p43, x, _p42._1)
-				};
-			});
-		return _elm_lang$core$Tuple$second(
-			A3(
-				_elm_lang$core$List$foldr,
-				step,
-				{
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$List$length(list) - 1,
-					_1: acc
-				},
-				list));
-	});
-var _elm_community$list_extra$List_Extra$indexedFoldl = F3(
-	function (func, acc, list) {
-		var step = F2(
-			function (x, _p44) {
-				var _p45 = _p44;
-				var _p46 = _p45._0;
-				return {
-					ctor: '_Tuple2',
-					_0: _p46 + 1,
-					_1: A3(func, _p46, x, _p45._1)
-				};
-			});
-		return _elm_lang$core$Tuple$second(
-			A3(
-				_elm_lang$core$List$foldl,
-				step,
-				{ctor: '_Tuple2', _0: 0, _1: acc},
-				list));
-	});
-var _elm_community$list_extra$List_Extra$foldr1 = F2(
-	function (f, xs) {
-		var mf = F2(
-			function (x, m) {
-				return _elm_lang$core$Maybe$Just(
-					function () {
-						var _p47 = m;
-						if (_p47.ctor === 'Nothing') {
-							return x;
-						} else {
-							return A2(f, x, _p47._0);
-						}
-					}());
-			});
-		return A3(_elm_lang$core$List$foldr, mf, _elm_lang$core$Maybe$Nothing, xs);
-	});
-var _elm_community$list_extra$List_Extra$foldl1 = F2(
-	function (f, xs) {
-		var mf = F2(
-			function (x, m) {
-				return _elm_lang$core$Maybe$Just(
-					function () {
-						var _p48 = m;
-						if (_p48.ctor === 'Nothing') {
-							return x;
-						} else {
-							return A2(f, _p48._0, x);
-						}
-					}());
-			});
-		return A3(_elm_lang$core$List$foldl, mf, _elm_lang$core$Maybe$Nothing, xs);
-	});
-var _elm_community$list_extra$List_Extra$reverseAppend = F2(
-	function (list1, list2) {
-		return A3(
-			_elm_lang$core$List$foldl,
-			F2(
-				function (x, y) {
-					return {ctor: '::', _0: x, _1: y};
-				}),
-			list2,
-			list1);
-	});
-var _elm_community$list_extra$List_Extra$interweaveHelp = F3(
-	function (acc, list1, list2) {
-		interweaveHelp:
-		while (true) {
-			var _p49 = {ctor: '_Tuple2', _0: list1, _1: list2};
-			if (_p49._0.ctor === '::') {
-				if (_p49._1.ctor === '::') {
-					var _v44 = {
-						ctor: '::',
-						_0: _p49._1._0,
-						_1: {ctor: '::', _0: _p49._0._0, _1: acc}
-					},
-						_v45 = _p49._0._1,
-						_v46 = _p49._1._1;
-					acc = _v44;
-					list1 = _v45;
-					list2 = _v46;
-					continue interweaveHelp;
-				} else {
-					return A2(_elm_community$list_extra$List_Extra$reverseAppend, acc, list1);
-				}
-			} else {
-				return A2(_elm_community$list_extra$List_Extra$reverseAppend, acc, list2);
-			}
-		}
-	});
-var _elm_community$list_extra$List_Extra$interweave = _elm_community$list_extra$List_Extra$interweaveHelp(
-	{ctor: '[]'});
-var _elm_community$list_extra$List_Extra$permutations = function (xs_) {
-	var _p50 = xs_;
-	if (_p50.ctor === '[]') {
-		return {
-			ctor: '::',
-			_0: {ctor: '[]'},
-			_1: {ctor: '[]'}
-		};
-	} else {
-		var f = function (_p51) {
-			var _p52 = _p51;
-			return A2(
-				_elm_lang$core$List$map,
-				F2(
-					function (x, y) {
-						return {ctor: '::', _0: x, _1: y};
-					})(_p52._0),
-				_elm_community$list_extra$List_Extra$permutations(_p52._1));
-		};
-		return A2(
-			_elm_lang$core$List$concatMap,
-			f,
-			_elm_community$list_extra$List_Extra$select(_p50));
-	}
-};
-var _elm_community$list_extra$List_Extra$isPermutationOf = F2(
-	function (permut, xs) {
-		return A2(
-			_elm_lang$core$List$member,
-			permut,
-			_elm_community$list_extra$List_Extra$permutations(xs));
-	});
-var _elm_community$list_extra$List_Extra$subsequencesNonEmpty = function (xs) {
-	var _p53 = xs;
-	if (_p53.ctor === '[]') {
-		return {ctor: '[]'};
-	} else {
-		var _p54 = _p53._0;
-		var f = F2(
-			function (ys, r) {
-				return {
-					ctor: '::',
-					_0: ys,
-					_1: {
-						ctor: '::',
-						_0: {ctor: '::', _0: _p54, _1: ys},
-						_1: r
-					}
-				};
-			});
-		return {
-			ctor: '::',
-			_0: {
-				ctor: '::',
-				_0: _p54,
-				_1: {ctor: '[]'}
-			},
-			_1: A3(
-				_elm_lang$core$List$foldr,
-				f,
-				{ctor: '[]'},
-				_elm_community$list_extra$List_Extra$subsequencesNonEmpty(_p53._1))
-		};
-	}
-};
-var _elm_community$list_extra$List_Extra$subsequences = function (xs) {
-	return {
-		ctor: '::',
-		_0: {ctor: '[]'},
-		_1: _elm_community$list_extra$List_Extra$subsequencesNonEmpty(xs)
-	};
-};
-var _elm_community$list_extra$List_Extra$rowsLength = function (listOfLists) {
-	var _p55 = listOfLists;
-	if (_p55.ctor === '[]') {
-		return 0;
-	} else {
-		return _elm_lang$core$List$length(_p55._0);
-	}
-};
-var _elm_community$list_extra$List_Extra$transpose = function (listOfLists) {
-	return A3(
-		_elm_lang$core$List$foldr,
-		_elm_lang$core$List$map2(
-			F2(
-				function (x, y) {
-					return {ctor: '::', _0: x, _1: y};
-				})),
-		A2(
-			_elm_lang$core$List$repeat,
-			_elm_community$list_extra$List_Extra$rowsLength(listOfLists),
-			{ctor: '[]'}),
-		listOfLists);
-};
-var _elm_community$list_extra$List_Extra$intercalate = function (xs) {
-	return function (_p56) {
-		return _elm_lang$core$List$concat(
-			A2(_elm_lang$core$List$intersperse, xs, _p56));
-	};
-};
-var _elm_community$list_extra$List_Extra$filterNot = F2(
-	function (pred, list) {
-		return A2(
-			_elm_lang$core$List$filter,
-			function (_p57) {
-				return !pred(_p57);
-			},
-			list);
-	});
-var _elm_community$list_extra$List_Extra$removeIfIndex = function (predicate) {
-	return A2(
-		_elm_community$list_extra$List_Extra$indexedFoldr,
-		F3(
-			function (index, item, acc) {
-				return predicate(index) ? acc : {ctor: '::', _0: item, _1: acc};
-			}),
-		{ctor: '[]'});
-};
-var _elm_community$list_extra$List_Extra$removeAt = F2(
-	function (index, l) {
-		if (_elm_lang$core$Native_Utils.cmp(index, 0) < 0) {
-			return l;
-		} else {
-			var tail = _elm_lang$core$List$tail(
-				A2(_elm_lang$core$List$drop, index, l));
-			var head = A2(_elm_lang$core$List$take, index, l);
-			var _p58 = tail;
-			if (_p58.ctor === 'Nothing') {
-				return l;
-			} else {
-				return A2(_elm_lang$core$List$append, head, _p58._0);
-			}
-		}
-	});
-var _elm_community$list_extra$List_Extra$stableSortWith = F2(
-	function (pred, list) {
-		var predWithIndex = F2(
-			function (_p60, _p59) {
-				var _p61 = _p60;
-				var _p62 = _p59;
-				var result = A2(pred, _p61._0, _p62._0);
-				var _p63 = result;
-				if (_p63.ctor === 'EQ') {
-					return A2(_elm_lang$core$Basics$compare, _p61._1, _p62._1);
-				} else {
-					return result;
-				}
-			});
-		var listWithIndex = A2(
-			_elm_lang$core$List$indexedMap,
-			F2(
-				function (i, a) {
-					return {ctor: '_Tuple2', _0: a, _1: i};
-				}),
-			list);
-		return A2(
-			_elm_lang$core$List$map,
-			_elm_lang$core$Tuple$first,
-			A2(_elm_lang$core$List$sortWith, predWithIndex, listWithIndex));
-	});
-var _elm_community$list_extra$List_Extra$remove = F2(
-	function (x, xs) {
-		var _p64 = xs;
-		if (_p64.ctor === '[]') {
-			return {ctor: '[]'};
-		} else {
-			var _p66 = _p64._1;
-			var _p65 = _p64._0;
-			return _elm_lang$core$Native_Utils.eq(x, _p65) ? _p66 : {
-				ctor: '::',
-				_0: _p65,
-				_1: A2(_elm_community$list_extra$List_Extra$remove, x, _p66)
-			};
-		}
-	});
-var _elm_community$list_extra$List_Extra$updateIfIndex = F3(
-	function (predicate, update, list) {
-		return A2(
-			_elm_lang$core$List$indexedMap,
-			F2(
-				function (i, x) {
-					return predicate(i) ? update(x) : x;
-				}),
-			list);
-	});
-var _elm_community$list_extra$List_Extra$updateAt = F3(
-	function (index, fn, list) {
-		if (_elm_lang$core$Native_Utils.cmp(index, 0) < 0) {
-			return list;
-		} else {
-			var tail = A2(_elm_lang$core$List$drop, index, list);
-			var head = A2(_elm_lang$core$List$take, index, list);
-			var _p67 = tail;
-			if (_p67.ctor === '::') {
-				return A2(
-					_elm_lang$core$Basics_ops['++'],
-					head,
-					{
-						ctor: '::',
-						_0: fn(_p67._0),
-						_1: _p67._1
-					});
-			} else {
-				return list;
-			}
-		}
-	});
-var _elm_community$list_extra$List_Extra$setAt = F2(
-	function (index, value) {
-		return A2(
-			_elm_community$list_extra$List_Extra$updateAt,
-			index,
-			_elm_lang$core$Basics$always(value));
-	});
-var _elm_community$list_extra$List_Extra$updateIf = F3(
-	function (predicate, update, list) {
-		return A2(
-			_elm_lang$core$List$map,
-			function (item) {
-				return predicate(item) ? update(item) : item;
-			},
-			list);
-	});
-var _elm_community$list_extra$List_Extra$replaceIf = F3(
-	function (predicate, replacement, list) {
-		return A3(
-			_elm_community$list_extra$List_Extra$updateIf,
-			predicate,
-			_elm_lang$core$Basics$always(replacement),
-			list);
-	});
-var _elm_community$list_extra$List_Extra$count = function (predicate) {
-	return A2(
-		_elm_lang$core$List$foldl,
-		F2(
-			function (x, acc) {
-				return predicate(x) ? (acc + 1) : acc;
-			}),
-		0);
-};
-var _elm_community$list_extra$List_Extra$findIndices = function (predicate) {
-	var consIndexIf = F3(
-		function (index, x, acc) {
-			return predicate(x) ? {ctor: '::', _0: index, _1: acc} : acc;
-		});
-	return A2(
-		_elm_community$list_extra$List_Extra$indexedFoldr,
-		consIndexIf,
-		{ctor: '[]'});
-};
-var _elm_community$list_extra$List_Extra$findIndexHelp = F3(
-	function (index, predicate, list) {
-		findIndexHelp:
-		while (true) {
-			var _p68 = list;
-			if (_p68.ctor === '[]') {
-				return _elm_lang$core$Maybe$Nothing;
-			} else {
-				if (predicate(_p68._0)) {
-					return _elm_lang$core$Maybe$Just(index);
-				} else {
-					var _v58 = index + 1,
-						_v59 = predicate,
-						_v60 = _p68._1;
-					index = _v58;
-					predicate = _v59;
-					list = _v60;
-					continue findIndexHelp;
-				}
-			}
-		}
-	});
-var _elm_community$list_extra$List_Extra$findIndex = _elm_community$list_extra$List_Extra$findIndexHelp(0);
-var _elm_community$list_extra$List_Extra$splitWhen = F2(
-	function (predicate, list) {
-		return A2(
-			_elm_lang$core$Maybe$map,
-			function (i) {
-				return A2(_elm_community$list_extra$List_Extra$splitAt, i, list);
-			},
-			A2(_elm_community$list_extra$List_Extra$findIndex, predicate, list));
-	});
-var _elm_community$list_extra$List_Extra$elemIndices = function (x) {
-	return _elm_community$list_extra$List_Extra$findIndices(
-		F2(
-			function (x, y) {
-				return _elm_lang$core$Native_Utils.eq(x, y);
-			})(x));
-};
-var _elm_community$list_extra$List_Extra$elemIndex = function (x) {
-	return _elm_community$list_extra$List_Extra$findIndex(
-		F2(
-			function (x, y) {
-				return _elm_lang$core$Native_Utils.eq(x, y);
-			})(x));
-};
-var _elm_community$list_extra$List_Extra$find = F2(
-	function (predicate, list) {
-		find:
-		while (true) {
-			var _p69 = list;
-			if (_p69.ctor === '[]') {
-				return _elm_lang$core$Maybe$Nothing;
-			} else {
-				var _p70 = _p69._0;
-				if (predicate(_p70)) {
-					return _elm_lang$core$Maybe$Just(_p70);
-				} else {
-					var _v62 = predicate,
-						_v63 = _p69._1;
-					predicate = _v62;
-					list = _v63;
-					continue find;
-				}
-			}
-		}
-	});
-var _elm_community$list_extra$List_Extra$notMember = function (x) {
-	return function (_p71) {
-		return !A2(_elm_lang$core$List$member, x, _p71);
-	};
-};
-var _elm_community$list_extra$List_Extra$reverseMap = F2(
-	function (f, xs) {
-		return A3(
-			_elm_lang$core$List$foldl,
-			F2(
-				function (x, acc) {
-					return {
-						ctor: '::',
-						_0: f(x),
-						_1: acc
-					};
-				}),
-			{ctor: '[]'},
-			xs);
-	});
-var _elm_community$list_extra$List_Extra$andThen = _elm_lang$core$List$concatMap;
-var _elm_community$list_extra$List_Extra$lift2 = F3(
-	function (f, la, lb) {
-		return A2(
-			_elm_community$list_extra$List_Extra$andThen,
-			function (a) {
-				return A2(
-					_elm_community$list_extra$List_Extra$andThen,
-					function (b) {
-						return {
-							ctor: '::',
-							_0: A2(f, a, b),
-							_1: {ctor: '[]'}
-						};
-					},
-					lb);
-			},
-			la);
-	});
-var _elm_community$list_extra$List_Extra$cartesianProduct = function (ll) {
-	var _p72 = ll;
-	if (_p72.ctor === '[]') {
-		return {
-			ctor: '::',
-			_0: {ctor: '[]'},
-			_1: {ctor: '[]'}
-		};
-	} else {
-		return A3(
-			_elm_community$list_extra$List_Extra$lift2,
-			F2(
-				function (x, y) {
-					return {ctor: '::', _0: x, _1: y};
-				}),
-			_p72._0,
-			_elm_community$list_extra$List_Extra$cartesianProduct(_p72._1));
-	}
-};
-var _elm_community$list_extra$List_Extra$lift3 = F4(
-	function (f, la, lb, lc) {
-		return A2(
-			_elm_community$list_extra$List_Extra$andThen,
-			function (a) {
-				return A2(
-					_elm_community$list_extra$List_Extra$andThen,
-					function (b) {
-						return A2(
-							_elm_community$list_extra$List_Extra$andThen,
-							function (c) {
-								return {
-									ctor: '::',
-									_0: A3(f, a, b, c),
-									_1: {ctor: '[]'}
-								};
-							},
-							lc);
-					},
-					lb);
-			},
-			la);
-	});
-var _elm_community$list_extra$List_Extra$lift4 = F5(
-	function (f, la, lb, lc, ld) {
-		return A2(
-			_elm_community$list_extra$List_Extra$andThen,
-			function (a) {
-				return A2(
-					_elm_community$list_extra$List_Extra$andThen,
-					function (b) {
-						return A2(
-							_elm_community$list_extra$List_Extra$andThen,
-							function (c) {
-								return A2(
-									_elm_community$list_extra$List_Extra$andThen,
-									function (d) {
-										return {
-											ctor: '::',
-											_0: A4(f, a, b, c, d),
-											_1: {ctor: '[]'}
-										};
-									},
-									ld);
-							},
-							lc);
-					},
-					lb);
-			},
-			la);
-	});
-var _elm_community$list_extra$List_Extra$andMap = F2(
-	function (l, fl) {
-		return A3(
-			_elm_lang$core$List$map2,
-			F2(
-				function (x, y) {
-					return x(y);
-				}),
-			fl,
-			l);
-	});
-var _elm_community$list_extra$List_Extra$uniqueHelp = F4(
-	function (f, existing, remaining, accumulator) {
-		uniqueHelp:
-		while (true) {
-			var _p73 = remaining;
-			if (_p73.ctor === '[]') {
-				return _elm_lang$core$List$reverse(accumulator);
-			} else {
-				var _p75 = _p73._1;
-				var _p74 = _p73._0;
-				var computedFirst = f(_p74);
-				if (A2(_elm_lang$core$Set$member, computedFirst, existing)) {
-					var _v66 = f,
-						_v67 = existing,
-						_v68 = _p75,
-						_v69 = accumulator;
-					f = _v66;
-					existing = _v67;
-					remaining = _v68;
-					accumulator = _v69;
-					continue uniqueHelp;
-				} else {
-					var _v70 = f,
-						_v71 = A2(_elm_lang$core$Set$insert, computedFirst, existing),
-						_v72 = _p75,
-						_v73 = {ctor: '::', _0: _p74, _1: accumulator};
-					f = _v70;
-					existing = _v71;
-					remaining = _v72;
-					accumulator = _v73;
-					continue uniqueHelp;
-				}
-			}
-		}
-	});
-var _elm_community$list_extra$List_Extra$uniqueBy = F2(
-	function (f, list) {
-		return A4(
-			_elm_community$list_extra$List_Extra$uniqueHelp,
-			f,
-			_elm_lang$core$Set$empty,
-			list,
-			{ctor: '[]'});
-	});
-var _elm_community$list_extra$List_Extra$allDifferentBy = F2(
-	function (f, list) {
-		return _elm_lang$core$Native_Utils.eq(
-			_elm_lang$core$List$length(list),
-			_elm_lang$core$List$length(
-				A2(_elm_community$list_extra$List_Extra$uniqueBy, f, list)));
-	});
-var _elm_community$list_extra$List_Extra$allDifferent = function (list) {
-	return A2(_elm_community$list_extra$List_Extra$allDifferentBy, _elm_lang$core$Basics$identity, list);
-};
-var _elm_community$list_extra$List_Extra$unique = function (list) {
-	return A4(
-		_elm_community$list_extra$List_Extra$uniqueHelp,
-		_elm_lang$core$Basics$identity,
-		_elm_lang$core$Set$empty,
-		list,
-		{ctor: '[]'});
-};
-var _elm_community$list_extra$List_Extra$dropWhile = F2(
-	function (predicate, list) {
-		dropWhile:
-		while (true) {
-			var _p76 = list;
-			if (_p76.ctor === '[]') {
-				return {ctor: '[]'};
-			} else {
-				if (predicate(_p76._0)) {
-					var _v75 = predicate,
-						_v76 = _p76._1;
-					predicate = _v75;
-					list = _v76;
-					continue dropWhile;
-				} else {
-					return list;
-				}
-			}
-		}
-	});
-var _elm_community$list_extra$List_Extra$takeWhile = function (predicate) {
-	var takeWhileMemo = F2(
-		function (memo, list) {
-			takeWhileMemo:
-			while (true) {
-				var _p77 = list;
-				if (_p77.ctor === '[]') {
-					return _elm_lang$core$List$reverse(memo);
-				} else {
-					var _p78 = _p77._0;
-					if (predicate(_p78)) {
-						var _v78 = {ctor: '::', _0: _p78, _1: memo},
-							_v79 = _p77._1;
-						memo = _v78;
-						list = _v79;
-						continue takeWhileMemo;
-					} else {
-						return _elm_lang$core$List$reverse(memo);
-					}
-				}
-			}
-		});
-	return takeWhileMemo(
-		{ctor: '[]'});
-};
-var _elm_community$list_extra$List_Extra$span = F2(
-	function (p, xs) {
-		return {
-			ctor: '_Tuple2',
-			_0: A2(_elm_community$list_extra$List_Extra$takeWhile, p, xs),
-			_1: A2(_elm_community$list_extra$List_Extra$dropWhile, p, xs)
-		};
-	});
-var _elm_community$list_extra$List_Extra$break = function (p) {
-	return _elm_community$list_extra$List_Extra$span(
-		function (_p79) {
-			return !p(_p79);
-		});
-};
-var _elm_community$list_extra$List_Extra$groupWhile = F2(
-	function (eq, xs_) {
-		var _p80 = xs_;
-		if (_p80.ctor === '[]') {
-			return {ctor: '[]'};
-		} else {
-			var _p82 = _p80._0;
-			var _p81 = A2(
-				_elm_community$list_extra$List_Extra$span,
-				eq(_p82),
-				_p80._1);
-			var ys = _p81._0;
-			var zs = _p81._1;
-			return {
-				ctor: '::',
-				_0: {ctor: '::', _0: _p82, _1: ys},
-				_1: A2(_elm_community$list_extra$List_Extra$groupWhile, eq, zs)
-			};
-		}
-	});
-var _elm_community$list_extra$List_Extra$group = _elm_community$list_extra$List_Extra$groupWhile(
-	F2(
-		function (x, y) {
-			return _elm_lang$core$Native_Utils.eq(x, y);
-		}));
-var _elm_community$list_extra$List_Extra$minimumBy = F2(
-	function (f, ls) {
-		var minBy = F2(
-			function (x, _p83) {
-				var _p84 = _p83;
-				var _p85 = _p84._1;
-				var fx = f(x);
-				return (_elm_lang$core$Native_Utils.cmp(fx, _p85) < 0) ? {ctor: '_Tuple2', _0: x, _1: fx} : {ctor: '_Tuple2', _0: _p84._0, _1: _p85};
-			});
-		var _p86 = ls;
-		if (_p86.ctor === '::') {
-			if (_p86._1.ctor === '[]') {
-				return _elm_lang$core$Maybe$Just(_p86._0);
-			} else {
-				var _p87 = _p86._0;
-				return _elm_lang$core$Maybe$Just(
-					_elm_lang$core$Tuple$first(
-						A3(
-							_elm_lang$core$List$foldl,
-							minBy,
-							{
-								ctor: '_Tuple2',
-								_0: _p87,
-								_1: f(_p87)
-							},
-							_p86._1)));
-			}
-		} else {
-			return _elm_lang$core$Maybe$Nothing;
-		}
-	});
-var _elm_community$list_extra$List_Extra$maximumBy = F2(
-	function (f, ls) {
-		var maxBy = F2(
-			function (x, _p88) {
-				var _p89 = _p88;
-				var _p90 = _p89._1;
-				var fx = f(x);
-				return (_elm_lang$core$Native_Utils.cmp(fx, _p90) > 0) ? {ctor: '_Tuple2', _0: x, _1: fx} : {ctor: '_Tuple2', _0: _p89._0, _1: _p90};
-			});
-		var _p91 = ls;
-		if (_p91.ctor === '::') {
-			if (_p91._1.ctor === '[]') {
-				return _elm_lang$core$Maybe$Just(_p91._0);
-			} else {
-				var _p92 = _p91._0;
-				return _elm_lang$core$Maybe$Just(
-					_elm_lang$core$Tuple$first(
-						A3(
-							_elm_lang$core$List$foldl,
-							maxBy,
-							{
-								ctor: '_Tuple2',
-								_0: _p92,
-								_1: f(_p92)
-							},
-							_p91._1)));
-			}
-		} else {
-			return _elm_lang$core$Maybe$Nothing;
-		}
-	});
-var _elm_community$list_extra$List_Extra$uncons = function (xs) {
-	var _p93 = xs;
-	if (_p93.ctor === '[]') {
-		return _elm_lang$core$Maybe$Nothing;
-	} else {
-		return _elm_lang$core$Maybe$Just(
-			{ctor: '_Tuple2', _0: _p93._0, _1: _p93._1});
-	}
-};
-var _elm_community$list_extra$List_Extra$swapAt = F3(
-	function (index1, index2, l) {
-		swapAt:
-		while (true) {
-			if (_elm_lang$core$Native_Utils.eq(index1, index2) || (_elm_lang$core$Native_Utils.cmp(index1, 0) < 0)) {
-				return l;
-			} else {
-				if (_elm_lang$core$Native_Utils.cmp(index1, index2) > 0) {
-					var _v86 = index2,
-						_v87 = index1,
-						_v88 = l;
-					index1 = _v86;
-					index2 = _v87;
-					l = _v88;
-					continue swapAt;
-				} else {
-					var _p94 = A2(_elm_community$list_extra$List_Extra$splitAt, index1, l);
-					var part1 = _p94._0;
-					var tail1 = _p94._1;
-					var _p95 = A2(_elm_community$list_extra$List_Extra$splitAt, index2 - index1, tail1);
-					var head2 = _p95._0;
-					var tail2 = _p95._1;
-					var _p96 = {
-						ctor: '_Tuple2',
-						_0: _elm_community$list_extra$List_Extra$uncons(head2),
-						_1: _elm_community$list_extra$List_Extra$uncons(tail2)
-					};
-					if (((((_p96.ctor === '_Tuple2') && (_p96._0.ctor === 'Just')) && (_p96._0._0.ctor === '_Tuple2')) && (_p96._1.ctor === 'Just')) && (_p96._1._0.ctor === '_Tuple2')) {
-						return _elm_lang$core$List$concat(
-							{
-								ctor: '::',
-								_0: part1,
-								_1: {
-									ctor: '::',
-									_0: {ctor: '::', _0: _p96._1._0._0, _1: _p96._0._0._1},
-									_1: {
-										ctor: '::',
-										_0: {ctor: '::', _0: _p96._0._0._0, _1: _p96._1._0._1},
-										_1: {ctor: '[]'}
-									}
-								}
-							});
-					} else {
-						return l;
-					}
-				}
-			}
-		}
-	});
-var _elm_community$list_extra$List_Extra$cycleHelp = F3(
-	function (acc, n, list) {
-		cycleHelp:
-		while (true) {
-			if (_elm_lang$core$Native_Utils.cmp(n, 0) > 0) {
-				var _v90 = A2(_elm_community$list_extra$List_Extra$reverseAppend, list, acc),
-					_v91 = n - 1,
-					_v92 = list;
-				acc = _v90;
-				n = _v91;
-				list = _v92;
-				continue cycleHelp;
-			} else {
-				return acc;
-			}
-		}
-	});
-var _elm_community$list_extra$List_Extra$cycle = F2(
-	function (len, list) {
-		var cycleLength = _elm_lang$core$List$length(list);
-		return (_elm_lang$core$Native_Utils.eq(cycleLength, 0) || _elm_lang$core$Native_Utils.eq(cycleLength, len)) ? list : ((_elm_lang$core$Native_Utils.cmp(cycleLength, len) < 0) ? _elm_lang$core$List$reverse(
-			A2(
-				_elm_community$list_extra$List_Extra$reverseAppend,
-				A2(
-					_elm_lang$core$List$take,
-					A2(_elm_lang$core$Basics$rem, len, cycleLength),
-					list),
-				A3(
-					_elm_community$list_extra$List_Extra$cycleHelp,
-					{ctor: '[]'},
-					(len / cycleLength) | 0,
-					list))) : A2(_elm_lang$core$List$take, len, list));
-	});
-var _elm_community$list_extra$List_Extra$initialize = F2(
-	function (n, f) {
-		var step = F2(
-			function (i, acc) {
-				step:
-				while (true) {
-					if (_elm_lang$core$Native_Utils.cmp(i, 0) < 0) {
-						return acc;
-					} else {
-						var _v93 = i - 1,
-							_v94 = {
-							ctor: '::',
-							_0: f(i),
-							_1: acc
-						};
-						i = _v93;
-						acc = _v94;
-						continue step;
-					}
-				}
-			});
-		return A2(
-			step,
-			n - 1,
-			{ctor: '[]'});
-	});
-var _elm_community$list_extra$List_Extra$iterate = F2(
-	function (f, x) {
-		var _p97 = f(x);
-		if (_p97.ctor === 'Just') {
-			return {
-				ctor: '::',
-				_0: x,
-				_1: A2(_elm_community$list_extra$List_Extra$iterate, f, _p97._0)
-			};
-		} else {
-			return {
-				ctor: '::',
-				_0: x,
-				_1: {ctor: '[]'}
-			};
-		}
-	});
-var _elm_community$list_extra$List_Extra$getAt = F2(
-	function (idx, xs) {
-		return (_elm_lang$core$Native_Utils.cmp(idx, 0) < 0) ? _elm_lang$core$Maybe$Nothing : _elm_lang$core$List$head(
-			A2(_elm_lang$core$List$drop, idx, xs));
-	});
-var _elm_community$list_extra$List_Extra_ops = _elm_community$list_extra$List_Extra_ops || {};
-_elm_community$list_extra$List_Extra_ops['!!'] = _elm_lang$core$Basics$flip(_elm_community$list_extra$List_Extra$getAt);
-var _elm_community$list_extra$List_Extra$init = function (items) {
-	var _p98 = items;
-	if (_p98.ctor === '[]') {
-		return _elm_lang$core$Maybe$Nothing;
-	} else {
-		return A2(
-			_elm_lang$core$Maybe$map,
-			_elm_lang$core$List$reverse,
-			_elm_lang$core$List$tail(
-				_elm_lang$core$List$reverse(_p98)));
-	}
-};
-var _elm_community$list_extra$List_Extra$last = function (items) {
-	last:
-	while (true) {
-		var _p99 = items;
-		if (_p99.ctor === '[]') {
-			return _elm_lang$core$Maybe$Nothing;
-		} else {
-			if (_p99._1.ctor === '[]') {
-				return _elm_lang$core$Maybe$Just(_p99._0);
-			} else {
-				var _v98 = _p99._1;
-				items = _v98;
-				continue last;
-			}
-		}
-	}
-};
-
-var _dillonkearns$graphqelm$Graphqelm_SelectionSet$SelectionSet = F2(
-	function (a, b) {
-		return {ctor: 'SelectionSet', _0: a, _1: b};
-	});
-var _dillonkearns$graphqelm$Graphqelm_SelectionSet$map = F2(
-	function (mapFunction, _p0) {
-		var _p1 = _p0;
-		return A2(
-			_dillonkearns$graphqelm$Graphqelm_SelectionSet$SelectionSet,
-			_p1._0,
-			A2(_elm_lang$core$Json_Decode$map, mapFunction, _p1._1));
-	});
-var _dillonkearns$graphqelm$Graphqelm_SelectionSet$empty = A2(
-	_dillonkearns$graphqelm$Graphqelm_SelectionSet$SelectionSet,
-	{
-		ctor: '::',
-		_0: A2(
-			_dillonkearns$graphqelm$Graphqelm_RawField$Leaf,
-			'__typename',
-			{ctor: '[]'}),
-		_1: {ctor: '[]'}
-	},
-	_elm_lang$core$Json_Decode$succeed(
-		{ctor: '_Tuple0'}));
-var _dillonkearns$graphqelm$Graphqelm_SelectionSet$with = F2(
-	function (_p3, _p2) {
-		var _p4 = _p3;
-		var _p7 = _p4._0;
-		var _p5 = _p2;
-		var _p6 = _p5._0;
-		var fieldName = _dillonkearns$graphqelm$Graphqelm_RawField$name(_p7);
-		var duplicateCount = A2(
-			_elm_community$list_extra$List_Extra$count,
-			function (current) {
-				return _elm_lang$core$Native_Utils.eq(
-					fieldName,
-					_dillonkearns$graphqelm$Graphqelm_RawField$name(current));
-			},
-			_p6);
-		var decodeCamelCaseName = (_elm_lang$core$Native_Utils.cmp(duplicateCount, 0) > 0) ? A2(
-			_elm_lang$core$Basics_ops['++'],
-			fieldName,
-			_elm_lang$core$Basics$toString(duplicateCount + 1)) : fieldName;
-		var n = _elm_lang$core$List$length(_p6);
-		return A2(
-			_dillonkearns$graphqelm$Graphqelm_SelectionSet$SelectionSet,
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				_p6,
-				{
-					ctor: '::',
-					_0: _p7,
-					_1: {ctor: '[]'}
-				}),
-			A3(
-				_elm_lang$core$Json_Decode$map2,
-				F2(
-					function (x, y) {
-						return y(x);
-					}),
-				A2(_elm_lang$core$Json_Decode$field, decodeCamelCaseName, _p4._1),
-				_p5._1));
-	});
-var _dillonkearns$graphqelm$Graphqelm_SelectionSet$fieldSelection = function (field) {
-	return A2(
-		_dillonkearns$graphqelm$Graphqelm_SelectionSet$with,
-		field,
-		A2(
-			_dillonkearns$graphqelm$Graphqelm_SelectionSet$SelectionSet,
-			{ctor: '[]'},
-			_elm_lang$core$Json_Decode$succeed(_elm_lang$core$Basics$identity)));
-};
-var _dillonkearns$graphqelm$Graphqelm_SelectionSet$hardcoded = F2(
-	function (constant, _p8) {
-		var _p9 = _p8;
-		return A2(
-			_dillonkearns$graphqelm$Graphqelm_SelectionSet$SelectionSet,
-			_p9._0,
-			A3(
-				_elm_lang$core$Json_Decode$map2,
-				F2(
-					function (x, y) {
-						return y(x);
-					}),
-				_elm_lang$core$Json_Decode$succeed(constant),
-				_p9._1));
-	});
-var _dillonkearns$graphqelm$Graphqelm_SelectionSet$succeed = function (constant) {
-	return A2(
-		_dillonkearns$graphqelm$Graphqelm_SelectionSet$SelectionSet,
-		{
-			ctor: '::',
-			_0: A2(
-				_dillonkearns$graphqelm$Graphqelm_RawField$Leaf,
-				'__typename',
-				{ctor: '[]'}),
-			_1: {ctor: '[]'}
-		},
-		_elm_lang$core$Json_Decode$succeed(constant));
-};
-var _dillonkearns$graphqelm$Graphqelm_SelectionSet$FragmentSelectionSet = F3(
-	function (a, b, c) {
-		return {ctor: 'FragmentSelectionSet', _0: a, _1: b, _2: c};
-	});
-
-var _dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$selection = function (constructor) {
-	return A2(
-		_dillonkearns$graphqelm$Graphqelm_SelectionSet$SelectionSet,
-		{ctor: '[]'},
-		_elm_lang$core$Json_Decode$succeed(constructor));
-};
-var _dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$leaf = F2(
-	function (fieldName, args) {
-		return A2(_dillonkearns$graphqelm$Graphqelm_RawField$Leaf, fieldName, args);
-	});
-var _dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$composite = F3(
-	function (fieldName, args, fields) {
-		return A3(_dillonkearns$graphqelm$Graphqelm_RawField$Composite, fieldName, args, fields);
-	});
-var _dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$interfaceSelection = F2(
-	function (typeSpecificSelections, constructor) {
-		var selections = A2(
-			_elm_lang$core$List$map,
-			function (_p0) {
-				var _p1 = _p0;
-				return A3(
-					_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$composite,
-					A2(_elm_lang$core$Basics_ops['++'], '...on ', _p1._0),
-					{ctor: '[]'},
-					_p1._1);
-			},
-			typeSpecificSelections);
-		var typeNameDecoder = function (typeName) {
-			return A2(
-				_elm_lang$core$Maybe$withDefault,
-				_elm_lang$core$Json_Decode$succeed(_elm_lang$core$Maybe$Nothing),
-				A2(
-					_elm_lang$core$Maybe$map,
-					_elm_lang$core$Json_Decode$map(_elm_lang$core$Maybe$Just),
-					A2(
-						_elm_lang$core$Dict$get,
-						typeName,
-						_elm_lang$core$Dict$fromList(
-							A2(
-								_elm_lang$core$List$map,
-								function (_p2) {
-									var _p3 = _p2;
-									return {ctor: '_Tuple2', _0: _p3._0, _1: _p3._2};
-								},
-								typeSpecificSelections)))));
-		};
-		return A2(
-			_dillonkearns$graphqelm$Graphqelm_SelectionSet$SelectionSet,
-			{
-				ctor: '::',
-				_0: A2(
-					_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$leaf,
-					'__typename',
-					{ctor: '[]'}),
-				_1: selections
-			},
-			A3(
-				_elm_lang$core$Json_Decode$map2,
-				F2(
-					function (x, y) {
-						return y(x);
-					}),
-				A2(
-					_elm_lang$core$Json_Decode$andThen,
-					typeNameDecoder,
-					A2(_elm_lang$core$Json_Decode$field, '__typename', _elm_lang$core$Json_Decode$string)),
-				_elm_lang$core$Json_Decode$succeed(constructor)));
-	});
-var _dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$unionSelection = F2(
-	function (typeSpecificSelections, constructor) {
-		var selections = A2(
-			_elm_lang$core$List$map,
-			function (_p4) {
-				var _p5 = _p4;
-				return A3(
-					_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$composite,
-					A2(_elm_lang$core$Basics_ops['++'], '...on ', _p5._0),
-					{ctor: '[]'},
-					_p5._1);
-			},
-			typeSpecificSelections);
-		var typeNameDecoder = function (typeName) {
-			return A2(
-				_elm_lang$core$Maybe$withDefault,
-				_elm_lang$core$Json_Decode$succeed(_elm_lang$core$Maybe$Nothing),
-				A2(
-					_elm_lang$core$Maybe$map,
-					_elm_lang$core$Json_Decode$map(_elm_lang$core$Maybe$Just),
-					A2(
-						_elm_lang$core$Dict$get,
-						typeName,
-						_elm_lang$core$Dict$fromList(
-							A2(
-								_elm_lang$core$List$map,
-								function (_p6) {
-									var _p7 = _p6;
-									return {ctor: '_Tuple2', _0: _p7._0, _1: _p7._2};
-								},
-								typeSpecificSelections)))));
-		};
-		return A2(
-			_dillonkearns$graphqelm$Graphqelm_SelectionSet$SelectionSet,
-			{
-				ctor: '::',
-				_0: A2(
-					_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$leaf,
-					'__typename',
-					{ctor: '[]'}),
-				_1: selections
-			},
-			A3(
-				_elm_lang$core$Json_Decode$map2,
-				F2(
-					function (x, y) {
-						return y(x);
-					}),
-				A2(
-					_elm_lang$core$Json_Decode$andThen,
-					typeNameDecoder,
-					A2(_elm_lang$core$Json_Decode$field, '__typename', _elm_lang$core$Json_Decode$string)),
-				_elm_lang$core$Json_Decode$succeed(constructor)));
-	});
-var _dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$selectionField = F4(
-	function (fieldName, args, _p8, decoderTransform) {
-		var _p9 = _p8;
-		return A2(
-			_dillonkearns$graphqelm$Graphqelm_Field$Field,
-			A3(_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$composite, fieldName, args, _p9._0),
-			decoderTransform(_p9._1));
-	});
-var _dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$fieldDecoder = F3(
-	function (fieldName, args, decoder) {
-		return A2(
-			_dillonkearns$graphqelm$Graphqelm_Field$Field,
-			A2(_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$leaf, fieldName, args),
-			decoder);
-	});
-
-var _dillonkearns$graphqelm$Graphqelm_Operation$RootQuery = {ctor: 'RootQuery'};
-var _dillonkearns$graphqelm$Graphqelm_Operation$RootMutation = {ctor: 'RootMutation'};
-var _dillonkearns$graphqelm$Graphqelm_Operation$RootSubscription = {ctor: 'RootSubscription'};
-
-var _JQuezada0$eoslondonhackathon$Api_Query$project = F2(
-	function (requiredArgs, object) {
-		return A4(
-			_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$selectionField,
-			'project',
-			{
-				ctor: '::',
-				_0: A3(_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Argument$required, 'accountName', requiredArgs.accountName, _dillonkearns$graphqelm$Graphqelm_Internal_Encode$string),
-				_1: {ctor: '[]'}
-			},
-			object,
-			_elm_lang$core$Basics$identity);
-	});
-var _JQuezada0$eoslondonhackathon$Api_Query$projects = function (object) {
-	return A4(
-		_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$selectionField,
-		'projects',
-		{ctor: '[]'},
-		object,
-		function (_p0) {
-			return _elm_lang$core$Json_Decode$list(
-				_elm_lang$core$Basics$identity(_p0));
-		});
-};
-var _JQuezada0$eoslondonhackathon$Api_Query$selection = function (constructor) {
-	return _dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$selection(constructor);
-};
-var _JQuezada0$eoslondonhackathon$Api_Query$ProjectRequiredArguments = function (a) {
-	return {accountName: a};
-};
-
-var _dillonkearns$graphqelm$Graphqelm_Document_Argument$argToString = function (_p0) {
-	var _p1 = _p0;
-	return A2(
-		_elm_lang$core$Basics_ops['++'],
-		_p1._0,
-		A2(
-			_elm_lang$core$Basics_ops['++'],
-			': ',
-			_dillonkearns$graphqelm$Graphqelm_Internal_Encode$serialize(_p1._1)));
-};
-var _dillonkearns$graphqelm$Graphqelm_Document_Argument$serialize = function (args) {
-	var _p2 = args;
-	if (_p2.ctor === '[]') {
-		return '';
-	} else {
-		return A2(
-			_elm_lang$core$Basics_ops['++'],
-			'(',
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				A2(
-					_elm_lang$core$String$join,
-					', ',
-					A2(_elm_lang$core$List$map, _dillonkearns$graphqelm$Graphqelm_Document_Argument$argToString, _p2)),
-				')'));
-	}
-};
-
-var _dillonkearns$graphqelm$Graphqelm_Document_Indent$spaces = function (n) {
-	return (_elm_lang$core$Native_Utils.cmp(n, 0) > 0) ? A2(
-		_elm_lang$core$Basics_ops['++'],
-		' ',
-		_dillonkearns$graphqelm$Graphqelm_Document_Indent$spaces(n - 1)) : '';
-};
-var _dillonkearns$graphqelm$Graphqelm_Document_Indent$generate = function (indentationLevel) {
-	return _dillonkearns$graphqelm$Graphqelm_Document_Indent$spaces(indentationLevel * 2);
-};
-
-var _dillonkearns$graphqelm$Graphqelm_Document_Field$alias = F3(
-	function (fieldIndex, fields, field) {
-		var fieldName = _dillonkearns$graphqelm$Graphqelm_RawField$name(field);
-		var indices = A2(
-			_elm_lang$core$List$filter,
-			function (index) {
-				return _elm_lang$core$Native_Utils.cmp(index, fieldIndex) < 0;
-			},
-			A2(
-				_elm_community$list_extra$List_Extra$findIndices,
-				function (currentField) {
-					return _elm_lang$core$Native_Utils.eq(
-						_dillonkearns$graphqelm$Graphqelm_RawField$name(currentField),
-						fieldName);
-				},
-				fields));
-		return _elm_lang$core$Native_Utils.eq(
-			indices,
-			{ctor: '[]'}) ? _elm_lang$core$Maybe$Nothing : _elm_lang$core$Maybe$Just(
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				fieldName,
-				_elm_lang$core$Basics$toString(
-					_elm_lang$core$List$length(indices) + 1)));
-	});
-var _dillonkearns$graphqelm$Graphqelm_Document_Field$serializeChildren = F2(
-	function (indentationLevel, children) {
-		return A2(
-			_elm_lang$core$String$join,
-			function () {
-				var _p0 = indentationLevel;
-				if (_p0.ctor === 'Just') {
-					return '\n';
-				} else {
-					return ' ';
-				}
-			}(),
-			A2(
-				_elm_lang$core$List$filterMap,
-				_elm_lang$core$Basics$identity,
-				A2(
-					_elm_lang$core$List$indexedMap,
-					F2(
-						function (index, selection) {
-							return A3(
-								_dillonkearns$graphqelm$Graphqelm_Document_Field$serialize,
-								A3(_dillonkearns$graphqelm$Graphqelm_Document_Field$alias, index, children, selection),
-								A2(
-									_elm_lang$core$Maybe$map,
-									F2(
-										function (x, y) {
-											return x + y;
-										})(1),
-									indentationLevel),
-								selection);
-						}),
-					children)));
-	});
-var _dillonkearns$graphqelm$Graphqelm_Document_Field$serialize = F3(
-	function (alias, mIndentationLevel, field) {
-		var prefix = function () {
-			var _p1 = alias;
-			if (_p1.ctor === 'Just') {
-				return A2(
-					_elm_lang$core$Basics_ops['++'],
-					_p1._0,
-					function () {
-						var _p2 = mIndentationLevel;
-						if (_p2.ctor === 'Just') {
-							return ': ';
-						} else {
-							return ':';
-						}
-					}());
-			} else {
-				return '';
-			}
-		}();
-		return A2(
-			_elm_lang$core$Maybe$map,
-			function (string) {
-				return A2(
-					_elm_lang$core$Basics_ops['++'],
-					_dillonkearns$graphqelm$Graphqelm_Document_Indent$generate(
-						A2(_elm_lang$core$Maybe$withDefault, 0, mIndentationLevel)),
-					A2(_elm_lang$core$Basics_ops['++'], prefix, string));
-			},
-			function () {
-				var _p3 = field;
-				if (_p3.ctor === 'Composite') {
-					var _p8 = _p3._0;
-					var _p7 = _p3._2;
-					var _p6 = _p3._1;
-					if (_elm_lang$core$Native_Utils.eq(
-						_p7,
-						{ctor: '[]'})) {
-						return _elm_lang$core$Maybe$Nothing;
-					} else {
-						var _p4 = mIndentationLevel;
-						if (_p4.ctor === 'Nothing') {
-							return _elm_lang$core$Maybe$Just(
-								A2(
-									_elm_lang$core$Basics_ops['++'],
-									A2(
-										_elm_lang$core$Basics_ops['++'],
-										_p8,
-										A2(
-											_elm_lang$core$Basics_ops['++'],
-											_dillonkearns$graphqelm$Graphqelm_Document_Argument$serialize(_p6),
-											A2(
-												_elm_lang$core$Basics_ops['++'],
-												'{',
-												A2(_dillonkearns$graphqelm$Graphqelm_Document_Field$serializeChildren, _elm_lang$core$Maybe$Nothing, _p7)))),
-									'}'));
-						} else {
-							var _p5 = _p4._0;
-							return _elm_lang$core$Maybe$Just(
-								A2(
-									_elm_lang$core$Basics_ops['++'],
-									A2(
-										_elm_lang$core$Basics_ops['++'],
-										_p8,
-										A2(
-											_elm_lang$core$Basics_ops['++'],
-											_dillonkearns$graphqelm$Graphqelm_Document_Argument$serialize(_p6),
-											A2(
-												_elm_lang$core$Basics_ops['++'],
-												' {\n',
-												A2(
-													_dillonkearns$graphqelm$Graphqelm_Document_Field$serializeChildren,
-													_elm_lang$core$Maybe$Just(_p5),
-													_p7)))),
-									A2(
-										_elm_lang$core$Basics_ops['++'],
-										'\n',
-										A2(
-											_elm_lang$core$Basics_ops['++'],
-											_dillonkearns$graphqelm$Graphqelm_Document_Indent$generate(_p5),
-											'}'))));
-						}
-					}
-				} else {
-					return _elm_lang$core$Maybe$Just(
-						A2(
-							_elm_lang$core$Basics_ops['++'],
-							_p3._0,
-							_dillonkearns$graphqelm$Graphqelm_Document_Argument$serialize(_p3._1)));
-				}
-			}());
-	});
-
-//import Maybe, Native.List //
-
-var _elm_lang$core$Native_Regex = function() {
-
-function escape(str)
-{
-	return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-}
-function caseInsensitive(re)
-{
-	return new RegExp(re.source, 'gi');
-}
-function regex(raw)
-{
-	return new RegExp(raw, 'g');
-}
-
-function contains(re, string)
-{
-	return string.match(re) !== null;
-}
-
-function find(n, re, str)
-{
-	n = n.ctor === 'All' ? Infinity : n._0;
-	var out = [];
-	var number = 0;
-	var string = str;
-	var lastIndex = re.lastIndex;
-	var prevLastIndex = -1;
-	var result;
-	while (number++ < n && (result = re.exec(string)))
-	{
-		if (prevLastIndex === re.lastIndex) break;
-		var i = result.length - 1;
-		var subs = new Array(i);
-		while (i > 0)
-		{
-			var submatch = result[i];
-			subs[--i] = submatch === undefined
-				? _elm_lang$core$Maybe$Nothing
-				: _elm_lang$core$Maybe$Just(submatch);
-		}
-		out.push({
-			match: result[0],
-			submatches: _elm_lang$core$Native_List.fromArray(subs),
-			index: result.index,
-			number: number
-		});
-		prevLastIndex = re.lastIndex;
-	}
-	re.lastIndex = lastIndex;
-	return _elm_lang$core$Native_List.fromArray(out);
-}
-
-function replace(n, re, replacer, string)
-{
-	n = n.ctor === 'All' ? Infinity : n._0;
-	var count = 0;
-	function jsReplacer(match)
-	{
-		if (count++ >= n)
-		{
-			return match;
-		}
-		var i = arguments.length - 3;
-		var submatches = new Array(i);
-		while (i > 0)
-		{
-			var submatch = arguments[i];
-			submatches[--i] = submatch === undefined
-				? _elm_lang$core$Maybe$Nothing
-				: _elm_lang$core$Maybe$Just(submatch);
-		}
-		return replacer({
-			match: match,
-			submatches: _elm_lang$core$Native_List.fromArray(submatches),
-			index: arguments[arguments.length - 2],
-			number: count
-		});
-	}
-	return string.replace(re, jsReplacer);
-}
-
-function split(n, re, str)
-{
-	n = n.ctor === 'All' ? Infinity : n._0;
-	if (n === Infinity)
-	{
-		return _elm_lang$core$Native_List.fromArray(str.split(re));
-	}
-	var string = str;
-	var result;
-	var out = [];
-	var start = re.lastIndex;
-	var restoreLastIndex = re.lastIndex;
-	while (n--)
-	{
-		if (!(result = re.exec(string))) break;
-		out.push(string.slice(start, result.index));
-		start = re.lastIndex;
-	}
-	out.push(string.slice(start));
-	re.lastIndex = restoreLastIndex;
-	return _elm_lang$core$Native_List.fromArray(out);
-}
-
-return {
-	regex: regex,
-	caseInsensitive: caseInsensitive,
-	escape: escape,
-
-	contains: F2(contains),
-	find: F3(find),
-	replace: F4(replace),
-	split: F3(split)
-};
-
-}();
-
-var _elm_lang$core$Regex$split = _elm_lang$core$Native_Regex.split;
-var _elm_lang$core$Regex$replace = _elm_lang$core$Native_Regex.replace;
-var _elm_lang$core$Regex$find = _elm_lang$core$Native_Regex.find;
-var _elm_lang$core$Regex$contains = _elm_lang$core$Native_Regex.contains;
-var _elm_lang$core$Regex$caseInsensitive = _elm_lang$core$Native_Regex.caseInsensitive;
-var _elm_lang$core$Regex$regex = _elm_lang$core$Native_Regex.regex;
-var _elm_lang$core$Regex$escape = _elm_lang$core$Native_Regex.escape;
-var _elm_lang$core$Regex$Match = F4(
-	function (a, b, c, d) {
-		return {match: a, submatches: b, index: c, number: d};
-	});
-var _elm_lang$core$Regex$Regex = {ctor: 'Regex'};
-var _elm_lang$core$Regex$AtMost = function (a) {
-	return {ctor: 'AtMost', _0: a};
-};
-var _elm_lang$core$Regex$All = {ctor: 'All'};
-
-var _lukewestby$elm_string_interpolate$String_Interpolate$applyInterpolation = F2(
-	function (replacements, match) {
-		var ordinalString = function (_p0) {
-			return A2(
-				_elm_lang$core$String$dropLeft,
-				1,
-				A2(_elm_lang$core$String$dropRight, 1, _p0));
-		}(match.match);
-		var ordinal = _elm_lang$core$String$toInt(ordinalString);
-		var _p1 = ordinal;
-		if (_p1.ctor === 'Err') {
-			return '';
-		} else {
-			var _p2 = A2(_elm_lang$core$Array$get, _p1._0, replacements);
-			if (_p2.ctor === 'Nothing') {
-				return '';
-			} else {
-				return _p2._0;
-			}
-		}
-	});
-var _lukewestby$elm_string_interpolate$String_Interpolate$interpolationRegex = _elm_lang$core$Regex$regex('\\{\\d+\\}');
-var _lukewestby$elm_string_interpolate$String_Interpolate$interpolate = F2(
-	function (string, args) {
-		var asArray = _elm_lang$core$Array$fromList(args);
-		return A4(
-			_elm_lang$core$Regex$replace,
-			_elm_lang$core$Regex$All,
-			_lukewestby$elm_string_interpolate$String_Interpolate$interpolationRegex,
-			_lukewestby$elm_string_interpolate$String_Interpolate$applyInterpolation(asArray),
-			string);
-	});
-
-var _dillonkearns$graphqelm$Graphqelm_Document$serialize = F2(
-	function (operationName, queries) {
-		return A2(
-			_lukewestby$elm_string_interpolate$String_Interpolate$interpolate,
-			'{0} {\n{1}\n}',
-			{
-				ctor: '::',
-				_0: operationName,
-				_1: {
-					ctor: '::',
-					_0: A2(
-						_dillonkearns$graphqelm$Graphqelm_Document_Field$serializeChildren,
-						_elm_lang$core$Maybe$Just(0),
-						queries),
-					_1: {ctor: '[]'}
-				}
-			});
-	});
-var _dillonkearns$graphqelm$Graphqelm_Document$decoder = function (_p0) {
-	var _p1 = _p0;
-	return A2(_elm_lang$core$Json_Decode$field, 'data', _p1._1);
-};
-var _dillonkearns$graphqelm$Graphqelm_Document$serializeSubscription = function (_p2) {
-	var _p3 = _p2;
-	return A2(_dillonkearns$graphqelm$Graphqelm_Document$serialize, 'subscription', _p3._0);
-};
-var _dillonkearns$graphqelm$Graphqelm_Document$serializeMutation = function (_p4) {
-	var _p5 = _p4;
-	return A2(_dillonkearns$graphqelm$Graphqelm_Document$serialize, 'mutation', _p5._0);
-};
-var _dillonkearns$graphqelm$Graphqelm_Document$serializeQueryForUrl = function (_p6) {
-	var _p7 = _p6;
-	return A2(
-		_elm_lang$core$Basics_ops['++'],
-		'{',
-		A2(
-			_elm_lang$core$Basics_ops['++'],
-			A2(_dillonkearns$graphqelm$Graphqelm_Document_Field$serializeChildren, _elm_lang$core$Maybe$Nothing, _p7._0),
-			'}'));
-};
-var _dillonkearns$graphqelm$Graphqelm_Document$serializeQuery = function (_p8) {
-	var _p9 = _p8;
-	return A2(_dillonkearns$graphqelm$Graphqelm_Document$serialize, 'query', _p9._0);
-};
-
-var _dillonkearns$graphqelm$Graphqelm_Http_GraphqlError$GraphqlError = F3(
-	function (a, b, c) {
-		return {message: a, locations: b, details: c};
-	});
-var _dillonkearns$graphqelm$Graphqelm_Http_GraphqlError$Location = F2(
-	function (a, b) {
-		return {line: a, column: b};
-	});
-var _dillonkearns$graphqelm$Graphqelm_Http_GraphqlError$locationDecoder = A3(
-	_elm_lang$core$Json_Decode$map2,
-	_dillonkearns$graphqelm$Graphqelm_Http_GraphqlError$Location,
-	A2(_elm_lang$core$Json_Decode$field, 'line', _elm_lang$core$Json_Decode$int),
-	A2(_elm_lang$core$Json_Decode$field, 'column', _elm_lang$core$Json_Decode$int));
-var _dillonkearns$graphqelm$Graphqelm_Http_GraphqlError$decoder = A2(
-	_elm_lang$core$Json_Decode$field,
-	'errors',
-	_elm_lang$core$Json_Decode$list(
-		A4(
-			_elm_lang$core$Json_Decode$map3,
-			_dillonkearns$graphqelm$Graphqelm_Http_GraphqlError$GraphqlError,
-			A2(_elm_lang$core$Json_Decode$field, 'message', _elm_lang$core$Json_Decode$string),
-			_elm_lang$core$Json_Decode$maybe(
-				A2(
-					_elm_lang$core$Json_Decode$field,
-					'locations',
-					_elm_lang$core$Json_Decode$list(_dillonkearns$graphqelm$Graphqelm_Http_GraphqlError$locationDecoder))),
-			A2(
-				_elm_lang$core$Json_Decode$map,
-				_elm_lang$core$Dict$remove('locations'),
-				A2(
-					_elm_lang$core$Json_Decode$map,
-					_elm_lang$core$Dict$remove('message'),
-					_elm_lang$core$Json_Decode$dict(_elm_lang$core$Json_Decode$value))))));
-var _dillonkearns$graphqelm$Graphqelm_Http_GraphqlError$UnparsedData = function (a) {
-	return {ctor: 'UnparsedData', _0: a};
-};
-var _dillonkearns$graphqelm$Graphqelm_Http_GraphqlError$ParsedData = function (a) {
-	return {ctor: 'ParsedData', _0: a};
-};
-
-var _elm_lang$http$Native_Http = function() {
-
-
-// ENCODING AND DECODING
-
-function encodeUri(string)
-{
-	return encodeURIComponent(string);
-}
-
-function decodeUri(string)
-{
-	try
-	{
-		return _elm_lang$core$Maybe$Just(decodeURIComponent(string));
-	}
-	catch(e)
-	{
-		return _elm_lang$core$Maybe$Nothing;
-	}
-}
-
-
-// SEND REQUEST
-
-function toTask(request, maybeProgress)
-{
-	return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)
-	{
-		var xhr = new XMLHttpRequest();
-
-		configureProgress(xhr, maybeProgress);
-
-		xhr.addEventListener('error', function() {
-			callback(_elm_lang$core$Native_Scheduler.fail({ ctor: 'NetworkError' }));
-		});
-		xhr.addEventListener('timeout', function() {
-			callback(_elm_lang$core$Native_Scheduler.fail({ ctor: 'Timeout' }));
-		});
-		xhr.addEventListener('load', function() {
-			callback(handleResponse(xhr, request.expect.responseToResult));
-		});
-
-		try
-		{
-			xhr.open(request.method, request.url, true);
-		}
-		catch (e)
-		{
-			return callback(_elm_lang$core$Native_Scheduler.fail({ ctor: 'BadUrl', _0: request.url }));
-		}
-
-		configureRequest(xhr, request);
-		send(xhr, request.body);
-
-		return function() { xhr.abort(); };
-	});
-}
-
-function configureProgress(xhr, maybeProgress)
-{
-	if (maybeProgress.ctor === 'Nothing')
-	{
-		return;
-	}
-
-	xhr.addEventListener('progress', function(event) {
-		if (!event.lengthComputable)
-		{
-			return;
-		}
-		_elm_lang$core$Native_Scheduler.rawSpawn(maybeProgress._0({
-			bytes: event.loaded,
-			bytesExpected: event.total
-		}));
-	});
-}
-
-function configureRequest(xhr, request)
-{
-	function setHeader(pair)
-	{
-		xhr.setRequestHeader(pair._0, pair._1);
-	}
-
-	A2(_elm_lang$core$List$map, setHeader, request.headers);
-	xhr.responseType = request.expect.responseType;
-	xhr.withCredentials = request.withCredentials;
-
-	if (request.timeout.ctor === 'Just')
-	{
-		xhr.timeout = request.timeout._0;
-	}
-}
-
-function send(xhr, body)
-{
-	switch (body.ctor)
-	{
-		case 'EmptyBody':
-			xhr.send();
-			return;
-
-		case 'StringBody':
-			xhr.setRequestHeader('Content-Type', body._0);
-			xhr.send(body._1);
-			return;
-
-		case 'FormDataBody':
-			xhr.send(body._0);
-			return;
-	}
-}
-
-
-// RESPONSES
-
-function handleResponse(xhr, responseToResult)
-{
-	var response = toResponse(xhr);
-
-	if (xhr.status < 200 || 300 <= xhr.status)
-	{
-		response.body = xhr.responseText;
-		return _elm_lang$core$Native_Scheduler.fail({
-			ctor: 'BadStatus',
-			_0: response
-		});
-	}
-
-	var result = responseToResult(response);
-
-	if (result.ctor === 'Ok')
-	{
-		return _elm_lang$core$Native_Scheduler.succeed(result._0);
-	}
-	else
-	{
-		response.body = xhr.responseText;
-		return _elm_lang$core$Native_Scheduler.fail({
-			ctor: 'BadPayload',
-			_0: result._0,
-			_1: response
-		});
-	}
-}
-
-function toResponse(xhr)
-{
-	return {
-		status: { code: xhr.status, message: xhr.statusText },
-		headers: parseHeaders(xhr.getAllResponseHeaders()),
-		url: xhr.responseURL,
-		body: xhr.response
-	};
-}
-
-function parseHeaders(rawHeaders)
-{
-	var headers = _elm_lang$core$Dict$empty;
-
-	if (!rawHeaders)
-	{
-		return headers;
-	}
-
-	var headerPairs = rawHeaders.split('\u000d\u000a');
-	for (var i = headerPairs.length; i--; )
-	{
-		var headerPair = headerPairs[i];
-		var index = headerPair.indexOf('\u003a\u0020');
-		if (index > 0)
-		{
-			var key = headerPair.substring(0, index);
-			var value = headerPair.substring(index + 2);
-
-			headers = A3(_elm_lang$core$Dict$update, key, function(oldValue) {
-				if (oldValue.ctor === 'Just')
-				{
-					return _elm_lang$core$Maybe$Just(value + ', ' + oldValue._0);
-				}
-				return _elm_lang$core$Maybe$Just(value);
-			}, headers);
-		}
-	}
-
-	return headers;
-}
-
-
-// EXPECTORS
-
-function expectStringResponse(responseToResult)
-{
-	return {
-		responseType: 'text',
-		responseToResult: responseToResult
-	};
-}
-
-function mapExpect(func, expect)
-{
-	return {
-		responseType: expect.responseType,
-		responseToResult: function(response) {
-			var convertedResponse = expect.responseToResult(response);
-			return A2(_elm_lang$core$Result$map, func, convertedResponse);
-		}
-	};
-}
-
-
-// BODY
-
-function multipart(parts)
-{
-	var formData = new FormData();
-
-	while (parts.ctor !== '[]')
-	{
-		var part = parts._0;
-		formData.append(part._0, part._1);
-		parts = parts._1;
-	}
-
-	return { ctor: 'FormDataBody', _0: formData };
-}
-
-return {
-	toTask: F2(toTask),
-	expectStringResponse: expectStringResponse,
-	mapExpect: F2(mapExpect),
-	multipart: multipart,
-	encodeUri: encodeUri,
-	decodeUri: decodeUri
-};
-
-}();
-
-//import Native.Scheduler //
-
-var _elm_lang$core$Native_Time = function() {
-
-var now = _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)
-{
-	callback(_elm_lang$core$Native_Scheduler.succeed(Date.now()));
-});
-
-function setInterval_(interval, task)
-{
-	return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)
-	{
-		var id = setInterval(function() {
-			_elm_lang$core$Native_Scheduler.rawSpawn(task);
-		}, interval);
-
-		return function() { clearInterval(id); };
-	});
-}
-
-return {
-	now: now,
-	setInterval_: F2(setInterval_)
-};
-
-}();
-var _elm_lang$core$Task$onError = _elm_lang$core$Native_Scheduler.onError;
-var _elm_lang$core$Task$andThen = _elm_lang$core$Native_Scheduler.andThen;
-var _elm_lang$core$Task$spawnCmd = F2(
-	function (router, _p0) {
-		var _p1 = _p0;
-		return _elm_lang$core$Native_Scheduler.spawn(
-			A2(
-				_elm_lang$core$Task$andThen,
-				_elm_lang$core$Platform$sendToApp(router),
-				_p1._0));
-	});
-var _elm_lang$core$Task$fail = _elm_lang$core$Native_Scheduler.fail;
-var _elm_lang$core$Task$mapError = F2(
-	function (convert, task) {
-		return A2(
-			_elm_lang$core$Task$onError,
-			function (_p2) {
-				return _elm_lang$core$Task$fail(
-					convert(_p2));
-			},
-			task);
-	});
-var _elm_lang$core$Task$succeed = _elm_lang$core$Native_Scheduler.succeed;
-var _elm_lang$core$Task$map = F2(
-	function (func, taskA) {
-		return A2(
-			_elm_lang$core$Task$andThen,
-			function (a) {
-				return _elm_lang$core$Task$succeed(
-					func(a));
-			},
-			taskA);
-	});
-var _elm_lang$core$Task$map2 = F3(
-	function (func, taskA, taskB) {
-		return A2(
-			_elm_lang$core$Task$andThen,
-			function (a) {
-				return A2(
-					_elm_lang$core$Task$andThen,
-					function (b) {
-						return _elm_lang$core$Task$succeed(
-							A2(func, a, b));
-					},
-					taskB);
-			},
-			taskA);
-	});
-var _elm_lang$core$Task$map3 = F4(
-	function (func, taskA, taskB, taskC) {
-		return A2(
-			_elm_lang$core$Task$andThen,
-			function (a) {
-				return A2(
-					_elm_lang$core$Task$andThen,
-					function (b) {
-						return A2(
-							_elm_lang$core$Task$andThen,
-							function (c) {
-								return _elm_lang$core$Task$succeed(
-									A3(func, a, b, c));
-							},
-							taskC);
-					},
-					taskB);
-			},
-			taskA);
-	});
-var _elm_lang$core$Task$map4 = F5(
-	function (func, taskA, taskB, taskC, taskD) {
-		return A2(
-			_elm_lang$core$Task$andThen,
-			function (a) {
-				return A2(
-					_elm_lang$core$Task$andThen,
-					function (b) {
-						return A2(
-							_elm_lang$core$Task$andThen,
-							function (c) {
-								return A2(
-									_elm_lang$core$Task$andThen,
-									function (d) {
-										return _elm_lang$core$Task$succeed(
-											A4(func, a, b, c, d));
-									},
-									taskD);
-							},
-							taskC);
-					},
-					taskB);
-			},
-			taskA);
-	});
-var _elm_lang$core$Task$map5 = F6(
-	function (func, taskA, taskB, taskC, taskD, taskE) {
-		return A2(
-			_elm_lang$core$Task$andThen,
-			function (a) {
-				return A2(
-					_elm_lang$core$Task$andThen,
-					function (b) {
-						return A2(
-							_elm_lang$core$Task$andThen,
-							function (c) {
-								return A2(
-									_elm_lang$core$Task$andThen,
-									function (d) {
-										return A2(
-											_elm_lang$core$Task$andThen,
-											function (e) {
-												return _elm_lang$core$Task$succeed(
-													A5(func, a, b, c, d, e));
-											},
-											taskE);
-									},
-									taskD);
-							},
-							taskC);
-					},
-					taskB);
-			},
-			taskA);
-	});
-var _elm_lang$core$Task$sequence = function (tasks) {
-	var _p3 = tasks;
-	if (_p3.ctor === '[]') {
-		return _elm_lang$core$Task$succeed(
-			{ctor: '[]'});
-	} else {
-		return A3(
-			_elm_lang$core$Task$map2,
-			F2(
-				function (x, y) {
-					return {ctor: '::', _0: x, _1: y};
-				}),
-			_p3._0,
-			_elm_lang$core$Task$sequence(_p3._1));
-	}
-};
-var _elm_lang$core$Task$onEffects = F3(
-	function (router, commands, state) {
-		return A2(
-			_elm_lang$core$Task$map,
-			function (_p4) {
-				return {ctor: '_Tuple0'};
-			},
-			_elm_lang$core$Task$sequence(
-				A2(
-					_elm_lang$core$List$map,
-					_elm_lang$core$Task$spawnCmd(router),
-					commands)));
-	});
-var _elm_lang$core$Task$init = _elm_lang$core$Task$succeed(
-	{ctor: '_Tuple0'});
-var _elm_lang$core$Task$onSelfMsg = F3(
-	function (_p7, _p6, _p5) {
-		return _elm_lang$core$Task$succeed(
-			{ctor: '_Tuple0'});
-	});
-var _elm_lang$core$Task$command = _elm_lang$core$Native_Platform.leaf('Task');
-var _elm_lang$core$Task$Perform = function (a) {
-	return {ctor: 'Perform', _0: a};
-};
-var _elm_lang$core$Task$perform = F2(
-	function (toMessage, task) {
-		return _elm_lang$core$Task$command(
-			_elm_lang$core$Task$Perform(
-				A2(_elm_lang$core$Task$map, toMessage, task)));
-	});
-var _elm_lang$core$Task$attempt = F2(
-	function (resultToMessage, task) {
-		return _elm_lang$core$Task$command(
-			_elm_lang$core$Task$Perform(
-				A2(
-					_elm_lang$core$Task$onError,
-					function (_p8) {
-						return _elm_lang$core$Task$succeed(
-							resultToMessage(
-								_elm_lang$core$Result$Err(_p8)));
-					},
-					A2(
-						_elm_lang$core$Task$andThen,
-						function (_p9) {
-							return _elm_lang$core$Task$succeed(
-								resultToMessage(
-									_elm_lang$core$Result$Ok(_p9)));
-						},
-						task))));
-	});
-var _elm_lang$core$Task$cmdMap = F2(
-	function (tagger, _p10) {
-		var _p11 = _p10;
-		return _elm_lang$core$Task$Perform(
-			A2(_elm_lang$core$Task$map, tagger, _p11._0));
-	});
-_elm_lang$core$Native_Platform.effectManagers['Task'] = {pkg: 'elm-lang/core', init: _elm_lang$core$Task$init, onEffects: _elm_lang$core$Task$onEffects, onSelfMsg: _elm_lang$core$Task$onSelfMsg, tag: 'cmd', cmdMap: _elm_lang$core$Task$cmdMap};
-
-var _elm_lang$core$Time$setInterval = _elm_lang$core$Native_Time.setInterval_;
-var _elm_lang$core$Time$spawnHelp = F3(
-	function (router, intervals, processes) {
-		var _p0 = intervals;
-		if (_p0.ctor === '[]') {
-			return _elm_lang$core$Task$succeed(processes);
-		} else {
-			var _p1 = _p0._0;
-			var spawnRest = function (id) {
-				return A3(
-					_elm_lang$core$Time$spawnHelp,
-					router,
-					_p0._1,
-					A3(_elm_lang$core$Dict$insert, _p1, id, processes));
-			};
-			var spawnTimer = _elm_lang$core$Native_Scheduler.spawn(
-				A2(
-					_elm_lang$core$Time$setInterval,
-					_p1,
-					A2(_elm_lang$core$Platform$sendToSelf, router, _p1)));
-			return A2(_elm_lang$core$Task$andThen, spawnRest, spawnTimer);
-		}
-	});
-var _elm_lang$core$Time$addMySub = F2(
-	function (_p2, state) {
-		var _p3 = _p2;
-		var _p6 = _p3._1;
-		var _p5 = _p3._0;
-		var _p4 = A2(_elm_lang$core$Dict$get, _p5, state);
-		if (_p4.ctor === 'Nothing') {
-			return A3(
-				_elm_lang$core$Dict$insert,
-				_p5,
-				{
-					ctor: '::',
-					_0: _p6,
-					_1: {ctor: '[]'}
-				},
-				state);
-		} else {
-			return A3(
-				_elm_lang$core$Dict$insert,
-				_p5,
-				{ctor: '::', _0: _p6, _1: _p4._0},
-				state);
-		}
-	});
-var _elm_lang$core$Time$inMilliseconds = function (t) {
-	return t;
-};
-var _elm_lang$core$Time$millisecond = 1;
-var _elm_lang$core$Time$second = 1000 * _elm_lang$core$Time$millisecond;
-var _elm_lang$core$Time$minute = 60 * _elm_lang$core$Time$second;
-var _elm_lang$core$Time$hour = 60 * _elm_lang$core$Time$minute;
-var _elm_lang$core$Time$inHours = function (t) {
-	return t / _elm_lang$core$Time$hour;
-};
-var _elm_lang$core$Time$inMinutes = function (t) {
-	return t / _elm_lang$core$Time$minute;
-};
-var _elm_lang$core$Time$inSeconds = function (t) {
-	return t / _elm_lang$core$Time$second;
-};
-var _elm_lang$core$Time$now = _elm_lang$core$Native_Time.now;
-var _elm_lang$core$Time$onSelfMsg = F3(
-	function (router, interval, state) {
-		var _p7 = A2(_elm_lang$core$Dict$get, interval, state.taggers);
-		if (_p7.ctor === 'Nothing') {
-			return _elm_lang$core$Task$succeed(state);
-		} else {
-			var tellTaggers = function (time) {
-				return _elm_lang$core$Task$sequence(
-					A2(
-						_elm_lang$core$List$map,
-						function (tagger) {
-							return A2(
-								_elm_lang$core$Platform$sendToApp,
-								router,
-								tagger(time));
-						},
-						_p7._0));
-			};
-			return A2(
-				_elm_lang$core$Task$andThen,
-				function (_p8) {
-					return _elm_lang$core$Task$succeed(state);
-				},
-				A2(_elm_lang$core$Task$andThen, tellTaggers, _elm_lang$core$Time$now));
-		}
-	});
-var _elm_lang$core$Time$subscription = _elm_lang$core$Native_Platform.leaf('Time');
-var _elm_lang$core$Time$State = F2(
-	function (a, b) {
-		return {taggers: a, processes: b};
-	});
-var _elm_lang$core$Time$init = _elm_lang$core$Task$succeed(
-	A2(_elm_lang$core$Time$State, _elm_lang$core$Dict$empty, _elm_lang$core$Dict$empty));
-var _elm_lang$core$Time$onEffects = F3(
-	function (router, subs, _p9) {
-		var _p10 = _p9;
-		var rightStep = F3(
-			function (_p12, id, _p11) {
-				var _p13 = _p11;
-				return {
-					ctor: '_Tuple3',
-					_0: _p13._0,
-					_1: _p13._1,
-					_2: A2(
-						_elm_lang$core$Task$andThen,
-						function (_p14) {
-							return _p13._2;
-						},
-						_elm_lang$core$Native_Scheduler.kill(id))
-				};
-			});
-		var bothStep = F4(
-			function (interval, taggers, id, _p15) {
-				var _p16 = _p15;
-				return {
-					ctor: '_Tuple3',
-					_0: _p16._0,
-					_1: A3(_elm_lang$core$Dict$insert, interval, id, _p16._1),
-					_2: _p16._2
-				};
-			});
-		var leftStep = F3(
-			function (interval, taggers, _p17) {
-				var _p18 = _p17;
-				return {
-					ctor: '_Tuple3',
-					_0: {ctor: '::', _0: interval, _1: _p18._0},
-					_1: _p18._1,
-					_2: _p18._2
-				};
-			});
-		var newTaggers = A3(_elm_lang$core$List$foldl, _elm_lang$core$Time$addMySub, _elm_lang$core$Dict$empty, subs);
-		var _p19 = A6(
-			_elm_lang$core$Dict$merge,
-			leftStep,
-			bothStep,
-			rightStep,
-			newTaggers,
-			_p10.processes,
-			{
-				ctor: '_Tuple3',
-				_0: {ctor: '[]'},
-				_1: _elm_lang$core$Dict$empty,
-				_2: _elm_lang$core$Task$succeed(
-					{ctor: '_Tuple0'})
-			});
-		var spawnList = _p19._0;
-		var existingDict = _p19._1;
-		var killTask = _p19._2;
-		return A2(
-			_elm_lang$core$Task$andThen,
-			function (newProcesses) {
-				return _elm_lang$core$Task$succeed(
-					A2(_elm_lang$core$Time$State, newTaggers, newProcesses));
-			},
-			A2(
-				_elm_lang$core$Task$andThen,
-				function (_p20) {
-					return A3(_elm_lang$core$Time$spawnHelp, router, spawnList, existingDict);
-				},
-				killTask));
-	});
-var _elm_lang$core$Time$Every = F2(
-	function (a, b) {
-		return {ctor: 'Every', _0: a, _1: b};
-	});
-var _elm_lang$core$Time$every = F2(
-	function (interval, tagger) {
-		return _elm_lang$core$Time$subscription(
-			A2(_elm_lang$core$Time$Every, interval, tagger));
-	});
-var _elm_lang$core$Time$subMap = F2(
-	function (f, _p21) {
-		var _p22 = _p21;
-		return A2(
-			_elm_lang$core$Time$Every,
-			_p22._0,
-			function (_p23) {
-				return f(
-					_p22._1(_p23));
-			});
-	});
-_elm_lang$core$Native_Platform.effectManagers['Time'] = {pkg: 'elm-lang/core', init: _elm_lang$core$Time$init, onEffects: _elm_lang$core$Time$onEffects, onSelfMsg: _elm_lang$core$Time$onSelfMsg, tag: 'sub', subMap: _elm_lang$core$Time$subMap};
-
-var _elm_lang$http$Http_Internal$map = F2(
-	function (func, request) {
-		return _elm_lang$core$Native_Utils.update(
-			request,
-			{
-				expect: A2(_elm_lang$http$Native_Http.mapExpect, func, request.expect)
-			});
-	});
-var _elm_lang$http$Http_Internal$RawRequest = F7(
-	function (a, b, c, d, e, f, g) {
-		return {method: a, headers: b, url: c, body: d, expect: e, timeout: f, withCredentials: g};
-	});
-var _elm_lang$http$Http_Internal$Request = function (a) {
-	return {ctor: 'Request', _0: a};
-};
-var _elm_lang$http$Http_Internal$Expect = {ctor: 'Expect'};
-var _elm_lang$http$Http_Internal$FormDataBody = {ctor: 'FormDataBody'};
-var _elm_lang$http$Http_Internal$StringBody = F2(
-	function (a, b) {
-		return {ctor: 'StringBody', _0: a, _1: b};
-	});
-var _elm_lang$http$Http_Internal$EmptyBody = {ctor: 'EmptyBody'};
-var _elm_lang$http$Http_Internal$Header = F2(
-	function (a, b) {
-		return {ctor: 'Header', _0: a, _1: b};
-	});
-
-var _elm_lang$http$Http$decodeUri = _elm_lang$http$Native_Http.decodeUri;
-var _elm_lang$http$Http$encodeUri = _elm_lang$http$Native_Http.encodeUri;
-var _elm_lang$http$Http$expectStringResponse = _elm_lang$http$Native_Http.expectStringResponse;
-var _elm_lang$http$Http$expectJson = function (decoder) {
-	return _elm_lang$http$Http$expectStringResponse(
-		function (response) {
-			return A2(_elm_lang$core$Json_Decode$decodeString, decoder, response.body);
-		});
-};
-var _elm_lang$http$Http$expectString = _elm_lang$http$Http$expectStringResponse(
-	function (response) {
-		return _elm_lang$core$Result$Ok(response.body);
-	});
-var _elm_lang$http$Http$multipartBody = _elm_lang$http$Native_Http.multipart;
-var _elm_lang$http$Http$stringBody = _elm_lang$http$Http_Internal$StringBody;
-var _elm_lang$http$Http$jsonBody = function (value) {
-	return A2(
-		_elm_lang$http$Http_Internal$StringBody,
-		'application/json',
-		A2(_elm_lang$core$Json_Encode$encode, 0, value));
-};
-var _elm_lang$http$Http$emptyBody = _elm_lang$http$Http_Internal$EmptyBody;
-var _elm_lang$http$Http$header = _elm_lang$http$Http_Internal$Header;
-var _elm_lang$http$Http$request = _elm_lang$http$Http_Internal$Request;
-var _elm_lang$http$Http$post = F3(
-	function (url, body, decoder) {
-		return _elm_lang$http$Http$request(
-			{
-				method: 'POST',
-				headers: {ctor: '[]'},
-				url: url,
-				body: body,
-				expect: _elm_lang$http$Http$expectJson(decoder),
-				timeout: _elm_lang$core$Maybe$Nothing,
-				withCredentials: false
-			});
-	});
-var _elm_lang$http$Http$get = F2(
-	function (url, decoder) {
-		return _elm_lang$http$Http$request(
-			{
-				method: 'GET',
-				headers: {ctor: '[]'},
-				url: url,
-				body: _elm_lang$http$Http$emptyBody,
-				expect: _elm_lang$http$Http$expectJson(decoder),
-				timeout: _elm_lang$core$Maybe$Nothing,
-				withCredentials: false
-			});
-	});
-var _elm_lang$http$Http$getString = function (url) {
-	return _elm_lang$http$Http$request(
-		{
-			method: 'GET',
-			headers: {ctor: '[]'},
-			url: url,
-			body: _elm_lang$http$Http$emptyBody,
-			expect: _elm_lang$http$Http$expectString,
-			timeout: _elm_lang$core$Maybe$Nothing,
-			withCredentials: false
-		});
-};
-var _elm_lang$http$Http$toTask = function (_p0) {
-	var _p1 = _p0;
-	return A2(_elm_lang$http$Native_Http.toTask, _p1._0, _elm_lang$core$Maybe$Nothing);
-};
-var _elm_lang$http$Http$send = F2(
-	function (resultToMessage, request) {
-		return A2(
-			_elm_lang$core$Task$attempt,
-			resultToMessage,
-			_elm_lang$http$Http$toTask(request));
-	});
-var _elm_lang$http$Http$Response = F4(
-	function (a, b, c, d) {
-		return {url: a, status: b, headers: c, body: d};
-	});
-var _elm_lang$http$Http$BadPayload = F2(
-	function (a, b) {
-		return {ctor: 'BadPayload', _0: a, _1: b};
-	});
-var _elm_lang$http$Http$BadStatus = function (a) {
-	return {ctor: 'BadStatus', _0: a};
-};
-var _elm_lang$http$Http$NetworkError = {ctor: 'NetworkError'};
-var _elm_lang$http$Http$Timeout = {ctor: 'Timeout'};
-var _elm_lang$http$Http$BadUrl = function (a) {
-	return {ctor: 'BadUrl', _0: a};
-};
-var _elm_lang$http$Http$StringPart = F2(
-	function (a, b) {
-		return {ctor: 'StringPart', _0: a, _1: b};
-	});
-var _elm_lang$http$Http$stringPart = _elm_lang$http$Http$StringPart;
-
-var _dillonkearns$graphqelm$Graphqelm_Http_QueryParams$replace = F2(
-	function (old, $new) {
-		return function (_p0) {
-			return A2(
-				_elm_lang$core$String$join,
-				$new,
-				A2(_elm_lang$core$String$split, old, _p0));
-		};
-	});
-var _dillonkearns$graphqelm$Graphqelm_Http_QueryParams$queryEscape = function (_p1) {
-	return A3(
-		_dillonkearns$graphqelm$Graphqelm_Http_QueryParams$replace,
-		'%20',
-		'+',
-		_elm_lang$http$Http$encodeUri(_p1));
-};
-var _dillonkearns$graphqelm$Graphqelm_Http_QueryParams$queryPair = function (_p2) {
-	var _p3 = _p2;
-	return A2(
-		_elm_lang$core$Basics_ops['++'],
-		_dillonkearns$graphqelm$Graphqelm_Http_QueryParams$queryEscape(_p3._0),
-		A2(
-			_elm_lang$core$Basics_ops['++'],
-			'=',
-			_dillonkearns$graphqelm$Graphqelm_Http_QueryParams$queryEscape(_p3._1)));
-};
-var _dillonkearns$graphqelm$Graphqelm_Http_QueryParams$joinUrlEncoded = function (args) {
-	return A2(
-		_elm_lang$core$String$join,
-		'&',
-		A2(_elm_lang$core$List$map, _dillonkearns$graphqelm$Graphqelm_Http_QueryParams$queryPair, args));
-};
-var _dillonkearns$graphqelm$Graphqelm_Http_QueryParams$urlWithQueryParams = F2(
-	function (queryParams, url) {
-		return _elm_lang$core$List$isEmpty(queryParams) ? url : A2(
-			_elm_lang$core$Basics_ops['++'],
-			url,
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				'?',
-				_dillonkearns$graphqelm$Graphqelm_Http_QueryParams$joinUrlEncoded(queryParams)));
-	});
-
-var _dillonkearns$graphqelm$Graphqelm_Http_QueryHelper$maxLength = 2000;
-var _dillonkearns$graphqelm$Graphqelm_Http_QueryHelper$QueryRequest = F3(
-	function (a, b, c) {
-		return {method: a, url: b, body: c};
-	});
-var _dillonkearns$graphqelm$Graphqelm_Http_QueryHelper$Post = {ctor: 'Post'};
-var _dillonkearns$graphqelm$Graphqelm_Http_QueryHelper$Get = {ctor: 'Get'};
-var _dillonkearns$graphqelm$Graphqelm_Http_QueryHelper$build = F4(
-	function (forceMethod, url, queryParams, queryDocument) {
-		var urlForGetRequest = A2(
-			_dillonkearns$graphqelm$Graphqelm_Http_QueryParams$urlWithQueryParams,
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				queryParams,
-				{
-					ctor: '::',
-					_0: {
-						ctor: '_Tuple2',
-						_0: 'query',
-						_1: _dillonkearns$graphqelm$Graphqelm_Document$serializeQueryForUrl(queryDocument)
-					},
-					_1: {ctor: '[]'}
-				}),
-			url);
-		return (_elm_lang$core$Native_Utils.eq(
-			forceMethod,
-			_elm_lang$core$Maybe$Just(_dillonkearns$graphqelm$Graphqelm_Http_QueryHelper$Post)) || ((_elm_lang$core$Native_Utils.cmp(
-			_elm_lang$core$String$length(urlForGetRequest),
-			_dillonkearns$graphqelm$Graphqelm_Http_QueryHelper$maxLength) > -1) && (!_elm_lang$core$Native_Utils.eq(
-			forceMethod,
-			_elm_lang$core$Maybe$Just(_dillonkearns$graphqelm$Graphqelm_Http_QueryHelper$Get))))) ? {
-			method: _dillonkearns$graphqelm$Graphqelm_Http_QueryHelper$Post,
-			url: A2(
-				_dillonkearns$graphqelm$Graphqelm_Http_QueryParams$urlWithQueryParams,
-				{ctor: '[]'},
-				url),
-			body: _elm_lang$http$Http$jsonBody(
-				_elm_lang$core$Json_Encode$object(
-					{
-						ctor: '::',
-						_0: {
-							ctor: '_Tuple2',
-							_0: 'query',
-							_1: _elm_lang$core$Json_Encode$string(
-								_dillonkearns$graphqelm$Graphqelm_Document$serializeQuery(queryDocument))
-						},
-						_1: {ctor: '[]'}
-					}))
-		} : {method: _dillonkearns$graphqelm$Graphqelm_Http_QueryHelper$Get, url: urlForGetRequest, body: _elm_lang$http$Http$emptyBody};
-	});
-
-var _dillonkearns$graphqelm$Graphqelm_Http$decodeErrorWithData = function (data) {
-	return A2(
-		_elm_lang$core$Json_Decode$map,
-		_elm_lang$core$Result$Err,
-		A2(
-			_elm_lang$core$Json_Decode$map,
-			F2(
-				function (v0, v1) {
-					return {ctor: '_Tuple2', _0: v0, _1: v1};
-				})(data),
-			_dillonkearns$graphqelm$Graphqelm_Http_GraphqlError$decoder));
-};
-var _dillonkearns$graphqelm$Graphqelm_Http$errorDecoder = function (decoder) {
-	return _elm_lang$core$Json_Decode$oneOf(
-		{
-			ctor: '::',
-			_0: A2(
-				_elm_lang$core$Json_Decode$andThen,
-				_dillonkearns$graphqelm$Graphqelm_Http$decodeErrorWithData,
-				A2(_elm_lang$core$Json_Decode$map, _dillonkearns$graphqelm$Graphqelm_Http_GraphqlError$ParsedData, decoder)),
-			_1: {
-				ctor: '::',
-				_0: A2(
-					_elm_lang$core$Json_Decode$andThen,
-					_dillonkearns$graphqelm$Graphqelm_Http$decodeErrorWithData,
-					A2(
-						_elm_lang$core$Json_Decode$map,
-						_dillonkearns$graphqelm$Graphqelm_Http_GraphqlError$UnparsedData,
-						A2(_elm_lang$core$Json_Decode$field, 'data', _elm_lang$core$Json_Decode$value))),
-				_1: {ctor: '[]'}
-			}
-		});
-};
-var _dillonkearns$graphqelm$Graphqelm_Http$decoderOrError = function (decoder) {
-	return _elm_lang$core$Json_Decode$oneOf(
-		{
-			ctor: '::',
-			_0: _dillonkearns$graphqelm$Graphqelm_Http$errorDecoder(decoder),
-			_1: {
-				ctor: '::',
-				_0: A2(_elm_lang$core$Json_Decode$map, _elm_lang$core$Result$Ok, decoder),
-				_1: {ctor: '[]'}
-			}
-		});
-};
-var _dillonkearns$graphqelm$Graphqelm_Http$toRequest = function (_p0) {
-	var _p1 = _p0;
-	var _p5 = _p1._0;
-	return _elm_lang$http$Http$request(
-		function () {
-			var _p2 = _p5.details;
-			if (_p2.ctor === 'Query') {
-				var queryRequestDetails = A4(
-					_dillonkearns$graphqelm$Graphqelm_Http_QueryHelper$build,
-					function () {
-						var _p3 = _p2._0;
-						if (_p3.ctor === 'Just') {
-							if (_p3._0.ctor === 'AlwaysGet') {
-								return _elm_lang$core$Maybe$Just(_dillonkearns$graphqelm$Graphqelm_Http_QueryHelper$Get);
-							} else {
-								return _elm_lang$core$Maybe$Nothing;
-							}
-						} else {
-							return _elm_lang$core$Maybe$Just(_dillonkearns$graphqelm$Graphqelm_Http_QueryHelper$Post);
-						}
-					}(),
-					_p5.baseUrl,
-					_p5.queryParams,
-					_p2._1);
-				return {
-					method: function () {
-						var _p4 = queryRequestDetails.method;
-						if (_p4.ctor === 'Get') {
-							return 'GET';
-						} else {
-							return 'Post';
-						}
-					}(),
-					headers: _p5.headers,
-					url: queryRequestDetails.url,
-					body: queryRequestDetails.body,
-					expect: _elm_lang$http$Http$expectJson(
-						_dillonkearns$graphqelm$Graphqelm_Http$decoderOrError(_p5.expect)),
-					timeout: _p5.timeout,
-					withCredentials: _p5.withCredentials
-				};
-			} else {
-				return {
-					method: 'POST',
-					headers: _p5.headers,
-					url: A2(_dillonkearns$graphqelm$Graphqelm_Http_QueryParams$urlWithQueryParams, _p5.queryParams, _p5.baseUrl),
-					body: _elm_lang$http$Http$jsonBody(
-						_elm_lang$core$Json_Encode$object(
-							{
-								ctor: '::',
-								_0: {
-									ctor: '_Tuple2',
-									_0: 'query',
-									_1: _elm_lang$core$Json_Encode$string(
-										_dillonkearns$graphqelm$Graphqelm_Document$serializeMutation(_p2._0))
-								},
-								_1: {ctor: '[]'}
-							})),
-					expect: _elm_lang$http$Http$expectJson(
-						_dillonkearns$graphqelm$Graphqelm_Http$decoderOrError(_p5.expect)),
-					timeout: _p5.timeout,
-					withCredentials: _p5.withCredentials
-				};
-			}
-		}());
-};
-var _dillonkearns$graphqelm$Graphqelm_Http$Request = function (a) {
-	return {ctor: 'Request', _0: a};
-};
-var _dillonkearns$graphqelm$Graphqelm_Http$withHeader = F3(
-	function (key, value, _p6) {
-		var _p7 = _p6;
-		var _p8 = _p7._0;
-		return _dillonkearns$graphqelm$Graphqelm_Http$Request(
-			_elm_lang$core$Native_Utils.update(
-				_p8,
-				{
-					headers: {
-						ctor: '::',
-						_0: A2(_elm_lang$http$Http$header, key, value),
-						_1: _p8.headers
-					}
-				}));
-	});
-var _dillonkearns$graphqelm$Graphqelm_Http$withQueryParams = F2(
-	function (additionalQueryParams, _p9) {
-		var _p10 = _p9;
-		var _p11 = _p10._0;
-		return _dillonkearns$graphqelm$Graphqelm_Http$Request(
-			_elm_lang$core$Native_Utils.update(
-				_p11,
-				{
-					queryParams: A2(_elm_lang$core$Basics_ops['++'], _p11.queryParams, additionalQueryParams)
-				}));
-	});
-var _dillonkearns$graphqelm$Graphqelm_Http$withTimeout = F2(
-	function (timeout, _p12) {
-		var _p13 = _p12;
-		return _dillonkearns$graphqelm$Graphqelm_Http$Request(
-			_elm_lang$core$Native_Utils.update(
-				_p13._0,
-				{
-					timeout: _elm_lang$core$Maybe$Just(timeout)
-				}));
-	});
-var _dillonkearns$graphqelm$Graphqelm_Http$withCredentials = function (_p14) {
-	var _p15 = _p14;
-	return _dillonkearns$graphqelm$Graphqelm_Http$Request(
-		_elm_lang$core$Native_Utils.update(
-			_p15._0,
-			{withCredentials: true}));
-};
-var _dillonkearns$graphqelm$Graphqelm_Http$GetIfShortEnough = {ctor: 'GetIfShortEnough'};
-var _dillonkearns$graphqelm$Graphqelm_Http$AlwaysGet = {ctor: 'AlwaysGet'};
-var _dillonkearns$graphqelm$Graphqelm_Http$Mutation = function (a) {
-	return {ctor: 'Mutation', _0: a};
-};
-var _dillonkearns$graphqelm$Graphqelm_Http$mutationRequest = F2(
-	function (baseUrl, mutationSelectionSet) {
-		return _dillonkearns$graphqelm$Graphqelm_Http$Request(
-			{
-				details: _dillonkearns$graphqelm$Graphqelm_Http$Mutation(mutationSelectionSet),
-				headers: {ctor: '[]'},
-				baseUrl: baseUrl,
-				expect: _dillonkearns$graphqelm$Graphqelm_Document$decoder(mutationSelectionSet),
-				timeout: _elm_lang$core$Maybe$Nothing,
-				withCredentials: false,
-				queryParams: {ctor: '[]'}
-			});
-	});
-var _dillonkearns$graphqelm$Graphqelm_Http$Query = F2(
-	function (a, b) {
-		return {ctor: 'Query', _0: a, _1: b};
-	});
-var _dillonkearns$graphqelm$Graphqelm_Http$queryRequest = F2(
-	function (baseUrl, query) {
-		return _dillonkearns$graphqelm$Graphqelm_Http$Request(
-			{
-				headers: {ctor: '[]'},
-				baseUrl: baseUrl,
-				expect: _dillonkearns$graphqelm$Graphqelm_Document$decoder(query),
-				timeout: _elm_lang$core$Maybe$Nothing,
-				withCredentials: false,
-				details: A2(_dillonkearns$graphqelm$Graphqelm_Http$Query, _elm_lang$core$Maybe$Nothing, query),
-				queryParams: {ctor: '[]'}
-			});
-	});
-var _dillonkearns$graphqelm$Graphqelm_Http$queryRequestWithHttpGet = F3(
-	function (baseUrl, requestMethod, query) {
-		return _dillonkearns$graphqelm$Graphqelm_Http$Request(
-			{
-				headers: {ctor: '[]'},
-				baseUrl: baseUrl,
-				expect: _dillonkearns$graphqelm$Graphqelm_Document$decoder(query),
-				timeout: _elm_lang$core$Maybe$Nothing,
-				withCredentials: false,
-				details: A2(
-					_dillonkearns$graphqelm$Graphqelm_Http$Query,
-					_elm_lang$core$Maybe$Just(requestMethod),
-					query),
-				queryParams: {ctor: '[]'}
-			});
-	});
-var _dillonkearns$graphqelm$Graphqelm_Http$HttpError = function (a) {
-	return {ctor: 'HttpError', _0: a};
-};
-var _dillonkearns$graphqelm$Graphqelm_Http$GraphqlError = F2(
-	function (a, b) {
-		return {ctor: 'GraphqlError', _0: a, _1: b};
-	});
-var _dillonkearns$graphqelm$Graphqelm_Http$mapError = F2(
-	function (mapFn, error) {
-		var _p16 = error;
-		if (_p16.ctor === 'GraphqlError') {
-			var _p18 = _p16._1;
-			var _p17 = _p16._0;
-			if (_p17.ctor === 'ParsedData') {
-				return A2(
-					_dillonkearns$graphqelm$Graphqelm_Http$GraphqlError,
-					_dillonkearns$graphqelm$Graphqelm_Http_GraphqlError$ParsedData(
-						mapFn(_p17._0)),
-					_p18);
-			} else {
-				return A2(
-					_dillonkearns$graphqelm$Graphqelm_Http$GraphqlError,
-					_dillonkearns$graphqelm$Graphqelm_Http_GraphqlError$UnparsedData(_p17._0),
-					_p18);
-			}
-		} else {
-			return _dillonkearns$graphqelm$Graphqelm_Http$HttpError(_p16._0);
-		}
-	});
-var _dillonkearns$graphqelm$Graphqelm_Http$ignoreParsedErrorData = function (error) {
-	return A2(
-		_dillonkearns$graphqelm$Graphqelm_Http$mapError,
-		function (_p19) {
-			return {ctor: '_Tuple0'};
-		},
-		error);
-};
-var _dillonkearns$graphqelm$Graphqelm_Http$convertResult = function (httpResult) {
-	var _p20 = httpResult;
-	if (_p20.ctor === 'Ok') {
-		var _p21 = _p20._0;
-		if (_p21.ctor === 'Ok') {
-			return _elm_lang$core$Result$Ok(_p21._0);
-		} else {
-			return _elm_lang$core$Result$Err(
-				A2(_dillonkearns$graphqelm$Graphqelm_Http$GraphqlError, _p21._0._0, _p21._0._1));
-		}
-	} else {
-		return _elm_lang$core$Result$Err(
-			_dillonkearns$graphqelm$Graphqelm_Http$HttpError(_p20._0));
-	}
-};
-var _dillonkearns$graphqelm$Graphqelm_Http$send = F2(
-	function (resultToMessage, graphqelmRequest) {
-		return A2(
-			_elm_lang$http$Http$send,
-			function (_p22) {
-				return resultToMessage(
-					_dillonkearns$graphqelm$Graphqelm_Http$convertResult(_p22));
-			},
-			_dillonkearns$graphqelm$Graphqelm_Http$toRequest(graphqelmRequest));
-	});
-var _dillonkearns$graphqelm$Graphqelm_Http$failTaskOnHttpSuccessWithErrors = function (successOrError) {
-	var _p23 = successOrError;
-	if (_p23.ctor === 'Ok') {
-		return _elm_lang$core$Task$succeed(_p23._0);
-	} else {
-		return _elm_lang$core$Task$fail(
-			A2(_dillonkearns$graphqelm$Graphqelm_Http$GraphqlError, _p23._0._0, _p23._0._1));
-	}
-};
-var _dillonkearns$graphqelm$Graphqelm_Http$toTask = function (request) {
-	return A2(
-		_elm_lang$core$Task$andThen,
-		_dillonkearns$graphqelm$Graphqelm_Http$failTaskOnHttpSuccessWithErrors,
-		A2(
-			_elm_lang$core$Task$mapError,
-			_dillonkearns$graphqelm$Graphqelm_Http$HttpError,
-			_elm_lang$http$Http$toTask(
-				_dillonkearns$graphqelm$Graphqelm_Http$toRequest(request))));
-};
-
-var _JQuezada0$eoslondonhackathon$Api_Object_Project$polls = function (object) {
-	return A4(
-		_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$selectionField,
-		'polls',
-		{ctor: '[]'},
-		object,
-		function (_p0) {
-			return _elm_lang$core$Json_Decode$list(
-				_elm_lang$core$Basics$identity(_p0));
-		});
-};
-var _JQuezada0$eoslondonhackathon$Api_Object_Project$refundThreshold = A3(
-	_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$fieldDecoder,
-	'refundThreshold',
-	{ctor: '[]'},
-	_elm_lang$core$Json_Decode$float);
-var _JQuezada0$eoslondonhackathon$Api_Object_Project$refundVoterTurnout = A3(
-	_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$fieldDecoder,
-	'refundVoterTurnout',
-	{ctor: '[]'},
-	_elm_lang$core$Json_Decode$float);
-var _JQuezada0$eoslondonhackathon$Api_Object_Project$refundVoteDuration = A3(
-	_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$fieldDecoder,
-	'refundVoteDuration',
-	{ctor: '[]'},
-	_elm_lang$core$Json_Decode$float);
-var _JQuezada0$eoslondonhackathon$Api_Object_Project$maxNumRefunds = A3(
-	_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$fieldDecoder,
-	'maxNumRefunds',
-	{ctor: '[]'},
-	_elm_lang$core$Json_Decode$float);
-var _JQuezada0$eoslondonhackathon$Api_Object_Project$refundFrequency = A3(
-	_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$fieldDecoder,
-	'refundFrequency',
-	{ctor: '[]'},
-	_elm_lang$core$Json_Decode$string);
-var _JQuezada0$eoslondonhackathon$Api_Object_Project$tapVoteDuration = A3(
-	_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$fieldDecoder,
-	'tapVoteDuration',
-	{ctor: '[]'},
-	_elm_lang$core$Json_Decode$float);
-var _JQuezada0$eoslondonhackathon$Api_Object_Project$tapMaxIncrease = A3(
-	_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$fieldDecoder,
-	'tapMaxIncrease',
-	{ctor: '[]'},
-	_elm_lang$core$Json_Decode$float);
-var _JQuezada0$eoslondonhackathon$Api_Object_Project$tapThreshold = A3(
-	_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$fieldDecoder,
-	'tapThreshold',
-	{ctor: '[]'},
-	_elm_lang$core$Json_Decode$float);
-var _JQuezada0$eoslondonhackathon$Api_Object_Project$tapVoterTurnout = A3(
-	_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$fieldDecoder,
-	'tapVoterTurnout',
-	{ctor: '[]'},
-	_elm_lang$core$Json_Decode$float);
-var _JQuezada0$eoslondonhackathon$Api_Object_Project$whitepaperUrl = A3(
-	_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$fieldDecoder,
-	'whitepaperUrl',
-	{ctor: '[]'},
-	_elm_lang$core$Json_Decode$string);
-var _JQuezada0$eoslondonhackathon$Api_Object_Project$url = A3(
-	_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$fieldDecoder,
-	'url',
-	{ctor: '[]'},
-	_elm_lang$core$Json_Decode$string);
-var _JQuezada0$eoslondonhackathon$Api_Object_Project$description = A3(
-	_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$fieldDecoder,
-	'description',
-	{ctor: '[]'},
-	_elm_lang$core$Json_Decode$string);
-var _JQuezada0$eoslondonhackathon$Api_Object_Project$name = A3(
-	_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$fieldDecoder,
-	'name',
-	{ctor: '[]'},
-	_elm_lang$core$Json_Decode$string);
-var _JQuezada0$eoslondonhackathon$Api_Object_Project$owner = A3(
-	_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$fieldDecoder,
-	'owner',
-	{ctor: '[]'},
-	_elm_lang$core$Json_Decode$string);
-var _JQuezada0$eoslondonhackathon$Api_Object_Project$selection = function (constructor) {
-	return _dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$selection(constructor);
-};
-
-var _JQuezada0$eoslondonhackathon$Api$projectsExist = function (toMsg) {
-	return A2(
-		_dillonkearns$graphqelm$Graphqelm_Http$send,
-		toMsg,
-		A2(
-			_dillonkearns$graphqelm$Graphqelm_Http$queryRequest,
-			'http://localhost:5555/graphql',
-			A2(
-				_dillonkearns$graphqelm$Graphqelm_SelectionSet$map,
-				_elm_lang$core$List$length,
-				A2(
-					_dillonkearns$graphqelm$Graphqelm_SelectionSet$with,
-					_JQuezada0$eoslondonhackathon$Api_Query$projects(_dillonkearns$graphqelm$Graphqelm_SelectionSet$empty),
-					_JQuezada0$eoslondonhackathon$Api_Query$selection(_elm_lang$core$Basics$identity)))));
-};
-
-var _JQuezada0$eoslondonhackathon$Api_Object_Poll$voteProposals = function (object) {
-	return A4(
-		_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$selectionField,
-		'voteProposals',
-		{ctor: '[]'},
-		object,
-		function (_p0) {
-			return _elm_lang$core$Json_Decode$list(
-				_elm_lang$core$Basics$identity(_p0));
-		});
-};
-var _JQuezada0$eoslondonhackathon$Api_Object_Poll$votes = function (object) {
-	return A4(
-		_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$selectionField,
-		'votes',
-		{ctor: '[]'},
-		object,
-		function (_p1) {
-			return _elm_lang$core$Json_Decode$list(
-				_elm_lang$core$Basics$identity(_p1));
-		});
-};
-var _JQuezada0$eoslondonhackathon$Api_Object_Poll$icocreator = A3(
-	_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$fieldDecoder,
-	'icocreator',
-	{ctor: '[]'},
-	_elm_lang$core$Json_Decode$string);
-var _JQuezada0$eoslondonhackathon$Api_Object_Poll$novotes = A3(
-	_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$fieldDecoder,
-	'novotes',
-	{ctor: '[]'},
-	_elm_lang$core$Json_Decode$float);
-var _JQuezada0$eoslondonhackathon$Api_Object_Poll$yesvotes = A3(
-	_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$fieldDecoder,
-	'yesvotes',
-	{ctor: '[]'},
-	_elm_lang$core$Json_Decode$float);
-var _JQuezada0$eoslondonhackathon$Api_Object_Poll$proposal = A3(
-	_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$fieldDecoder,
-	'proposal',
-	{ctor: '[]'},
-	_elm_lang$core$Json_Decode$string);
-var _JQuezada0$eoslondonhackathon$Api_Object_Poll$selection = function (constructor) {
-	return _dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$selection(constructor);
-};
-
-var _JQuezada0$eoslondonhackathon$Api_Object_Vote$pick = A3(
-	_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$fieldDecoder,
-	'pick',
-	{ctor: '[]'},
-	_elm_lang$core$Json_Decode$bool);
-var _JQuezada0$eoslondonhackathon$Api_Object_Vote$trvoter = A3(
-	_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$fieldDecoder,
-	'trvoter',
-	{ctor: '[]'},
-	_elm_lang$core$Json_Decode$string);
-var _JQuezada0$eoslondonhackathon$Api_Object_Vote$idvoter = A3(
-	_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$fieldDecoder,
-	'idvoter',
-	{ctor: '[]'},
-	_elm_lang$core$Json_Decode$string);
-var _JQuezada0$eoslondonhackathon$Api_Object_Vote$iconame = A3(
-	_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$fieldDecoder,
-	'iconame',
-	{ctor: '[]'},
-	_elm_lang$core$Json_Decode$string);
-var _JQuezada0$eoslondonhackathon$Api_Object_Vote$selection = function (constructor) {
-	return _dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$selection(constructor);
-};
-
-var _JQuezada0$eoslondonhackathon$Api_Object_VoteProposal$pick = A3(
-	_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$fieldDecoder,
-	'pick',
-	{ctor: '[]'},
-	_elm_lang$core$Json_Decode$bool);
-var _JQuezada0$eoslondonhackathon$Api_Object_VoteProposal$to = A3(
-	_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$fieldDecoder,
-	'to',
-	{ctor: '[]'},
-	_elm_lang$core$Json_Decode$string);
-var _JQuezada0$eoslondonhackathon$Api_Object_VoteProposal$from = A3(
-	_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$fieldDecoder,
-	'from',
-	{ctor: '[]'},
-	_elm_lang$core$Json_Decode$string);
-var _JQuezada0$eoslondonhackathon$Api_Object_VoteProposal$iconame = A3(
-	_dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$fieldDecoder,
-	'iconame',
-	{ctor: '[]'},
-	_elm_lang$core$Json_Decode$string);
-var _JQuezada0$eoslondonhackathon$Api_Object_VoteProposal$selection = function (constructor) {
-	return _dillonkearns$graphqelm$Graphqelm_Internal_Builder_Object$selection(constructor);
-};
-
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$Model = F2(
-	function (a, b) {
-		return {activeFormSection: a, template: b};
-	});
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$Template = F5(
-	function (a, b, c, d, e) {
-		return {description: a, tokenSale: b, voting: c, charity: d, funding: e};
-	});
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$DescriptionParams = F4(
-	function (a, b, c, d) {
-		return {name: a, description: b, url: c, whitepaperUrl: d};
-	});
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$TokenSaleParams = F9(
-	function (a, b, c, d, e, f, g, h, i) {
-		return {tokenName: a, tokenSymbol: b, tokenSupply: c, tokenValue: d, tokenSaleAllocation: e, softCap: f, hardCap: g, startDate: h, endDate: i};
-	});
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$VotingParams = F2(
-	function (a, b) {
-		return {tapPoll: a, refundPoll: b};
-	});
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$CharityParams = F3(
-	function (a, b, c) {
-		return {allocation: a, numberOfCharities: b, duration: c};
-	});
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$FundingParams = F3(
-	function (a, b, c) {
-		return {tokenSaleStart: a, fundingCyclePeriod: b, initialTap: c};
-	});
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$Reload = {ctor: 'Reload'};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$SubmitTemplate = {ctor: 'SubmitTemplate'};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateCharity = function (a) {
-	return {ctor: 'UpdateCharity', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateVoting = function (a) {
-	return {ctor: 'UpdateVoting', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateTokenSale = function (a) {
-	return {ctor: 'UpdateTokenSale', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateDetail = function (a) {
-	return {ctor: 'UpdateDetail', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateFormSection = function (a) {
-	return {ctor: 'UpdateFormSection', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateWhitepaperUrl = function (a) {
-	return {ctor: 'UpdateWhitepaperUrl', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateUrl = function (a) {
-	return {ctor: 'UpdateUrl', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateDescription = function (a) {
-	return {ctor: 'UpdateDescription', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateName = function (a) {
-	return {ctor: 'UpdateName', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateEndDate = function (a) {
-	return {ctor: 'UpdateEndDate', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateStartDate = function (a) {
-	return {ctor: 'UpdateStartDate', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateHardCap = function (a) {
-	return {ctor: 'UpdateHardCap', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateSoftCap = function (a) {
-	return {ctor: 'UpdateSoftCap', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateTokenValue = function (a) {
-	return {ctor: 'UpdateTokenValue', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateTokenSupply = function (a) {
-	return {ctor: 'UpdateTokenSupply', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateTokenSymbol = function (a) {
-	return {ctor: 'UpdateTokenSymbol', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateTokenName = function (a) {
-	return {ctor: 'UpdateTokenName', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateRefundThreshold = function (a) {
-	return {ctor: 'UpdateRefundThreshold', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateRefundMinimumTurnout = function (a) {
-	return {ctor: 'UpdateRefundMinimumTurnout', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateRefundVotingDuration = function (a) {
-	return {ctor: 'UpdateRefundVotingDuration', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateRefundMaxElections = function (a) {
-	return {ctor: 'UpdateRefundMaxElections', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateRefundElectionFrequency = function (a) {
-	return {ctor: 'UpdateRefundElectionFrequency', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateTapVoteDuration = function (a) {
-	return {ctor: 'UpdateTapVoteDuration', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateTapMaxIncrease = function (a) {
-	return {ctor: 'UpdateTapMaxIncrease', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateTapThreshold = function (a) {
-	return {ctor: 'UpdateTapThreshold', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateTapMinimumTurnout = function (a) {
-	return {ctor: 'UpdateTapMinimumTurnout', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateDuration = function (a) {
-	return {ctor: 'UpdateDuration', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateNumberOfCharities = function (a) {
-	return {ctor: 'UpdateNumberOfCharities', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateAllocation = function (a) {
-	return {ctor: 'UpdateAllocation', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$Charity = {ctor: 'Charity'};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$Voting = {ctor: 'Voting'};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$Funding = {ctor: 'Funding'};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$Tokensale = {ctor: 'Tokensale'};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$Description = {ctor: 'Description'};
-
-var _etaque$elm_response$Response$res = F2(
-	function (model, cmd) {
-		return {ctor: '_Tuple2', _0: model, _1: cmd};
-	});
-var _etaque$elm_response$Response$taskRes = F3(
-	function (model, handleResult, task) {
-		return A2(
-			_etaque$elm_response$Response$res,
-			model,
-			A2(_elm_lang$core$Task$attempt, handleResult, task));
-	});
-var _etaque$elm_response$Response$withTask = F3(
-	function (handleResult, task, model) {
-		return A3(_etaque$elm_response$Response$taskRes, model, handleResult, task);
-	});
-var _etaque$elm_response$Response$withCmd = F2(
-	function (cmd, model) {
-		return A2(_etaque$elm_response$Response$res, model, cmd);
-	});
-var _etaque$elm_response$Response$withNone = function (model) {
-	return A2(_etaque$elm_response$Response$res, model, _elm_lang$core$Platform_Cmd$none);
-};
-var _etaque$elm_response$Response$mapBoth = F3(
-	function (onModel, onCmd, _p0) {
-		var _p1 = _p0;
-		return A2(
-			_etaque$elm_response$Response$res,
-			onModel(_p1._0),
-			A2(_elm_lang$core$Platform_Cmd$map, onCmd, _p1._1));
-	});
-var _etaque$elm_response$Response$mapModel = function (onModel) {
-	return A2(_etaque$elm_response$Response$mapBoth, onModel, _elm_lang$core$Basics$identity);
-};
-var _etaque$elm_response$Response$mapCmd = function (onCmd) {
-	return A2(_etaque$elm_response$Response$mapBoth, _elm_lang$core$Basics$identity, onCmd);
-};
-
-var _JQuezada0$eoslondonhackathon$Ports$submitTemplate = _elm_lang$core$Native_Platform.outgoingPort(
-	'submitTemplate',
-	function (v) {
-		return {
-			description: {name: v.description.name, description: v.description.description, url: v.description.url, whitepaperUrl: v.description.whitepaperUrl},
-			tokenSale: {tokenName: v.tokenSale.tokenName, tokenSymbol: v.tokenSale.tokenSymbol, tokenSupply: v.tokenSale.tokenSupply, tokenValue: v.tokenSale.tokenValue, tokenSaleAllocation: v.tokenSale.tokenSaleAllocation, softCap: v.tokenSale.softCap, hardCap: v.tokenSale.hardCap, startDate: v.tokenSale.startDate, endDate: v.tokenSale.endDate},
-			voting: {
-				tapPoll: {minimumTurnout: v.voting.tapPoll.minimumTurnout, threshold: v.voting.tapPoll.threshold, maxTapIncrease: v.voting.tapPoll.maxTapIncrease, voteDuration: v.voting.tapPoll.voteDuration},
-				refundPoll: {refundElectionFrequency: v.voting.refundPoll.refundElectionFrequency, maxElections: v.voting.refundPoll.maxElections, votingDuration: v.voting.refundPoll.votingDuration, minimumTurnout: v.voting.refundPoll.minimumTurnout, threshold: v.voting.refundPoll.threshold}
-			},
-			charity: {allocation: v.charity.allocation, numberOfCharities: v.charity.numberOfCharities, duration: v.charity.duration},
-			funding: {tokenSaleStart: v.funding.tokenSaleStart, fundingCyclePeriod: v.funding.fundingCyclePeriod, initialTap: v.funding.initialTap}
-		};
-	});
-var _JQuezada0$eoslondonhackathon$Ports$createVoting = _elm_lang$core$Native_Platform.outgoingPort(
-	'createVoting',
-	function (v) {
-		return {icoaccount: v.icoaccount, proposal: v.proposal};
-	});
-var _JQuezada0$eoslondonhackathon$Ports$removeVoting = _elm_lang$core$Native_Platform.outgoingPort(
-	'removeVoting',
-	function (v) {
-		return {account: v.account};
-	});
-var _JQuezada0$eoslondonhackathon$Ports$vote = _elm_lang$core$Native_Platform.outgoingPort(
-	'vote',
-	function (v) {
-		return {icoaccount: v.icoaccount, idvoter: v.idvoter, trvoter: v.trvoter, currentVoter: v.currentVoter, pick: v.pick};
-	});
-var _JQuezada0$eoslondonhackathon$Ports$removeVote = _elm_lang$core$Native_Platform.outgoingPort(
-	'removeVote',
-	function (v) {
-		return {icoaccount: v.icoaccount};
-	});
-var _JQuezada0$eoslondonhackathon$Ports$createSuggestion = _elm_lang$core$Native_Platform.outgoingPort(
-	'createSuggestion',
-	function (v) {
-		return {icoaccount: v.icoaccount, from: v.from, to: v.to, pick: v.pick};
-	});
-var _JQuezada0$eoslondonhackathon$Ports$removeSuggestion = _elm_lang$core$Native_Platform.outgoingPort(
-	'removeSuggestion',
-	function (v) {
-		return {from: v.from};
-	});
-var _JQuezada0$eoslondonhackathon$Ports$transactionComplete = _elm_lang$core$Native_Platform.incomingPort(
-	'transactionComplete',
-	_elm_lang$core$Json_Decode$null(
-		{ctor: '_Tuple0'}));
-
-var _elm_lang$dom$Native_Dom = function() {
-
-var fakeNode = {
-	addEventListener: function() {},
-	removeEventListener: function() {}
-};
-
-var onDocument = on(typeof document !== 'undefined' ? document : fakeNode);
-var onWindow = on(typeof window !== 'undefined' ? window : fakeNode);
-
-function on(node)
-{
-	return function(eventName, decoder, toTask)
-	{
-		return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback) {
-
-			function performTask(event)
-			{
-				var result = A2(_elm_lang$core$Json_Decode$decodeValue, decoder, event);
-				if (result.ctor === 'Ok')
-				{
-					_elm_lang$core$Native_Scheduler.rawSpawn(toTask(result._0));
-				}
-			}
-
-			node.addEventListener(eventName, performTask);
-
-			return function()
-			{
-				node.removeEventListener(eventName, performTask);
-			};
-		});
-	};
-}
-
-var rAF = typeof requestAnimationFrame !== 'undefined'
-	? requestAnimationFrame
-	: function(callback) { callback(); };
-
-function withNode(id, doStuff)
-{
-	return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)
-	{
-		rAF(function()
-		{
-			var node = document.getElementById(id);
-			if (node === null)
-			{
-				callback(_elm_lang$core$Native_Scheduler.fail({ ctor: 'NotFound', _0: id }));
-				return;
-			}
-			callback(_elm_lang$core$Native_Scheduler.succeed(doStuff(node)));
-		});
-	});
-}
-
-
-// FOCUS
-
-function focus(id)
-{
-	return withNode(id, function(node) {
-		node.focus();
-		return _elm_lang$core$Native_Utils.Tuple0;
-	});
-}
-
-function blur(id)
-{
-	return withNode(id, function(node) {
-		node.blur();
-		return _elm_lang$core$Native_Utils.Tuple0;
-	});
-}
-
-
-// SCROLLING
-
-function getScrollTop(id)
-{
-	return withNode(id, function(node) {
-		return node.scrollTop;
-	});
-}
-
-function setScrollTop(id, desiredScrollTop)
-{
-	return withNode(id, function(node) {
-		node.scrollTop = desiredScrollTop;
-		return _elm_lang$core$Native_Utils.Tuple0;
-	});
-}
-
-function toBottom(id)
-{
-	return withNode(id, function(node) {
-		node.scrollTop = node.scrollHeight;
-		return _elm_lang$core$Native_Utils.Tuple0;
-	});
-}
-
-function getScrollLeft(id)
-{
-	return withNode(id, function(node) {
-		return node.scrollLeft;
-	});
-}
-
-function setScrollLeft(id, desiredScrollLeft)
-{
-	return withNode(id, function(node) {
-		node.scrollLeft = desiredScrollLeft;
-		return _elm_lang$core$Native_Utils.Tuple0;
-	});
-}
-
-function toRight(id)
-{
-	return withNode(id, function(node) {
-		node.scrollLeft = node.scrollWidth;
-		return _elm_lang$core$Native_Utils.Tuple0;
-	});
-}
-
-
-// SIZE
-
-function width(options, id)
-{
-	return withNode(id, function(node) {
-		switch (options.ctor)
-		{
-			case 'Content':
-				return node.scrollWidth;
-			case 'VisibleContent':
-				return node.clientWidth;
-			case 'VisibleContentWithBorders':
-				return node.offsetWidth;
-			case 'VisibleContentWithBordersAndMargins':
-				var rect = node.getBoundingClientRect();
-				return rect.right - rect.left;
-		}
-	});
-}
-
-function height(options, id)
-{
-	return withNode(id, function(node) {
-		switch (options.ctor)
-		{
-			case 'Content':
-				return node.scrollHeight;
-			case 'VisibleContent':
-				return node.clientHeight;
-			case 'VisibleContentWithBorders':
-				return node.offsetHeight;
-			case 'VisibleContentWithBordersAndMargins':
-				var rect = node.getBoundingClientRect();
-				return rect.bottom - rect.top;
-		}
-	});
-}
-
-return {
-	onDocument: F3(onDocument),
-	onWindow: F3(onWindow),
-
-	focus: focus,
-	blur: blur,
-
-	getScrollTop: getScrollTop,
-	setScrollTop: F2(setScrollTop),
-	getScrollLeft: getScrollLeft,
-	setScrollLeft: F2(setScrollLeft),
-	toBottom: toBottom,
-	toRight: toRight,
-
-	height: F2(height),
-	width: F2(width)
-};
-
-}();
-
-var _elm_lang$dom$Dom_LowLevel$onWindow = _elm_lang$dom$Native_Dom.onWindow;
-var _elm_lang$dom$Dom_LowLevel$onDocument = _elm_lang$dom$Native_Dom.onDocument;
 
 var _elm_lang$virtual_dom$VirtualDom_Debug$wrap;
 var _elm_lang$virtual_dom$VirtualDom_Debug$wrapWithFlags;
@@ -12118,939 +8800,6 @@ var _elm_lang$html$Html$summary = _elm_lang$html$Html$node('summary');
 var _elm_lang$html$Html$menuitem = _elm_lang$html$Html$node('menuitem');
 var _elm_lang$html$Html$menu = _elm_lang$html$Html$node('menu');
 
-var _elm_lang$navigation$Native_Navigation = function() {
-
-
-// FAKE NAVIGATION
-
-function go(n)
-{
-	return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)
-	{
-		if (n !== 0)
-		{
-			history.go(n);
-		}
-		callback(_elm_lang$core$Native_Scheduler.succeed(_elm_lang$core$Native_Utils.Tuple0));
-	});
-}
-
-function pushState(url)
-{
-	return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)
-	{
-		history.pushState({}, '', url);
-		callback(_elm_lang$core$Native_Scheduler.succeed(getLocation()));
-	});
-}
-
-function replaceState(url)
-{
-	return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)
-	{
-		history.replaceState({}, '', url);
-		callback(_elm_lang$core$Native_Scheduler.succeed(getLocation()));
-	});
-}
-
-
-// REAL NAVIGATION
-
-function reloadPage(skipCache)
-{
-	return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)
-	{
-		document.location.reload(skipCache);
-		callback(_elm_lang$core$Native_Scheduler.succeed(_elm_lang$core$Native_Utils.Tuple0));
-	});
-}
-
-function setLocation(url)
-{
-	return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)
-	{
-		try
-		{
-			window.location = url;
-		}
-		catch(err)
-		{
-			// Only Firefox can throw a NS_ERROR_MALFORMED_URI exception here.
-			// Other browsers reload the page, so let's be consistent about that.
-			document.location.reload(false);
-		}
-		callback(_elm_lang$core$Native_Scheduler.succeed(_elm_lang$core$Native_Utils.Tuple0));
-	});
-}
-
-
-// GET LOCATION
-
-function getLocation()
-{
-	var location = document.location;
-
-	return {
-		href: location.href,
-		host: location.host,
-		hostname: location.hostname,
-		protocol: location.protocol,
-		origin: location.origin,
-		port_: location.port,
-		pathname: location.pathname,
-		search: location.search,
-		hash: location.hash,
-		username: location.username,
-		password: location.password
-	};
-}
-
-
-// DETECT IE11 PROBLEMS
-
-function isInternetExplorer11()
-{
-	return window.navigator.userAgent.indexOf('Trident') !== -1;
-}
-
-
-return {
-	go: go,
-	setLocation: setLocation,
-	reloadPage: reloadPage,
-	pushState: pushState,
-	replaceState: replaceState,
-	getLocation: getLocation,
-	isInternetExplorer11: isInternetExplorer11
-};
-
-}();
-
-var _elm_lang$core$Process$kill = _elm_lang$core$Native_Scheduler.kill;
-var _elm_lang$core$Process$sleep = _elm_lang$core$Native_Scheduler.sleep;
-var _elm_lang$core$Process$spawn = _elm_lang$core$Native_Scheduler.spawn;
-
-var _elm_lang$navigation$Navigation$replaceState = _elm_lang$navigation$Native_Navigation.replaceState;
-var _elm_lang$navigation$Navigation$pushState = _elm_lang$navigation$Native_Navigation.pushState;
-var _elm_lang$navigation$Navigation$go = _elm_lang$navigation$Native_Navigation.go;
-var _elm_lang$navigation$Navigation$reloadPage = _elm_lang$navigation$Native_Navigation.reloadPage;
-var _elm_lang$navigation$Navigation$setLocation = _elm_lang$navigation$Native_Navigation.setLocation;
-var _elm_lang$navigation$Navigation_ops = _elm_lang$navigation$Navigation_ops || {};
-_elm_lang$navigation$Navigation_ops['&>'] = F2(
-	function (task1, task2) {
-		return A2(
-			_elm_lang$core$Task$andThen,
-			function (_p0) {
-				return task2;
-			},
-			task1);
-	});
-var _elm_lang$navigation$Navigation$notify = F3(
-	function (router, subs, location) {
-		var send = function (_p1) {
-			var _p2 = _p1;
-			return A2(
-				_elm_lang$core$Platform$sendToApp,
-				router,
-				_p2._0(location));
-		};
-		return A2(
-			_elm_lang$navigation$Navigation_ops['&>'],
-			_elm_lang$core$Task$sequence(
-				A2(_elm_lang$core$List$map, send, subs)),
-			_elm_lang$core$Task$succeed(
-				{ctor: '_Tuple0'}));
-	});
-var _elm_lang$navigation$Navigation$cmdHelp = F3(
-	function (router, subs, cmd) {
-		var _p3 = cmd;
-		switch (_p3.ctor) {
-			case 'Jump':
-				return _elm_lang$navigation$Navigation$go(_p3._0);
-			case 'New':
-				return A2(
-					_elm_lang$core$Task$andThen,
-					A2(_elm_lang$navigation$Navigation$notify, router, subs),
-					_elm_lang$navigation$Navigation$pushState(_p3._0));
-			case 'Modify':
-				return A2(
-					_elm_lang$core$Task$andThen,
-					A2(_elm_lang$navigation$Navigation$notify, router, subs),
-					_elm_lang$navigation$Navigation$replaceState(_p3._0));
-			case 'Visit':
-				return _elm_lang$navigation$Navigation$setLocation(_p3._0);
-			default:
-				return _elm_lang$navigation$Navigation$reloadPage(_p3._0);
-		}
-	});
-var _elm_lang$navigation$Navigation$killPopWatcher = function (popWatcher) {
-	var _p4 = popWatcher;
-	if (_p4.ctor === 'Normal') {
-		return _elm_lang$core$Process$kill(_p4._0);
-	} else {
-		return A2(
-			_elm_lang$navigation$Navigation_ops['&>'],
-			_elm_lang$core$Process$kill(_p4._0),
-			_elm_lang$core$Process$kill(_p4._1));
-	}
-};
-var _elm_lang$navigation$Navigation$onSelfMsg = F3(
-	function (router, location, state) {
-		return A2(
-			_elm_lang$navigation$Navigation_ops['&>'],
-			A3(_elm_lang$navigation$Navigation$notify, router, state.subs, location),
-			_elm_lang$core$Task$succeed(state));
-	});
-var _elm_lang$navigation$Navigation$subscription = _elm_lang$core$Native_Platform.leaf('Navigation');
-var _elm_lang$navigation$Navigation$command = _elm_lang$core$Native_Platform.leaf('Navigation');
-var _elm_lang$navigation$Navigation$Location = function (a) {
-	return function (b) {
-		return function (c) {
-			return function (d) {
-				return function (e) {
-					return function (f) {
-						return function (g) {
-							return function (h) {
-								return function (i) {
-									return function (j) {
-										return function (k) {
-											return {href: a, host: b, hostname: c, protocol: d, origin: e, port_: f, pathname: g, search: h, hash: i, username: j, password: k};
-										};
-									};
-								};
-							};
-						};
-					};
-				};
-			};
-		};
-	};
-};
-var _elm_lang$navigation$Navigation$State = F2(
-	function (a, b) {
-		return {subs: a, popWatcher: b};
-	});
-var _elm_lang$navigation$Navigation$init = _elm_lang$core$Task$succeed(
-	A2(
-		_elm_lang$navigation$Navigation$State,
-		{ctor: '[]'},
-		_elm_lang$core$Maybe$Nothing));
-var _elm_lang$navigation$Navigation$Reload = function (a) {
-	return {ctor: 'Reload', _0: a};
-};
-var _elm_lang$navigation$Navigation$reload = _elm_lang$navigation$Navigation$command(
-	_elm_lang$navigation$Navigation$Reload(false));
-var _elm_lang$navigation$Navigation$reloadAndSkipCache = _elm_lang$navigation$Navigation$command(
-	_elm_lang$navigation$Navigation$Reload(true));
-var _elm_lang$navigation$Navigation$Visit = function (a) {
-	return {ctor: 'Visit', _0: a};
-};
-var _elm_lang$navigation$Navigation$load = function (url) {
-	return _elm_lang$navigation$Navigation$command(
-		_elm_lang$navigation$Navigation$Visit(url));
-};
-var _elm_lang$navigation$Navigation$Modify = function (a) {
-	return {ctor: 'Modify', _0: a};
-};
-var _elm_lang$navigation$Navigation$modifyUrl = function (url) {
-	return _elm_lang$navigation$Navigation$command(
-		_elm_lang$navigation$Navigation$Modify(url));
-};
-var _elm_lang$navigation$Navigation$New = function (a) {
-	return {ctor: 'New', _0: a};
-};
-var _elm_lang$navigation$Navigation$newUrl = function (url) {
-	return _elm_lang$navigation$Navigation$command(
-		_elm_lang$navigation$Navigation$New(url));
-};
-var _elm_lang$navigation$Navigation$Jump = function (a) {
-	return {ctor: 'Jump', _0: a};
-};
-var _elm_lang$navigation$Navigation$back = function (n) {
-	return _elm_lang$navigation$Navigation$command(
-		_elm_lang$navigation$Navigation$Jump(0 - n));
-};
-var _elm_lang$navigation$Navigation$forward = function (n) {
-	return _elm_lang$navigation$Navigation$command(
-		_elm_lang$navigation$Navigation$Jump(n));
-};
-var _elm_lang$navigation$Navigation$cmdMap = F2(
-	function (_p5, myCmd) {
-		var _p6 = myCmd;
-		switch (_p6.ctor) {
-			case 'Jump':
-				return _elm_lang$navigation$Navigation$Jump(_p6._0);
-			case 'New':
-				return _elm_lang$navigation$Navigation$New(_p6._0);
-			case 'Modify':
-				return _elm_lang$navigation$Navigation$Modify(_p6._0);
-			case 'Visit':
-				return _elm_lang$navigation$Navigation$Visit(_p6._0);
-			default:
-				return _elm_lang$navigation$Navigation$Reload(_p6._0);
-		}
-	});
-var _elm_lang$navigation$Navigation$Monitor = function (a) {
-	return {ctor: 'Monitor', _0: a};
-};
-var _elm_lang$navigation$Navigation$program = F2(
-	function (locationToMessage, stuff) {
-		var init = stuff.init(
-			_elm_lang$navigation$Native_Navigation.getLocation(
-				{ctor: '_Tuple0'}));
-		var subs = function (model) {
-			return _elm_lang$core$Platform_Sub$batch(
-				{
-					ctor: '::',
-					_0: _elm_lang$navigation$Navigation$subscription(
-						_elm_lang$navigation$Navigation$Monitor(locationToMessage)),
-					_1: {
-						ctor: '::',
-						_0: stuff.subscriptions(model),
-						_1: {ctor: '[]'}
-					}
-				});
-		};
-		return _elm_lang$html$Html$program(
-			{init: init, view: stuff.view, update: stuff.update, subscriptions: subs});
-	});
-var _elm_lang$navigation$Navigation$programWithFlags = F2(
-	function (locationToMessage, stuff) {
-		var init = function (flags) {
-			return A2(
-				stuff.init,
-				flags,
-				_elm_lang$navigation$Native_Navigation.getLocation(
-					{ctor: '_Tuple0'}));
-		};
-		var subs = function (model) {
-			return _elm_lang$core$Platform_Sub$batch(
-				{
-					ctor: '::',
-					_0: _elm_lang$navigation$Navigation$subscription(
-						_elm_lang$navigation$Navigation$Monitor(locationToMessage)),
-					_1: {
-						ctor: '::',
-						_0: stuff.subscriptions(model),
-						_1: {ctor: '[]'}
-					}
-				});
-		};
-		return _elm_lang$html$Html$programWithFlags(
-			{init: init, view: stuff.view, update: stuff.update, subscriptions: subs});
-	});
-var _elm_lang$navigation$Navigation$subMap = F2(
-	function (func, _p7) {
-		var _p8 = _p7;
-		return _elm_lang$navigation$Navigation$Monitor(
-			function (_p9) {
-				return func(
-					_p8._0(_p9));
-			});
-	});
-var _elm_lang$navigation$Navigation$InternetExplorer = F2(
-	function (a, b) {
-		return {ctor: 'InternetExplorer', _0: a, _1: b};
-	});
-var _elm_lang$navigation$Navigation$Normal = function (a) {
-	return {ctor: 'Normal', _0: a};
-};
-var _elm_lang$navigation$Navigation$spawnPopWatcher = function (router) {
-	var reportLocation = function (_p10) {
-		return A2(
-			_elm_lang$core$Platform$sendToSelf,
-			router,
-			_elm_lang$navigation$Native_Navigation.getLocation(
-				{ctor: '_Tuple0'}));
-	};
-	return _elm_lang$navigation$Native_Navigation.isInternetExplorer11(
-		{ctor: '_Tuple0'}) ? A3(
-		_elm_lang$core$Task$map2,
-		_elm_lang$navigation$Navigation$InternetExplorer,
-		_elm_lang$core$Process$spawn(
-			A3(_elm_lang$dom$Dom_LowLevel$onWindow, 'popstate', _elm_lang$core$Json_Decode$value, reportLocation)),
-		_elm_lang$core$Process$spawn(
-			A3(_elm_lang$dom$Dom_LowLevel$onWindow, 'hashchange', _elm_lang$core$Json_Decode$value, reportLocation))) : A2(
-		_elm_lang$core$Task$map,
-		_elm_lang$navigation$Navigation$Normal,
-		_elm_lang$core$Process$spawn(
-			A3(_elm_lang$dom$Dom_LowLevel$onWindow, 'popstate', _elm_lang$core$Json_Decode$value, reportLocation)));
-};
-var _elm_lang$navigation$Navigation$onEffects = F4(
-	function (router, cmds, subs, _p11) {
-		var _p12 = _p11;
-		var _p15 = _p12.popWatcher;
-		var stepState = function () {
-			var _p13 = {ctor: '_Tuple2', _0: subs, _1: _p15};
-			_v6_2:
-			do {
-				if (_p13._0.ctor === '[]') {
-					if (_p13._1.ctor === 'Just') {
-						return A2(
-							_elm_lang$navigation$Navigation_ops['&>'],
-							_elm_lang$navigation$Navigation$killPopWatcher(_p13._1._0),
-							_elm_lang$core$Task$succeed(
-								A2(_elm_lang$navigation$Navigation$State, subs, _elm_lang$core$Maybe$Nothing)));
-					} else {
-						break _v6_2;
-					}
-				} else {
-					if (_p13._1.ctor === 'Nothing') {
-						return A2(
-							_elm_lang$core$Task$map,
-							function (_p14) {
-								return A2(
-									_elm_lang$navigation$Navigation$State,
-									subs,
-									_elm_lang$core$Maybe$Just(_p14));
-							},
-							_elm_lang$navigation$Navigation$spawnPopWatcher(router));
-					} else {
-						break _v6_2;
-					}
-				}
-			} while(false);
-			return _elm_lang$core$Task$succeed(
-				A2(_elm_lang$navigation$Navigation$State, subs, _p15));
-		}();
-		return A2(
-			_elm_lang$navigation$Navigation_ops['&>'],
-			_elm_lang$core$Task$sequence(
-				A2(
-					_elm_lang$core$List$map,
-					A2(_elm_lang$navigation$Navigation$cmdHelp, router, subs),
-					cmds)),
-			stepState);
-	});
-_elm_lang$core$Native_Platform.effectManagers['Navigation'] = {pkg: 'elm-lang/navigation', init: _elm_lang$navigation$Navigation$init, onEffects: _elm_lang$navigation$Navigation$onEffects, onSelfMsg: _elm_lang$navigation$Navigation$onSelfMsg, tag: 'fx', cmdMap: _elm_lang$navigation$Navigation$cmdMap, subMap: _elm_lang$navigation$Navigation$subMap};
-
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Update$subscriptions = function (model) {
-	return _elm_lang$core$Platform_Sub$none;
-};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Update$update = F2(
-	function (msg, model) {
-		var _p0 = msg;
-		switch (_p0.ctor) {
-			case 'UpdateFormSection':
-				return _etaque$elm_response$Response$withNone(
-					_elm_lang$core$Native_Utils.update(
-						model,
-						{activeFormSection: _p0._0}));
-			case 'UpdateDetail':
-				switch (_p0._0.ctor) {
-					case 'UpdateName':
-						return _etaque$elm_response$Response$withNone(
-							_elm_lang$core$Native_Utils.update(
-								model,
-								{
-									template: function (t) {
-										return _elm_lang$core$Native_Utils.update(
-											t,
-											{
-												description: function (d) {
-													return _elm_lang$core$Native_Utils.update(
-														d,
-														{name: _p0._0._0});
-												}(t.description)
-											});
-									}(model.template)
-								}));
-					case 'UpdateDescription':
-						return _etaque$elm_response$Response$withNone(
-							_elm_lang$core$Native_Utils.update(
-								model,
-								{
-									template: function (t) {
-										return _elm_lang$core$Native_Utils.update(
-											t,
-											{
-												description: function (d) {
-													return _elm_lang$core$Native_Utils.update(
-														d,
-														{description: _p0._0._0});
-												}(t.description)
-											});
-									}(model.template)
-								}));
-					case 'UpdateUrl':
-						return _etaque$elm_response$Response$withNone(
-							_elm_lang$core$Native_Utils.update(
-								model,
-								{
-									template: function (t) {
-										return _elm_lang$core$Native_Utils.update(
-											t,
-											{
-												description: function (d) {
-													return _elm_lang$core$Native_Utils.update(
-														d,
-														{url: _p0._0._0});
-												}(t.description)
-											});
-									}(model.template)
-								}));
-					default:
-						return _etaque$elm_response$Response$withNone(
-							_elm_lang$core$Native_Utils.update(
-								model,
-								{
-									template: function (t) {
-										return _elm_lang$core$Native_Utils.update(
-											t,
-											{
-												description: function (d) {
-													return _elm_lang$core$Native_Utils.update(
-														d,
-														{whitepaperUrl: _p0._0._0});
-												}(t.description)
-											});
-									}(model.template)
-								}));
-				}
-			case 'UpdateTokenSale':
-				switch (_p0._0.ctor) {
-					case 'UpdateTokenName':
-						return _etaque$elm_response$Response$withNone(
-							_elm_lang$core$Native_Utils.update(
-								model,
-								{
-									template: function (t) {
-										return _elm_lang$core$Native_Utils.update(
-											t,
-											{
-												tokenSale: function (ts) {
-													return _elm_lang$core$Native_Utils.update(
-														ts,
-														{tokenName: _p0._0._0});
-												}(t.tokenSale)
-											});
-									}(model.template)
-								}));
-					case 'UpdateTokenSymbol':
-						return _etaque$elm_response$Response$withNone(
-							_elm_lang$core$Native_Utils.update(
-								model,
-								{
-									template: function (t) {
-										return _elm_lang$core$Native_Utils.update(
-											t,
-											{
-												tokenSale: function (ts) {
-													return _elm_lang$core$Native_Utils.update(
-														ts,
-														{tokenSymbol: _p0._0._0});
-												}(t.tokenSale)
-											});
-									}(model.template)
-								}));
-					case 'UpdateTokenSupply':
-						return _etaque$elm_response$Response$withNone(
-							_elm_lang$core$Native_Utils.update(
-								model,
-								{
-									template: function (t) {
-										return _elm_lang$core$Native_Utils.update(
-											t,
-											{
-												tokenSale: function (ts) {
-													return _elm_lang$core$Native_Utils.update(
-														ts,
-														{tokenSupply: _p0._0._0});
-												}(t.tokenSale)
-											});
-									}(model.template)
-								}));
-					case 'UpdateTokenValue':
-						return _etaque$elm_response$Response$withNone(
-							_elm_lang$core$Native_Utils.update(
-								model,
-								{
-									template: function (t) {
-										return _elm_lang$core$Native_Utils.update(
-											t,
-											{
-												tokenSale: function (ts) {
-													return _elm_lang$core$Native_Utils.update(
-														ts,
-														{tokenValue: _p0._0._0});
-												}(t.tokenSale)
-											});
-									}(model.template)
-								}));
-					case 'UpdateSoftCap':
-						return _etaque$elm_response$Response$withNone(
-							_elm_lang$core$Native_Utils.update(
-								model,
-								{
-									template: function (t) {
-										return _elm_lang$core$Native_Utils.update(
-											t,
-											{
-												tokenSale: function (ts) {
-													return _elm_lang$core$Native_Utils.update(
-														ts,
-														{softCap: _p0._0._0});
-												}(t.tokenSale)
-											});
-									}(model.template)
-								}));
-					case 'UpdateHardCap':
-						return _etaque$elm_response$Response$withNone(
-							_elm_lang$core$Native_Utils.update(
-								model,
-								{
-									template: function (t) {
-										return _elm_lang$core$Native_Utils.update(
-											t,
-											{
-												tokenSale: function (ts) {
-													return _elm_lang$core$Native_Utils.update(
-														ts,
-														{hardCap: _p0._0._0});
-												}(t.tokenSale)
-											});
-									}(model.template)
-								}));
-					case 'UpdateStartDate':
-						return _etaque$elm_response$Response$withNone(
-							_elm_lang$core$Native_Utils.update(
-								model,
-								{
-									template: function (t) {
-										return _elm_lang$core$Native_Utils.update(
-											t,
-											{
-												tokenSale: function (ts) {
-													return _elm_lang$core$Native_Utils.update(
-														ts,
-														{startDate: _p0._0._0});
-												}(t.tokenSale)
-											});
-									}(model.template)
-								}));
-					default:
-						return _etaque$elm_response$Response$withNone(
-							_elm_lang$core$Native_Utils.update(
-								model,
-								{
-									template: function (t) {
-										return _elm_lang$core$Native_Utils.update(
-											t,
-											{
-												tokenSale: function (ts) {
-													return _elm_lang$core$Native_Utils.update(
-														ts,
-														{endDate: _p0._0._0});
-												}(t.tokenSale)
-											});
-									}(model.template)
-								}));
-				}
-			case 'UpdateVoting':
-				switch (_p0._0.ctor) {
-					case 'UpdateTapMinimumTurnout':
-						return _etaque$elm_response$Response$withNone(
-							_elm_lang$core$Native_Utils.update(
-								model,
-								{
-									template: function (t) {
-										return _elm_lang$core$Native_Utils.update(
-											t,
-											{
-												voting: function (v) {
-													return _elm_lang$core$Native_Utils.update(
-														v,
-														{
-															tapPoll: function (tp) {
-																return _elm_lang$core$Native_Utils.update(
-																	tp,
-																	{minimumTurnout: _p0._0._0});
-															}(v.tapPoll)
-														});
-												}(t.voting)
-											});
-									}(model.template)
-								}));
-					case 'UpdateTapThreshold':
-						return _etaque$elm_response$Response$withNone(
-							_elm_lang$core$Native_Utils.update(
-								model,
-								{
-									template: function (t) {
-										return _elm_lang$core$Native_Utils.update(
-											t,
-											{
-												voting: function (v) {
-													return _elm_lang$core$Native_Utils.update(
-														v,
-														{
-															tapPoll: function (tp) {
-																return _elm_lang$core$Native_Utils.update(
-																	tp,
-																	{threshold: _p0._0._0});
-															}(v.tapPoll)
-														});
-												}(t.voting)
-											});
-									}(model.template)
-								}));
-					case 'UpdateTapMaxIncrease':
-						return _etaque$elm_response$Response$withNone(
-							_elm_lang$core$Native_Utils.update(
-								model,
-								{
-									template: function (t) {
-										return _elm_lang$core$Native_Utils.update(
-											t,
-											{
-												voting: function (v) {
-													return _elm_lang$core$Native_Utils.update(
-														v,
-														{
-															tapPoll: function (tp) {
-																return _elm_lang$core$Native_Utils.update(
-																	tp,
-																	{maxTapIncrease: _p0._0._0});
-															}(v.tapPoll)
-														});
-												}(t.voting)
-											});
-									}(model.template)
-								}));
-					case 'UpdateTapVoteDuration':
-						return _etaque$elm_response$Response$withNone(
-							_elm_lang$core$Native_Utils.update(
-								model,
-								{
-									template: function (t) {
-										return _elm_lang$core$Native_Utils.update(
-											t,
-											{
-												voting: function (v) {
-													return _elm_lang$core$Native_Utils.update(
-														v,
-														{
-															tapPoll: function (tp) {
-																return _elm_lang$core$Native_Utils.update(
-																	tp,
-																	{voteDuration: _p0._0._0});
-															}(v.tapPoll)
-														});
-												}(t.voting)
-											});
-									}(model.template)
-								}));
-					case 'UpdateRefundElectionFrequency':
-						return _etaque$elm_response$Response$withNone(
-							_elm_lang$core$Native_Utils.update(
-								model,
-								{
-									template: function (t) {
-										return _elm_lang$core$Native_Utils.update(
-											t,
-											{
-												voting: function (v) {
-													return _elm_lang$core$Native_Utils.update(
-														v,
-														{
-															refundPoll: function (rp) {
-																return _elm_lang$core$Native_Utils.update(
-																	rp,
-																	{refundElectionFrequency: _p0._0._0});
-															}(v.refundPoll)
-														});
-												}(t.voting)
-											});
-									}(model.template)
-								}));
-					case 'UpdateRefundMaxElections':
-						return _etaque$elm_response$Response$withNone(
-							_elm_lang$core$Native_Utils.update(
-								model,
-								{
-									template: function (t) {
-										return _elm_lang$core$Native_Utils.update(
-											t,
-											{
-												voting: function (v) {
-													return _elm_lang$core$Native_Utils.update(
-														v,
-														{
-															refundPoll: function (rp) {
-																return _elm_lang$core$Native_Utils.update(
-																	rp,
-																	{maxElections: _p0._0._0});
-															}(v.refundPoll)
-														});
-												}(t.voting)
-											});
-									}(model.template)
-								}));
-					case 'UpdateRefundVotingDuration':
-						return _etaque$elm_response$Response$withNone(
-							_elm_lang$core$Native_Utils.update(
-								model,
-								{
-									template: function (t) {
-										return _elm_lang$core$Native_Utils.update(
-											t,
-											{
-												voting: function (v) {
-													return _elm_lang$core$Native_Utils.update(
-														v,
-														{
-															refundPoll: function (rp) {
-																return _elm_lang$core$Native_Utils.update(
-																	rp,
-																	{votingDuration: _p0._0._0});
-															}(v.refundPoll)
-														});
-												}(t.voting)
-											});
-									}(model.template)
-								}));
-					case 'UpdateRefundMinimumTurnout':
-						return _etaque$elm_response$Response$withNone(
-							_elm_lang$core$Native_Utils.update(
-								model,
-								{
-									template: function (t) {
-										return _elm_lang$core$Native_Utils.update(
-											t,
-											{
-												voting: function (v) {
-													return _elm_lang$core$Native_Utils.update(
-														v,
-														{
-															refundPoll: function (rp) {
-																return _elm_lang$core$Native_Utils.update(
-																	rp,
-																	{minimumTurnout: _p0._0._0});
-															}(v.refundPoll)
-														});
-												}(t.voting)
-											});
-									}(model.template)
-								}));
-					default:
-						return _etaque$elm_response$Response$withNone(
-							_elm_lang$core$Native_Utils.update(
-								model,
-								{
-									template: function (t) {
-										return _elm_lang$core$Native_Utils.update(
-											t,
-											{
-												voting: function (v) {
-													return _elm_lang$core$Native_Utils.update(
-														v,
-														{
-															refundPoll: function (rp) {
-																return _elm_lang$core$Native_Utils.update(
-																	rp,
-																	{threshold: _p0._0._0});
-															}(v.refundPoll)
-														});
-												}(t.voting)
-											});
-									}(model.template)
-								}));
-				}
-			case 'UpdateCharity':
-				switch (_p0._0.ctor) {
-					case 'UpdateAllocation':
-						return _etaque$elm_response$Response$withNone(
-							_elm_lang$core$Native_Utils.update(
-								model,
-								{
-									template: function (t) {
-										return _elm_lang$core$Native_Utils.update(
-											t,
-											{
-												charity: function (c) {
-													return _elm_lang$core$Native_Utils.update(
-														c,
-														{allocation: _p0._0._0});
-												}(t.charity)
-											});
-									}(model.template)
-								}));
-					case 'UpdateNumberOfCharities':
-						return _etaque$elm_response$Response$withNone(
-							_elm_lang$core$Native_Utils.update(
-								model,
-								{
-									template: function (t) {
-										return _elm_lang$core$Native_Utils.update(
-											t,
-											{
-												charity: function (c) {
-													return _elm_lang$core$Native_Utils.update(
-														c,
-														{numberOfCharities: _p0._0._0});
-												}(t.charity)
-											});
-									}(model.template)
-								}));
-					default:
-						return _etaque$elm_response$Response$withNone(
-							_elm_lang$core$Native_Utils.update(
-								model,
-								{
-									template: function (t) {
-										return _elm_lang$core$Native_Utils.update(
-											t,
-											{
-												charity: function (c) {
-													return _elm_lang$core$Native_Utils.update(
-														c,
-														{duration: _p0._0._0});
-												}(t.charity)
-											});
-									}(model.template)
-								}));
-				}
-			case 'SubmitTemplate':
-				var cmd = A2(
-					_elm_lang$core$Task$perform,
-					_elm_lang$core$Basics$identity,
-					A2(
-						_elm_lang$core$Task$andThen,
-						_elm_lang$core$Basics$always(
-							_elm_lang$core$Task$succeed(_JQuezada0$eoslondonhackathon$DaicoTemplate_Model$Reload)),
-						_elm_lang$core$Process$sleep(1000)));
-				return A2(
-					_etaque$elm_response$Response$withCmd,
-					_elm_lang$core$Platform_Cmd$batch(
-						{
-							ctor: '::',
-							_0: _JQuezada0$eoslondonhackathon$Ports$submitTemplate(model.template),
-							_1: {
-								ctor: '::',
-								_0: cmd,
-								_1: {ctor: '[]'}
-							}
-						}),
-					model);
-			default:
-				return A2(_etaque$elm_response$Response$withCmd, _elm_lang$navigation$Navigation$reload, model);
-		}
-	});
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_Update$init = _etaque$elm_response$Response$withNone(
-	{
-		activeFormSection: _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$Description,
-		template: {
-			description: {name: 'Collective Health', description: 'Benefit from your medical data', url: 'https://www.collectivehealth.io/', whitepaperUrl: 'https://www.collectivehealth.io/whitepaper'},
-			tokenSale: {tokenName: 'CH Coin', tokenSymbol: 'CHB', tokenSupply: '1500000', tokenValue: 10, tokenSaleAllocation: '1000000', softCap: 500000, hardCap: 750000, startDate: 1538348400000, endDate: 1540944000000},
-			voting: {
-				tapPoll: {minimumTurnout: 25, threshold: 75, maxTapIncrease: 25, voteDuration: 864000},
-				refundPoll: {refundElectionFrequency: 7884000000, maxElections: 10, votingDuration: 1540944000000, minimumTurnout: 50, threshold: 80}
-			},
-			charity: {allocation: 10, numberOfCharities: 5, duration: 864000},
-			funding: {tokenSaleStart: 1546300800000, fundingCyclePeriod: 7884000000, initialTap: '$500000'}
-		}
-	});
-
 var _elm_lang$html$Html_Attributes$map = _elm_lang$virtual_dom$VirtualDom$mapProperty;
 var _elm_lang$html$Html_Attributes$attribute = _elm_lang$virtual_dom$VirtualDom$attribute;
 var _elm_lang$html$Html_Attributes$contextmenu = function (value) {
@@ -13519,6 +9268,1454 @@ var _elm_lang$html$Html_Events$Options = F2(
 var _elm_lang$html$Html_Keyed$node = _elm_lang$virtual_dom$VirtualDom$keyedNode;
 var _elm_lang$html$Html_Keyed$ol = _elm_lang$html$Html_Keyed$node('ol');
 var _elm_lang$html$Html_Keyed$ul = _elm_lang$html$Html_Keyed$node('ul');
+
+var _elm_community$elm_datepicker$DatePicker_ops = _elm_community$elm_datepicker$DatePicker_ops || {};
+_elm_community$elm_datepicker$DatePicker_ops['??>'] = F2(
+	function (first, $default) {
+		var _p0 = first;
+		if (_p0.ctor === 'Just') {
+			return _elm_lang$core$Maybe$Just(_p0._0);
+		} else {
+			return $default;
+		}
+	});
+var _elm_community$elm_datepicker$DatePicker_ops = _elm_community$elm_datepicker$DatePicker_ops || {};
+_elm_community$elm_datepicker$DatePicker_ops['?>'] = _elm_lang$core$Basics$flip(_elm_lang$core$Maybe$withDefault);
+var _elm_community$elm_datepicker$DatePicker$mkClassList = F2(
+	function (_p1, cs) {
+		var _p2 = _p1;
+		return _elm_lang$html$Html_Attributes$classList(
+			A2(
+				_elm_lang$core$List$map,
+				function (_p3) {
+					var _p4 = _p3;
+					return {
+						ctor: '_Tuple2',
+						_0: A2(_elm_lang$core$Basics_ops['++'], _p2.classNamespace, _p4._0),
+						_1: _p4._1
+					};
+				},
+				cs));
+	});
+var _elm_community$elm_datepicker$DatePicker$mkClass = F2(
+	function (_p5, c) {
+		var _p6 = _p5;
+		return _elm_lang$html$Html_Attributes$class(
+			A2(_elm_lang$core$Basics_ops['++'], _p6.classNamespace, c));
+	});
+var _elm_community$elm_datepicker$DatePicker$groupDates = function (dates) {
+	var go = F4(
+		function (i, xs, racc, acc) {
+			go:
+			while (true) {
+				var _p7 = xs;
+				if (_p7.ctor === '[]') {
+					return _elm_lang$core$List$reverse(acc);
+				} else {
+					var _p9 = _p7._1;
+					var _p8 = _p7._0;
+					if (_elm_lang$core$Native_Utils.eq(i, 6)) {
+						var _v5 = 0,
+							_v6 = _p9,
+							_v7 = {ctor: '[]'},
+							_v8 = {
+							ctor: '::',
+							_0: _elm_lang$core$List$reverse(
+								{ctor: '::', _0: _p8, _1: racc}),
+							_1: acc
+						};
+						i = _v5;
+						xs = _v6;
+						racc = _v7;
+						acc = _v8;
+						continue go;
+					} else {
+						var _v9 = i + 1,
+							_v10 = _p9,
+							_v11 = {ctor: '::', _0: _p8, _1: racc},
+							_v12 = acc;
+						i = _v9;
+						xs = _v10;
+						racc = _v11;
+						acc = _v12;
+						continue go;
+					}
+				}
+			}
+		});
+	return A4(
+		go,
+		0,
+		dates,
+		{ctor: '[]'},
+		{ctor: '[]'});
+};
+var _elm_community$elm_datepicker$DatePicker$focusedDate = function (_p10) {
+	var _p11 = _p10;
+	return _p11._0.focused;
+};
+var _elm_community$elm_datepicker$DatePicker$isOpen = function (_p12) {
+	var _p13 = _p12;
+	return _p13._0.open;
+};
+var _elm_community$elm_datepicker$DatePicker$prepareDates = F2(
+	function (date, firstDayOfWeek) {
+		var end = A2(
+			_elm_community$elm_datepicker$DatePicker_Date$addDays,
+			6,
+			_elm_community$elm_datepicker$DatePicker_Date$nextMonth(date));
+		var start = A2(
+			_elm_community$elm_datepicker$DatePicker_Date$subDays,
+			6,
+			_elm_community$elm_datepicker$DatePicker_Date$firstOfMonth(date));
+		return {
+			currentMonth: date,
+			currentDates: A3(_elm_community$elm_datepicker$DatePicker_Date$datesInRange, firstDayOfWeek, start, end)
+		};
+	});
+var _elm_community$elm_datepicker$DatePicker$formatCell = function (day) {
+	return _elm_lang$html$Html$text(day);
+};
+var _elm_community$elm_datepicker$DatePicker$off = _elm_community$elm_datepicker$DatePicker_Date$Off;
+var _elm_community$elm_datepicker$DatePicker$to = function (year) {
+	return _elm_community$elm_datepicker$DatePicker_Date$To(year);
+};
+var _elm_community$elm_datepicker$DatePicker$from = function (year) {
+	return _elm_community$elm_datepicker$DatePicker_Date$From(year);
+};
+var _elm_community$elm_datepicker$DatePicker$moreOrLess = function (range) {
+	return _elm_community$elm_datepicker$DatePicker_Date$MoreOrLess(range);
+};
+var _elm_community$elm_datepicker$DatePicker$between = F2(
+	function (start, end) {
+		return (_elm_lang$core$Native_Utils.cmp(start, end) > 0) ? A2(_elm_community$elm_datepicker$DatePicker_Date$Between, end, start) : A2(_elm_community$elm_datepicker$DatePicker_Date$Between, start, end);
+	});
+var _elm_community$elm_datepicker$DatePicker$yearRangeActive = function (yearRange) {
+	return !_elm_lang$core$Native_Utils.eq(yearRange, _elm_community$elm_datepicker$DatePicker_Date$Off);
+};
+var _elm_community$elm_datepicker$DatePicker$defaultSettings = {
+	placeholder: 'Please pick a date...',
+	classNamespace: 'elm-datepicker--',
+	inputClassList: {ctor: '[]'},
+	inputName: _elm_lang$core$Maybe$Nothing,
+	inputId: _elm_lang$core$Maybe$Nothing,
+	inputAttributes: {
+		ctor: '::',
+		_0: _elm_lang$html$Html_Attributes$required(false),
+		_1: {ctor: '[]'}
+	},
+	isDisabled: _elm_lang$core$Basics$always(false),
+	parser: _elm_lang$core$Date$fromString,
+	dateFormatter: _elm_community$elm_datepicker$DatePicker_Date$formatDate,
+	dayFormatter: _elm_community$elm_datepicker$DatePicker_Date$formatDay,
+	monthFormatter: _elm_community$elm_datepicker$DatePicker_Date$formatMonth,
+	yearFormatter: _elm_lang$core$Basics$toString,
+	cellFormatter: _elm_community$elm_datepicker$DatePicker$formatCell,
+	firstDayOfWeek: _elm_lang$core$Date$Sun,
+	changeYear: _elm_community$elm_datepicker$DatePicker$off
+};
+var _elm_community$elm_datepicker$DatePicker$Settings = function (a) {
+	return function (b) {
+		return function (c) {
+			return function (d) {
+				return function (e) {
+					return function (f) {
+						return function (g) {
+							return function (h) {
+								return function (i) {
+									return function (j) {
+										return function (k) {
+											return function (l) {
+												return function (m) {
+													return function (n) {
+														return function (o) {
+															return {placeholder: a, classNamespace: b, inputClassList: c, inputName: d, inputId: e, inputAttributes: f, isDisabled: g, parser: h, dateFormatter: i, dayFormatter: j, monthFormatter: k, yearFormatter: l, cellFormatter: m, firstDayOfWeek: n, changeYear: o};
+														};
+													};
+												};
+											};
+										};
+									};
+								};
+							};
+						};
+					};
+				};
+			};
+		};
+	};
+};
+var _elm_community$elm_datepicker$DatePicker$Model = F5(
+	function (a, b, c, d, e) {
+		return {open: a, forceOpen: b, focused: c, inputText: d, today: e};
+	});
+var _elm_community$elm_datepicker$DatePicker$MouseUp = {ctor: 'MouseUp'};
+var _elm_community$elm_datepicker$DatePicker$MouseDown = {ctor: 'MouseDown'};
+var _elm_community$elm_datepicker$DatePicker$Blur = {ctor: 'Blur'};
+var _elm_community$elm_datepicker$DatePicker$Focus = {ctor: 'Focus'};
+var _elm_community$elm_datepicker$DatePicker$SubmitText = {ctor: 'SubmitText'};
+var _elm_community$elm_datepicker$DatePicker$Text = function (a) {
+	return {ctor: 'Text', _0: a};
+};
+var _elm_community$elm_datepicker$DatePicker$Pick = function (a) {
+	return {ctor: 'Pick', _0: a};
+};
+var _elm_community$elm_datepicker$DatePicker$pick = _elm_community$elm_datepicker$DatePicker$Pick;
+var _elm_community$elm_datepicker$DatePicker$ChangeFocus = function (a) {
+	return {ctor: 'ChangeFocus', _0: a};
+};
+var _elm_community$elm_datepicker$DatePicker$datePicker = F3(
+	function (pickedDate, settings, _p14) {
+		var _p15 = _p14;
+		var _p20 = _p15.today;
+		var onChange = function (handler) {
+			return A2(
+				_elm_lang$html$Html_Events$on,
+				'change',
+				A2(_elm_lang$core$Json_Decode$map, handler, _elm_lang$html$Html_Events$targetValue));
+		};
+		var onPicker = function (ev) {
+			return function (_p16) {
+				return A3(
+					_elm_lang$html$Html_Events$onWithOptions,
+					ev,
+					{preventDefault: false, stopPropagation: true},
+					_elm_lang$core$Json_Decode$succeed(_p16));
+			};
+		};
+		var picked = function (d) {
+			return A2(
+				_elm_lang$core$Maybe$withDefault,
+				false,
+				A2(
+					_elm_lang$core$Maybe$map,
+					function (_p17) {
+						return A2(
+							F2(
+								function (x, y) {
+									return _elm_lang$core$Native_Utils.eq(x, y);
+								}),
+							_elm_community$elm_datepicker$DatePicker_Date$dateTuple(d),
+							_elm_community$elm_datepicker$DatePicker_Date$dateTuple(_p17));
+					},
+					pickedDate));
+		};
+		var firstDay = settings.firstDayOfWeek;
+		var classList = _elm_community$elm_datepicker$DatePicker$mkClassList(settings);
+		var $class = _elm_community$elm_datepicker$DatePicker$mkClass(settings);
+		var arrow = F2(
+			function (className, message) {
+				return A2(
+					_elm_lang$html$Html$a,
+					{
+						ctor: '::',
+						_0: $class(className),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$href('javascript:;'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Events$onClick(message),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$tabindex(-1),
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					},
+					{ctor: '[]'});
+			});
+		var dow = function (d) {
+			return A2(
+				_elm_lang$html$Html$td,
+				{
+					ctor: '::',
+					_0: $class('dow'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(
+						settings.dayFormatter(d)),
+					_1: {ctor: '[]'}
+				});
+		};
+		var currentDate = A2(
+			_elm_community$elm_datepicker$DatePicker_ops['?>'],
+			A2(_elm_community$elm_datepicker$DatePicker_ops['??>'], _p15.focused, pickedDate),
+			_p20);
+		var _p18 = A2(_elm_community$elm_datepicker$DatePicker$prepareDates, currentDate, settings.firstDayOfWeek);
+		var currentMonth = _p18.currentMonth;
+		var currentDates = _p18.currentDates;
+		var isCurrentYear = function (selectedYear) {
+			return _elm_lang$core$Native_Utils.eq(
+				_elm_lang$core$Date$year(currentMonth),
+				selectedYear);
+		};
+		var yearOption = F2(
+			function (index, selectedYear) {
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Basics$toString(index),
+					_1: A2(
+						_elm_lang$html$Html$option,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$value(
+								_elm_lang$core$Basics$toString(selectedYear)),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$selected(
+									isCurrentYear(selectedYear)),
+								_1: {ctor: '[]'}
+							}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(
+								_elm_lang$core$Basics$toString(selectedYear)),
+							_1: {ctor: '[]'}
+						})
+				};
+			});
+		var day = function (d) {
+			var disabled = settings.isDisabled(d);
+			var props = (!disabled) ? {
+				ctor: '::',
+				_0: _elm_lang$html$Html_Events$onClick(
+					_elm_community$elm_datepicker$DatePicker$Pick(
+						_elm_lang$core$Maybe$Just(d))),
+				_1: {ctor: '[]'}
+			} : {ctor: '[]'};
+			return A2(
+				_elm_lang$html$Html$td,
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					{
+						ctor: '::',
+						_0: classList(
+							{
+								ctor: '::',
+								_0: {ctor: '_Tuple2', _0: 'day', _1: true},
+								_1: {
+									ctor: '::',
+									_0: {ctor: '_Tuple2', _0: 'disabled', _1: disabled},
+									_1: {
+										ctor: '::',
+										_0: {
+											ctor: '_Tuple2',
+											_0: 'picked',
+											_1: picked(d)
+										},
+										_1: {
+											ctor: '::',
+											_0: {
+												ctor: '_Tuple2',
+												_0: 'today',
+												_1: _elm_lang$core$Native_Utils.eq(
+													_elm_community$elm_datepicker$DatePicker_Date$dateTuple(d),
+													_elm_community$elm_datepicker$DatePicker_Date$dateTuple(currentDate))
+											},
+											_1: {
+												ctor: '::',
+												_0: {
+													ctor: '_Tuple2',
+													_0: 'other-month',
+													_1: !_elm_lang$core$Native_Utils.eq(
+														_elm_lang$core$Date$month(currentMonth),
+														_elm_lang$core$Date$month(d))
+												},
+												_1: {ctor: '[]'}
+											}
+										}
+									}
+								}
+							}),
+						_1: {ctor: '[]'}
+					},
+					props),
+				{
+					ctor: '::',
+					_0: settings.cellFormatter(
+						_elm_lang$core$Basics$toString(
+							_elm_lang$core$Date$day(d))),
+					_1: {ctor: '[]'}
+				});
+		};
+		var row = function (days) {
+			return A2(
+				_elm_lang$html$Html$tr,
+				{
+					ctor: '::',
+					_0: $class('row'),
+					_1: {ctor: '[]'}
+				},
+				A2(_elm_lang$core$List$map, day, days));
+		};
+		var days = A2(
+			_elm_lang$core$List$map,
+			row,
+			_elm_community$elm_datepicker$DatePicker$groupDates(currentDates));
+		var dropdownYear = A3(
+			_elm_lang$html$Html_Keyed$node,
+			'select',
+			{
+				ctor: '::',
+				_0: onChange(
+					function (_p19) {
+						return _elm_community$elm_datepicker$DatePicker$ChangeFocus(
+							A2(_elm_community$elm_datepicker$DatePicker_Date$newYear, currentDate, _p19));
+					}),
+				_1: {
+					ctor: '::',
+					_0: $class('year-menu'),
+					_1: {ctor: '[]'}
+				}
+			},
+			A2(
+				_elm_lang$core$List$indexedMap,
+				yearOption,
+				A2(
+					_elm_community$elm_datepicker$DatePicker_Date$yearRange,
+					{currentMonth: currentMonth, today: _p20},
+					settings.changeYear)));
+		return A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: $class('picker'),
+				_1: {
+					ctor: '::',
+					_0: A2(onPicker, 'mousedown', _elm_community$elm_datepicker$DatePicker$MouseDown),
+					_1: {
+						ctor: '::',
+						_0: A2(onPicker, 'mouseup', _elm_community$elm_datepicker$DatePicker$MouseUp),
+						_1: {ctor: '[]'}
+					}
+				}
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: $class('picker-header'),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{
+								ctor: '::',
+								_0: $class('prev-container'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: A2(
+									arrow,
+									'prev',
+									_elm_community$elm_datepicker$DatePicker$ChangeFocus(
+										_elm_community$elm_datepicker$DatePicker_Date$prevMonth(currentDate))),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: $class('month-container'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$span,
+										{
+											ctor: '::',
+											_0: $class('month'),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text(
+												settings.monthFormatter(
+													_elm_lang$core$Date$month(currentMonth))),
+											_1: {ctor: '[]'}
+										}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$span,
+											{
+												ctor: '::',
+												_0: $class('year'),
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: (!_elm_community$elm_datepicker$DatePicker$yearRangeActive(settings.changeYear)) ? _elm_lang$html$Html$text(
+													settings.yearFormatter(
+														_elm_lang$core$Date$year(currentMonth))) : A3(
+													_elm_lang$html$Html_Keyed$node,
+													'span',
+													{ctor: '[]'},
+													{
+														ctor: '::',
+														_0: {
+															ctor: '_Tuple2',
+															_0: _elm_lang$core$Basics$toString(
+																_elm_lang$core$Date$year(currentMonth)),
+															_1: dropdownYear
+														},
+														_1: {ctor: '[]'}
+													}),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$div,
+									{
+										ctor: '::',
+										_0: $class('next-container'),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: A2(
+											arrow,
+											'next',
+											_elm_community$elm_datepicker$DatePicker$ChangeFocus(
+												_elm_community$elm_datepicker$DatePicker_Date$nextMonth(currentDate))),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}
+						}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$table,
+						{
+							ctor: '::',
+							_0: $class('table'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$thead,
+								{
+									ctor: '::',
+									_0: $class('weekdays'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$tr,
+										{ctor: '[]'},
+										{
+											ctor: '::',
+											_0: dow(firstDay),
+											_1: {
+												ctor: '::',
+												_0: dow(
+													A2(_elm_community$elm_datepicker$DatePicker_Date$addDows, 1, firstDay)),
+												_1: {
+													ctor: '::',
+													_0: dow(
+														A2(_elm_community$elm_datepicker$DatePicker_Date$addDows, 2, firstDay)),
+													_1: {
+														ctor: '::',
+														_0: dow(
+															A2(_elm_community$elm_datepicker$DatePicker_Date$addDows, 3, firstDay)),
+														_1: {
+															ctor: '::',
+															_0: dow(
+																A2(_elm_community$elm_datepicker$DatePicker_Date$addDows, 4, firstDay)),
+															_1: {
+																ctor: '::',
+																_0: dow(
+																	A2(_elm_community$elm_datepicker$DatePicker_Date$addDows, 5, firstDay)),
+																_1: {
+																	ctor: '::',
+																	_0: dow(
+																		A2(_elm_community$elm_datepicker$DatePicker_Date$addDows, 6, firstDay)),
+																	_1: {ctor: '[]'}
+																}
+															}
+														}
+													}
+												}
+											}
+										}),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$tbody,
+									{
+										ctor: '::',
+										_0: $class('days'),
+										_1: {ctor: '[]'}
+									},
+									days),
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {ctor: '[]'}
+				}
+			});
+	});
+var _elm_community$elm_datepicker$DatePicker$view = F3(
+	function (pickedDate, settings, _p21) {
+		var _p22 = _p21;
+		var _p24 = _p22._0;
+		var inputClasses = A2(
+			_elm_lang$core$Basics_ops['++'],
+			{
+				ctor: '::',
+				_0: {
+					ctor: '_Tuple2',
+					_0: A2(_elm_lang$core$Basics_ops['++'], settings.classNamespace, 'input'),
+					_1: true
+				},
+				_1: {ctor: '[]'}
+			},
+			settings.inputClassList);
+		var potentialInputId = function (_p23) {
+			return A2(
+				_elm_lang$core$List$filterMap,
+				_elm_lang$core$Basics$identity,
+				_elm_lang$core$List$singleton(_p23));
+		}(
+			A2(_elm_lang$core$Maybe$map, _elm_lang$html$Html_Attributes$id, settings.inputId));
+		var inputCommon = function (xs) {
+			return A2(
+				_elm_lang$html$Html$input,
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$classList(inputClasses),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$name(
+								A2(_elm_community$elm_datepicker$DatePicker_ops['?>'], settings.inputName, '')),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$type_('text'),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html_Events$on,
+										'change',
+										_elm_lang$core$Json_Decode$succeed(_elm_community$elm_datepicker$DatePicker$SubmitText)),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Events$onInput(_elm_community$elm_datepicker$DatePicker$Text),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$html$Html_Events$onBlur(_elm_community$elm_datepicker$DatePicker$Blur),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$html$Html_Events$onClick(_elm_community$elm_datepicker$DatePicker$Focus),
+												_1: {
+													ctor: '::',
+													_0: _elm_lang$html$Html_Events$onFocus(_elm_community$elm_datepicker$DatePicker$Focus),
+													_1: {ctor: '[]'}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						settings.inputAttributes,
+						A2(_elm_lang$core$Basics_ops['++'], potentialInputId, xs))),
+				{ctor: '[]'});
+		};
+		var dateInput = inputCommon(
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$placeholder(settings.placeholder),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$value(
+						A2(
+							_elm_lang$core$Maybe$withDefault,
+							A2(
+								_elm_lang$core$Maybe$withDefault,
+								'',
+								A2(_elm_lang$core$Maybe$map, settings.dateFormatter, pickedDate)),
+							_p24.inputText)),
+					_1: {ctor: '[]'}
+				}
+			});
+		var $class = _elm_community$elm_datepicker$DatePicker$mkClass(settings);
+		return A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: $class('container'),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: dateInput,
+				_1: {
+					ctor: '::',
+					_0: _p22._0.open ? A3(_elm_community$elm_datepicker$DatePicker$datePicker, pickedDate, settings, _p24) : _elm_lang$html$Html$text(''),
+					_1: {ctor: '[]'}
+				}
+			});
+	});
+var _elm_community$elm_datepicker$DatePicker$CurrentDate = function (a) {
+	return {ctor: 'CurrentDate', _0: a};
+};
+var _elm_community$elm_datepicker$DatePicker$DatePicker = function (a) {
+	return {ctor: 'DatePicker', _0: a};
+};
+var _elm_community$elm_datepicker$DatePicker$init = {
+	ctor: '_Tuple2',
+	_0: _elm_community$elm_datepicker$DatePicker$DatePicker(
+		{
+			open: false,
+			forceOpen: false,
+			focused: _elm_lang$core$Maybe$Just(_elm_community$elm_datepicker$DatePicker_Date$initDate),
+			inputText: _elm_lang$core$Maybe$Nothing,
+			today: _elm_community$elm_datepicker$DatePicker_Date$initDate
+		}),
+	_1: A2(_elm_lang$core$Task$perform, _elm_community$elm_datepicker$DatePicker$CurrentDate, _elm_lang$core$Date$now)
+};
+var _elm_community$elm_datepicker$DatePicker$initFromDate = function (date) {
+	return _elm_community$elm_datepicker$DatePicker$DatePicker(
+		{
+			open: false,
+			forceOpen: false,
+			focused: _elm_lang$core$Maybe$Just(date),
+			inputText: _elm_lang$core$Maybe$Nothing,
+			today: date
+		});
+};
+var _elm_community$elm_datepicker$DatePicker$initFromDates = F2(
+	function (today, date) {
+		return _elm_community$elm_datepicker$DatePicker$DatePicker(
+			{open: false, forceOpen: false, focused: date, inputText: _elm_lang$core$Maybe$Nothing, today: today});
+	});
+var _elm_community$elm_datepicker$DatePicker$Changed = function (a) {
+	return {ctor: 'Changed', _0: a};
+};
+var _elm_community$elm_datepicker$DatePicker$NoChange = {ctor: 'NoChange'};
+var _elm_community$elm_datepicker$DatePicker_ops = _elm_community$elm_datepicker$DatePicker_ops || {};
+_elm_community$elm_datepicker$DatePicker_ops['!'] = F2(
+	function (m, cs) {
+		return {
+			ctor: '_Tuple3',
+			_0: _elm_community$elm_datepicker$DatePicker$DatePicker(m),
+			_1: _elm_lang$core$Platform_Cmd$batch(cs),
+			_2: _elm_community$elm_datepicker$DatePicker$NoChange
+		};
+	});
+var _elm_community$elm_datepicker$DatePicker$update = F3(
+	function (settings, msg, _p25) {
+		var _p26 = _p25;
+		var _p34 = _p26._0;
+		var _p27 = msg;
+		switch (_p27.ctor) {
+			case 'CurrentDate':
+				var _p28 = _p27._0;
+				return A2(
+					_elm_community$elm_datepicker$DatePicker_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						_p34,
+						{
+							focused: _elm_lang$core$Maybe$Just(_p28),
+							today: _p28
+						}),
+					{ctor: '[]'});
+			case 'ChangeFocus':
+				return A2(
+					_elm_community$elm_datepicker$DatePicker_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						_p34,
+						{
+							focused: _elm_lang$core$Maybe$Just(_p27._0)
+						}),
+					{ctor: '[]'});
+			case 'Pick':
+				return {
+					ctor: '_Tuple3',
+					_0: _elm_community$elm_datepicker$DatePicker$DatePicker(
+						_elm_lang$core$Native_Utils.update(
+							_p34,
+							{open: false, inputText: _elm_lang$core$Maybe$Nothing, focused: _elm_lang$core$Maybe$Nothing})),
+					_1: _elm_lang$core$Platform_Cmd$none,
+					_2: _elm_community$elm_datepicker$DatePicker$Changed(_p27._0)
+				};
+			case 'Text':
+				return A2(
+					_elm_community$elm_datepicker$DatePicker_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						_p34,
+						{
+							inputText: _elm_lang$core$Maybe$Just(_p27._0)
+						}),
+					{ctor: '[]'});
+			case 'SubmitText':
+				var isWhitespace = function (_p29) {
+					return _elm_lang$core$String$isEmpty(
+						_elm_lang$core$String$trim(_p29));
+				};
+				var dateEvent = function () {
+					var text = A2(_elm_community$elm_datepicker$DatePicker_ops['?>'], _p34.inputText, '');
+					return isWhitespace(text) ? _elm_community$elm_datepicker$DatePicker$Changed(_elm_lang$core$Maybe$Nothing) : A2(
+						_elm_lang$core$Result$withDefault,
+						_elm_community$elm_datepicker$DatePicker$NoChange,
+						A2(
+							_elm_lang$core$Result$map,
+							function (_p30) {
+								return _elm_community$elm_datepicker$DatePicker$Changed(
+									function (date) {
+										return settings.isDisabled(date) ? _elm_lang$core$Maybe$Nothing : _elm_lang$core$Maybe$Just(date);
+									}(_p30));
+							},
+							settings.parser(text)));
+				}();
+				return {
+					ctor: '_Tuple3',
+					_0: _elm_community$elm_datepicker$DatePicker$DatePicker(
+						_elm_lang$core$Native_Utils.update(
+							_p34,
+							{
+								inputText: function () {
+									var _p31 = dateEvent;
+									if (_p31.ctor === 'Changed') {
+										return _elm_lang$core$Maybe$Nothing;
+									} else {
+										return _p34.inputText;
+									}
+								}(),
+								focused: function () {
+									var _p32 = dateEvent;
+									if (_p32.ctor === 'Changed') {
+										var _p33 = _p32._0;
+										if (_p33.ctor === 'Just') {
+											return _elm_lang$core$Maybe$Just(_p33._0);
+										} else {
+											return _elm_lang$core$Maybe$Nothing;
+										}
+									} else {
+										return _p34.focused;
+									}
+								}()
+							})),
+					_1: _elm_lang$core$Platform_Cmd$none,
+					_2: dateEvent
+				};
+			case 'Focus':
+				return A2(
+					_elm_community$elm_datepicker$DatePicker_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						_p34,
+						{open: true, forceOpen: false}),
+					{ctor: '[]'});
+			case 'Blur':
+				return A2(
+					_elm_community$elm_datepicker$DatePicker_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						_p34,
+						{open: _p26._0.forceOpen}),
+					{ctor: '[]'});
+			case 'MouseDown':
+				return A2(
+					_elm_community$elm_datepicker$DatePicker_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						_p34,
+						{forceOpen: true}),
+					{ctor: '[]'});
+			default:
+				return A2(
+					_elm_community$elm_datepicker$DatePicker_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						_p34,
+						{forceOpen: false}),
+					{ctor: '[]'});
+		}
+	});
+
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$endDatePickerSettings = function () {
+	var defaultSettings = _elm_community$elm_datepicker$DatePicker$defaultSettings;
+	return _elm_lang$core$Native_Utils.update(
+		defaultSettings,
+		{
+			inputClassList: {
+				ctor: '::',
+				_0: {ctor: '_Tuple2', _0: 'form-control', _1: true},
+				_1: {
+					ctor: '::',
+					_0: {ctor: '_Tuple2', _0: 'date-picker', _1: true},
+					_1: {ctor: '[]'}
+				}
+			},
+			inputId: _elm_lang$core$Maybe$Just('step-three-enddate-datepicker'),
+			classNamespace: 'datepicker-'
+		});
+}();
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$startDatePickerSettings = function () {
+	var defaultSettings = _elm_community$elm_datepicker$DatePicker$defaultSettings;
+	return _elm_lang$core$Native_Utils.update(
+		defaultSettings,
+		{
+			inputClassList: {
+				ctor: '::',
+				_0: {ctor: '_Tuple2', _0: 'form-control', _1: true},
+				_1: {
+					ctor: '::',
+					_0: {ctor: '_Tuple2', _0: 'date-picker', _1: true},
+					_1: {ctor: '[]'}
+				}
+			},
+			inputId: _elm_lang$core$Maybe$Just('step-three-startdate-datepicker'),
+			classNamespace: 'datepicker'
+		});
+}();
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$monthFromString = function (str) {
+	var _p0 = str;
+	switch (_p0) {
+		case 'Jan':
+			return _elm_lang$core$Maybe$Just(_elm_lang$core$Date$Jan);
+		case 'Feb':
+			return _elm_lang$core$Maybe$Just(_elm_lang$core$Date$Feb);
+		case 'Mar':
+			return _elm_lang$core$Maybe$Just(_elm_lang$core$Date$Mar);
+		case 'Apr':
+			return _elm_lang$core$Maybe$Just(_elm_lang$core$Date$Apr);
+		case 'May':
+			return _elm_lang$core$Maybe$Just(_elm_lang$core$Date$May);
+		case 'Jun':
+			return _elm_lang$core$Maybe$Just(_elm_lang$core$Date$Jun);
+		case 'Jul':
+			return _elm_lang$core$Maybe$Just(_elm_lang$core$Date$Jul);
+		case 'Aug':
+			return _elm_lang$core$Maybe$Just(_elm_lang$core$Date$Aug);
+		case 'Sep':
+			return _elm_lang$core$Maybe$Just(_elm_lang$core$Date$Sep);
+		case 'Oct':
+			return _elm_lang$core$Maybe$Just(_elm_lang$core$Date$Oct);
+		case 'Nov':
+			return _elm_lang$core$Maybe$Just(_elm_lang$core$Date$Nov);
+		case 'Dec':
+			return _elm_lang$core$Maybe$Just(_elm_lang$core$Date$Dec);
+		default:
+			return _elm_lang$core$Maybe$Nothing;
+	}
+};
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Model = F5(
+	function (a, b, c, d, e) {
+		return {activeStep: a, categoryDetailsProgress: b, projectDetailsProgress: c, campaignDetailsProgress: d, rewardDetailsProgress: e};
+	});
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Campaign = F4(
+	function (a, b, c, d) {
+		return {categoryDetails: a, projectDetails: b, campaignDetails: c, rewardDetails: d};
+	});
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$CategoryDetails = function (a) {
+	return {category: a};
+};
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$ProjectDetails = F3(
+	function (a, b, c) {
+		return {title: a, description: b, image: c};
+	});
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$CampaignDetails = F3(
+	function (a, b, c) {
+		return {fundingGoal: a, campaignStart: b, campaignEnd: c};
+	});
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$RewardDetails = F4(
+	function (a, b, c, d) {
+		return {title: a, pledgeAmount: b, description: c, estimatedDelivery: d};
+	});
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$CategoryDetailsProgress = function (a) {
+	return {category: a};
+};
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$ProjectDetailsProgress = F3(
+	function (a, b, c) {
+		return {title: a, description: b, image: c};
+	});
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$CampaignDetailsProgress = F5(
+	function (a, b, c, d, e) {
+		return {fundingGoal: a, campaignStartDate: b, campaignEndDate: c, campaignDurationStartDatePicker: d, campaignDurationEndDatePicker: e};
+	});
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$RewardDetailsProgress = F5(
+	function (a, b, c, d, e) {
+		return {title: a, pledgeAmount: b, description: c, estimatedDeliveryMonth: d, estimatedDeliveryYear: e};
+	});
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$CompleteCampaign = F4(
+	function (a, b, c, d) {
+		return {ctor: 'CompleteCampaign', _0: a, _1: b, _2: c, _3: d};
+	});
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$CompleteStepThree = F3(
+	function (a, b, c) {
+		return {ctor: 'CompleteStepThree', _0: a, _1: b, _2: c};
+	});
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$CompleteStepTwo = F2(
+	function (a, b) {
+		return {ctor: 'CompleteStepTwo', _0: a, _1: b};
+	});
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$CompleteStepOne = function (a) {
+	return {ctor: 'CompleteStepOne', _0: a};
+};
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$ChangeActiveStep = function (a) {
+	return {ctor: 'ChangeActiveStep', _0: a};
+};
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$RewardDeliveryYearUpdated = function (a) {
+	return {ctor: 'RewardDeliveryYearUpdated', _0: a};
+};
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$RewardDeliveryMonthUpdated = function (a) {
+	return {ctor: 'RewardDeliveryMonthUpdated', _0: a};
+};
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$RewardDescriptionUpdated = function (a) {
+	return {ctor: 'RewardDescriptionUpdated', _0: a};
+};
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$RewardPledgeAmountUpdated = function (a) {
+	return {ctor: 'RewardPledgeAmountUpdated', _0: a};
+};
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$RewardTitleUpdated = function (a) {
+	return {ctor: 'RewardTitleUpdated', _0: a};
+};
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$CampaignDurationEndUpdated = function (a) {
+	return {ctor: 'CampaignDurationEndUpdated', _0: a};
+};
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$CampaignDurationStartUpdated = function (a) {
+	return {ctor: 'CampaignDurationStartUpdated', _0: a};
+};
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$FundingGoalUpdated = function (a) {
+	return {ctor: 'FundingGoalUpdated', _0: a};
+};
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$DescriptionUpdated = function (a) {
+	return {ctor: 'DescriptionUpdated', _0: a};
+};
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$TitleUpdated = function (a) {
+	return {ctor: 'TitleUpdated', _0: a};
+};
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$CategorySelected = function (a) {
+	return {ctor: 'CategorySelected', _0: a};
+};
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$StepOneComplete = function (a) {
+	return {ctor: 'StepOneComplete', _0: a};
+};
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$StepTwoComplete = function (a) {
+	return {ctor: 'StepTwoComplete', _0: a};
+};
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$StepThreeComplete = function (a) {
+	return {ctor: 'StepThreeComplete', _0: a};
+};
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$StepFourComplete = function (a) {
+	return {ctor: 'StepFourComplete', _0: a};
+};
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$StepFour = F3(
+	function (a, b, c) {
+		return {ctor: 'StepFour', _0: a, _1: b, _2: c};
+	});
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$StepThree = F2(
+	function (a, b) {
+		return {ctor: 'StepThree', _0: a, _1: b};
+	});
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$StepTwo = function (a) {
+	return {ctor: 'StepTwo', _0: a};
+};
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$StepOne = {ctor: 'StepOne'};
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Theatre = {ctor: 'Theatre'};
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Technology = {ctor: 'Technology'};
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Publishing = {ctor: 'Publishing'};
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Photography = {ctor: 'Photography'};
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Music = {ctor: 'Music'};
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Journalism = {ctor: 'Journalism'};
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Games = {ctor: 'Games'};
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Food = {ctor: 'Food'};
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$FilmVideo = {ctor: 'FilmVideo'};
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Fashion = {ctor: 'Fashion'};
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Design = {ctor: 'Design'};
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Dance = {ctor: 'Dance'};
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Crafts = {ctor: 'Crafts'};
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Comics = {ctor: 'Comics'};
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Art = {ctor: 'Art'};
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$categoryFromString = function (str) {
+	var _p1 = str;
+	switch (_p1) {
+		case 'Art':
+			return _elm_lang$core$Maybe$Just(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Art);
+		case 'Comics':
+			return _elm_lang$core$Maybe$Just(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Comics);
+		case 'Crafts':
+			return _elm_lang$core$Maybe$Just(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Crafts);
+		case 'Dance':
+			return _elm_lang$core$Maybe$Just(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Dance);
+		case 'Design':
+			return _elm_lang$core$Maybe$Just(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Design);
+		case 'Fashion':
+			return _elm_lang$core$Maybe$Just(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Fashion);
+		case 'FilmVideo':
+			return _elm_lang$core$Maybe$Just(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$FilmVideo);
+		case 'Food':
+			return _elm_lang$core$Maybe$Just(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Food);
+		case 'Games':
+			return _elm_lang$core$Maybe$Just(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Games);
+		case 'Journalism':
+			return _elm_lang$core$Maybe$Just(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Journalism);
+		case 'Music':
+			return _elm_lang$core$Maybe$Just(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Music);
+		case 'Photography':
+			return _elm_lang$core$Maybe$Just(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Photography);
+		case 'Publishing':
+			return _elm_lang$core$Maybe$Just(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Publishing);
+		case 'Technology':
+			return _elm_lang$core$Maybe$Just(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Technology);
+		case 'Theatre':
+			return _elm_lang$core$Maybe$Just(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Theatre);
+		default:
+			return _elm_lang$core$Maybe$Nothing;
+	}
+};
+
+var _etaque$elm_response$Response$res = F2(
+	function (model, cmd) {
+		return {ctor: '_Tuple2', _0: model, _1: cmd};
+	});
+var _etaque$elm_response$Response$taskRes = F3(
+	function (model, handleResult, task) {
+		return A2(
+			_etaque$elm_response$Response$res,
+			model,
+			A2(_elm_lang$core$Task$attempt, handleResult, task));
+	});
+var _etaque$elm_response$Response$withTask = F3(
+	function (handleResult, task, model) {
+		return A3(_etaque$elm_response$Response$taskRes, model, handleResult, task);
+	});
+var _etaque$elm_response$Response$withCmd = F2(
+	function (cmd, model) {
+		return A2(_etaque$elm_response$Response$res, model, cmd);
+	});
+var _etaque$elm_response$Response$withNone = function (model) {
+	return A2(_etaque$elm_response$Response$res, model, _elm_lang$core$Platform_Cmd$none);
+};
+var _etaque$elm_response$Response$mapBoth = F3(
+	function (onModel, onCmd, _p0) {
+		var _p1 = _p0;
+		return A2(
+			_etaque$elm_response$Response$res,
+			onModel(_p1._0),
+			A2(_elm_lang$core$Platform_Cmd$map, onCmd, _p1._1));
+	});
+var _etaque$elm_response$Response$mapModel = function (onModel) {
+	return A2(_etaque$elm_response$Response$mapBoth, onModel, _elm_lang$core$Basics$identity);
+};
+var _etaque$elm_response$Response$mapCmd = function (onCmd) {
+	return A2(_etaque$elm_response$Response$mapBoth, _elm_lang$core$Basics$identity, onCmd);
+};
+
+var _JQuezada0$eoslondonhackathon$Ports$formatCampaign = function (campaign) {
+	return {
+		categoryDetails: {
+			category: _elm_lang$core$Basics$toString(campaign.categoryDetails.category)
+		},
+		projectDetails: campaign.projectDetails,
+		campaignDetails: {
+			fundingGoal: campaign.campaignDetails.fundingGoal,
+			campaignStart: _elm_lang$core$Date$toTime(campaign.campaignDetails.campaignStart),
+			campaignEnd: _elm_lang$core$Date$toTime(campaign.campaignDetails.campaignEnd)
+		},
+		rewardDetails: campaign.rewardDetails
+	};
+};
+var _JQuezada0$eoslondonhackathon$Ports$submitCampaign = _elm_lang$core$Native_Platform.outgoingPort(
+	'submitCampaign',
+	function (v) {
+		return {
+			categoryDetails: {category: v.categoryDetails.category},
+			projectDetails: {title: v.projectDetails.title, description: v.projectDetails.description, image: v.projectDetails.image},
+			campaignDetails: {fundingGoal: v.campaignDetails.fundingGoal, campaignStart: v.campaignDetails.campaignStart, campaignEnd: v.campaignDetails.campaignEnd},
+			rewardDetails: {title: v.rewardDetails.title, pledgeAmount: v.rewardDetails.pledgeAmount, description: v.rewardDetails.description, estimatedDelivery: v.rewardDetails.estimatedDelivery}
+		};
+	});
+var _JQuezada0$eoslondonhackathon$Ports$FormattedCampaign = F4(
+	function (a, b, c, d) {
+		return {categoryDetails: a, projectDetails: b, campaignDetails: c, rewardDetails: d};
+	});
+
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Update$updateRewardDetailsProgress = F2(
+	function (updater, model) {
+		var updatedRewardDetailsProgress = updater(model.rewardDetailsProgress);
+		return _elm_lang$core$Native_Utils.update(
+			model,
+			{rewardDetailsProgress: updatedRewardDetailsProgress});
+	});
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Update$updateCampaignDetailsProgress = F2(
+	function (updater, model) {
+		var updatedCampaignDetailsProgress = updater(model.campaignDetailsProgress);
+		return _elm_lang$core$Native_Utils.update(
+			model,
+			{campaignDetailsProgress: updatedCampaignDetailsProgress});
+	});
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Update$updateProjectDetailsProgress = F2(
+	function (updater, model) {
+		var updatedProjectDetailsProgress = updater(model.projectDetailsProgress);
+		return _elm_lang$core$Native_Utils.update(
+			model,
+			{projectDetailsProgress: updatedProjectDetailsProgress});
+	});
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Update$updateCategoryDetailsProgress = F2(
+	function (updater, model) {
+		var updatedCategoryDetailsProgress = updater(model.categoryDetailsProgress);
+		return _elm_lang$core$Native_Utils.update(
+			model,
+			{categoryDetailsProgress: updatedCategoryDetailsProgress});
+	});
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Update$subscriptions = function (model) {
+	return _elm_lang$core$Platform_Sub$none;
+};
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Update$update = F2(
+	function (msg, model) {
+		var _p0 = msg;
+		switch (_p0.ctor) {
+			case 'CategorySelected':
+				return _etaque$elm_response$Response$withNone(
+					A2(
+						_JQuezada0$eoslondonhackathon$CreateCrowdfund_Update$updateCategoryDetailsProgress,
+						function (c) {
+							return _elm_lang$core$Native_Utils.update(
+								c,
+								{category: _p0._0});
+						},
+						model));
+			case 'TitleUpdated':
+				return _etaque$elm_response$Response$withNone(
+					A2(
+						_JQuezada0$eoslondonhackathon$CreateCrowdfund_Update$updateProjectDetailsProgress,
+						function (p) {
+							return _elm_lang$core$Native_Utils.update(
+								p,
+								{title: _p0._0});
+						},
+						model));
+			case 'DescriptionUpdated':
+				return _etaque$elm_response$Response$withNone(
+					A2(
+						_JQuezada0$eoslondonhackathon$CreateCrowdfund_Update$updateProjectDetailsProgress,
+						function (p) {
+							return _elm_lang$core$Native_Utils.update(
+								p,
+								{description: _p0._0});
+						},
+						model));
+			case 'FundingGoalUpdated':
+				return _etaque$elm_response$Response$withNone(
+					A2(
+						_JQuezada0$eoslondonhackathon$CreateCrowdfund_Update$updateCampaignDetailsProgress,
+						function (c) {
+							return _elm_lang$core$Native_Utils.update(
+								c,
+								{fundingGoal: _p0._0});
+						},
+						model));
+			case 'CampaignDurationStartUpdated':
+				var _p1 = A3(_elm_community$elm_datepicker$DatePicker$update, _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$startDatePickerSettings, _p0._0, model.campaignDetailsProgress.campaignDurationStartDatePicker);
+				var datePicker = _p1._0;
+				var datePickerCmd = _p1._1;
+				var dateEvent = _p1._2;
+				var startDateCmd = A2(_elm_lang$core$Platform_Cmd$map, _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$CampaignDurationStartUpdated, datePickerCmd);
+				var updatedDate = function () {
+					var _p2 = dateEvent;
+					if (_p2.ctor === 'NoChange') {
+						return model.campaignDetailsProgress.campaignStartDate;
+					} else {
+						if (_p2._0.ctor === 'Nothing') {
+							return model.campaignDetailsProgress.campaignStartDate;
+						} else {
+							return _elm_lang$core$Maybe$Just(_p2._0._0);
+						}
+					}
+				}();
+				return A2(
+					_etaque$elm_response$Response$withCmd,
+					startDateCmd,
+					A2(
+						_JQuezada0$eoslondonhackathon$CreateCrowdfund_Update$updateCampaignDetailsProgress,
+						function (c) {
+							return _elm_lang$core$Native_Utils.update(
+								c,
+								{campaignDurationStartDatePicker: datePicker, campaignStartDate: updatedDate});
+						},
+						model));
+			case 'CampaignDurationEndUpdated':
+				var _p3 = A3(_elm_community$elm_datepicker$DatePicker$update, _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$endDatePickerSettings, _p0._0, model.campaignDetailsProgress.campaignDurationEndDatePicker);
+				var datePicker = _p3._0;
+				var datePickerCmd = _p3._1;
+				var dateEvent = _p3._2;
+				var endDateCmd = A2(_elm_lang$core$Platform_Cmd$map, _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$CampaignDurationEndUpdated, datePickerCmd);
+				var updatedDate = function () {
+					var _p4 = dateEvent;
+					if (_p4.ctor === 'NoChange') {
+						return model.campaignDetailsProgress.campaignEndDate;
+					} else {
+						if (_p4._0.ctor === 'Nothing') {
+							return model.campaignDetailsProgress.campaignEndDate;
+						} else {
+							return _elm_lang$core$Maybe$Just(_p4._0._0);
+						}
+					}
+				}();
+				return A2(
+					_etaque$elm_response$Response$withCmd,
+					endDateCmd,
+					A2(
+						_JQuezada0$eoslondonhackathon$CreateCrowdfund_Update$updateCampaignDetailsProgress,
+						function (c) {
+							return _elm_lang$core$Native_Utils.update(
+								c,
+								{campaignDurationEndDatePicker: datePicker, campaignEndDate: updatedDate});
+						},
+						model));
+			case 'RewardTitleUpdated':
+				return _etaque$elm_response$Response$withNone(
+					A2(
+						_JQuezada0$eoslondonhackathon$CreateCrowdfund_Update$updateRewardDetailsProgress,
+						function (r) {
+							return _elm_lang$core$Native_Utils.update(
+								r,
+								{title: _p0._0});
+						},
+						model));
+			case 'RewardPledgeAmountUpdated':
+				return _etaque$elm_response$Response$withNone(
+					A2(
+						_JQuezada0$eoslondonhackathon$CreateCrowdfund_Update$updateRewardDetailsProgress,
+						function (r) {
+							return _elm_lang$core$Native_Utils.update(
+								r,
+								{pledgeAmount: _p0._0});
+						},
+						model));
+			case 'RewardDescriptionUpdated':
+				return _etaque$elm_response$Response$withNone(
+					A2(
+						_JQuezada0$eoslondonhackathon$CreateCrowdfund_Update$updateRewardDetailsProgress,
+						function (r) {
+							return _elm_lang$core$Native_Utils.update(
+								r,
+								{description: _p0._0});
+						},
+						model));
+			case 'RewardDeliveryMonthUpdated':
+				return _etaque$elm_response$Response$withNone(
+					A2(
+						_JQuezada0$eoslondonhackathon$CreateCrowdfund_Update$updateRewardDetailsProgress,
+						function (r) {
+							return _elm_lang$core$Native_Utils.update(
+								r,
+								{estimatedDeliveryMonth: _p0._0});
+						},
+						model));
+			case 'RewardDeliveryYearUpdated':
+				return _etaque$elm_response$Response$withNone(
+					A2(
+						_JQuezada0$eoslondonhackathon$CreateCrowdfund_Update$updateRewardDetailsProgress,
+						function (r) {
+							return _elm_lang$core$Native_Utils.update(
+								r,
+								{estimatedDeliveryYear: _p0._0});
+						},
+						model));
+			case 'ChangeActiveStep':
+				return _etaque$elm_response$Response$withNone(
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{activeStep: _p0._0}));
+			case 'CompleteStepOne':
+				return _etaque$elm_response$Response$withNone(
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{
+							activeStep: _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$StepTwo(_p0._0)
+						}));
+			case 'CompleteStepTwo':
+				return _etaque$elm_response$Response$withNone(
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{
+							activeStep: A2(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$StepThree, _p0._0, _p0._1)
+						}));
+			case 'CompleteStepThree':
+				return _etaque$elm_response$Response$withNone(
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{
+							activeStep: A3(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$StepFour, _p0._0, _p0._1, _p0._2)
+						}));
+			default:
+				var _p5 = _p0._3;
+				var rewardDetails = _p5._0;
+				var _p6 = _p0._2;
+				var campaignDetails = _p6._0;
+				var _p7 = _p0._1;
+				var projectDetails = _p7._0;
+				var _p8 = _p0._0;
+				var categoryDetails = _p8._0;
+				var campaign = A4(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Campaign, categoryDetails, projectDetails, campaignDetails, rewardDetails);
+				var formattedCampaign = _JQuezada0$eoslondonhackathon$Ports$formatCampaign(campaign);
+				return A2(
+					_etaque$elm_response$Response$withCmd,
+					_JQuezada0$eoslondonhackathon$Ports$submitCampaign(formattedCampaign),
+					model);
+		}
+	});
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_Update$init = function () {
+	var _p9 = _elm_community$elm_datepicker$DatePicker$init;
+	var endDatePicker = _p9._0;
+	var endDatePickerCmd = _p9._1;
+	var endDateCmd = A2(_elm_lang$core$Platform_Cmd$map, _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$CampaignDurationEndUpdated, endDatePickerCmd);
+	var _p10 = _elm_community$elm_datepicker$DatePicker$init;
+	var startDatePicker = _p10._0;
+	var startDatePickerCmd = _p10._1;
+	var startDateCmd = A2(_elm_lang$core$Platform_Cmd$map, _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$CampaignDurationStartUpdated, startDatePickerCmd);
+	return A2(
+		_etaque$elm_response$Response$withCmd,
+		_elm_lang$core$Platform_Cmd$batch(
+			{
+				ctor: '::',
+				_0: startDateCmd,
+				_1: {
+					ctor: '::',
+					_0: endDateCmd,
+					_1: {ctor: '[]'}
+				}
+			}),
+		{
+			activeStep: _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$StepOne,
+			categoryDetailsProgress: _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$CategoryDetailsProgress(_elm_lang$core$Maybe$Nothing),
+			projectDetailsProgress: A3(
+				_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$ProjectDetailsProgress,
+				_elm_lang$core$Maybe$Nothing,
+				_elm_lang$core$Maybe$Nothing,
+				_elm_lang$core$Maybe$Just('')),
+			campaignDetailsProgress: A5(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$CampaignDetailsProgress, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing, startDatePicker, endDatePicker),
+			rewardDetailsProgress: A5(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$RewardDetailsProgress, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing)
+		});
+}();
 
 var _rundis$elm_bootstrap$Bootstrap_General_Internal$screenSizeOption = function (size) {
 	var _p0 = size;
@@ -15411,933 +12608,6 @@ var _rundis$elm_bootstrap$Bootstrap_Grid$col = F2(
 			{options: options, children: children});
 	});
 
-var _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$itemAttributes = function (options) {
-	return A2(
-		_elm_lang$core$Basics_ops['++'],
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$classList(
-				{
-					ctor: '::',
-					_0: {ctor: '_Tuple2', _0: 'list-group-item', _1: true},
-					_1: {
-						ctor: '::',
-						_0: {ctor: '_Tuple2', _0: 'disabled', _1: options.disabled},
-						_1: {
-							ctor: '::',
-							_0: {ctor: '_Tuple2', _0: 'active', _1: options.active},
-							_1: {
-								ctor: '::',
-								_0: {ctor: '_Tuple2', _0: 'list-group-item-action', _1: options.action},
-								_1: {ctor: '[]'}
-							}
-						}
-					}
-				}),
-			_1: {ctor: '[]'}
-		},
-		A2(
-			_elm_lang$core$Basics_ops['++'],
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$disabled(options.disabled),
-				_1: {ctor: '[]'}
-			},
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				A2(
-					_elm_lang$core$Maybe$withDefault,
-					{ctor: '[]'},
-					A2(
-						_elm_lang$core$Maybe$map,
-						function (r) {
-							return {
-								ctor: '::',
-								_0: A2(_rundis$elm_bootstrap$Bootstrap_Internal_Role$toClass, 'list-group-item', r),
-								_1: {ctor: '[]'}
-							};
-						},
-						options.role)),
-				options.attributes)));
-};
-var _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$preventClick = A2(_elm_lang$html$Html_Attributes$attribute, 'onclick', 'var event = arguments[0] || window.event; event.preventDefault();');
-var _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$applyModifier = F2(
-	function (modifier, options) {
-		var _p0 = modifier;
-		switch (_p0.ctor) {
-			case 'Roled':
-				return _elm_lang$core$Native_Utils.update(
-					options,
-					{
-						role: _elm_lang$core$Maybe$Just(_p0._0)
-					});
-			case 'Action':
-				return _elm_lang$core$Native_Utils.update(
-					options,
-					{action: true});
-			case 'Disabled':
-				return _elm_lang$core$Native_Utils.update(
-					options,
-					{disabled: true});
-			case 'Active':
-				return _elm_lang$core$Native_Utils.update(
-					options,
-					{active: true});
-			default:
-				return _elm_lang$core$Native_Utils.update(
-					options,
-					{
-						attributes: A2(_elm_lang$core$Basics_ops['++'], options.attributes, _p0._0)
-					});
-		}
-	});
-var _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$defaultOptions = {
-	role: _elm_lang$core$Maybe$Nothing,
-	active: false,
-	disabled: false,
-	action: false,
-	attributes: {ctor: '[]'}
-};
-var _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$renderCustomItem = function (_p1) {
-	var _p2 = _p1;
-	return A2(
-		_p2._0.itemFn,
-		_rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$itemAttributes(
-			A3(_elm_lang$core$List$foldl, _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$applyModifier, _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$defaultOptions, _p2._0.options)),
-		_p2._0.children);
-};
-var _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$renderItem = function (_p3) {
-	var _p4 = _p3;
-	return A2(
-		_p4._0.itemFn,
-		_rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$itemAttributes(
-			A3(_elm_lang$core$List$foldl, _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$applyModifier, _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$defaultOptions, _p4._0.options)),
-		_p4._0.children);
-};
-var _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$ItemOptions = F5(
-	function (a, b, c, d, e) {
-		return {role: a, active: b, disabled: c, action: d, attributes: e};
-	});
-var _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Attrs = function (a) {
-	return {ctor: 'Attrs', _0: a};
-};
-var _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Action = {ctor: 'Action'};
-var _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Disabled = {ctor: 'Disabled'};
-var _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Active = {ctor: 'Active'};
-var _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Roled = function (a) {
-	return {ctor: 'Roled', _0: a};
-};
-var _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Item = function (a) {
-	return {ctor: 'Item', _0: a};
-};
-var _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$CustomItem = function (a) {
-	return {ctor: 'CustomItem', _0: a};
-};
-
-var _rundis$elm_bootstrap$Bootstrap_ListGroup$attrs = function (attrs) {
-	return _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Attrs(attrs);
-};
-var _rundis$elm_bootstrap$Bootstrap_ListGroup$disabled = _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Disabled;
-var _rundis$elm_bootstrap$Bootstrap_ListGroup$active = _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Active;
-var _rundis$elm_bootstrap$Bootstrap_ListGroup$dark = _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Roled(_rundis$elm_bootstrap$Bootstrap_Internal_Role$Dark);
-var _rundis$elm_bootstrap$Bootstrap_ListGroup$light = _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Roled(_rundis$elm_bootstrap$Bootstrap_Internal_Role$Light);
-var _rundis$elm_bootstrap$Bootstrap_ListGroup$danger = _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Roled(_rundis$elm_bootstrap$Bootstrap_Internal_Role$Danger);
-var _rundis$elm_bootstrap$Bootstrap_ListGroup$warning = _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Roled(_rundis$elm_bootstrap$Bootstrap_Internal_Role$Warning);
-var _rundis$elm_bootstrap$Bootstrap_ListGroup$info = _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Roled(_rundis$elm_bootstrap$Bootstrap_Internal_Role$Info);
-var _rundis$elm_bootstrap$Bootstrap_ListGroup$success = _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Roled(_rundis$elm_bootstrap$Bootstrap_Internal_Role$Success);
-var _rundis$elm_bootstrap$Bootstrap_ListGroup$secondary = _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Roled(_rundis$elm_bootstrap$Bootstrap_Internal_Role$Secondary);
-var _rundis$elm_bootstrap$Bootstrap_ListGroup$primary = _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Roled(_rundis$elm_bootstrap$Bootstrap_Internal_Role$Primary);
-var _rundis$elm_bootstrap$Bootstrap_ListGroup$button = F2(
-	function (options, children) {
-		return _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$CustomItem(
-			{
-				itemFn: _elm_lang$html$Html$button,
-				children: children,
-				options: {
-					ctor: '::',
-					_0: _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Action,
-					_1: A2(
-						_elm_lang$core$Basics_ops['++'],
-						options,
-						{
-							ctor: '::',
-							_0: _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Attrs(
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$type_('button'),
-									_1: {ctor: '[]'}
-								}),
-							_1: {ctor: '[]'}
-						})
-				}
-			});
-	});
-var _rundis$elm_bootstrap$Bootstrap_ListGroup$anchor = F2(
-	function (options, children) {
-		var updOptions = A2(
-			_elm_lang$core$List$any,
-			F2(
-				function (x, y) {
-					return _elm_lang$core$Native_Utils.eq(x, y);
-				})(_rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Disabled),
-			options) ? A2(
-			_elm_lang$core$Basics_ops['++'],
-			options,
-			{
-				ctor: '::',
-				_0: _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Attrs(
-					{
-						ctor: '::',
-						_0: _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$preventClick,
-						_1: {ctor: '[]'}
-					}),
-				_1: {ctor: '[]'}
-			}) : options;
-		return _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$CustomItem(
-			{
-				itemFn: _elm_lang$html$Html$a,
-				children: children,
-				options: {ctor: '::', _0: _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Action, _1: updOptions}
-			});
-	});
-var _rundis$elm_bootstrap$Bootstrap_ListGroup$keyedCustom = function (items) {
-	return A3(
-		_elm_lang$html$Html_Keyed$node,
-		'div',
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('list-group'),
-			_1: {ctor: '[]'}
-		},
-		A2(
-			_elm_lang$core$List$map,
-			function (_p0) {
-				var _p1 = _p0;
-				return {
-					ctor: '_Tuple2',
-					_0: _p1._0,
-					_1: _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$renderCustomItem(_p1._1)
-				};
-			},
-			items));
-};
-var _rundis$elm_bootstrap$Bootstrap_ListGroup$custom = function (items) {
-	return A2(
-		_elm_lang$html$Html$div,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('list-group'),
-			_1: {ctor: '[]'}
-		},
-		A2(_elm_lang$core$List$map, _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$renderCustomItem, items));
-};
-var _rundis$elm_bootstrap$Bootstrap_ListGroup$li = F2(
-	function (options, children) {
-		return _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Item(
-			{itemFn: _elm_lang$html$Html$li, children: children, options: options});
-	});
-var _rundis$elm_bootstrap$Bootstrap_ListGroup$keyedUl = function (keyedItems) {
-	return A2(
-		_elm_lang$html$Html_Keyed$ul,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('list-group'),
-			_1: {ctor: '[]'}
-		},
-		A2(
-			_elm_lang$core$List$map,
-			function (_p2) {
-				var _p3 = _p2;
-				return {
-					ctor: '_Tuple2',
-					_0: _p3._0,
-					_1: _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$renderItem(_p3._1)
-				};
-			},
-			keyedItems));
-};
-var _rundis$elm_bootstrap$Bootstrap_ListGroup$ul = function (items) {
-	return A2(
-		_elm_lang$html$Html$ul,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('list-group'),
-			_1: {ctor: '[]'}
-		},
-		A2(_elm_lang$core$List$map, _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$renderItem, items));
-};
-
-var _rundis$elm_bootstrap$Bootstrap_Card_Internal$applyModifier = F2(
-	function (option, options) {
-		var _p0 = option;
-		switch (_p0.ctor) {
-			case 'Aligned':
-				return _elm_lang$core$Native_Utils.update(
-					options,
-					{
-						aligned: _elm_lang$core$Maybe$Just(_p0._0)
-					});
-			case 'Coloring':
-				return _elm_lang$core$Native_Utils.update(
-					options,
-					{
-						coloring: _elm_lang$core$Maybe$Just(_p0._0)
-					});
-			case 'TextColoring':
-				return _elm_lang$core$Native_Utils.update(
-					options,
-					{
-						textColoring: _elm_lang$core$Maybe$Just(_p0._0)
-					});
-			default:
-				return _elm_lang$core$Native_Utils.update(
-					options,
-					{
-						attributes: A2(_elm_lang$core$Basics_ops['++'], options.attributes, _p0._0)
-					});
-		}
-	});
-var _rundis$elm_bootstrap$Bootstrap_Card_Internal$defaultOptions = {
-	aligned: _elm_lang$core$Maybe$Nothing,
-	coloring: _elm_lang$core$Maybe$Nothing,
-	textColoring: _elm_lang$core$Maybe$Nothing,
-	attributes: {ctor: '[]'}
-};
-var _rundis$elm_bootstrap$Bootstrap_Card_Internal$cardAttributes = function (modifiers) {
-	var options = A3(_elm_lang$core$List$foldl, _rundis$elm_bootstrap$Bootstrap_Card_Internal$applyModifier, _rundis$elm_bootstrap$Bootstrap_Card_Internal$defaultOptions, modifiers);
-	return A2(
-		_elm_lang$core$Basics_ops['++'],
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('card'),
-			_1: {ctor: '[]'}
-		},
-		A2(
-			_elm_lang$core$Basics_ops['++'],
-			function () {
-				var _p1 = options.coloring;
-				if (_p1.ctor === 'Just') {
-					if (_p1._0.ctor === 'Roled') {
-						return {
-							ctor: '::',
-							_0: A2(_rundis$elm_bootstrap$Bootstrap_Internal_Role$toClass, 'bg', _p1._0._0),
-							_1: {ctor: '[]'}
-						};
-					} else {
-						return {
-							ctor: '::',
-							_0: A2(_rundis$elm_bootstrap$Bootstrap_Internal_Role$toClass, 'border', _p1._0._0),
-							_1: {ctor: '[]'}
-						};
-					}
-				} else {
-					return {ctor: '[]'};
-				}
-			}(),
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				function () {
-					var _p2 = options.textColoring;
-					if (_p2.ctor === 'Just') {
-						return {
-							ctor: '::',
-							_0: _rundis$elm_bootstrap$Bootstrap_Internal_Text$textColorClass(_p2._0),
-							_1: {ctor: '[]'}
-						};
-					} else {
-						return {ctor: '[]'};
-					}
-				}(),
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					function () {
-						var _p3 = options.aligned;
-						if (_p3.ctor === 'Just') {
-							return {
-								ctor: '::',
-								_0: _rundis$elm_bootstrap$Bootstrap_Internal_Text$textAlignClass(_p3._0),
-								_1: {ctor: '[]'}
-							};
-						} else {
-							return {ctor: '[]'};
-						}
-					}(),
-					options.attributes))));
-};
-var _rundis$elm_bootstrap$Bootstrap_Card_Internal$applyBlockModifier = F2(
-	function (option, options) {
-		var _p4 = option;
-		switch (_p4.ctor) {
-			case 'AlignedBlock':
-				return _elm_lang$core$Native_Utils.update(
-					options,
-					{
-						aligned: _elm_lang$core$Maybe$Just(_p4._0)
-					});
-			case 'BlockColoring':
-				return _elm_lang$core$Native_Utils.update(
-					options,
-					{
-						coloring: _elm_lang$core$Maybe$Just(_p4._0)
-					});
-			case 'BlockTextColoring':
-				return _elm_lang$core$Native_Utils.update(
-					options,
-					{
-						textColoring: _elm_lang$core$Maybe$Just(_p4._0)
-					});
-			default:
-				return _elm_lang$core$Native_Utils.update(
-					options,
-					{
-						attributes: A2(_elm_lang$core$Basics_ops['++'], options.attributes, _p4._0)
-					});
-		}
-	});
-var _rundis$elm_bootstrap$Bootstrap_Card_Internal$defaultBlockOptions = {
-	aligned: _elm_lang$core$Maybe$Nothing,
-	coloring: _elm_lang$core$Maybe$Nothing,
-	textColoring: _elm_lang$core$Maybe$Nothing,
-	attributes: {ctor: '[]'}
-};
-var _rundis$elm_bootstrap$Bootstrap_Card_Internal$blockAttributes = function (modifiers) {
-	var options = A3(_elm_lang$core$List$foldl, _rundis$elm_bootstrap$Bootstrap_Card_Internal$applyBlockModifier, _rundis$elm_bootstrap$Bootstrap_Card_Internal$defaultBlockOptions, modifiers);
-	return A2(
-		_elm_lang$core$Basics_ops['++'],
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('card-body'),
-			_1: {ctor: '[]'}
-		},
-		A2(
-			_elm_lang$core$Basics_ops['++'],
-			function () {
-				var _p5 = options.aligned;
-				if (_p5.ctor === 'Just') {
-					return {
-						ctor: '::',
-						_0: _rundis$elm_bootstrap$Bootstrap_Internal_Text$textAlignClass(_p5._0),
-						_1: {ctor: '[]'}
-					};
-				} else {
-					return {ctor: '[]'};
-				}
-			}(),
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				function () {
-					var _p6 = options.coloring;
-					if (_p6.ctor === 'Just') {
-						return {
-							ctor: '::',
-							_0: A2(_rundis$elm_bootstrap$Bootstrap_Internal_Role$toClass, 'bg', _p6._0),
-							_1: {ctor: '[]'}
-						};
-					} else {
-						return {ctor: '[]'};
-					}
-				}(),
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					function () {
-						var _p7 = options.textColoring;
-						if (_p7.ctor === 'Just') {
-							return {
-								ctor: '::',
-								_0: _rundis$elm_bootstrap$Bootstrap_Internal_Text$textColorClass(_p7._0),
-								_1: {ctor: '[]'}
-							};
-						} else {
-							return {ctor: '[]'};
-						}
-					}(),
-					options.attributes))));
-};
-var _rundis$elm_bootstrap$Bootstrap_Card_Internal$renderBlock = function (block) {
-	var _p8 = block;
-	if (_p8.ctor === 'CardBlock') {
-		return _p8._0;
-	} else {
-		return _p8._0;
-	}
-};
-var _rundis$elm_bootstrap$Bootstrap_Card_Internal$renderBlocks = function (blocks) {
-	return A2(
-		_elm_lang$core$List$map,
-		function (block) {
-			var _p9 = block;
-			if (_p9.ctor === 'CardBlock') {
-				return _p9._0;
-			} else {
-				return _p9._0;
-			}
-		},
-		blocks);
-};
-var _rundis$elm_bootstrap$Bootstrap_Card_Internal$CardOptions = F4(
-	function (a, b, c, d) {
-		return {aligned: a, coloring: b, textColoring: c, attributes: d};
-	});
-var _rundis$elm_bootstrap$Bootstrap_Card_Internal$BlockOptions = F4(
-	function (a, b, c, d) {
-		return {aligned: a, coloring: b, textColoring: c, attributes: d};
-	});
-var _rundis$elm_bootstrap$Bootstrap_Card_Internal$Attrs = function (a) {
-	return {ctor: 'Attrs', _0: a};
-};
-var _rundis$elm_bootstrap$Bootstrap_Card_Internal$TextColoring = function (a) {
-	return {ctor: 'TextColoring', _0: a};
-};
-var _rundis$elm_bootstrap$Bootstrap_Card_Internal$Coloring = function (a) {
-	return {ctor: 'Coloring', _0: a};
-};
-var _rundis$elm_bootstrap$Bootstrap_Card_Internal$Aligned = function (a) {
-	return {ctor: 'Aligned', _0: a};
-};
-var _rundis$elm_bootstrap$Bootstrap_Card_Internal$Outlined = function (a) {
-	return {ctor: 'Outlined', _0: a};
-};
-var _rundis$elm_bootstrap$Bootstrap_Card_Internal$Roled = function (a) {
-	return {ctor: 'Roled', _0: a};
-};
-var _rundis$elm_bootstrap$Bootstrap_Card_Internal$BlockAttrs = function (a) {
-	return {ctor: 'BlockAttrs', _0: a};
-};
-var _rundis$elm_bootstrap$Bootstrap_Card_Internal$BlockTextColoring = function (a) {
-	return {ctor: 'BlockTextColoring', _0: a};
-};
-var _rundis$elm_bootstrap$Bootstrap_Card_Internal$BlockColoring = function (a) {
-	return {ctor: 'BlockColoring', _0: a};
-};
-var _rundis$elm_bootstrap$Bootstrap_Card_Internal$AlignedBlock = function (a) {
-	return {ctor: 'AlignedBlock', _0: a};
-};
-var _rundis$elm_bootstrap$Bootstrap_Card_Internal$ListGroup = function (a) {
-	return {ctor: 'ListGroup', _0: a};
-};
-var _rundis$elm_bootstrap$Bootstrap_Card_Internal$listGroup = function (items) {
-	return _rundis$elm_bootstrap$Bootstrap_Card_Internal$ListGroup(
-		A2(
-			_elm_lang$html$Html$ul,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('list-group list-group-flush'),
-				_1: {ctor: '[]'}
-			},
-			A2(_elm_lang$core$List$map, _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$renderItem, items)));
-};
-var _rundis$elm_bootstrap$Bootstrap_Card_Internal$CardBlock = function (a) {
-	return {ctor: 'CardBlock', _0: a};
-};
-var _rundis$elm_bootstrap$Bootstrap_Card_Internal$block = F2(
-	function (options, items) {
-		return _rundis$elm_bootstrap$Bootstrap_Card_Internal$CardBlock(
-			A2(
-				_elm_lang$html$Html$div,
-				_rundis$elm_bootstrap$Bootstrap_Card_Internal$blockAttributes(options),
-				A2(
-					_elm_lang$core$List$map,
-					function (_p10) {
-						var _p11 = _p10;
-						return _p11._0;
-					},
-					items)));
-	});
-var _rundis$elm_bootstrap$Bootstrap_Card_Internal$BlockItem = function (a) {
-	return {ctor: 'BlockItem', _0: a};
-};
-
-var _rundis$elm_bootstrap$Bootstrap_Card_Block$attrs = function (attrs) {
-	return _rundis$elm_bootstrap$Bootstrap_Card_Internal$BlockAttrs(attrs);
-};
-var _rundis$elm_bootstrap$Bootstrap_Card_Block$textColor = function (color) {
-	return _rundis$elm_bootstrap$Bootstrap_Card_Internal$BlockTextColoring(color);
-};
-var _rundis$elm_bootstrap$Bootstrap_Card_Block$dark = _rundis$elm_bootstrap$Bootstrap_Card_Internal$BlockColoring(_rundis$elm_bootstrap$Bootstrap_Internal_Role$Dark);
-var _rundis$elm_bootstrap$Bootstrap_Card_Block$light = _rundis$elm_bootstrap$Bootstrap_Card_Internal$BlockColoring(_rundis$elm_bootstrap$Bootstrap_Internal_Role$Light);
-var _rundis$elm_bootstrap$Bootstrap_Card_Block$danger = _rundis$elm_bootstrap$Bootstrap_Card_Internal$BlockColoring(_rundis$elm_bootstrap$Bootstrap_Internal_Role$Danger);
-var _rundis$elm_bootstrap$Bootstrap_Card_Block$warning = _rundis$elm_bootstrap$Bootstrap_Card_Internal$BlockColoring(_rundis$elm_bootstrap$Bootstrap_Internal_Role$Warning);
-var _rundis$elm_bootstrap$Bootstrap_Card_Block$info = _rundis$elm_bootstrap$Bootstrap_Card_Internal$BlockColoring(_rundis$elm_bootstrap$Bootstrap_Internal_Role$Info);
-var _rundis$elm_bootstrap$Bootstrap_Card_Block$success = _rundis$elm_bootstrap$Bootstrap_Card_Internal$BlockColoring(_rundis$elm_bootstrap$Bootstrap_Internal_Role$Success);
-var _rundis$elm_bootstrap$Bootstrap_Card_Block$secondary = _rundis$elm_bootstrap$Bootstrap_Card_Internal$BlockColoring(_rundis$elm_bootstrap$Bootstrap_Internal_Role$Secondary);
-var _rundis$elm_bootstrap$Bootstrap_Card_Block$primary = _rundis$elm_bootstrap$Bootstrap_Card_Internal$BlockColoring(_rundis$elm_bootstrap$Bootstrap_Internal_Role$Primary);
-var _rundis$elm_bootstrap$Bootstrap_Card_Block$align = function (align) {
-	return _rundis$elm_bootstrap$Bootstrap_Card_Internal$AlignedBlock(align);
-};
-var _rundis$elm_bootstrap$Bootstrap_Card_Block$title = F3(
-	function (elemFn, attributes, children) {
-		return _rundis$elm_bootstrap$Bootstrap_Card_Internal$BlockItem(
-			A2(
-				elemFn,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('card-title'),
-					_1: attributes
-				},
-				children));
-	});
-var _rundis$elm_bootstrap$Bootstrap_Card_Block$titleH6 = _rundis$elm_bootstrap$Bootstrap_Card_Block$title(_elm_lang$html$Html$h6);
-var _rundis$elm_bootstrap$Bootstrap_Card_Block$titleH5 = _rundis$elm_bootstrap$Bootstrap_Card_Block$title(_elm_lang$html$Html$h5);
-var _rundis$elm_bootstrap$Bootstrap_Card_Block$titleH4 = _rundis$elm_bootstrap$Bootstrap_Card_Block$title(_elm_lang$html$Html$h4);
-var _rundis$elm_bootstrap$Bootstrap_Card_Block$titleH3 = _rundis$elm_bootstrap$Bootstrap_Card_Block$title(_elm_lang$html$Html$h3);
-var _rundis$elm_bootstrap$Bootstrap_Card_Block$titleH2 = _rundis$elm_bootstrap$Bootstrap_Card_Block$title(_elm_lang$html$Html$h2);
-var _rundis$elm_bootstrap$Bootstrap_Card_Block$titleH1 = _rundis$elm_bootstrap$Bootstrap_Card_Block$title(_elm_lang$html$Html$h1);
-var _rundis$elm_bootstrap$Bootstrap_Card_Block$quote = F2(
-	function (attributes, children) {
-		return _rundis$elm_bootstrap$Bootstrap_Card_Internal$BlockItem(
-			A2(
-				_elm_lang$html$Html$blockquote,
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('card-blockquote'),
-						_1: {ctor: '[]'}
-					},
-					attributes),
-				children));
-	});
-var _rundis$elm_bootstrap$Bootstrap_Card_Block$custom = function (element) {
-	return _rundis$elm_bootstrap$Bootstrap_Card_Internal$BlockItem(element);
-};
-var _rundis$elm_bootstrap$Bootstrap_Card_Block$text = F2(
-	function (attributes, children) {
-		return _rundis$elm_bootstrap$Bootstrap_Card_Internal$BlockItem(
-			A2(
-				_elm_lang$html$Html$p,
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('card-text'),
-						_1: {ctor: '[]'}
-					},
-					attributes),
-				children));
-	});
-var _rundis$elm_bootstrap$Bootstrap_Card_Block$link = F2(
-	function (attributes, children) {
-		return _rundis$elm_bootstrap$Bootstrap_Card_Internal$BlockItem(
-			A2(
-				_elm_lang$html$Html$a,
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('card-link'),
-						_1: {ctor: '[]'}
-					},
-					attributes),
-				children));
-	});
-
-var _rundis$elm_bootstrap$Bootstrap_Card$view = function (_p0) {
-	var _p1 = _p0;
-	return A2(
-		_elm_lang$html$Html$div,
-		_rundis$elm_bootstrap$Bootstrap_Card_Internal$cardAttributes(_p1._0.options),
-		A2(
-			_elm_lang$core$Basics_ops['++'],
-			A2(
-				_elm_lang$core$List$filterMap,
-				_elm_lang$core$Basics$identity,
-				{
-					ctor: '::',
-					_0: A2(
-						_elm_lang$core$Maybe$map,
-						function (_p2) {
-							var _p3 = _p2;
-							return _p3._0;
-						},
-						_p1._0.header),
-					_1: {
-						ctor: '::',
-						_0: A2(
-							_elm_lang$core$Maybe$map,
-							function (_p4) {
-								var _p5 = _p4;
-								return _p5._0;
-							},
-							_p1._0.imgTop),
-						_1: {ctor: '[]'}
-					}
-				}),
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				_rundis$elm_bootstrap$Bootstrap_Card_Internal$renderBlocks(_p1._0.blocks),
-				A2(
-					_elm_lang$core$List$filterMap,
-					_elm_lang$core$Basics$identity,
-					{
-						ctor: '::',
-						_0: A2(
-							_elm_lang$core$Maybe$map,
-							function (_p6) {
-								var _p7 = _p6;
-								return _p7._0;
-							},
-							_p1._0.footer),
-						_1: {
-							ctor: '::',
-							_0: A2(
-								_elm_lang$core$Maybe$map,
-								function (_p8) {
-									var _p9 = _p8;
-									return _p9._0;
-								},
-								_p1._0.imgBottom),
-							_1: {ctor: '[]'}
-						}
-					}))));
-};
-var _rundis$elm_bootstrap$Bootstrap_Card$group = function (cards) {
-	return A2(
-		_elm_lang$html$Html$div,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('card-group'),
-			_1: {ctor: '[]'}
-		},
-		A2(_elm_lang$core$List$map, _rundis$elm_bootstrap$Bootstrap_Card$view, cards));
-};
-var _rundis$elm_bootstrap$Bootstrap_Card$deck = function (cards) {
-	return A2(
-		_elm_lang$html$Html$div,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('card-deck'),
-			_1: {ctor: '[]'}
-		},
-		A2(_elm_lang$core$List$map, _rundis$elm_bootstrap$Bootstrap_Card$view, cards));
-};
-var _rundis$elm_bootstrap$Bootstrap_Card$columns = function (cards) {
-	return A2(
-		_elm_lang$html$Html$div,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('card-columns'),
-			_1: {ctor: '[]'}
-		},
-		A2(_elm_lang$core$List$map, _rundis$elm_bootstrap$Bootstrap_Card$view, cards));
-};
-var _rundis$elm_bootstrap$Bootstrap_Card$keyedMulti = F2(
-	function (clazz, keyedCards) {
-		return A3(
-			_elm_lang$html$Html_Keyed$node,
-			'div',
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class(clazz),
-				_1: {ctor: '[]'}
-			},
-			A2(
-				_elm_lang$core$List$map,
-				function (_p10) {
-					var _p11 = _p10;
-					return {
-						ctor: '_Tuple2',
-						_0: _p11._0,
-						_1: _rundis$elm_bootstrap$Bootstrap_Card$view(_p11._1)
-					};
-				},
-				keyedCards));
-	});
-var _rundis$elm_bootstrap$Bootstrap_Card$keyedGroup = _rundis$elm_bootstrap$Bootstrap_Card$keyedMulti('card-group');
-var _rundis$elm_bootstrap$Bootstrap_Card$keyedDeck = _rundis$elm_bootstrap$Bootstrap_Card$keyedMulti('card-deck');
-var _rundis$elm_bootstrap$Bootstrap_Card$keyedColumns = _rundis$elm_bootstrap$Bootstrap_Card$keyedMulti('card-columns');
-var _rundis$elm_bootstrap$Bootstrap_Card$attrs = function (attrs) {
-	return _rundis$elm_bootstrap$Bootstrap_Card_Internal$Attrs(attrs);
-};
-var _rundis$elm_bootstrap$Bootstrap_Card$textColor = function (color) {
-	return _rundis$elm_bootstrap$Bootstrap_Card_Internal$TextColoring(color);
-};
-var _rundis$elm_bootstrap$Bootstrap_Card$outlineDark = _rundis$elm_bootstrap$Bootstrap_Card_Internal$Coloring(
-	_rundis$elm_bootstrap$Bootstrap_Card_Internal$Outlined(_rundis$elm_bootstrap$Bootstrap_Internal_Role$Dark));
-var _rundis$elm_bootstrap$Bootstrap_Card$outlineLight = _rundis$elm_bootstrap$Bootstrap_Card_Internal$Coloring(
-	_rundis$elm_bootstrap$Bootstrap_Card_Internal$Outlined(_rundis$elm_bootstrap$Bootstrap_Internal_Role$Light));
-var _rundis$elm_bootstrap$Bootstrap_Card$outlineDanger = _rundis$elm_bootstrap$Bootstrap_Card_Internal$Coloring(
-	_rundis$elm_bootstrap$Bootstrap_Card_Internal$Outlined(_rundis$elm_bootstrap$Bootstrap_Internal_Role$Danger));
-var _rundis$elm_bootstrap$Bootstrap_Card$outlineWarning = _rundis$elm_bootstrap$Bootstrap_Card_Internal$Coloring(
-	_rundis$elm_bootstrap$Bootstrap_Card_Internal$Outlined(_rundis$elm_bootstrap$Bootstrap_Internal_Role$Warning));
-var _rundis$elm_bootstrap$Bootstrap_Card$outlineInfo = _rundis$elm_bootstrap$Bootstrap_Card_Internal$Coloring(
-	_rundis$elm_bootstrap$Bootstrap_Card_Internal$Outlined(_rundis$elm_bootstrap$Bootstrap_Internal_Role$Info));
-var _rundis$elm_bootstrap$Bootstrap_Card$outlineSuccess = _rundis$elm_bootstrap$Bootstrap_Card_Internal$Coloring(
-	_rundis$elm_bootstrap$Bootstrap_Card_Internal$Outlined(_rundis$elm_bootstrap$Bootstrap_Internal_Role$Success));
-var _rundis$elm_bootstrap$Bootstrap_Card$outlineSecondary = _rundis$elm_bootstrap$Bootstrap_Card_Internal$Coloring(
-	_rundis$elm_bootstrap$Bootstrap_Card_Internal$Outlined(_rundis$elm_bootstrap$Bootstrap_Internal_Role$Secondary));
-var _rundis$elm_bootstrap$Bootstrap_Card$outlinePrimary = _rundis$elm_bootstrap$Bootstrap_Card_Internal$Coloring(
-	_rundis$elm_bootstrap$Bootstrap_Card_Internal$Outlined(_rundis$elm_bootstrap$Bootstrap_Internal_Role$Primary));
-var _rundis$elm_bootstrap$Bootstrap_Card$dark = _rundis$elm_bootstrap$Bootstrap_Card_Internal$Coloring(
-	_rundis$elm_bootstrap$Bootstrap_Card_Internal$Roled(_rundis$elm_bootstrap$Bootstrap_Internal_Role$Dark));
-var _rundis$elm_bootstrap$Bootstrap_Card$light = _rundis$elm_bootstrap$Bootstrap_Card_Internal$Coloring(
-	_rundis$elm_bootstrap$Bootstrap_Card_Internal$Roled(_rundis$elm_bootstrap$Bootstrap_Internal_Role$Light));
-var _rundis$elm_bootstrap$Bootstrap_Card$danger = _rundis$elm_bootstrap$Bootstrap_Card_Internal$Coloring(
-	_rundis$elm_bootstrap$Bootstrap_Card_Internal$Roled(_rundis$elm_bootstrap$Bootstrap_Internal_Role$Danger));
-var _rundis$elm_bootstrap$Bootstrap_Card$warning = _rundis$elm_bootstrap$Bootstrap_Card_Internal$Coloring(
-	_rundis$elm_bootstrap$Bootstrap_Card_Internal$Roled(_rundis$elm_bootstrap$Bootstrap_Internal_Role$Warning));
-var _rundis$elm_bootstrap$Bootstrap_Card$info = _rundis$elm_bootstrap$Bootstrap_Card_Internal$Coloring(
-	_rundis$elm_bootstrap$Bootstrap_Card_Internal$Roled(_rundis$elm_bootstrap$Bootstrap_Internal_Role$Info));
-var _rundis$elm_bootstrap$Bootstrap_Card$success = _rundis$elm_bootstrap$Bootstrap_Card_Internal$Coloring(
-	_rundis$elm_bootstrap$Bootstrap_Card_Internal$Roled(_rundis$elm_bootstrap$Bootstrap_Internal_Role$Success));
-var _rundis$elm_bootstrap$Bootstrap_Card$secondary = _rundis$elm_bootstrap$Bootstrap_Card_Internal$Coloring(
-	_rundis$elm_bootstrap$Bootstrap_Card_Internal$Roled(_rundis$elm_bootstrap$Bootstrap_Internal_Role$Secondary));
-var _rundis$elm_bootstrap$Bootstrap_Card$primary = _rundis$elm_bootstrap$Bootstrap_Card_Internal$Coloring(
-	_rundis$elm_bootstrap$Bootstrap_Card_Internal$Roled(_rundis$elm_bootstrap$Bootstrap_Internal_Role$Primary));
-var _rundis$elm_bootstrap$Bootstrap_Card$align = function (align) {
-	return _rundis$elm_bootstrap$Bootstrap_Card_Internal$Aligned(align);
-};
-var _rundis$elm_bootstrap$Bootstrap_Card$Config = function (a) {
-	return {ctor: 'Config', _0: a};
-};
-var _rundis$elm_bootstrap$Bootstrap_Card$config = function (options) {
-	return _rundis$elm_bootstrap$Bootstrap_Card$Config(
-		{
-			options: options,
-			header: _elm_lang$core$Maybe$Nothing,
-			footer: _elm_lang$core$Maybe$Nothing,
-			imgTop: _elm_lang$core$Maybe$Nothing,
-			imgBottom: _elm_lang$core$Maybe$Nothing,
-			blocks: {ctor: '[]'}
-		});
-};
-var _rundis$elm_bootstrap$Bootstrap_Card$listGroup = F2(
-	function (items, _p12) {
-		var _p13 = _p12;
-		var _p14 = _p13._0;
-		return _rundis$elm_bootstrap$Bootstrap_Card$Config(
-			_elm_lang$core$Native_Utils.update(
-				_p14,
-				{
-					blocks: A2(
-						_elm_lang$core$Basics_ops['++'],
-						_p14.blocks,
-						{
-							ctor: '::',
-							_0: _rundis$elm_bootstrap$Bootstrap_Card_Internal$listGroup(items),
-							_1: {ctor: '[]'}
-						})
-				}));
-	});
-var _rundis$elm_bootstrap$Bootstrap_Card$block = F3(
-	function (options, items, _p15) {
-		var _p16 = _p15;
-		var _p17 = _p16._0;
-		return _rundis$elm_bootstrap$Bootstrap_Card$Config(
-			_elm_lang$core$Native_Utils.update(
-				_p17,
-				{
-					blocks: A2(
-						_elm_lang$core$Basics_ops['++'],
-						_p17.blocks,
-						{
-							ctor: '::',
-							_0: A2(_rundis$elm_bootstrap$Bootstrap_Card_Internal$block, options, items),
-							_1: {ctor: '[]'}
-						})
-				}));
-	});
-var _rundis$elm_bootstrap$Bootstrap_Card$Header = function (a) {
-	return {ctor: 'Header', _0: a};
-};
-var _rundis$elm_bootstrap$Bootstrap_Card$headerPrivate = F4(
-	function (elemFn, attributes, children, _p18) {
-		var _p19 = _p18;
-		return _rundis$elm_bootstrap$Bootstrap_Card$Config(
-			_elm_lang$core$Native_Utils.update(
-				_p19._0,
-				{
-					header: _elm_lang$core$Maybe$Just(
-						_rundis$elm_bootstrap$Bootstrap_Card$Header(
-							A2(
-								elemFn,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('card-header'),
-									_1: attributes
-								},
-								children)))
-				}));
-	});
-var _rundis$elm_bootstrap$Bootstrap_Card$header = _rundis$elm_bootstrap$Bootstrap_Card$headerPrivate(_elm_lang$html$Html$div);
-var _rundis$elm_bootstrap$Bootstrap_Card$headerH1 = _rundis$elm_bootstrap$Bootstrap_Card$headerPrivate(_elm_lang$html$Html$h1);
-var _rundis$elm_bootstrap$Bootstrap_Card$headerH2 = _rundis$elm_bootstrap$Bootstrap_Card$headerPrivate(_elm_lang$html$Html$h2);
-var _rundis$elm_bootstrap$Bootstrap_Card$headerH3 = _rundis$elm_bootstrap$Bootstrap_Card$headerPrivate(_elm_lang$html$Html$h3);
-var _rundis$elm_bootstrap$Bootstrap_Card$headerH4 = _rundis$elm_bootstrap$Bootstrap_Card$headerPrivate(_elm_lang$html$Html$h4);
-var _rundis$elm_bootstrap$Bootstrap_Card$headerH5 = _rundis$elm_bootstrap$Bootstrap_Card$headerPrivate(_elm_lang$html$Html$h5);
-var _rundis$elm_bootstrap$Bootstrap_Card$headerH6 = _rundis$elm_bootstrap$Bootstrap_Card$headerPrivate(_elm_lang$html$Html$h6);
-var _rundis$elm_bootstrap$Bootstrap_Card$Footer = function (a) {
-	return {ctor: 'Footer', _0: a};
-};
-var _rundis$elm_bootstrap$Bootstrap_Card$footer = F3(
-	function (attributes, children, _p20) {
-		var _p21 = _p20;
-		return _rundis$elm_bootstrap$Bootstrap_Card$Config(
-			_elm_lang$core$Native_Utils.update(
-				_p21._0,
-				{
-					footer: _elm_lang$core$Maybe$Just(
-						_rundis$elm_bootstrap$Bootstrap_Card$Footer(
-							A2(
-								_elm_lang$html$Html$div,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('card-footer'),
-									_1: attributes
-								},
-								children)))
-				}));
-	});
-var _rundis$elm_bootstrap$Bootstrap_Card$ImageTop = function (a) {
-	return {ctor: 'ImageTop', _0: a};
-};
-var _rundis$elm_bootstrap$Bootstrap_Card$imgTop = F3(
-	function (attributes, children, _p22) {
-		var _p23 = _p22;
-		return _rundis$elm_bootstrap$Bootstrap_Card$Config(
-			_elm_lang$core$Native_Utils.update(
-				_p23._0,
-				{
-					imgTop: _elm_lang$core$Maybe$Just(
-						_rundis$elm_bootstrap$Bootstrap_Card$ImageTop(
-							A2(
-								_elm_lang$html$Html$img,
-								A2(
-									_elm_lang$core$Basics_ops['++'],
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('card-img-top'),
-										_1: {ctor: '[]'}
-									},
-									attributes),
-								children)))
-				}));
-	});
-var _rundis$elm_bootstrap$Bootstrap_Card$ImageBottom = function (a) {
-	return {ctor: 'ImageBottom', _0: a};
-};
-var _rundis$elm_bootstrap$Bootstrap_Card$imgBottom = F3(
-	function (attributes, children, _p24) {
-		var _p25 = _p24;
-		return _rundis$elm_bootstrap$Bootstrap_Card$Config(
-			_elm_lang$core$Native_Utils.update(
-				_p25._0,
-				{
-					imgBottom: _elm_lang$core$Maybe$Just(
-						_rundis$elm_bootstrap$Bootstrap_Card$ImageBottom(
-							A2(
-								_elm_lang$html$Html$img,
-								A2(
-									_elm_lang$core$Basics_ops['++'],
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('card-img-bottom'),
-										_1: {ctor: '[]'}
-									},
-									attributes),
-								children)))
-				}));
-	});
-
 var _rundis$elm_bootstrap$Bootstrap_Internal_Button$roleClass = function (role) {
 	var _p0 = role;
 	switch (_p0.ctor) {
@@ -16658,3824 +12928,179 @@ var _rundis$elm_bootstrap$Bootstrap_Button$button = F2(
 			children);
 	});
 
-//import Result //
-
-var _elm_lang$core$Native_Date = function() {
-
-function fromString(str)
-{
-	var date = new Date(str);
-	return isNaN(date.getTime())
-		? _elm_lang$core$Result$Err('Unable to parse \'' + str + '\' as a date. Dates must be in the ISO 8601 format.')
-		: _elm_lang$core$Result$Ok(date);
-}
-
-var dayTable = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-var monthTable =
-	['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-	 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-
-return {
-	fromString: fromString,
-	year: function(d) { return d.getFullYear(); },
-	month: function(d) { return { ctor: monthTable[d.getMonth()] }; },
-	day: function(d) { return d.getDate(); },
-	hour: function(d) { return d.getHours(); },
-	minute: function(d) { return d.getMinutes(); },
-	second: function(d) { return d.getSeconds(); },
-	millisecond: function(d) { return d.getMilliseconds(); },
-	toTime: function(d) { return d.getTime(); },
-	fromTime: function(t) { return new Date(t); },
-	dayOfWeek: function(d) { return { ctor: dayTable[d.getDay()] }; }
+var _rundis$elm_bootstrap$Bootstrap_Form$renderCol = function (_p0) {
+	var _p1 = _p0;
+	return A2(
+		_p1._0.elemFn,
+		_rundis$elm_bootstrap$Bootstrap_Grid_Internal$colAttributes(_p1._0.options),
+		_p1._0.children);
 };
-
-}();
-var _elm_lang$core$Date$millisecond = _elm_lang$core$Native_Date.millisecond;
-var _elm_lang$core$Date$second = _elm_lang$core$Native_Date.second;
-var _elm_lang$core$Date$minute = _elm_lang$core$Native_Date.minute;
-var _elm_lang$core$Date$hour = _elm_lang$core$Native_Date.hour;
-var _elm_lang$core$Date$dayOfWeek = _elm_lang$core$Native_Date.dayOfWeek;
-var _elm_lang$core$Date$day = _elm_lang$core$Native_Date.day;
-var _elm_lang$core$Date$month = _elm_lang$core$Native_Date.month;
-var _elm_lang$core$Date$year = _elm_lang$core$Native_Date.year;
-var _elm_lang$core$Date$fromTime = _elm_lang$core$Native_Date.fromTime;
-var _elm_lang$core$Date$toTime = _elm_lang$core$Native_Date.toTime;
-var _elm_lang$core$Date$fromString = _elm_lang$core$Native_Date.fromString;
-var _elm_lang$core$Date$now = A2(_elm_lang$core$Task$map, _elm_lang$core$Date$fromTime, _elm_lang$core$Time$now);
-var _elm_lang$core$Date$Date = {ctor: 'Date'};
-var _elm_lang$core$Date$Sun = {ctor: 'Sun'};
-var _elm_lang$core$Date$Sat = {ctor: 'Sat'};
-var _elm_lang$core$Date$Fri = {ctor: 'Fri'};
-var _elm_lang$core$Date$Thu = {ctor: 'Thu'};
-var _elm_lang$core$Date$Wed = {ctor: 'Wed'};
-var _elm_lang$core$Date$Tue = {ctor: 'Tue'};
-var _elm_lang$core$Date$Mon = {ctor: 'Mon'};
-var _elm_lang$core$Date$Dec = {ctor: 'Dec'};
-var _elm_lang$core$Date$Nov = {ctor: 'Nov'};
-var _elm_lang$core$Date$Oct = {ctor: 'Oct'};
-var _elm_lang$core$Date$Sep = {ctor: 'Sep'};
-var _elm_lang$core$Date$Aug = {ctor: 'Aug'};
-var _elm_lang$core$Date$Jul = {ctor: 'Jul'};
-var _elm_lang$core$Date$Jun = {ctor: 'Jun'};
-var _elm_lang$core$Date$May = {ctor: 'May'};
-var _elm_lang$core$Date$Apr = {ctor: 'Apr'};
-var _elm_lang$core$Date$Mar = {ctor: 'Mar'};
-var _elm_lang$core$Date$Feb = {ctor: 'Feb'};
-var _elm_lang$core$Date$Jan = {ctor: 'Jan'};
-
-var _mgold$elm_date_format$Date_Local$dutch = {
-	date: {
-		months: {jan: 'januari', feb: 'februari', mar: 'maart', apr: 'april', may: 'mei', jun: 'juni', jul: 'juli', aug: 'augustus', sep: 'september', oct: 'oktober', nov: 'november', dec: 'december'},
-		monthsAbbrev: {jan: 'jan', feb: 'feb', mar: 'mrt', apr: 'apr', may: 'mei', jun: 'jun', jul: 'jul', aug: 'aug', sep: 'sep', oct: 'okt', nov: 'nov', dec: 'dec'},
-		wdays: {mon: 'maandag', tue: 'dinsdag', wed: 'woensdag', thu: 'donderdag', fri: 'vrijdag', sat: 'zaterdag', sun: 'zondag'},
-		wdaysAbbrev: {mon: 'ma', tue: 'di', wed: 'wo', thu: 'do', fri: 'vr', sat: 'za', sun: 'zo'},
-		defaultFormat: _elm_lang$core$Maybe$Nothing
-	},
-	time: {
-		am: 'am',
-		pm: 'pm',
-		defaultFormat: _elm_lang$core$Maybe$Just('%H:%M')
-	},
-	timeZones: _elm_lang$core$Maybe$Nothing,
-	defaultFormat: _elm_lang$core$Maybe$Nothing
-};
-var _mgold$elm_date_format$Date_Local$greek = {
-	date: {
-		months: {jan: 'Ιανουαρίου', feb: 'Φεβρουαρίου', mar: 'Μαρτίου', apr: 'Απριλίου', may: 'Μαΐου', jun: 'Ιουνίου', jul: 'Ιουλίου', aug: 'Αυγούστου', sep: 'Σεπτεμβρίου', oct: 'Οκτωβρίου', nov: 'Νοεμβρίου', dec: 'Δεκεμβρίου'},
-		monthsAbbrev: {jan: 'Ιαν', feb: 'Φεβ', mar: 'Μαρ', apr: 'Απρ', may: 'Μαϊ', jun: 'Ιουν', jul: 'Ιουλ', aug: 'Αυγ', sep: 'Σεπ', oct: 'Οκτ', nov: 'Νοε', dec: 'Δεκ'},
-		wdays: {mon: 'Δευτέρα', tue: 'Τρίτη', wed: 'Τετάρτη', thu: 'Πέμπτη', fri: 'Παρασκευή', sat: 'Σάββατο', sun: 'Κυριακή'},
-		wdaysAbbrev: {mon: 'Δευ', tue: 'Τρι', wed: 'Τετ', thu: 'Πεμ', fri: 'Παρ', sat: 'Σαβ', sun: 'Κυρ'},
-		defaultFormat: _elm_lang$core$Maybe$Nothing
-	},
-	time: {am: 'πμ', pm: 'μμ', defaultFormat: _elm_lang$core$Maybe$Nothing},
-	timeZones: _elm_lang$core$Maybe$Nothing,
-	defaultFormat: _elm_lang$core$Maybe$Nothing
-};
-var _mgold$elm_date_format$Date_Local$german = {
-	date: {
-		months: {jan: 'Januar', feb: 'Februar', mar: 'März', apr: 'April', may: 'Mai', jun: 'Juni', jul: 'Juli', aug: 'August', sep: 'September', oct: 'Oktober', nov: 'November', dec: 'Dezember'},
-		monthsAbbrev: {jan: 'Jan', feb: 'Feb', mar: 'Mär', apr: 'Apr', may: 'Mai', jun: 'Jun', jul: 'Jul', aug: 'Aug', sep: 'Sep', oct: 'Okt', nov: 'Nov', dec: 'Dez'},
-		wdays: {mon: 'Montag', tue: 'Dienstag', wed: 'Mittwoch', thu: 'Donnerstag', fri: 'Freitag', sat: 'Samstag', sun: 'Sonntag'},
-		wdaysAbbrev: {mon: 'Mo', tue: 'Di', wed: 'Mi', thu: 'Do', fri: 'Fr', sat: 'Sa', sun: 'So'},
-		defaultFormat: _elm_lang$core$Maybe$Just('%e. %B %Y')
-	},
-	time: {
-		am: 'am',
-		pm: 'pm',
-		defaultFormat: _elm_lang$core$Maybe$Just('%k:%M')
-	},
-	timeZones: _elm_lang$core$Maybe$Nothing,
-	defaultFormat: _elm_lang$core$Maybe$Nothing
-};
-var _mgold$elm_date_format$Date_Local$brazilian = {
-	date: {
-		months: {jan: 'Janeiro', feb: 'Fevereiro', mar: 'Março', apr: 'Abril', may: 'Maio', jun: 'Junho', jul: 'Julho', aug: 'Agosto', sep: 'Setembro', oct: 'Outubro', nov: 'Novembro', dec: 'Dezembro'},
-		monthsAbbrev: {jan: 'Jan', feb: 'Fev', mar: 'Mar', apr: 'Abr', may: 'Mai', jun: 'Jun', jul: 'Jul', aug: 'Ago', sep: 'Set', oct: 'Out', nov: 'Nov', dec: 'Dez'},
-		wdays: {mon: 'Segunda-feira', tue: 'Terça-feira', wed: 'Quarta-feira', thu: 'Quinta-feira', fri: 'Sexta-feira', sat: 'Sábado', sun: 'Domingo'},
-		wdaysAbbrev: {mon: 'Seg', tue: 'Ter', wed: 'Qua', thu: 'Qui', fri: 'Sex', sat: 'Sáb', sun: 'Dom'},
-		defaultFormat: _elm_lang$core$Maybe$Just('%e de %B de %Y')
-	},
-	time: {
-		am: 'am',
-		pm: 'pm',
-		defaultFormat: _elm_lang$core$Maybe$Just('%k:%M')
-	},
-	timeZones: _elm_lang$core$Maybe$Nothing,
-	defaultFormat: _elm_lang$core$Maybe$Nothing
-};
-var _mgold$elm_date_format$Date_Local$french = {
-	date: {
-		months: {jan: 'Janvier', feb: 'Février', mar: 'Mars', apr: 'Avril', may: 'Mai', jun: 'Juin', jul: 'Juillet', aug: 'Août', sep: 'Septembre', oct: 'Octobre', nov: 'Novembre', dec: 'Décembre'},
-		monthsAbbrev: {jan: 'Jan', feb: 'Fév', mar: 'Mar', apr: 'Avr', may: 'Mai', jun: 'Jui', jul: 'Jul', aug: 'Aoû', sep: 'Sep', oct: 'Oct', nov: 'Nov', dec: 'Déc'},
-		wdays: {mon: 'Lundi', tue: 'Mardi', wed: 'Mercredi', thu: 'Jeudi', fri: 'Vendredi', sat: 'Samedi', sun: 'Dimanche'},
-		wdaysAbbrev: {mon: 'Lun', tue: 'Mar', wed: 'Mer', thu: 'Jeu', fri: 'Ven', sat: 'Sam', sun: 'Dim'},
-		defaultFormat: _elm_lang$core$Maybe$Nothing
-	},
-	time: {am: 'am', pm: 'pm', defaultFormat: _elm_lang$core$Maybe$Nothing},
-	timeZones: _elm_lang$core$Maybe$Nothing,
-	defaultFormat: _elm_lang$core$Maybe$Nothing
-};
-var _mgold$elm_date_format$Date_Local$international = {
-	date: {
-		months: {jan: 'January', feb: 'February', mar: 'March', apr: 'April', may: 'May', jun: 'June', jul: 'July', aug: 'August', sep: 'September', oct: 'October', nov: 'November', dec: 'December'},
-		monthsAbbrev: {jan: 'Jan', feb: 'Feb', mar: 'Mar', apr: 'Apr', may: 'May', jun: 'Jun', jul: 'Jul', aug: 'Aug', sep: 'Sep', oct: 'Oct', nov: 'Nov', dec: 'Dec'},
-		wdays: {mon: 'Monday', tue: 'Tuesday', wed: 'Wednesday', thu: 'Thursday', fri: 'Friday', sat: 'Saturday', sun: 'Sunday'},
-		wdaysAbbrev: {mon: 'Mon', tue: 'Tue', wed: 'Wed', thu: 'Thu', fri: 'Fri', sat: 'Sat', sun: 'Sun'},
-		defaultFormat: _elm_lang$core$Maybe$Nothing
-	},
-	time: {am: 'am', pm: 'pm', defaultFormat: _elm_lang$core$Maybe$Nothing},
-	timeZones: _elm_lang$core$Maybe$Nothing,
-	defaultFormat: _elm_lang$core$Maybe$Nothing
-};
-var _mgold$elm_date_format$Date_Local$Local = F4(
-	function (a, b, c, d) {
-		return {date: a, time: b, timeZones: c, defaultFormat: d};
-	});
-var _mgold$elm_date_format$Date_Local$Months = function (a) {
-	return function (b) {
-		return function (c) {
-			return function (d) {
-				return function (e) {
-					return function (f) {
-						return function (g) {
-							return function (h) {
-								return function (i) {
-									return function (j) {
-										return function (k) {
-											return function (l) {
-												return {jan: a, feb: b, mar: c, apr: d, may: e, jun: f, jul: g, aug: h, sep: i, oct: j, nov: k, dec: l};
-											};
-										};
-									};
-								};
-							};
-						};
-					};
-				};
-			};
-		};
-	};
-};
-var _mgold$elm_date_format$Date_Local$WeekDays = F7(
-	function (a, b, c, d, e, f, g) {
-		return {mon: a, tue: b, wed: c, thu: d, fri: e, sat: f, sun: g};
-	});
-
-var _mgold$elm_date_format$Date_Format$padWith = function (padding) {
-	var padder = function () {
-		var _p0 = padding;
-		switch (_p0.ctor) {
-			case 'NoPadding':
-				return _elm_lang$core$Basics$identity;
-			case 'Zero':
-				return A2(
-					_elm_lang$core$String$padLeft,
-					2,
-					_elm_lang$core$Native_Utils.chr('0'));
-			case 'ZeroThreeDigits':
-				return A2(
-					_elm_lang$core$String$padLeft,
-					3,
-					_elm_lang$core$Native_Utils.chr('0'));
-			default:
-				return A2(
-					_elm_lang$core$String$padLeft,
-					2,
-					_elm_lang$core$Native_Utils.chr(' '));
-		}
-	}();
-	return function (_p1) {
-		return padder(
-			_elm_lang$core$Basics$toString(_p1));
-	};
-};
-var _mgold$elm_date_format$Date_Format$zero2twelve = function (n) {
-	return _elm_lang$core$Native_Utils.eq(n, 0) ? 12 : n;
-};
-var _mgold$elm_date_format$Date_Format$mod12 = function (h) {
-	return A2(_elm_lang$core$Basics_ops['%'], h, 12);
-};
-var _mgold$elm_date_format$Date_Format$dayOfWeekToWord = F2(
-	function (loc, dow) {
-		var _p2 = dow;
-		switch (_p2.ctor) {
-			case 'Mon':
-				return loc.mon;
-			case 'Tue':
-				return loc.tue;
-			case 'Wed':
-				return loc.wed;
-			case 'Thu':
-				return loc.thu;
-			case 'Fri':
-				return loc.fri;
-			case 'Sat':
-				return loc.sat;
-			default:
-				return loc.sun;
-		}
-	});
-var _mgold$elm_date_format$Date_Format$monthToWord = F2(
-	function (loc, m) {
-		var _p3 = m;
-		switch (_p3.ctor) {
-			case 'Jan':
-				return loc.jan;
-			case 'Feb':
-				return loc.feb;
-			case 'Mar':
-				return loc.mar;
-			case 'Apr':
-				return loc.apr;
-			case 'May':
-				return loc.may;
-			case 'Jun':
-				return loc.jun;
-			case 'Jul':
-				return loc.jul;
-			case 'Aug':
-				return loc.aug;
-			case 'Sep':
-				return loc.sep;
-			case 'Oct':
-				return loc.oct;
-			case 'Nov':
-				return loc.nov;
-			default:
-				return loc.dec;
-		}
-	});
-var _mgold$elm_date_format$Date_Format$monthToInt = function (m) {
-	var _p4 = m;
-	switch (_p4.ctor) {
-		case 'Jan':
-			return 1;
-		case 'Feb':
-			return 2;
-		case 'Mar':
-			return 3;
-		case 'Apr':
-			return 4;
-		case 'May':
-			return 5;
-		case 'Jun':
-			return 6;
-		case 'Jul':
-			return 7;
-		case 'Aug':
-			return 8;
-		case 'Sep':
-			return 9;
-		case 'Oct':
-			return 10;
-		case 'Nov':
-			return 11;
-		default:
-			return 12;
-	}
-};
-var _mgold$elm_date_format$Date_Format$re = _elm_lang$core$Regex$regex('%(_|-|0)?(%|Y|y|m|B|b|d|e|a|A|H|k|I|l|L|p|P|M|S)');
-var _mgold$elm_date_format$Date_Format$ZeroThreeDigits = {ctor: 'ZeroThreeDigits'};
-var _mgold$elm_date_format$Date_Format$Zero = {ctor: 'Zero'};
-var _mgold$elm_date_format$Date_Format$Space = {ctor: 'Space'};
-var _mgold$elm_date_format$Date_Format$NoPadding = {ctor: 'NoPadding'};
-var _mgold$elm_date_format$Date_Format$formatToken = F3(
-	function (loc, d, m) {
-		var _p5 = function () {
-			var _p6 = m.submatches;
-			_v4_4:
-			do {
-				if (_p6.ctor === '::') {
-					if (_p6._0.ctor === 'Just') {
-						if (((_p6._1.ctor === '::') && (_p6._1._0.ctor === 'Just')) && (_p6._1._1.ctor === '[]')) {
-							switch (_p6._0._0) {
-								case '-':
-									return {
-										ctor: '_Tuple2',
-										_0: _elm_lang$core$Maybe$Just(_mgold$elm_date_format$Date_Format$NoPadding),
-										_1: _p6._1._0._0
-									};
-								case '_':
-									return {
-										ctor: '_Tuple2',
-										_0: _elm_lang$core$Maybe$Just(_mgold$elm_date_format$Date_Format$Space),
-										_1: _p6._1._0._0
-									};
-								case '0':
-									return {
-										ctor: '_Tuple2',
-										_0: _elm_lang$core$Maybe$Just(_mgold$elm_date_format$Date_Format$Zero),
-										_1: _p6._1._0._0
-									};
-								default:
-									break _v4_4;
-							}
-						} else {
-							break _v4_4;
-						}
-					} else {
-						if (((_p6._1.ctor === '::') && (_p6._1._0.ctor === 'Just')) && (_p6._1._1.ctor === '[]')) {
-							return {ctor: '_Tuple2', _0: _elm_lang$core$Maybe$Nothing, _1: _p6._1._0._0};
-						} else {
-							break _v4_4;
-						}
-					}
-				} else {
-					break _v4_4;
-				}
-			} while(false);
-			return {ctor: '_Tuple2', _0: _elm_lang$core$Maybe$Nothing, _1: ' '};
-		}();
-		var padding = _p5._0;
-		var symbol = _p5._1;
-		var _p7 = symbol;
-		switch (_p7) {
-			case '%':
-				return '%';
-			case 'Y':
-				return _elm_lang$core$Basics$toString(
-					_elm_lang$core$Date$year(d));
-			case 'y':
-				return A2(
-					_elm_lang$core$String$right,
-					2,
-					_elm_lang$core$Basics$toString(
-						_elm_lang$core$Date$year(d)));
-			case 'm':
-				return A2(
-					_mgold$elm_date_format$Date_Format$padWith,
-					A2(_elm_lang$core$Maybe$withDefault, _mgold$elm_date_format$Date_Format$Zero, padding),
-					_mgold$elm_date_format$Date_Format$monthToInt(
-						_elm_lang$core$Date$month(d)));
-			case 'B':
-				return A2(
-					_mgold$elm_date_format$Date_Format$monthToWord,
-					loc.date.months,
-					_elm_lang$core$Date$month(d));
-			case 'b':
-				return A2(
-					_mgold$elm_date_format$Date_Format$monthToWord,
-					loc.date.monthsAbbrev,
-					_elm_lang$core$Date$month(d));
-			case 'd':
-				return A2(
-					_mgold$elm_date_format$Date_Format$padWith,
-					A2(_elm_lang$core$Maybe$withDefault, _mgold$elm_date_format$Date_Format$Zero, padding),
-					_elm_lang$core$Date$day(d));
-			case 'e':
-				return A2(
-					_mgold$elm_date_format$Date_Format$padWith,
-					A2(_elm_lang$core$Maybe$withDefault, _mgold$elm_date_format$Date_Format$Space, padding),
-					_elm_lang$core$Date$day(d));
-			case 'a':
-				return A2(
-					_mgold$elm_date_format$Date_Format$dayOfWeekToWord,
-					loc.date.wdaysAbbrev,
-					_elm_lang$core$Date$dayOfWeek(d));
-			case 'A':
-				return A2(
-					_mgold$elm_date_format$Date_Format$dayOfWeekToWord,
-					loc.date.wdays,
-					_elm_lang$core$Date$dayOfWeek(d));
-			case 'H':
-				return A2(
-					_mgold$elm_date_format$Date_Format$padWith,
-					A2(_elm_lang$core$Maybe$withDefault, _mgold$elm_date_format$Date_Format$Zero, padding),
-					_elm_lang$core$Date$hour(d));
-			case 'k':
-				return A2(
-					_mgold$elm_date_format$Date_Format$padWith,
-					A2(_elm_lang$core$Maybe$withDefault, _mgold$elm_date_format$Date_Format$Space, padding),
-					_elm_lang$core$Date$hour(d));
-			case 'I':
-				return A2(
-					_mgold$elm_date_format$Date_Format$padWith,
-					A2(_elm_lang$core$Maybe$withDefault, _mgold$elm_date_format$Date_Format$Zero, padding),
-					_mgold$elm_date_format$Date_Format$zero2twelve(
-						_mgold$elm_date_format$Date_Format$mod12(
-							_elm_lang$core$Date$hour(d))));
-			case 'l':
-				return A2(
-					_mgold$elm_date_format$Date_Format$padWith,
-					A2(_elm_lang$core$Maybe$withDefault, _mgold$elm_date_format$Date_Format$Space, padding),
-					_mgold$elm_date_format$Date_Format$zero2twelve(
-						_mgold$elm_date_format$Date_Format$mod12(
-							_elm_lang$core$Date$hour(d))));
-			case 'p':
-				return (_elm_lang$core$Native_Utils.cmp(
-					_elm_lang$core$Date$hour(d),
-					12) < 0) ? _elm_lang$core$String$toUpper(loc.time.am) : _elm_lang$core$String$toUpper(loc.time.pm);
-			case 'P':
-				return (_elm_lang$core$Native_Utils.cmp(
-					_elm_lang$core$Date$hour(d),
-					12) < 0) ? loc.time.am : loc.time.pm;
-			case 'M':
-				return A2(
-					_mgold$elm_date_format$Date_Format$padWith,
-					A2(_elm_lang$core$Maybe$withDefault, _mgold$elm_date_format$Date_Format$Zero, padding),
-					_elm_lang$core$Date$minute(d));
-			case 'S':
-				return A2(
-					_mgold$elm_date_format$Date_Format$padWith,
-					A2(_elm_lang$core$Maybe$withDefault, _mgold$elm_date_format$Date_Format$Zero, padding),
-					_elm_lang$core$Date$second(d));
-			case 'L':
-				return A2(
-					_mgold$elm_date_format$Date_Format$padWith,
-					A2(_elm_lang$core$Maybe$withDefault, _mgold$elm_date_format$Date_Format$ZeroThreeDigits, padding),
-					_elm_lang$core$Date$millisecond(d));
-			default:
-				return '';
-		}
-	});
-var _mgold$elm_date_format$Date_Format$localFormat = F3(
-	function (loc, s, d) {
-		return A4(
-			_elm_lang$core$Regex$replace,
-			_elm_lang$core$Regex$All,
-			_mgold$elm_date_format$Date_Format$re,
-			A2(_mgold$elm_date_format$Date_Format$formatToken, loc, d),
-			s);
-	});
-var _mgold$elm_date_format$Date_Format$format = F2(
-	function (s, d) {
-		return A3(_mgold$elm_date_format$Date_Format$localFormat, _mgold$elm_date_format$Date_Local$international, s, d);
-	});
-var _mgold$elm_date_format$Date_Format$formatISO8601 = _mgold$elm_date_format$Date_Format$format('%Y-%m-%dT%H:%M:%SZ');
-
-var _mgold$elm_date_format$Time_Format$format = F2(
-	function (s, t) {
+var _rundis$elm_bootstrap$Bootstrap_Form$row = F2(
+	function (options, cols) {
 		return A2(
-			_mgold$elm_date_format$Date_Format$format,
-			s,
-			_elm_lang$core$Date$fromTime(t));
-	});
-
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_View$charityForm = function (params) {
-	return A2(
-		_rundis$elm_bootstrap$Bootstrap_Grid$row,
-		{ctor: '[]'},
-		{
-			ctor: '::',
-			_0: A2(
-				_rundis$elm_bootstrap$Bootstrap_Grid$col,
-				{
-					ctor: '::',
-					_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm12,
-					_1: {ctor: '[]'}
-				},
-				{
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$h4,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('info-text'),
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text('Charity Daico'),
-							_1: {ctor: '[]'}
-						}),
-					_1: {ctor: '[]'}
-				}),
-			_1: {
-				ctor: '::',
-				_0: A2(
-					_rundis$elm_bootstrap$Bootstrap_Grid$col,
-					{
-						ctor: '::',
-						_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm12,
-						_1: {ctor: '[]'}
-					},
-					{
-						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$div,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('form-group'),
-								_1: {ctor: '[]'}
-							},
-							{
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$label,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('control-label'),
-										_1: {ctor: '[]'}
-									},
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html$text('% of Tokensale allocated to Charity DAICO'),
-										_1: {ctor: '[]'}
-									}),
-								_1: {
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$input,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('form-control'),
-											_1: {
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$name('name'),
-												_1: {
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$type_('text'),
-													_1: {
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$value(
-															_elm_lang$core$Basics$toString(params.allocation)),
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$html$Html_Events$onInput(
-																function (_p0) {
-																	return _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateCharity(
-																		_JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateAllocation(
-																			A2(
-																				_elm_lang$core$Result$withDefault,
-																				0,
-																				_elm_lang$core$String$toFloat(_p0))));
-																}),
-															_1: {ctor: '[]'}
-														}
-													}
-												}
-											}
-										},
-										{ctor: '[]'}),
-									_1: {ctor: '[]'}
-								}
-							}),
-						_1: {ctor: '[]'}
-					}),
-				_1: {
-					ctor: '::',
-					_0: A2(
-						_rundis$elm_bootstrap$Bootstrap_Grid$col,
-						{
-							ctor: '::',
-							_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm12,
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$div,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('form-group'),
-									_1: {ctor: '[]'}
-								},
-								{
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$label,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('control-label'),
-											_1: {ctor: '[]'}
-										},
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html$text('# of charities that you want it distributed to'),
-											_1: {ctor: '[]'}
-										}),
-									_1: {
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$input,
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$class('form-control'),
-												_1: {
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$name('name'),
-													_1: {
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$type_('text'),
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$value(
-																_elm_lang$core$Basics$toString(params.numberOfCharities)),
-															_1: {
-																ctor: '::',
-																_0: _elm_lang$html$Html_Events$onInput(
-																	function (_p1) {
-																		return _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateCharity(
-																			_JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateNumberOfCharities(
-																				A2(
-																					_elm_lang$core$Result$withDefault,
-																					0,
-																					_elm_lang$core$String$toInt(_p1))));
-																	}),
-																_1: {ctor: '[]'}
-															}
-														}
-													}
-												}
-											},
-											{ctor: '[]'}),
-										_1: {ctor: '[]'}
-									}
-								}),
-							_1: {ctor: '[]'}
-						}),
-					_1: {
-						ctor: '::',
-						_0: A2(
-							_rundis$elm_bootstrap$Bootstrap_Grid$col,
-							{
-								ctor: '::',
-								_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm12,
-								_1: {ctor: '[]'}
-							},
-							{
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$div,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('form-group'),
-										_1: {ctor: '[]'}
-									},
-									{
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$label,
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$class('control-label'),
-												_1: {ctor: '[]'}
-											},
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html$text('Charity DAICO duration'),
-												_1: {ctor: '[]'}
-											}),
-										_1: {
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$input,
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$class('form-control'),
-													_1: {
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$name('name'),
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$type_('text'),
-															_1: {
-																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$value(
-																	_elm_lang$core$Basics$toString(params.duration)),
-																_1: {
-																	ctor: '::',
-																	_0: _elm_lang$html$Html_Events$onInput(
-																		function (_p2) {
-																			return _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateCharity(
-																				_JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateDuration(
-																					A2(
-																						_elm_lang$core$Result$withDefault,
-																						0,
-																						_elm_lang$core$String$toFloat(_p2))));
-																		}),
-																	_1: {ctor: '[]'}
-																}
-															}
-														}
-													}
-												},
-												{ctor: '[]'}),
-											_1: {ctor: '[]'}
-										}
-									}),
-								_1: {ctor: '[]'}
-							}),
-						_1: {
-							ctor: '::',
-							_0: A2(
-								_rundis$elm_bootstrap$Bootstrap_Grid$col,
-								{
-									ctor: '::',
-									_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm12,
-									_1: {ctor: '[]'}
-								},
-								{
-									ctor: '::',
-									_0: A2(
-										_rundis$elm_bootstrap$Bootstrap_Button$button,
-										{
-											ctor: '::',
-											_0: _rundis$elm_bootstrap$Bootstrap_Button$primary,
-											_1: {
-												ctor: '::',
-												_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(_JQuezada0$eoslondonhackathon$DaicoTemplate_Model$SubmitTemplate),
-												_1: {ctor: '[]'}
-											}
-										},
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html$text('Submit'),
-											_1: {ctor: '[]'}
-										}),
-									_1: {ctor: '[]'}
-								}),
-							_1: {ctor: '[]'}
-						}
-					}
-				}
-			}
-		});
-};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_View$votingForm = function (params) {
-	return A2(
-		_rundis$elm_bootstrap$Bootstrap_Grid$row,
-		{ctor: '[]'},
-		{
-			ctor: '::',
-			_0: A2(
-				_rundis$elm_bootstrap$Bootstrap_Grid$col,
-				{
-					ctor: '::',
-					_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm12,
-					_1: {ctor: '[]'}
-				},
-				{
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$h4,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('info-text'),
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text('Set your voting parameters'),
-							_1: {ctor: '[]'}
-						}),
-					_1: {ctor: '[]'}
-				}),
-			_1: {
-				ctor: '::',
-				_0: A2(
-					_rundis$elm_bootstrap$Bootstrap_Grid$col,
-					{
-						ctor: '::',
-						_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm12,
-						_1: {ctor: '[]'}
-					},
-					{
-						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$h5,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('info-text'),
-								_1: {ctor: '[]'}
-							},
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html$text('Tap Poll'),
-								_1: {ctor: '[]'}
-							}),
-						_1: {ctor: '[]'}
-					}),
-				_1: {
-					ctor: '::',
-					_0: A2(
-						_rundis$elm_bootstrap$Bootstrap_Grid$col,
-						{
-							ctor: '::',
-							_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm12,
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$div,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('form-group'),
-									_1: {ctor: '[]'}
-								},
-								{
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$label,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('control-label'),
-											_1: {ctor: '[]'}
-										},
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html$text('Minimum Voter Turnout as % of previous voter turnout'),
-											_1: {ctor: '[]'}
-										}),
-									_1: {
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$input,
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$class('form-control'),
-												_1: {
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$name('tapMinimumTurnout'),
-													_1: {
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$value(
-															_elm_lang$core$Basics$toString(params.tapPoll.minimumTurnout)),
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$type_('text'),
-															_1: {
-																ctor: '::',
-																_0: _elm_lang$html$Html_Events$onInput(
-																	function (_p3) {
-																		return _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateVoting(
-																			_JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateTapMinimumTurnout(
-																				A2(
-																					_elm_lang$core$Result$withDefault,
-																					0,
-																					_elm_lang$core$String$toFloat(_p3))));
-																	}),
-																_1: {ctor: '[]'}
-															}
-														}
-													}
-												}
-											},
-											{ctor: '[]'}),
-										_1: {ctor: '[]'}
-									}
-								}),
-							_1: {ctor: '[]'}
-						}),
-					_1: {
-						ctor: '::',
-						_0: A2(
-							_rundis$elm_bootstrap$Bootstrap_Grid$col,
-							{
-								ctor: '::',
-								_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm12,
-								_1: {ctor: '[]'}
-							},
-							{
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$div,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('form-group'),
-										_1: {ctor: '[]'}
-									},
-									{
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$label,
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$class('control-label'),
-												_1: {ctor: '[]'}
-											},
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html$text('Minimum Vote Yes % for vote pass'),
-												_1: {ctor: '[]'}
-											}),
-										_1: {
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$input,
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$class('form-control'),
-													_1: {
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$name('tapThreshold'),
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$type_('text'),
-															_1: {
-																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$value(
-																	_elm_lang$core$Basics$toString(params.tapPoll.threshold)),
-																_1: {
-																	ctor: '::',
-																	_0: _elm_lang$html$Html_Events$onInput(
-																		function (_p4) {
-																			return _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateVoting(
-																				_JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateTapThreshold(
-																					A2(
-																						_elm_lang$core$Result$withDefault,
-																						0,
-																						_elm_lang$core$String$toFloat(_p4))));
-																		}),
-																	_1: {ctor: '[]'}
-																}
-															}
-														}
-													}
-												},
-												{ctor: '[]'}),
-											_1: {ctor: '[]'}
-										}
-									}),
-								_1: {ctor: '[]'}
-							}),
-						_1: {
-							ctor: '::',
-							_0: A2(
-								_rundis$elm_bootstrap$Bootstrap_Grid$col,
-								{
-									ctor: '::',
-									_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm12,
-									_1: {ctor: '[]'}
-								},
-								{
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$div,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('form-group'),
-											_1: {ctor: '[]'}
-										},
-										{
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$label,
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$class('control-label'),
-													_1: {ctor: '[]'}
-												},
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html$text('% Max tap increase relative to current tap (Optional)'),
-													_1: {ctor: '[]'}
-												}),
-											_1: {
-												ctor: '::',
-												_0: A2(
-													_elm_lang$html$Html$input,
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$class('form-control'),
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$name('tapIncreasePercent'),
-															_1: {
-																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$value(
-																	_elm_lang$core$Basics$toString(params.tapPoll.maxTapIncrease)),
-																_1: {
-																	ctor: '::',
-																	_0: _elm_lang$html$Html_Attributes$type_('text'),
-																	_1: {
-																		ctor: '::',
-																		_0: _elm_lang$html$Html_Events$onInput(
-																			function (_p5) {
-																				return _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateVoting(
-																					_JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateTapMaxIncrease(
-																						A2(
-																							_elm_lang$core$Result$withDefault,
-																							0,
-																							_elm_lang$core$String$toFloat(_p5))));
-																			}),
-																		_1: {ctor: '[]'}
-																	}
-																}
-															}
-														}
-													},
-													{ctor: '[]'}),
-												_1: {ctor: '[]'}
-											}
-										}),
-									_1: {ctor: '[]'}
-								}),
-							_1: {
-								ctor: '::',
-								_0: A2(
-									_rundis$elm_bootstrap$Bootstrap_Grid$col,
-									{
-										ctor: '::',
-										_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm12,
-										_1: {ctor: '[]'}
-									},
-									{
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$div,
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$class('form-group'),
-												_1: {ctor: '[]'}
-											},
-											{
-												ctor: '::',
-												_0: A2(
-													_elm_lang$html$Html$label,
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$class('control-label'),
-														_1: {ctor: '[]'}
-													},
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html$text('Tap Increase Voting Period Duration (Min: 3 days)'),
-														_1: {ctor: '[]'}
-													}),
-												_1: {
-													ctor: '::',
-													_0: A2(
-														_elm_lang$html$Html$input,
-														{
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$class('form-control'),
-															_1: {
-																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$name('tapDuration'),
-																_1: {
-																	ctor: '::',
-																	_0: _elm_lang$html$Html_Attributes$value(
-																		_elm_lang$core$Basics$toString(params.tapPoll.voteDuration)),
-																	_1: {
-																		ctor: '::',
-																		_0: _elm_lang$html$Html_Attributes$type_('text'),
-																		_1: {
-																			ctor: '::',
-																			_0: _elm_lang$html$Html_Events$onInput(
-																				function (_p6) {
-																					return _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateVoting(
-																						_JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateTapVoteDuration(
-																							A2(
-																								_elm_lang$core$Result$withDefault,
-																								0,
-																								_elm_lang$core$String$toFloat(_p6))));
-																				}),
-																			_1: {ctor: '[]'}
-																		}
-																	}
-																}
-															}
-														},
-														{ctor: '[]'}),
-													_1: {ctor: '[]'}
-												}
-											}),
-										_1: {ctor: '[]'}
-									}),
-								_1: {
-									ctor: '::',
-									_0: A2(
-										_rundis$elm_bootstrap$Bootstrap_Grid$col,
-										{
-											ctor: '::',
-											_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm12,
-											_1: {ctor: '[]'}
-										},
-										{
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$hr,
-												{ctor: '[]'},
-												{ctor: '[]'}),
-											_1: {ctor: '[]'}
-										}),
-									_1: {
-										ctor: '::',
-										_0: A2(
-											_rundis$elm_bootstrap$Bootstrap_Grid$col,
-											{
-												ctor: '::',
-												_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm12,
-												_1: {ctor: '[]'}
-											},
-											{
-												ctor: '::',
-												_0: A2(
-													_elm_lang$html$Html$h5,
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$class('info-text'),
-														_1: {ctor: '[]'}
-													},
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html$text('Refund Poll'),
-														_1: {ctor: '[]'}
-													}),
-												_1: {ctor: '[]'}
-											}),
-										_1: {
-											ctor: '::',
-											_0: A2(
-												_rundis$elm_bootstrap$Bootstrap_Grid$col,
-												{
-													ctor: '::',
-													_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm12,
-													_1: {ctor: '[]'}
-												},
-												{
-													ctor: '::',
-													_0: A2(
-														_elm_lang$html$Html$div,
-														{
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$class('form-group'),
-															_1: {ctor: '[]'}
-														},
-														{
-															ctor: '::',
-															_0: A2(
-																_elm_lang$html$Html$label,
-																{
-																	ctor: '::',
-																	_0: _elm_lang$html$Html_Attributes$class('control-label'),
-																	_1: {ctor: '[]'}
-																},
-																{
-																	ctor: '::',
-																	_0: _elm_lang$html$Html$text('How frequently can refund elections be activated'),
-																	_1: {ctor: '[]'}
-																}),
-															_1: {
-																ctor: '::',
-																_0: A2(
-																	_elm_lang$html$Html$input,
-																	{
-																		ctor: '::',
-																		_0: _elm_lang$html$Html_Attributes$class('form-control'),
-																		_1: {
-																			ctor: '::',
-																			_0: _elm_lang$html$Html_Attributes$name('refundVoteFrequency'),
-																			_1: {
-																				ctor: '::',
-																				_0: _elm_lang$html$Html_Attributes$value(
-																					_elm_lang$core$Basics$toString(params.refundPoll.refundElectionFrequency)),
-																				_1: {
-																					ctor: '::',
-																					_0: _elm_lang$html$Html_Attributes$type_('text'),
-																					_1: {
-																						ctor: '::',
-																						_0: _elm_lang$html$Html_Events$onInput(
-																							function (_p7) {
-																								return _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateVoting(
-																									_JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateRefundElectionFrequency(
-																										A2(
-																											_elm_lang$core$Result$withDefault,
-																											0,
-																											_elm_lang$core$String$toFloat(_p7))));
-																							}),
-																						_1: {ctor: '[]'}
-																					}
-																				}
-																			}
-																		}
-																	},
-																	{ctor: '[]'}),
-																_1: {ctor: '[]'}
-															}
-														}),
-													_1: {ctor: '[]'}
-												}),
-											_1: {
-												ctor: '::',
-												_0: A2(
-													_rundis$elm_bootstrap$Bootstrap_Grid$col,
-													{
-														ctor: '::',
-														_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm12,
-														_1: {ctor: '[]'}
-													},
-													{
-														ctor: '::',
-														_0: A2(
-															_elm_lang$html$Html$div,
-															{
-																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$class('form-group label-floating'),
-																_1: {ctor: '[]'}
-															},
-															{
-																ctor: '::',
-																_0: A2(
-																	_elm_lang$html$Html$label,
-																	{
-																		ctor: '::',
-																		_0: _elm_lang$html$Html_Attributes$class('control-label'),
-																		_1: {ctor: '[]'}
-																	},
-																	{
-																		ctor: '::',
-																		_0: _elm_lang$html$Html$text('Max number of refund elections (optional)'),
-																		_1: {ctor: '[]'}
-																	}),
-																_1: {
-																	ctor: '::',
-																	_0: A2(
-																		_elm_lang$html$Html$input,
-																		{
-																			ctor: '::',
-																			_0: _elm_lang$html$Html_Attributes$class('form-control'),
-																			_1: {
-																				ctor: '::',
-																				_0: _elm_lang$html$Html_Attributes$name('refundVoteMax'),
-																				_1: {
-																					ctor: '::',
-																					_0: _elm_lang$html$Html_Attributes$value(
-																						_elm_lang$core$Basics$toString(params.refundPoll.maxElections)),
-																					_1: {
-																						ctor: '::',
-																						_0: _elm_lang$html$Html_Attributes$type_('text'),
-																						_1: {
-																							ctor: '::',
-																							_0: _elm_lang$html$Html_Events$onInput(
-																								function (_p8) {
-																									return _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateVoting(
-																										_JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateRefundMaxElections(
-																											A2(
-																												_elm_lang$core$Result$withDefault,
-																												0,
-																												_elm_lang$core$String$toInt(_p8))));
-																								}),
-																							_1: {ctor: '[]'}
-																						}
-																					}
-																				}
-																			}
-																		},
-																		{ctor: '[]'}),
-																	_1: {ctor: '[]'}
-																}
-															}),
-														_1: {ctor: '[]'}
-													}),
-												_1: {
-													ctor: '::',
-													_0: A2(
-														_rundis$elm_bootstrap$Bootstrap_Grid$col,
-														{
-															ctor: '::',
-															_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm12,
-															_1: {ctor: '[]'}
-														},
-														{
-															ctor: '::',
-															_0: A2(
-																_elm_lang$html$Html$div,
-																{
-																	ctor: '::',
-																	_0: _elm_lang$html$Html_Attributes$class('form-group label-floating'),
-																	_1: {ctor: '[]'}
-																},
-																{
-																	ctor: '::',
-																	_0: A2(
-																		_elm_lang$html$Html$label,
-																		{
-																			ctor: '::',
-																			_0: _elm_lang$html$Html_Attributes$class('control-label'),
-																			_1: {ctor: '[]'}
-																		},
-																		{
-																			ctor: '::',
-																			_0: _elm_lang$html$Html$text('Election Voting Duration (Min: 1 month)'),
-																			_1: {ctor: '[]'}
-																		}),
-																	_1: {
-																		ctor: '::',
-																		_0: A2(
-																			_elm_lang$html$Html$input,
-																			{
-																				ctor: '::',
-																				_0: _elm_lang$html$Html_Attributes$class('form-control'),
-																				_1: {
-																					ctor: '::',
-																					_0: _elm_lang$html$Html_Attributes$name('refundVoteDuration'),
-																					_1: {
-																						ctor: '::',
-																						_0: _elm_lang$html$Html_Attributes$value(
-																							_elm_lang$core$Basics$toString(params.refundPoll.votingDuration)),
-																						_1: {
-																							ctor: '::',
-																							_0: _elm_lang$html$Html_Attributes$type_('text'),
-																							_1: {
-																								ctor: '::',
-																								_0: _elm_lang$html$Html_Events$onInput(
-																									function (_p9) {
-																										return _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateVoting(
-																											_JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateRefundVotingDuration(
-																												A2(
-																													_elm_lang$core$Result$withDefault,
-																													0,
-																													_elm_lang$core$String$toFloat(_p9))));
-																									}),
-																								_1: {ctor: '[]'}
-																							}
-																						}
-																					}
-																				}
-																			},
-																			{ctor: '[]'}),
-																		_1: {ctor: '[]'}
-																	}
-																}),
-															_1: {ctor: '[]'}
-														}),
-													_1: {
-														ctor: '::',
-														_0: A2(
-															_rundis$elm_bootstrap$Bootstrap_Grid$col,
-															{
-																ctor: '::',
-																_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm12,
-																_1: {ctor: '[]'}
-															},
-															{
-																ctor: '::',
-																_0: A2(
-																	_elm_lang$html$Html$div,
-																	{
-																		ctor: '::',
-																		_0: _elm_lang$html$Html_Attributes$class('form-group'),
-																		_1: {ctor: '[]'}
-																	},
-																	{
-																		ctor: '::',
-																		_0: A2(
-																			_elm_lang$html$Html$label,
-																			{
-																				ctor: '::',
-																				_0: _elm_lang$html$Html_Attributes$class('control-label'),
-																				_1: {ctor: '[]'}
-																			},
-																			{
-																				ctor: '::',
-																				_0: _elm_lang$html$Html$text('Minimum Voter Turnout as % of previous voter turnout'),
-																				_1: {ctor: '[]'}
-																			}),
-																		_1: {
-																			ctor: '::',
-																			_0: A2(
-																				_elm_lang$html$Html$input,
-																				{
-																					ctor: '::',
-																					_0: _elm_lang$html$Html_Attributes$class('form-control'),
-																					_1: {
-																						ctor: '::',
-																						_0: _elm_lang$html$Html_Attributes$name('refundMinimumTurnout'),
-																						_1: {
-																							ctor: '::',
-																							_0: _elm_lang$html$Html_Attributes$type_('text'),
-																							_1: {
-																								ctor: '::',
-																								_0: _elm_lang$html$Html_Attributes$value(
-																									_elm_lang$core$Basics$toString(params.refundPoll.minimumTurnout)),
-																								_1: {
-																									ctor: '::',
-																									_0: _elm_lang$html$Html_Events$onInput(
-																										function (_p10) {
-																											return _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateVoting(
-																												_JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateRefundMinimumTurnout(
-																													A2(
-																														_elm_lang$core$Result$withDefault,
-																														0,
-																														_elm_lang$core$String$toFloat(_p10))));
-																										}),
-																									_1: {ctor: '[]'}
-																								}
-																							}
-																						}
-																					}
-																				},
-																				{ctor: '[]'}),
-																			_1: {ctor: '[]'}
-																		}
-																	}),
-																_1: {ctor: '[]'}
-															}),
-														_1: {
-															ctor: '::',
-															_0: A2(
-																_rundis$elm_bootstrap$Bootstrap_Grid$col,
-																{
-																	ctor: '::',
-																	_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm12,
-																	_1: {ctor: '[]'}
-																},
-																{
-																	ctor: '::',
-																	_0: A2(
-																		_elm_lang$html$Html$div,
-																		{
-																			ctor: '::',
-																			_0: _elm_lang$html$Html_Attributes$class('form-group label-floating'),
-																			_1: {ctor: '[]'}
-																		},
-																		{
-																			ctor: '::',
-																			_0: A2(
-																				_elm_lang$html$Html$label,
-																				{
-																					ctor: '::',
-																					_0: _elm_lang$html$Html_Attributes$class('control-label'),
-																					_1: {ctor: '[]'}
-																				},
-																				{
-																					ctor: '::',
-																					_0: _elm_lang$html$Html$text('Minimum Vote Yes % for vote pass'),
-																					_1: {ctor: '[]'}
-																				}),
-																			_1: {
-																				ctor: '::',
-																				_0: A2(
-																					_elm_lang$html$Html$input,
-																					{
-																						ctor: '::',
-																						_0: _elm_lang$html$Html_Attributes$class('form-control'),
-																						_1: {
-																							ctor: '::',
-																							_0: _elm_lang$html$Html_Attributes$name('refundThreshold'),
-																							_1: {
-																								ctor: '::',
-																								_0: _elm_lang$html$Html_Attributes$type_('text'),
-																								_1: {
-																									ctor: '::',
-																									_0: _elm_lang$html$Html_Attributes$value(
-																										_elm_lang$core$Basics$toString(params.refundPoll.threshold)),
-																									_1: {
-																										ctor: '::',
-																										_0: _elm_lang$html$Html_Events$onInput(
-																											function (_p11) {
-																												return _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateVoting(
-																													_JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateRefundThreshold(
-																														A2(
-																															_elm_lang$core$Result$withDefault,
-																															0,
-																															_elm_lang$core$String$toFloat(_p11))));
-																											}),
-																										_1: {ctor: '[]'}
-																									}
-																								}
-																							}
-																						}
-																					},
-																					{ctor: '[]'}),
-																				_1: {ctor: '[]'}
-																			}
-																		}),
-																	_1: {ctor: '[]'}
-																}),
-															_1: {ctor: '[]'}
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		});
-};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_View$fundingForm = function (params) {
-	return A2(
-		_rundis$elm_bootstrap$Bootstrap_Grid$row,
-		{ctor: '[]'},
-		{
-			ctor: '::',
-			_0: A2(
-				_rundis$elm_bootstrap$Bootstrap_Grid$col,
-				{
-					ctor: '::',
-					_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm12,
-					_1: {ctor: '[]'}
-				},
-				{
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$h4,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('info-text'),
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text('Your funding schedule is a critical piece of your DAICO!'),
-							_1: {ctor: '[]'}
-						}),
-					_1: {ctor: '[]'}
-				}),
-			_1: {
-				ctor: '::',
-				_0: A2(
-					_rundis$elm_bootstrap$Bootstrap_Grid$col,
-					{
-						ctor: '::',
-						_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm12,
-						_1: {ctor: '[]'}
-					},
-					{
-						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$div,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('form-group'),
-								_1: {ctor: '[]'}
-							},
-							{
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$label,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('control-label'),
-										_1: {ctor: '[]'}
-									},
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html$text('Length of time after token sale to begin initial funding cycle'),
-										_1: {ctor: '[]'}
-									}),
-								_1: {
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$input,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('form-control'),
-											_1: {
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$name('fundingStart'),
-												_1: {
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$value(
-														A2(_mgold$elm_date_format$Time_Format$format, '%d/%m/%Y', params.tokenSaleStart)),
-													_1: {
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$type_('text'),
-														_1: {ctor: '[]'}
-													}
-												}
-											}
-										},
-										{ctor: '[]'}),
-									_1: {ctor: '[]'}
-								}
-							}),
-						_1: {ctor: '[]'}
-					}),
-				_1: {
-					ctor: '::',
-					_0: A2(
-						_rundis$elm_bootstrap$Bootstrap_Grid$col,
-						{
-							ctor: '::',
-							_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm12,
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$div,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('form-group'),
-									_1: {ctor: '[]'}
-								},
-								{
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$label,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('control-label'),
-											_1: {ctor: '[]'}
-										},
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html$text('How long would you like each funding cycle to be?'),
-											_1: {ctor: '[]'}
-										}),
-									_1: {
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$input,
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$class('form-control'),
-												_1: {
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$name('fundingCycleLength'),
-													_1: {
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$value(
-															A2(_mgold$elm_date_format$Time_Format$format, '%d/%m/%Y', params.fundingCyclePeriod)),
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$type_('text'),
-															_1: {ctor: '[]'}
-														}
-													}
-												}
-											},
-											{ctor: '[]'}),
-										_1: {ctor: '[]'}
-									}
-								}),
-							_1: {ctor: '[]'}
-						}),
-					_1: {
-						ctor: '::',
-						_0: A2(
-							_rundis$elm_bootstrap$Bootstrap_Grid$col,
-							{
-								ctor: '::',
-								_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm12,
-								_1: {ctor: '[]'}
-							},
-							{
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$div,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('form-group'),
-										_1: {ctor: '[]'}
-									},
-									{
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$label,
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$class('control-label'),
-												_1: {ctor: '[]'}
-											},
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html$text('How large will your initial funding cycle be?'),
-												_1: {ctor: '[]'}
-											}),
-										_1: {
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$input,
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$class('form-control'),
-													_1: {
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$name('initialFundingCycleLength'),
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$value(
-																_elm_lang$core$Basics$toString(params.initialTap)),
-															_1: {
-																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$type_('text'),
-																_1: {ctor: '[]'}
-															}
-														}
-													}
-												},
-												{ctor: '[]'}),
-											_1: {ctor: '[]'}
-										}
-									}),
-								_1: {ctor: '[]'}
-							}),
-						_1: {ctor: '[]'}
-					}
-				}
-			}
-		});
-};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_View$tokenSaleForm = function (params) {
-	return A2(
-		_rundis$elm_bootstrap$Bootstrap_Grid$row,
-		{ctor: '[]'},
-		{
-			ctor: '::',
-			_0: A2(
-				_rundis$elm_bootstrap$Bootstrap_Grid$col,
-				{
-					ctor: '::',
-					_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm12,
-					_1: {ctor: '[]'}
-				},
-				{
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$h4,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('info-text'),
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text('Now let\'s configure your token sale.'),
-							_1: {ctor: '[]'}
-						}),
-					_1: {ctor: '[]'}
-				}),
-			_1: {
-				ctor: '::',
-				_0: A2(
-					_rundis$elm_bootstrap$Bootstrap_Grid$col,
-					{
-						ctor: '::',
-						_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm12,
-						_1: {ctor: '[]'}
-					},
-					{
-						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$div,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('form-group'),
-								_1: {ctor: '[]'}
-							},
-							{
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$label,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('control-label'),
-										_1: {ctor: '[]'}
-									},
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html$text('The name of your Token'),
-										_1: {ctor: '[]'}
-									}),
-								_1: {
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$input,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('form-control'),
-											_1: {
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$name('tokenName'),
-												_1: {
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$value(params.tokenName),
-													_1: {
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$type_('text'),
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$html$Html_Events$onInput(
-																function (_p12) {
-																	return _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateTokenSale(
-																		_JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateTokenName(_p12));
-																}),
-															_1: {ctor: '[]'}
-														}
-													}
-												}
-											}
-										},
-										{ctor: '[]'}),
-									_1: {ctor: '[]'}
-								}
-							}),
-						_1: {
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$div,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('form-group'),
-									_1: {ctor: '[]'}
-								},
-								{
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$label,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('control-label'),
-											_1: {ctor: '[]'}
-										},
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html$text('Token Symbol'),
-											_1: {ctor: '[]'}
-										}),
-									_1: {
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$input,
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$class('form-control'),
-												_1: {
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$name('tokenSymbol'),
-													_1: {
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$value(params.tokenSymbol),
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$type_('text'),
-															_1: {
-																ctor: '::',
-																_0: _elm_lang$html$Html_Events$onInput(
-																	function (_p13) {
-																		return _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateTokenSale(
-																			_JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateTokenSymbol(_p13));
-																	}),
-																_1: {ctor: '[]'}
-															}
-														}
-													}
-												}
-											},
-											{ctor: '[]'}),
-										_1: {ctor: '[]'}
-									}
-								}),
-							_1: {ctor: '[]'}
-						}
-					}),
-				_1: {
-					ctor: '::',
-					_0: A2(
-						_rundis$elm_bootstrap$Bootstrap_Grid$col,
-						{
-							ctor: '::',
-							_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm6,
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$div,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('form-group'),
-									_1: {ctor: '[]'}
-								},
-								{
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$label,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('control-label'),
-											_1: {ctor: '[]'}
-										},
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html$text('Total supply of your token'),
-											_1: {ctor: '[]'}
-										}),
-									_1: {
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$input,
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$class('form-control'),
-												_1: {
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$name('tokenSupply'),
-													_1: {
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$value(params.tokenSupply),
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$type_('text'),
-															_1: {
-																ctor: '::',
-																_0: _elm_lang$html$Html_Events$onInput(
-																	function (_p14) {
-																		return _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateTokenSale(
-																			_JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateTokenSupply(_p14));
-																	}),
-																_1: {ctor: '[]'}
-															}
-														}
-													}
-												}
-											},
-											{ctor: '[]'}),
-										_1: {ctor: '[]'}
-									}
-								}),
-							_1: {ctor: '[]'}
-						}),
-					_1: {
-						ctor: '::',
-						_0: A2(
-							_rundis$elm_bootstrap$Bootstrap_Grid$col,
-							{
-								ctor: '::',
-								_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm6,
-								_1: {ctor: '[]'}
-							},
-							{
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$div,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('form-group'),
-										_1: {ctor: '[]'}
-									},
-									{
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$label,
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$class('control-label'),
-												_1: {ctor: '[]'}
-											},
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html$text('Allocation'),
-												_1: {ctor: '[]'}
-											}),
-										_1: {
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$input,
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$class('form-control'),
-													_1: {
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$name('tokenAllocation'),
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$value(params.tokenSaleAllocation),
-															_1: {
-																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$type_('text'),
-																_1: {ctor: '[]'}
-															}
-														}
-													}
-												},
-												{ctor: '[]'}),
-											_1: {ctor: '[]'}
-										}
-									}),
-								_1: {ctor: '[]'}
-							}),
-						_1: {
-							ctor: '::',
-							_0: A2(
-								_rundis$elm_bootstrap$Bootstrap_Grid$col,
-								{
-									ctor: '::',
-									_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm12,
-									_1: {ctor: '[]'}
-								},
-								{
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$div,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('form-group'),
-											_1: {ctor: '[]'}
-										},
-										{
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$label,
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$class('control-label'),
-													_1: {ctor: '[]'}
-												},
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html$text('How much is your token worth in EOS'),
-													_1: {ctor: '[]'}
-												}),
-											_1: {
-												ctor: '::',
-												_0: A2(
-													_elm_lang$html$Html$input,
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$class('form-control'),
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$name('tokenValue'),
-															_1: {
-																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$value(
-																	_elm_lang$core$Basics$toString(params.tokenValue)),
-																_1: {
-																	ctor: '::',
-																	_0: _elm_lang$html$Html_Attributes$type_('text'),
-																	_1: {
-																		ctor: '::',
-																		_0: _elm_lang$html$Html_Events$onInput(
-																			function (_p15) {
-																				return _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateTokenSale(
-																					_JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateTokenValue(
-																						A2(
-																							_elm_lang$core$Result$withDefault,
-																							0,
-																							_elm_lang$core$String$toInt(_p15))));
-																			}),
-																		_1: {ctor: '[]'}
-																	}
-																}
-															}
-														}
-													},
-													{ctor: '[]'}),
-												_1: {ctor: '[]'}
-											}
-										}),
-									_1: {ctor: '[]'}
-								}),
-							_1: {
-								ctor: '::',
-								_0: A2(
-									_rundis$elm_bootstrap$Bootstrap_Grid$col,
-									{
-										ctor: '::',
-										_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm12,
-										_1: {ctor: '[]'}
-									},
-									{
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$div,
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$class('form-group'),
-												_1: {ctor: '[]'}
-											},
-											{
-												ctor: '::',
-												_0: A2(
-													_elm_lang$html$Html$label,
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$class('control-label'),
-														_1: {ctor: '[]'}
-													},
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html$text('Minimum funds to raise during your tokensale'),
-														_1: {ctor: '[]'}
-													}),
-												_1: {
-													ctor: '::',
-													_0: A2(
-														_elm_lang$html$Html$input,
-														{
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$class('form-control'),
-															_1: {
-																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$name('softCap'),
-																_1: {
-																	ctor: '::',
-																	_0: _elm_lang$html$Html_Attributes$value(
-																		_elm_lang$core$Basics$toString(params.softCap)),
-																	_1: {
-																		ctor: '::',
-																		_0: _elm_lang$html$Html_Attributes$type_('text'),
-																		_1: {
-																			ctor: '::',
-																			_0: _elm_lang$html$Html_Events$onInput(
-																				function (_p16) {
-																					return _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateTokenSale(
-																						_JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateSoftCap(
-																							A2(
-																								_elm_lang$core$Result$withDefault,
-																								0,
-																								_elm_lang$core$String$toInt(_p16))));
-																				}),
-																			_1: {ctor: '[]'}
-																		}
-																	}
-																}
-															}
-														},
-														{ctor: '[]'}),
-													_1: {ctor: '[]'}
-												}
-											}),
-										_1: {ctor: '[]'}
-									}),
-								_1: {
-									ctor: '::',
-									_0: A2(
-										_rundis$elm_bootstrap$Bootstrap_Grid$col,
-										{
-											ctor: '::',
-											_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm12,
-											_1: {ctor: '[]'}
-										},
-										{
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$div,
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$class('form-group'),
-													_1: {ctor: '[]'}
-												},
-												{
-													ctor: '::',
-													_0: A2(
-														_elm_lang$html$Html$label,
-														{
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$class('control-label'),
-															_1: {ctor: '[]'}
-														},
-														{
-															ctor: '::',
-															_0: _elm_lang$html$Html$text('The upper limit of funds to raise during your tokensale'),
-															_1: {ctor: '[]'}
-														}),
-													_1: {
-														ctor: '::',
-														_0: A2(
-															_elm_lang$html$Html$input,
-															{
-																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$class('form-control'),
-																_1: {
-																	ctor: '::',
-																	_0: _elm_lang$html$Html_Attributes$name('hardCap'),
-																	_1: {
-																		ctor: '::',
-																		_0: _elm_lang$html$Html_Attributes$value(
-																			_elm_lang$core$Basics$toString(params.hardCap)),
-																		_1: {
-																			ctor: '::',
-																			_0: _elm_lang$html$Html_Attributes$type_('text'),
-																			_1: {
-																				ctor: '::',
-																				_0: _elm_lang$html$Html_Events$onInput(
-																					function (_p17) {
-																						return _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateTokenSale(
-																							_JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateHardCap(
-																								A2(
-																									_elm_lang$core$Result$withDefault,
-																									0,
-																									_elm_lang$core$String$toInt(_p17))));
-																					}),
-																				_1: {ctor: '[]'}
-																			}
-																		}
-																	}
-																}
-															},
-															{ctor: '[]'}),
-														_1: {ctor: '[]'}
-													}
-												}),
-											_1: {ctor: '[]'}
-										}),
-									_1: {
-										ctor: '::',
-										_0: A2(
-											_rundis$elm_bootstrap$Bootstrap_Grid$col,
-											{
-												ctor: '::',
-												_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm12,
-												_1: {ctor: '[]'}
-											},
-											{
-												ctor: '::',
-												_0: A2(
-													_elm_lang$html$Html$div,
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$class('form-group'),
-														_1: {ctor: '[]'}
-													},
-													{
-														ctor: '::',
-														_0: A2(
-															_elm_lang$html$Html$label,
-															{
-																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$class('control-label'),
-																_1: {ctor: '[]'}
-															},
-															{
-																ctor: '::',
-																_0: _elm_lang$html$Html$text('When does your tokensale begin?'),
-																_1: {ctor: '[]'}
-															}),
-														_1: {
-															ctor: '::',
-															_0: A2(
-																_elm_lang$html$Html$input,
-																{
-																	ctor: '::',
-																	_0: _elm_lang$html$Html_Attributes$class('form-control'),
-																	_1: {
-																		ctor: '::',
-																		_0: _elm_lang$html$Html_Attributes$name('tokensaleStartDate'),
-																		_1: {
-																			ctor: '::',
-																			_0: _elm_lang$html$Html_Attributes$value(
-																				A2(_mgold$elm_date_format$Time_Format$format, '%d/%m/%Y', params.startDate)),
-																			_1: {
-																				ctor: '::',
-																				_0: _elm_lang$html$Html_Attributes$type_('text'),
-																				_1: {
-																					ctor: '::',
-																					_0: _elm_lang$html$Html_Events$onInput(
-																						function (_p18) {
-																							return _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateTokenSale(
-																								_JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateStartDate(
-																									A2(
-																										_elm_lang$core$Result$withDefault,
-																										0,
-																										_elm_lang$core$String$toFloat(_p18))));
-																						}),
-																					_1: {ctor: '[]'}
-																				}
-																			}
-																		}
-																	}
-																},
-																{ctor: '[]'}),
-															_1: {ctor: '[]'}
-														}
-													}),
-												_1: {ctor: '[]'}
-											}),
-										_1: {
-											ctor: '::',
-											_0: A2(
-												_rundis$elm_bootstrap$Bootstrap_Grid$col,
-												{
-													ctor: '::',
-													_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm12,
-													_1: {ctor: '[]'}
-												},
-												{
-													ctor: '::',
-													_0: A2(
-														_elm_lang$html$Html$div,
-														{
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$class('form-group'),
-															_1: {ctor: '[]'}
-														},
-														{
-															ctor: '::',
-															_0: A2(
-																_elm_lang$html$Html$label,
-																{
-																	ctor: '::',
-																	_0: _elm_lang$html$Html_Attributes$class('control-label'),
-																	_1: {ctor: '[]'}
-																},
-																{
-																	ctor: '::',
-																	_0: _elm_lang$html$Html$text('When does your tokensale end?'),
-																	_1: {ctor: '[]'}
-																}),
-															_1: {
-																ctor: '::',
-																_0: A2(
-																	_elm_lang$html$Html$input,
-																	{
-																		ctor: '::',
-																		_0: _elm_lang$html$Html_Attributes$class('form-control'),
-																		_1: {
-																			ctor: '::',
-																			_0: _elm_lang$html$Html_Attributes$name('tokenSaleEndDate'),
-																			_1: {
-																				ctor: '::',
-																				_0: _elm_lang$html$Html_Attributes$value(
-																					A2(_mgold$elm_date_format$Time_Format$format, '%d/%m/%Y', params.endDate)),
-																				_1: {
-																					ctor: '::',
-																					_0: _elm_lang$html$Html_Attributes$type_('text'),
-																					_1: {
-																						ctor: '::',
-																						_0: _elm_lang$html$Html_Events$onInput(
-																							function (_p19) {
-																								return _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateTokenSale(
-																									_JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateEndDate(
-																										A2(
-																											_elm_lang$core$Result$withDefault,
-																											0,
-																											_elm_lang$core$String$toFloat(_p19))));
-																							}),
-																						_1: {ctor: '[]'}
-																					}
-																				}
-																			}
-																		}
-																	},
-																	{ctor: '[]'}),
-																_1: {ctor: '[]'}
-															}
-														}),
-													_1: {ctor: '[]'}
-												}),
-											_1: {ctor: '[]'}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		});
-};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_View$descriptionForm = function (params) {
-	return A2(
-		_rundis$elm_bootstrap$Bootstrap_Grid$row,
-		{ctor: '[]'},
-		{
-			ctor: '::',
-			_0: A2(
-				_rundis$elm_bootstrap$Bootstrap_Grid$col,
-				{
-					ctor: '::',
-					_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm12,
-					_1: {ctor: '[]'}
-				},
-				{
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$h4,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('info-text'),
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text('Let\'s start with the basic details.'),
-							_1: {ctor: '[]'}
-						}),
-					_1: {ctor: '[]'}
-				}),
-			_1: {
-				ctor: '::',
-				_0: A2(
-					_rundis$elm_bootstrap$Bootstrap_Grid$col,
-					{
-						ctor: '::',
-						_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm12,
-						_1: {ctor: '[]'}
-					},
-					{
-						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$div,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('form-group label-floating'),
-								_1: {ctor: '[]'}
-							},
-							{
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$label,
-									{ctor: '[]'},
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html$text('Name'),
-										_1: {ctor: '[]'}
-									}),
-								_1: {
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$input,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('form-control'),
-											_1: {
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$name('projectName'),
-												_1: {
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$value(params.name),
-													_1: {
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$type_('text'),
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$html$Html_Events$onInput(
-																function (_p20) {
-																	return _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateDetail(
-																		_JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateName(_p20));
-																}),
-															_1: {ctor: '[]'}
-														}
-													}
-												}
-											}
-										},
-										{ctor: '[]'}),
-									_1: {ctor: '[]'}
-								}
-							}),
-						_1: {
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$div,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('form-group label-floating'),
-									_1: {ctor: '[]'}
-								},
-								{
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$label,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('control-label'),
-											_1: {ctor: '[]'}
-										},
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html$text('Description'),
-											_1: {ctor: '[]'}
-										}),
-									_1: {
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$input,
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$class('form-control'),
-												_1: {
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$name('projectDescription'),
-													_1: {
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$value(params.description),
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$type_('text'),
-															_1: {
-																ctor: '::',
-																_0: _elm_lang$html$Html_Events$onInput(
-																	function (_p21) {
-																		return _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateDetail(
-																			_JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateDescription(_p21));
-																	}),
-																_1: {ctor: '[]'}
-															}
-														}
-													}
-												}
-											},
-											{ctor: '[]'}),
-										_1: {ctor: '[]'}
-									}
-								}),
-							_1: {
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$div,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('form-group label-floating'),
-										_1: {ctor: '[]'}
-									},
-									{
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$label,
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$class('control-label'),
-												_1: {ctor: '[]'}
-											},
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html$text('Url'),
-												_1: {ctor: '[]'}
-											}),
-										_1: {
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$input,
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$class('form-control'),
-													_1: {
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$name('projectUrl'),
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$value(params.url),
-															_1: {
-																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$type_('text'),
-																_1: {
-																	ctor: '::',
-																	_0: _elm_lang$html$Html_Events$onInput(
-																		function (_p22) {
-																			return _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateDetail(
-																				_JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateUrl(_p22));
-																		}),
-																	_1: {ctor: '[]'}
-																}
-															}
-														}
-													}
-												},
-												{ctor: '[]'}),
-											_1: {ctor: '[]'}
-										}
-									}),
-								_1: {
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$div,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('form-group label-floating'),
-											_1: {ctor: '[]'}
-										},
-										{
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$label,
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$class('control-label'),
-													_1: {ctor: '[]'}
-												},
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html$text('Whitepaper Url'),
-													_1: {ctor: '[]'}
-												}),
-											_1: {
-												ctor: '::',
-												_0: A2(
-													_elm_lang$html$Html$input,
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$class('form-control'),
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$name('projectWhitepaper'),
-															_1: {
-																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$value(params.whitepaperUrl),
-																_1: {
-																	ctor: '::',
-																	_0: _elm_lang$html$Html_Attributes$type_('text'),
-																	_1: {
-																		ctor: '::',
-																		_0: _elm_lang$html$Html_Events$onInput(
-																			function (_p23) {
-																				return _JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateDetail(
-																					_JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateWhitepaperUrl(_p23));
-																			}),
-																		_1: {ctor: '[]'}
-																	}
-																}
-															}
-														}
-													},
-													{ctor: '[]'}),
-												_1: {ctor: '[]'}
-											}
-										}),
-									_1: {ctor: '[]'}
-								}
-							}
-						}
-					}),
-				_1: {ctor: '[]'}
-			}
-		});
-};
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_View$logo = A2(
-	_elm_lang$html$Html$a,
-	{
-		ctor: '::',
-		_0: _elm_lang$html$Html_Attributes$href('http://daicogen.com'),
-		_1: {ctor: '[]'}
-	},
-	{
-		ctor: '::',
-		_0: A2(
 			_elm_lang$html$Html$div,
 			{
 				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('logo-container'),
-				_1: {ctor: '[]'}
+				_0: _elm_lang$html$Html_Attributes$class('form-group'),
+				_1: _rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowAttributes(options)
 			},
-			{
-				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$div,
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('logo'),
-						_1: {ctor: '[]'}
-					},
-					{
-						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$img,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$src('assets/img/new_logo.png'),
-								_1: {ctor: '[]'}
-							},
-							{ctor: '[]'}),
-						_1: {ctor: '[]'}
-					}),
-				_1: {
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$div,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('brand'),
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text('Daicogen'),
-							_1: {ctor: '[]'}
-						}),
-					_1: {ctor: '[]'}
-				}
-			}),
-		_1: {ctor: '[]'}
+			A2(_elm_lang$core$List$map, _rundis$elm_bootstrap$Bootstrap_Form$renderCol, cols));
 	});
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_View$navigation = A2(
-	_elm_lang$html$Html$div,
-	{
-		ctor: '::',
-		_0: _elm_lang$html$Html_Attributes$class('wizard-navigation'),
-		_1: {ctor: '[]'}
-	},
-	{
-		ctor: '::',
-		_0: A2(
-			_elm_lang$html$Html$div,
+var _rundis$elm_bootstrap$Bootstrap_Form$applyModifier = F2(
+	function (modifier, options) {
+		var _p2 = modifier;
+		return _elm_lang$core$Native_Utils.update(
+			options,
 			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('progress-with-circle'),
-				_1: {ctor: '[]'}
-			},
-			{
-				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$div,
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('progress-bard'),
-						_1: {
-							ctor: '::',
-							_0: A2(_elm_lang$html$Html_Attributes$attribute, 'role', 'progressbar'),
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$style(
-									{
-										ctor: '::',
-										_0: {ctor: '_Tuple2', _0: 'width', _1: '21%'},
-										_1: {ctor: '[]'}
-									}),
-								_1: {ctor: '[]'}
-							}
-						}
-					},
-					{ctor: '[]'}),
-				_1: {ctor: '[]'}
-			}),
-		_1: {
-			ctor: '::',
-			_0: A2(
-				_elm_lang$html$Html$ul,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('nav nav-pills'),
-					_1: {ctor: '[]'}
-				},
-				{
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$li,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$style(
-								{
-									ctor: '::',
-									_0: {ctor: '_Tuple2', _0: 'width', _1: '20%'},
-									_1: {ctor: '[]'}
-								}),
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$a,
-								{
-									ctor: '::',
-									_0: A2(_elm_lang$html$Html_Attributes$attribute, 'data-toggle', 'tab'),
-									_1: {
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$href('#description'),
-										_1: {
-											ctor: '::',
-											_0: _elm_lang$html$Html_Events$onClick(
-												_JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateFormSection(_JQuezada0$eoslondonhackathon$DaicoTemplate_Model$Description)),
-											_1: {ctor: '[]'}
-										}
-									}
-								},
-								{
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$div,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('icon-circle'),
-											_1: {
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$style(
-													{
-														ctor: '::',
-														_0: {ctor: '_Tuple2', _0: 'display', _1: 'table'},
-														_1: {ctor: '[]'}
-													}),
-												_1: {ctor: '[]'}
-											}
-										},
-										{
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$div,
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$style(
-														{
-															ctor: '::',
-															_0: {ctor: '_Tuple2', _0: 'display', _1: 'table-cell'},
-															_1: {
-																ctor: '::',
-																_0: {ctor: '_Tuple2', _0: 'vertical-align', _1: 'middle'},
-																_1: {ctor: '[]'}
-															}
-														}),
-													_1: {ctor: '[]'}
-												},
-												{
-													ctor: '::',
-													_0: A2(
-														_elm_lang$html$Html$i,
-														{
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$class('nc-icon nc-ruler-pencil'),
-															_1: {ctor: '[]'}
-														},
-														{ctor: '[]'}),
-													_1: {ctor: '[]'}
-												}),
-											_1: {ctor: '[]'}
-										}),
-									_1: {
-										ctor: '::',
-										_0: _elm_lang$html$Html$text('Description'),
-										_1: {ctor: '[]'}
-									}
-								}),
-							_1: {ctor: '[]'}
-						}),
-					_1: {
-						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$li,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$style(
-									{
-										ctor: '::',
-										_0: {ctor: '_Tuple2', _0: 'width', _1: '20%'},
-										_1: {ctor: '[]'}
-									}),
-								_1: {ctor: '[]'}
-							},
-							{
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$a,
-									{
-										ctor: '::',
-										_0: A2(_elm_lang$html$Html_Attributes$attribute, 'data-toggle', 'tab'),
-										_1: {
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$href('#tokensale'),
-											_1: {
-												ctor: '::',
-												_0: _elm_lang$html$Html_Events$onClick(
-													_JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateFormSection(_JQuezada0$eoslondonhackathon$DaicoTemplate_Model$Tokensale)),
-												_1: {ctor: '[]'}
-											}
-										}
-									},
-									{
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$div,
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$class('icon-circle'),
-												_1: {
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$style(
-														{
-															ctor: '::',
-															_0: {ctor: '_Tuple2', _0: 'display', _1: 'table'},
-															_1: {ctor: '[]'}
-														}),
-													_1: {ctor: '[]'}
-												}
-											},
-											{
-												ctor: '::',
-												_0: A2(
-													_elm_lang$html$Html$div,
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$style(
-															{
-																ctor: '::',
-																_0: {ctor: '_Tuple2', _0: 'display', _1: 'table-cell'},
-																_1: {
-																	ctor: '::',
-																	_0: {ctor: '_Tuple2', _0: 'vertical-align', _1: 'middle'},
-																	_1: {ctor: '[]'}
-																}
-															}),
-														_1: {ctor: '[]'}
-													},
-													{
-														ctor: '::',
-														_0: A2(
-															_elm_lang$html$Html$i,
-															{
-																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$class('nc-icon nc-money-coins'),
-																_1: {ctor: '[]'}
-															},
-															{ctor: '[]'}),
-														_1: {ctor: '[]'}
-													}),
-												_1: {ctor: '[]'}
-											}),
-										_1: {
-											ctor: '::',
-											_0: _elm_lang$html$Html$text('Tokensale'),
-											_1: {ctor: '[]'}
-										}
-									}),
-								_1: {ctor: '[]'}
-							}),
-						_1: {
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$li,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$style(
-										{
-											ctor: '::',
-											_0: {ctor: '_Tuple2', _0: 'width', _1: '20%'},
-											_1: {ctor: '[]'}
-										}),
-									_1: {ctor: '[]'}
-								},
-								{
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$a,
-										{
-											ctor: '::',
-											_0: A2(_elm_lang$html$Html_Attributes$attribute, 'data-toggle', 'tab'),
-											_1: {
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$href('#funding'),
-												_1: {
-													ctor: '::',
-													_0: _elm_lang$html$Html_Events$onClick(
-														_JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateFormSection(_JQuezada0$eoslondonhackathon$DaicoTemplate_Model$Funding)),
-													_1: {ctor: '[]'}
-												}
-											}
-										},
-										{
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$div,
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$class('icon-circle'),
-													_1: {
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$style(
-															{
-																ctor: '::',
-																_0: {ctor: '_Tuple2', _0: 'display', _1: 'table'},
-																_1: {ctor: '[]'}
-															}),
-														_1: {ctor: '[]'}
-													}
-												},
-												{
-													ctor: '::',
-													_0: A2(
-														_elm_lang$html$Html$div,
-														{
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$style(
-																{
-																	ctor: '::',
-																	_0: {ctor: '_Tuple2', _0: 'display', _1: 'table-cell'},
-																	_1: {
-																		ctor: '::',
-																		_0: {ctor: '_Tuple2', _0: 'vertical-align', _1: 'middle'},
-																		_1: {ctor: '[]'}
-																	}
-																}),
-															_1: {ctor: '[]'}
-														},
-														{
-															ctor: '::',
-															_0: A2(
-																_elm_lang$html$Html$i,
-																{
-																	ctor: '::',
-																	_0: _elm_lang$html$Html_Attributes$class('nc-icon nc-shop'),
-																	_1: {ctor: '[]'}
-																},
-																{ctor: '[]'}),
-															_1: {ctor: '[]'}
-														}),
-													_1: {ctor: '[]'}
-												}),
-											_1: {
-												ctor: '::',
-												_0: _elm_lang$html$Html$text('Funding'),
-												_1: {ctor: '[]'}
-											}
-										}),
-									_1: {ctor: '[]'}
-								}),
-							_1: {
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$li,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$style(
-											{
-												ctor: '::',
-												_0: {ctor: '_Tuple2', _0: 'width', _1: '20%'},
-												_1: {ctor: '[]'}
-											}),
-										_1: {ctor: '[]'}
-									},
-									{
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$a,
-											{
-												ctor: '::',
-												_0: A2(_elm_lang$html$Html_Attributes$attribute, 'data-toggle', 'tab'),
-												_1: {
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$href('#voting'),
-													_1: {
-														ctor: '::',
-														_0: _elm_lang$html$Html_Events$onClick(
-															_JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateFormSection(_JQuezada0$eoslondonhackathon$DaicoTemplate_Model$Voting)),
-														_1: {ctor: '[]'}
-													}
-												}
-											},
-											{
-												ctor: '::',
-												_0: A2(
-													_elm_lang$html$Html$div,
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$class('icon-circle'),
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$style(
-																{
-																	ctor: '::',
-																	_0: {ctor: '_Tuple2', _0: 'display', _1: 'table'},
-																	_1: {ctor: '[]'}
-																}),
-															_1: {ctor: '[]'}
-														}
-													},
-													{
-														ctor: '::',
-														_0: A2(
-															_elm_lang$html$Html$div,
-															{
-																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$style(
-																	{
-																		ctor: '::',
-																		_0: {ctor: '_Tuple2', _0: 'display', _1: 'table-cell'},
-																		_1: {
-																			ctor: '::',
-																			_0: {ctor: '_Tuple2', _0: 'vertical-align', _1: 'middle'},
-																			_1: {ctor: '[]'}
-																		}
-																	}),
-																_1: {ctor: '[]'}
-															},
-															{
-																ctor: '::',
-																_0: A2(
-																	_elm_lang$html$Html$i,
-																	{
-																		ctor: '::',
-																		_0: _elm_lang$html$Html_Attributes$class('nc-icon nc-paper'),
-																		_1: {ctor: '[]'}
-																	},
-																	{ctor: '[]'}),
-																_1: {ctor: '[]'}
-															}),
-														_1: {ctor: '[]'}
-													}),
-												_1: {
-													ctor: '::',
-													_0: _elm_lang$html$Html$text('Voting'),
-													_1: {ctor: '[]'}
-												}
-											}),
-										_1: {ctor: '[]'}
-									}),
-								_1: {
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$li,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$style(
-												{
-													ctor: '::',
-													_0: {ctor: '_Tuple2', _0: 'width', _1: '20%'},
-													_1: {ctor: '[]'}
-												}),
-											_1: {ctor: '[]'}
-										},
-										{
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$a,
-												{
-													ctor: '::',
-													_0: A2(_elm_lang$html$Html_Attributes$attribute, 'data-toggle', 'tab'),
-													_1: {
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$href('#charity'),
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$html$Html_Events$onClick(
-																_JQuezada0$eoslondonhackathon$DaicoTemplate_Model$UpdateFormSection(_JQuezada0$eoslondonhackathon$DaicoTemplate_Model$Charity)),
-															_1: {ctor: '[]'}
-														}
-													}
-												},
-												{
-													ctor: '::',
-													_0: A2(
-														_elm_lang$html$Html$div,
-														{
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$class('icon-circle'),
-															_1: {
-																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$style(
-																	{
-																		ctor: '::',
-																		_0: {ctor: '_Tuple2', _0: 'display', _1: 'table'},
-																		_1: {ctor: '[]'}
-																	}),
-																_1: {ctor: '[]'}
-															}
-														},
-														{
-															ctor: '::',
-															_0: A2(
-																_elm_lang$html$Html$div,
-																{
-																	ctor: '::',
-																	_0: _elm_lang$html$Html_Attributes$style(
-																		{
-																			ctor: '::',
-																			_0: {ctor: '_Tuple2', _0: 'display', _1: 'table-cell'},
-																			_1: {
-																				ctor: '::',
-																				_0: {ctor: '_Tuple2', _0: 'vertical-align', _1: 'middle'},
-																				_1: {ctor: '[]'}
-																			}
-																		}),
-																	_1: {ctor: '[]'}
-																},
-																{
-																	ctor: '::',
-																	_0: A2(
-																		_elm_lang$html$Html$i,
-																		{
-																			ctor: '::',
-																			_0: _elm_lang$html$Html_Attributes$class('nc-icon nc-planet'),
-																			_1: {ctor: '[]'}
-																		},
-																		{ctor: '[]'}),
-																	_1: {ctor: '[]'}
-																}),
-															_1: {ctor: '[]'}
-														}),
-													_1: {
-														ctor: '::',
-														_0: _elm_lang$html$Html$text('Charity'),
-														_1: {ctor: '[]'}
-													}
-												}),
-											_1: {ctor: '[]'}
-										}),
-									_1: {ctor: '[]'}
-								}
-							}
-						}
-					}
-				}),
-			_1: {ctor: '[]'}
-		}
+				attributes: A2(_elm_lang$core$Basics_ops['++'], options.attributes, _p2._0)
+			});
 	});
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_View$header = A2(
-	_elm_lang$html$Html$div,
-	{
-		ctor: '::',
-		_0: _elm_lang$html$Html_Attributes$class('wizard-header'),
-		_1: {ctor: '[]'}
-	},
-	{
-		ctor: '::',
-		_0: A2(
-			_elm_lang$html$Html$h3,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('wizard-title'),
-				_1: {ctor: '[]'}
-			},
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html$text('Initiate a DACIO'),
-				_1: {ctor: '[]'}
-			}),
-		_1: {
-			ctor: '::',
-			_0: A2(
-				_elm_lang$html$Html$h5,
-				{ctor: '[]'},
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html$text('This will setup the parameters that your DAICO will be generated with'),
-					_1: {ctor: '[]'}
-				}),
-			_1: {ctor: '[]'}
-		}
-	});
-var _JQuezada0$eoslondonhackathon$DaicoTemplate_View$view = function (model) {
+var _rundis$elm_bootstrap$Bootstrap_Form$defaultOptions = {
+	attributes: {ctor: '[]'}
+};
+var _rundis$elm_bootstrap$Bootstrap_Form$toAttributes = function (modifiers) {
+	var options = A3(_elm_lang$core$List$foldl, _rundis$elm_bootstrap$Bootstrap_Form$applyModifier, _rundis$elm_bootstrap$Bootstrap_Form$defaultOptions, modifiers);
 	return A2(
-		_elm_lang$html$Html$div,
+		_elm_lang$core$Basics_ops['++'],
 		{
 			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('image-container set-full-height'),
-			_1: {
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$style(
-					{
-						ctor: '::',
-						_0: {ctor: '_Tuple2', _0: 'background-color', _1: '#1c293a'},
-						_1: {ctor: '[]'}
-					}),
-				_1: {ctor: '[]'}
-			}
+			_0: _elm_lang$html$Html_Attributes$class('form-group'),
+			_1: {ctor: '[]'}
 		},
+		options.attributes);
+};
+var _rundis$elm_bootstrap$Bootstrap_Form$invalidFeedback = F2(
+	function (attributes, children) {
+		return A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('invalid-feedback'),
+				_1: attributes
+			},
+			children);
+	});
+var _rundis$elm_bootstrap$Bootstrap_Form$validFeedback = F2(
+	function (attributes, children) {
+		return A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('valid-feedback'),
+				_1: attributes
+			},
+			children);
+	});
+var _rundis$elm_bootstrap$Bootstrap_Form$helpInline = F2(
+	function (attributes, children) {
+		return A2(
+			_elm_lang$html$Html$small,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('text-muted'),
+				_1: attributes
+			},
+			children);
+	});
+var _rundis$elm_bootstrap$Bootstrap_Form$help = F2(
+	function (attributes, children) {
+		return A2(
+			_elm_lang$html$Html$small,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('form-text text-muted'),
+				_1: attributes
+			},
+			children);
+	});
+var _rundis$elm_bootstrap$Bootstrap_Form$label = F2(
+	function (attributes, children) {
+		return A2(
+			_elm_lang$html$Html$label,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('form-control-label'),
+				_1: attributes
+			},
+			children);
+	});
+var _rundis$elm_bootstrap$Bootstrap_Form$group = F2(
+	function (options, children) {
+		return A2(
+			_elm_lang$html$Html$div,
+			_rundis$elm_bootstrap$Bootstrap_Form$toAttributes(options),
+			children);
+	});
+var _rundis$elm_bootstrap$Bootstrap_Form$form = F2(
+	function (attributes, children) {
+		return A2(_elm_lang$html$Html$form, attributes, children);
+	});
+var _rundis$elm_bootstrap$Bootstrap_Form$formInline = function (attributes) {
+	return _rundis$elm_bootstrap$Bootstrap_Form$form(
 		{
 			ctor: '::',
-			_0: A2(
-				_rundis$elm_bootstrap$Bootstrap_Grid$container,
-				{ctor: '[]'},
-				{
+			_0: _elm_lang$html$Html_Attributes$class('form-inline'),
+			_1: attributes
+		});
+};
+var _rundis$elm_bootstrap$Bootstrap_Form$Options = function (a) {
+	return {attributes: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form$Col = function (a) {
+	return {ctor: 'Col', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form$col = F2(
+	function (options, children) {
+		return _rundis$elm_bootstrap$Bootstrap_Form$Col(
+			{elemFn: _elm_lang$html$Html$div, options: options, children: children});
+	});
+var _rundis$elm_bootstrap$Bootstrap_Form$colLabel = F2(
+	function (options, children) {
+		return _rundis$elm_bootstrap$Bootstrap_Form$Col(
+			{
+				elemFn: _elm_lang$html$Html$label,
+				options: {
 					ctor: '::',
-					_0: A2(
-						_rundis$elm_bootstrap$Bootstrap_Grid$row,
-						{ctor: '[]'},
+					_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$attrs(
 						{
 							ctor: '::',
-							_0: A2(
-								_rundis$elm_bootstrap$Bootstrap_Grid$col,
-								{
-									ctor: '::',
-									_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm6,
-									_1: {
-										ctor: '::',
-										_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetSm2,
-										_1: {ctor: '[]'}
-									}
-								},
-								{
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$div,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$style(
-												{
-													ctor: '::',
-													_0: {ctor: '_Tuple2', _0: 'padding-top', _1: '100px'},
-													_1: {ctor: '[]'}
-												}),
-											_1: {ctor: '[]'}
-										},
-										{
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$img,
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$src('assets/img/daicogen-logo.png'),
-													_1: {
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$width(450),
-														_1: {ctor: '[]'}
-													}
-												},
-												{ctor: '[]'}),
-											_1: {ctor: '[]'}
-										}),
-									_1: {ctor: '[]'}
-								}),
-							_1: {
-								ctor: '::',
-								_0: A2(
-									_rundis$elm_bootstrap$Bootstrap_Grid$col,
-									{
-										ctor: '::',
-										_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm6,
-										_1: {
-											ctor: '::',
-											_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetSm2,
-											_1: {ctor: '[]'}
-										}
-									},
-									{
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$div,
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$class('wizard-container'),
-												_1: {ctor: '[]'}
-											},
-											{
-												ctor: '::',
-												_0: _rundis$elm_bootstrap$Bootstrap_Card$view(
-													A3(
-														_rundis$elm_bootstrap$Bootstrap_Card$block,
-														{ctor: '[]'},
-														{
-															ctor: '::',
-															_0: _rundis$elm_bootstrap$Bootstrap_Card_Block$custom(
-																A2(
-																	_elm_lang$html$Html$form,
-																	{
-																		ctor: '::',
-																		_0: _elm_lang$html$Html_Attributes$action(''),
-																		_1: {
-																			ctor: '::',
-																			_0: _elm_lang$html$Html_Attributes$method(''),
-																			_1: {ctor: '[]'}
-																		}
-																	},
-																	{
-																		ctor: '::',
-																		_0: _JQuezada0$eoslondonhackathon$DaicoTemplate_View$navigation,
-																		_1: {
-																			ctor: '::',
-																			_0: A2(
-																				_elm_lang$html$Html$div,
-																				{
-																					ctor: '::',
-																					_0: _elm_lang$html$Html_Attributes$class('tab-content'),
-																					_1: {ctor: '[]'}
-																				},
-																				{
-																					ctor: '::',
-																					_0: A2(
-																						_elm_lang$html$Html$div,
-																						{ctor: '[]'},
-																						{
-																							ctor: '::',
-																							_0: function () {
-																								var _p24 = model.activeFormSection;
-																								switch (_p24.ctor) {
-																									case 'Description':
-																										return _JQuezada0$eoslondonhackathon$DaicoTemplate_View$descriptionForm(model.template.description);
-																									case 'Tokensale':
-																										return _JQuezada0$eoslondonhackathon$DaicoTemplate_View$tokenSaleForm(model.template.tokenSale);
-																									case 'Funding':
-																										return _JQuezada0$eoslondonhackathon$DaicoTemplate_View$fundingForm(model.template.funding);
-																									case 'Voting':
-																										return _JQuezada0$eoslondonhackathon$DaicoTemplate_View$votingForm(model.template.voting);
-																									default:
-																										return _JQuezada0$eoslondonhackathon$DaicoTemplate_View$charityForm(model.template.charity);
-																								}
-																							}(),
-																							_1: {ctor: '[]'}
-																						}),
-																					_1: {ctor: '[]'}
-																				}),
-																			_1: {ctor: '[]'}
-																		}
-																	})),
-															_1: {ctor: '[]'}
-														},
-														_rundis$elm_bootstrap$Bootstrap_Card$config(
-															{
-																ctor: '::',
-																_0: _rundis$elm_bootstrap$Bootstrap_Card$attrs(
-																	{
-																		ctor: '::',
-																		_0: _elm_lang$html$Html_Attributes$class('wizard-card'),
-																		_1: {
-																			ctor: '::',
-																			_0: A2(_elm_lang$html$Html_Attributes$attribute, 'data-color', 'red'),
-																			_1: {
-																				ctor: '::',
-																				_0: _elm_lang$html$Html_Attributes$id('wizard'),
-																				_1: {ctor: '[]'}
-																			}
-																		}
-																	}),
-																_1: {ctor: '[]'}
-															}))),
-												_1: {ctor: '[]'}
-											}),
-										_1: {ctor: '[]'}
-									}),
-								_1: {ctor: '[]'}
-							}
+							_0: _elm_lang$html$Html_Attributes$class('col-form-label'),
+							_1: {ctor: '[]'}
 						}),
-					_1: {ctor: '[]'}
-				}),
-			_1: {ctor: '[]'}
-		});
-};
-
-var _JQuezada0$eoslondonhackathon$Project_Api$Project = F5(
-	function (a, b, c, d, e) {
-		return {owner: a, name: b, description: c, url: d, polls: e};
+					_1: options
+				},
+				children: children
+			});
 	});
-var _JQuezada0$eoslondonhackathon$Project_Api$Poll = F6(
-	function (a, b, c, d, e, f) {
-		return {icocreator: a, proposal: b, yesVotes: c, noVotes: d, votes: e, voteProposals: f};
-	});
-var _JQuezada0$eoslondonhackathon$Project_Api$Vote = F4(
-	function (a, b, c, d) {
-		return {iconame: a, idvoter: b, trvoter: c, pick: d};
-	});
-var _JQuezada0$eoslondonhackathon$Project_Api$VoteProposal = F4(
-	function (a, b, c, d) {
-		return {iconame: a, from: b, to: c, pick: d};
-	});
-var _JQuezada0$eoslondonhackathon$Project_Api$getProject = function (toMsg) {
-	return A2(
-		_dillonkearns$graphqelm$Graphqelm_Http$send,
-		toMsg,
-		A2(
-			_dillonkearns$graphqelm$Graphqelm_Http$queryRequest,
-			'http://localhost:5555/graphql',
-			A2(
-				_dillonkearns$graphqelm$Graphqelm_SelectionSet$with,
-				A2(
-					_JQuezada0$eoslondonhackathon$Api_Query$project,
-					{accountName: 'crowdsale'},
-					A2(
-						_dillonkearns$graphqelm$Graphqelm_SelectionSet$with,
-						_JQuezada0$eoslondonhackathon$Api_Object_Project$polls(
-							A2(
-								_dillonkearns$graphqelm$Graphqelm_SelectionSet$with,
-								_JQuezada0$eoslondonhackathon$Api_Object_Poll$voteProposals(
-									A2(
-										_dillonkearns$graphqelm$Graphqelm_SelectionSet$with,
-										_JQuezada0$eoslondonhackathon$Api_Object_VoteProposal$pick,
-										A2(
-											_dillonkearns$graphqelm$Graphqelm_SelectionSet$with,
-											_JQuezada0$eoslondonhackathon$Api_Object_VoteProposal$to,
-											A2(
-												_dillonkearns$graphqelm$Graphqelm_SelectionSet$with,
-												_JQuezada0$eoslondonhackathon$Api_Object_VoteProposal$from,
-												A2(
-													_dillonkearns$graphqelm$Graphqelm_SelectionSet$with,
-													_JQuezada0$eoslondonhackathon$Api_Object_VoteProposal$iconame,
-													_JQuezada0$eoslondonhackathon$Api_Object_VoteProposal$selection(_JQuezada0$eoslondonhackathon$Project_Api$VoteProposal)))))),
-								A2(
-									_dillonkearns$graphqelm$Graphqelm_SelectionSet$with,
-									_JQuezada0$eoslondonhackathon$Api_Object_Poll$votes(
-										A2(
-											_dillonkearns$graphqelm$Graphqelm_SelectionSet$with,
-											_JQuezada0$eoslondonhackathon$Api_Object_Vote$pick,
-											A2(
-												_dillonkearns$graphqelm$Graphqelm_SelectionSet$with,
-												_JQuezada0$eoslondonhackathon$Api_Object_Vote$trvoter,
-												A2(
-													_dillonkearns$graphqelm$Graphqelm_SelectionSet$with,
-													_JQuezada0$eoslondonhackathon$Api_Object_Vote$idvoter,
-													A2(
-														_dillonkearns$graphqelm$Graphqelm_SelectionSet$with,
-														_JQuezada0$eoslondonhackathon$Api_Object_Vote$iconame,
-														_JQuezada0$eoslondonhackathon$Api_Object_Vote$selection(_JQuezada0$eoslondonhackathon$Project_Api$Vote)))))),
-									A2(
-										_dillonkearns$graphqelm$Graphqelm_SelectionSet$with,
-										_JQuezada0$eoslondonhackathon$Api_Object_Poll$novotes,
-										A2(
-											_dillonkearns$graphqelm$Graphqelm_SelectionSet$with,
-											_JQuezada0$eoslondonhackathon$Api_Object_Poll$yesvotes,
-											A2(
-												_dillonkearns$graphqelm$Graphqelm_SelectionSet$with,
-												_JQuezada0$eoslondonhackathon$Api_Object_Poll$proposal,
-												A2(
-													_dillonkearns$graphqelm$Graphqelm_SelectionSet$with,
-													_JQuezada0$eoslondonhackathon$Api_Object_Poll$icocreator,
-													_JQuezada0$eoslondonhackathon$Api_Object_Poll$selection(_JQuezada0$eoslondonhackathon$Project_Api$Poll)))))))),
-						A2(
-							_dillonkearns$graphqelm$Graphqelm_SelectionSet$with,
-							_JQuezada0$eoslondonhackathon$Api_Object_Project$url,
-							A2(
-								_dillonkearns$graphqelm$Graphqelm_SelectionSet$with,
-								_JQuezada0$eoslondonhackathon$Api_Object_Project$description,
-								A2(
-									_dillonkearns$graphqelm$Graphqelm_SelectionSet$with,
-									_JQuezada0$eoslondonhackathon$Api_Object_Project$name,
-									A2(
-										_dillonkearns$graphqelm$Graphqelm_SelectionSet$with,
-										_JQuezada0$eoslondonhackathon$Api_Object_Project$owner,
-										_JQuezada0$eoslondonhackathon$Api_Object_Project$selection(_JQuezada0$eoslondonhackathon$Project_Api$Project))))))),
-				_JQuezada0$eoslondonhackathon$Api_Query$selection(_elm_lang$core$Basics$identity))));
-};
-
-var _JQuezada0$eoslondonhackathon$Project_Model$Model = F4(
-	function (a, b, c, d) {
-		return {activePage: a, selectedUserType: b, selectedVotingMethod: c, project: d};
-	});
-var _JQuezada0$eoslondonhackathon$Project_Model$TransactionComplete = {ctor: 'TransactionComplete'};
-var _JQuezada0$eoslondonhackathon$Project_Model$RemoveVote = function (a) {
-	return {ctor: 'RemoveVote', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$Project_Model$RemoveSuggestion = function (a) {
-	return {ctor: 'RemoveSuggestion', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$Project_Model$SubmitSuggestion = function (a) {
-	return {ctor: 'SubmitSuggestion', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$Project_Model$SubmitVote = function (a) {
-	return {ctor: 'SubmitVote', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$Project_Model$FetchProjectComplete = function (a) {
-	return {ctor: 'FetchProjectComplete', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$Project_Model$UpdateSelectedVotingMethod = function (a) {
-	return {ctor: 'UpdateSelectedVotingMethod', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$Project_Model$RefreshVotes = {ctor: 'RefreshVotes'};
-var _JQuezada0$eoslondonhackathon$Project_Model$UpdateUserType = function (a) {
-	return {ctor: 'UpdateUserType', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$Project_Model$SetActivePage = function (a) {
-	return {ctor: 'SetActivePage', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$Project_Model$Voting = {ctor: 'Voting'};
-var _JQuezada0$eoslondonhackathon$Project_Model$GeneralAccount = {ctor: 'GeneralAccount'};
-var _JQuezada0$eoslondonhackathon$Project_Model$IdAccount = {ctor: 'IdAccount'};
-var _JQuezada0$eoslondonhackathon$Project_Model$DelegateVote = {ctor: 'DelegateVote'};
-var _JQuezada0$eoslondonhackathon$Project_Model$IdAccountVote = {ctor: 'IdAccountVote'};
-
-var _JQuezada0$eoslondonhackathon$Model$Model = function (a) {
-	return {activePage: a};
-};
-var _JQuezada0$eoslondonhackathon$Model$ExistingProjects = function (a) {
-	return {ctor: 'ExistingProjects', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$Model$ChildMsg = function (a) {
-	return {ctor: 'ChildMsg', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$Model$SetActivePage = function (a) {
-	return {ctor: 'SetActivePage', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$Model$TokensaleMsg = function (a) {
-	return {ctor: 'TokensaleMsg', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$Model$DaicoTemplateMsg = function (a) {
-	return {ctor: 'DaicoTemplateMsg', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$Model$DaicoPage = {ctor: 'DaicoPage'};
-var _JQuezada0$eoslondonhackathon$Model$DaicoTemplatePage = {ctor: 'DaicoTemplatePage'};
-var _JQuezada0$eoslondonhackathon$Model$LandingPage = {ctor: 'LandingPage'};
-var _JQuezada0$eoslondonhackathon$Model$Daico = function (a) {
-	return {ctor: 'Daico', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$Model$DaicoTemplate = function (a) {
-	return {ctor: 'DaicoTemplate', _0: a};
-};
-var _JQuezada0$eoslondonhackathon$Model$Landing = {ctor: 'Landing'};
-var _JQuezada0$eoslondonhackathon$Model$Loading = {ctor: 'Loading'};
-
-var _JQuezada0$eoslondonhackathon$Project_Update$subscriptions = function (model) {
-	return _elm_lang$core$Platform_Sub$batch(
+var _rundis$elm_bootstrap$Bootstrap_Form$colLabelSm = function (options) {
+	return _rundis$elm_bootstrap$Bootstrap_Form$colLabel(
 		{
 			ctor: '::',
-			_0: _JQuezada0$eoslondonhackathon$Ports$transactionComplete(
-				_elm_lang$core$Basics$always(_JQuezada0$eoslondonhackathon$Project_Model$TransactionComplete)),
-			_1: {ctor: '[]'}
+			_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$attrs(
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('col-form-label-sm'),
+					_1: {ctor: '[]'}
+				}),
+			_1: options
 		});
 };
-var _JQuezada0$eoslondonhackathon$Project_Update$update = F2(
-	function (msg, model) {
-		update:
-		while (true) {
-			var _p0 = msg;
-			switch (_p0.ctor) {
-				case 'SetActivePage':
-					return _etaque$elm_response$Response$withNone(
-						_elm_lang$core$Native_Utils.update(
-							model,
-							{activePage: _p0._0}));
-				case 'UpdateUserType':
-					var userType = function () {
-						var _p1 = _p0._0;
-						switch (_p1) {
-							case 'IdAccount':
-								return _elm_lang$core$Maybe$Just(_JQuezada0$eoslondonhackathon$Project_Model$IdAccount);
-							case 'GeneralAccount':
-								return _elm_lang$core$Maybe$Just(_JQuezada0$eoslondonhackathon$Project_Model$GeneralAccount);
-							default:
-								return _elm_lang$core$Maybe$Nothing;
-						}
-					}();
-					var _v2 = _JQuezada0$eoslondonhackathon$Project_Model$RefreshVotes,
-						_v3 = _elm_lang$core$Native_Utils.update(
-						model,
-						{selectedUserType: userType, selectedVotingMethod: _elm_lang$core$Maybe$Nothing});
-					msg = _v2;
-					model = _v3;
-					continue update;
-				case 'UpdateSelectedVotingMethod':
-					return _etaque$elm_response$Response$withNone(
-						_elm_lang$core$Native_Utils.update(
-							model,
-							{selectedVotingMethod: _p0._0}));
-				case 'RefreshVotes':
-					return A2(
-						_etaque$elm_response$Response$withCmd,
-						_JQuezada0$eoslondonhackathon$Project_Api$getProject(_JQuezada0$eoslondonhackathon$Project_Model$FetchProjectComplete),
-						model);
-				case 'FetchProjectComplete':
-					return _etaque$elm_response$Response$withNone(
-						_elm_lang$core$Native_Utils.update(
-							model,
-							{
-								project: _elm_lang$core$Maybe$Just(_p0._0)
-							}));
-				case 'SubmitVote':
-					return A2(
-						_etaque$elm_response$Response$withCmd,
-						_JQuezada0$eoslondonhackathon$Ports$vote(_p0._0),
-						model);
-				case 'SubmitSuggestion':
-					return A2(
-						_etaque$elm_response$Response$withCmd,
-						_JQuezada0$eoslondonhackathon$Ports$createSuggestion(_p0._0),
-						model);
-				case 'RemoveSuggestion':
-					return A2(
-						_etaque$elm_response$Response$withCmd,
-						_JQuezada0$eoslondonhackathon$Ports$removeSuggestion(_p0._0),
-						model);
-				case 'RemoveVote':
-					return _etaque$elm_response$Response$withNone(model);
-				default:
-					var _v4 = _JQuezada0$eoslondonhackathon$Project_Model$RefreshVotes,
-						_v5 = _elm_lang$core$Native_Utils.update(
-						model,
-						{selectedVotingMethod: _elm_lang$core$Maybe$Nothing});
-					msg = _v4;
-					model = _v5;
-					continue update;
-			}
-		}
-	});
-var _JQuezada0$eoslondonhackathon$Project_Update$init = A2(
-	_etaque$elm_response$Response$withCmd,
-	_JQuezada0$eoslondonhackathon$Project_Api$getProject(_JQuezada0$eoslondonhackathon$Project_Model$FetchProjectComplete),
-	{activePage: _JQuezada0$eoslondonhackathon$Project_Model$Voting, selectedUserType: _elm_lang$core$Maybe$Nothing, selectedVotingMethod: _elm_lang$core$Maybe$Nothing, project: _elm_lang$core$Maybe$Nothing});
-
-var _JQuezada0$eoslondonhackathon$Update$subscriptions = function (model) {
-	var _p0 = model.activePage;
-	switch (_p0.ctor) {
-		case 'DaicoTemplate':
-			return A2(
-				_elm_lang$core$Platform_Sub$map,
-				function (_p1) {
-					return _JQuezada0$eoslondonhackathon$Model$ChildMsg(
-						_JQuezada0$eoslondonhackathon$Model$DaicoTemplateMsg(_p1));
-				},
-				_JQuezada0$eoslondonhackathon$DaicoTemplate_Update$subscriptions(_p0._0));
-		case 'Daico':
-			return A2(
-				_elm_lang$core$Platform_Sub$map,
-				function (_p2) {
-					return _JQuezada0$eoslondonhackathon$Model$ChildMsg(
-						_JQuezada0$eoslondonhackathon$Model$TokensaleMsg(_p2));
-				},
-				_JQuezada0$eoslondonhackathon$Project_Update$subscriptions(_p0._0));
-		default:
-			return _elm_lang$core$Platform_Sub$none;
-	}
+var _rundis$elm_bootstrap$Bootstrap_Form$colLabelLg = function (options) {
+	return _rundis$elm_bootstrap$Bootstrap_Form$colLabel(
+		{
+			ctor: '::',
+			_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$attrs(
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('col-form-label-lg'),
+					_1: {ctor: '[]'}
+				}),
+			_1: options
+		});
 };
-var _JQuezada0$eoslondonhackathon$Update$update = F2(
-	function (msg, model) {
-		update:
-		while (true) {
-			var _p3 = msg;
-			switch (_p3.ctor) {
-				case 'SetActivePage':
-					switch (_p3._0.ctor) {
-						case 'LandingPage':
-							return _etaque$elm_response$Response$withNone(
-								_elm_lang$core$Native_Utils.update(
-									model,
-									{activePage: _JQuezada0$eoslondonhackathon$Model$Landing}));
-						case 'DaicoTemplatePage':
-							var _p4 = _JQuezada0$eoslondonhackathon$DaicoTemplate_Update$init;
-							var daicoTemplateModel = _p4._0;
-							var daicoTemplateCmd = _p4._1;
-							return A2(
-								_etaque$elm_response$Response$withCmd,
-								A2(
-									_elm_lang$core$Platform_Cmd$map,
-									function (_p5) {
-										return _JQuezada0$eoslondonhackathon$Model$ChildMsg(
-											_JQuezada0$eoslondonhackathon$Model$DaicoTemplateMsg(_p5));
-									},
-									daicoTemplateCmd),
-								{
-									activePage: _JQuezada0$eoslondonhackathon$Model$DaicoTemplate(daicoTemplateModel)
-								});
-						default:
-							var _p6 = _JQuezada0$eoslondonhackathon$Project_Update$init;
-							var tokenSaleModel = _p6._0;
-							var tokenSaleCmd = _p6._1;
-							return A2(
-								_etaque$elm_response$Response$withCmd,
-								A2(
-									_elm_lang$core$Platform_Cmd$map,
-									function (_p7) {
-										return _JQuezada0$eoslondonhackathon$Model$ChildMsg(
-											_JQuezada0$eoslondonhackathon$Model$TokensaleMsg(_p7));
-									},
-									tokenSaleCmd),
-								{
-									activePage: _JQuezada0$eoslondonhackathon$Model$Daico(tokenSaleModel)
-								});
-					}
-				case 'ChildMsg':
-					if (_p3._0.ctor === 'DaicoTemplateMsg') {
-						var _p8 = model.activePage;
-						if (_p8.ctor === 'DaicoTemplate') {
-							return A2(
-								_etaque$elm_response$Response$mapCmd,
-								function (_p9) {
-									return _JQuezada0$eoslondonhackathon$Model$ChildMsg(
-										_JQuezada0$eoslondonhackathon$Model$DaicoTemplateMsg(_p9));
-								},
-								A2(
-									_etaque$elm_response$Response$mapModel,
-									function (daicoTemplateModel) {
-										return _elm_lang$core$Native_Utils.update(
-											model,
-											{
-												activePage: _JQuezada0$eoslondonhackathon$Model$DaicoTemplate(daicoTemplateModel)
-											});
-									},
-									A2(_JQuezada0$eoslondonhackathon$DaicoTemplate_Update$update, _p3._0._0, _p8._0)));
-						} else {
-							return _etaque$elm_response$Response$withNone(model);
-						}
-					} else {
-						var _p10 = model.activePage;
-						if (_p10.ctor === 'Daico') {
-							return A2(
-								_etaque$elm_response$Response$mapCmd,
-								function (_p11) {
-									return _JQuezada0$eoslondonhackathon$Model$ChildMsg(
-										_JQuezada0$eoslondonhackathon$Model$TokensaleMsg(_p11));
-								},
-								A2(
-									_etaque$elm_response$Response$mapModel,
-									function (tokensaleModel) {
-										return _elm_lang$core$Native_Utils.update(
-											model,
-											{
-												activePage: _JQuezada0$eoslondonhackathon$Model$Daico(tokensaleModel)
-											});
-									},
-									A2(_JQuezada0$eoslondonhackathon$Project_Update$update, _p3._0._0, _p10._0)));
-						} else {
-							return _etaque$elm_response$Response$withNone(model);
-						}
-					}
-				default:
-					var projectsCount = A2(_elm_lang$core$Result$withDefault, 0, _p3._0);
-					if (_elm_lang$core$Native_Utils.cmp(projectsCount, 1) < 0) {
-						var _v4 = _JQuezada0$eoslondonhackathon$Model$SetActivePage(_JQuezada0$eoslondonhackathon$Model$LandingPage),
-							_v5 = model;
-						msg = _v4;
-						model = _v5;
-						continue update;
-					} else {
-						var _v6 = _JQuezada0$eoslondonhackathon$Model$SetActivePage(_JQuezada0$eoslondonhackathon$Model$DaicoPage),
-							_v7 = model;
-						msg = _v6;
-						model = _v7;
-						continue update;
-					}
-			}
-		}
-	});
-var _JQuezada0$eoslondonhackathon$Update$init = A2(
-	_etaque$elm_response$Response$withCmd,
-	_JQuezada0$eoslondonhackathon$Api$projectsExist(_JQuezada0$eoslondonhackathon$Model$ExistingProjects),
-	{activePage: _JQuezada0$eoslondonhackathon$Model$Loading});
+var _rundis$elm_bootstrap$Bootstrap_Form$Attrs = function (a) {
+	return {ctor: 'Attrs', _0: a};
+};
 
 var _rundis$elm_bootstrap$Bootstrap_Form_FormInternal$validationToString = function (validation) {
 	var _p0 = validation;
@@ -20494,6 +13119,183 @@ var _rundis$elm_bootstrap$Bootstrap_Form_FormInternal$validationWrapperAttribute
 };
 var _rundis$elm_bootstrap$Bootstrap_Form_FormInternal$Danger = {ctor: 'Danger'};
 var _rundis$elm_bootstrap$Bootstrap_Form_FormInternal$Success = {ctor: 'Success'};
+
+var _rundis$elm_bootstrap$Bootstrap_Form_Textarea$validationAttribute = function (validation) {
+	return _elm_lang$html$Html_Attributes$class(
+		_rundis$elm_bootstrap$Bootstrap_Form_FormInternal$validationToString(validation));
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Textarea$applyModifier = F2(
+	function (modifier, options) {
+		var _p0 = modifier;
+		switch (_p0.ctor) {
+			case 'Id':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						id: _elm_lang$core$Maybe$Just(_p0._0)
+					});
+			case 'Rows':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						rows: _elm_lang$core$Maybe$Just(_p0._0)
+					});
+			case 'Disabled':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{disabled: true});
+			case 'Value':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						value: _elm_lang$core$Maybe$Just(_p0._0)
+					});
+			case 'DefaultValue':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						defaultValue: _elm_lang$core$Maybe$Just(_p0._0)
+					});
+			case 'OnInput':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						onInput: _elm_lang$core$Maybe$Just(_p0._0)
+					});
+			case 'Validation':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						validation: _elm_lang$core$Maybe$Just(_p0._0)
+					});
+			default:
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						attributes: A2(_elm_lang$core$Basics_ops['++'], options.attributes, _p0._0)
+					});
+		}
+	});
+var _rundis$elm_bootstrap$Bootstrap_Form_Textarea$defaultOptions = {
+	id: _elm_lang$core$Maybe$Nothing,
+	rows: _elm_lang$core$Maybe$Nothing,
+	disabled: false,
+	value: _elm_lang$core$Maybe$Nothing,
+	defaultValue: _elm_lang$core$Maybe$Nothing,
+	onInput: _elm_lang$core$Maybe$Nothing,
+	validation: _elm_lang$core$Maybe$Nothing,
+	attributes: {ctor: '[]'}
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Textarea$toAttributes = function (modifiers) {
+	var options = A3(_elm_lang$core$List$foldl, _rundis$elm_bootstrap$Bootstrap_Form_Textarea$applyModifier, _rundis$elm_bootstrap$Bootstrap_Form_Textarea$defaultOptions, modifiers);
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('form-control'),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$disabled(options.disabled),
+				_1: {ctor: '[]'}
+			}
+		},
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			A2(
+				_elm_lang$core$List$filterMap,
+				_elm_lang$core$Basics$identity,
+				{
+					ctor: '::',
+					_0: A2(_elm_lang$core$Maybe$map, _elm_lang$html$Html_Attributes$id, options.id),
+					_1: {
+						ctor: '::',
+						_0: A2(_elm_lang$core$Maybe$map, _elm_lang$html$Html_Attributes$rows, options.rows),
+						_1: {
+							ctor: '::',
+							_0: A2(_elm_lang$core$Maybe$map, _elm_lang$html$Html_Attributes$value, options.value),
+							_1: {
+								ctor: '::',
+								_0: A2(_elm_lang$core$Maybe$map, _elm_lang$html$Html_Attributes$defaultValue, options.defaultValue),
+								_1: {
+									ctor: '::',
+									_0: A2(_elm_lang$core$Maybe$map, _elm_lang$html$Html_Events$onInput, options.onInput),
+									_1: {
+										ctor: '::',
+										_0: A2(_elm_lang$core$Maybe$map, _rundis$elm_bootstrap$Bootstrap_Form_Textarea$validationAttribute, options.validation),
+										_1: {ctor: '[]'}
+									}
+								}
+							}
+						}
+					}
+				}),
+			options.attributes));
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Textarea$view = function (_p1) {
+	var _p2 = _p1;
+	return A2(
+		_elm_lang$html$Html$textarea,
+		_rundis$elm_bootstrap$Bootstrap_Form_Textarea$toAttributes(_p2._0.options),
+		{ctor: '[]'});
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Textarea$Options = F8(
+	function (a, b, c, d, e, f, g, h) {
+		return {id: a, rows: b, disabled: c, value: d, defaultValue: e, onInput: f, validation: g, attributes: h};
+	});
+var _rundis$elm_bootstrap$Bootstrap_Form_Textarea$Textarea = function (a) {
+	return {ctor: 'Textarea', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Textarea$create = function (options) {
+	return _rundis$elm_bootstrap$Bootstrap_Form_Textarea$Textarea(
+		{options: options});
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Textarea$textarea = function (_p3) {
+	return _rundis$elm_bootstrap$Bootstrap_Form_Textarea$view(
+		_rundis$elm_bootstrap$Bootstrap_Form_Textarea$create(_p3));
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Textarea$Attrs = function (a) {
+	return {ctor: 'Attrs', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Textarea$attrs = function (attrs) {
+	return _rundis$elm_bootstrap$Bootstrap_Form_Textarea$Attrs(attrs);
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Textarea$Validation = function (a) {
+	return {ctor: 'Validation', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Textarea$success = _rundis$elm_bootstrap$Bootstrap_Form_Textarea$Validation(_rundis$elm_bootstrap$Bootstrap_Form_FormInternal$Success);
+var _rundis$elm_bootstrap$Bootstrap_Form_Textarea$danger = _rundis$elm_bootstrap$Bootstrap_Form_Textarea$Validation(_rundis$elm_bootstrap$Bootstrap_Form_FormInternal$Danger);
+var _rundis$elm_bootstrap$Bootstrap_Form_Textarea$OnInput = function (a) {
+	return {ctor: 'OnInput', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Textarea$onInput = function (toMsg) {
+	return _rundis$elm_bootstrap$Bootstrap_Form_Textarea$OnInput(toMsg);
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Textarea$DefaultValue = function (a) {
+	return {ctor: 'DefaultValue', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Textarea$defaultValue = function (value) {
+	return _rundis$elm_bootstrap$Bootstrap_Form_Textarea$DefaultValue(value);
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Textarea$Value = function (a) {
+	return {ctor: 'Value', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Textarea$value = function (value) {
+	return _rundis$elm_bootstrap$Bootstrap_Form_Textarea$Value(value);
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Textarea$Disabled = {ctor: 'Disabled'};
+var _rundis$elm_bootstrap$Bootstrap_Form_Textarea$disabled = _rundis$elm_bootstrap$Bootstrap_Form_Textarea$Disabled;
+var _rundis$elm_bootstrap$Bootstrap_Form_Textarea$Rows = function (a) {
+	return {ctor: 'Rows', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Textarea$rows = function (rows) {
+	return _rundis$elm_bootstrap$Bootstrap_Form_Textarea$Rows(rows);
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Textarea$Id = function (a) {
+	return {ctor: 'Id', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Textarea$id = function (id) {
+	return _rundis$elm_bootstrap$Bootstrap_Form_Textarea$Id(id);
+};
 
 var _rundis$elm_bootstrap$Bootstrap_Form_Select$validationAttribute = function (validation) {
 	return _elm_lang$html$Html_Attributes$class(
@@ -20701,275 +13503,2940 @@ var _rundis$elm_bootstrap$Bootstrap_Form_Select$Size = function (a) {
 var _rundis$elm_bootstrap$Bootstrap_Form_Select$small = _rundis$elm_bootstrap$Bootstrap_Form_Select$Size(_rundis$elm_bootstrap$Bootstrap_General_Internal$SM);
 var _rundis$elm_bootstrap$Bootstrap_Form_Select$large = _rundis$elm_bootstrap$Bootstrap_Form_Select$Size(_rundis$elm_bootstrap$Bootstrap_General_Internal$LG);
 
-var _JQuezada0$eoslondonhackathon$Spinner$view = A2(
-	_elm_lang$html$Html$div,
-	{
-		ctor: '::',
-		_0: _elm_lang$html$Html_Attributes$class('lds-roller'),
-		_1: {ctor: '[]'}
-	},
-	{ctor: '[]'});
-
-var _JQuezada0$eoslondonhackathon$Project_View$viewUserTypeView = F3(
-	function (model, project, userType) {
-		var _p0 = userType;
-		if (_p0.ctor === 'GeneralAccount') {
-			var alreadyVoted = function (vote) {
-				return _elm_lang$html$Html$text(
-					A2(
-						_elm_lang$core$Basics_ops['++'],
-						'Congrats! You voted. Your choice was ',
-						vote.pick ? 'Yes' : 'No'));
-			};
-			var emptyUi = _elm_lang$html$Html$text('You don\'t have any proposed votes, please try logging in from a verified ID Account');
-			var proposalUi = function (poll) {
-				var _p1 = poll.voteProposals;
-				if (_p1.ctor === '[]') {
-					return emptyUi;
-				} else {
-					var _p3 = _p1._0;
-					return A2(
-						_elm_lang$html$Html$div,
-						{ctor: '[]'},
-						{
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$h4,
-								{ctor: '[]'},
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html$text('You have an open vote suggestion, do you agree?'),
-									_1: {ctor: '[]'}
-								}),
-							_1: {
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$h5,
-									{ctor: '[]'},
-									{
-										ctor: '::',
-										_0: function () {
-											var pick = function () {
-												var _p2 = _p3.pick;
-												if (_p2 === true) {
-													return 'Yes';
-												} else {
-													return 'No';
-												}
-											}();
-											return _elm_lang$html$Html$text(
-												A2(_elm_lang$core$Basics_ops['++'], 'The vote was: ', pick));
-										}(),
-										_1: {ctor: '[]'}
-									}),
-								_1: {
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$div,
-										{ctor: '[]'},
-										{
-											ctor: '::',
-											_0: A2(
-												_rundis$elm_bootstrap$Bootstrap_Button$button,
-												{
-													ctor: '::',
-													_0: _rundis$elm_bootstrap$Bootstrap_Button$primary,
-													_1: {
-														ctor: '::',
-														_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(
-															_JQuezada0$eoslondonhackathon$Project_Model$SubmitVote(
-																{icoaccount: 'crowdsale', trvoter: 'delegate', idvoter: _p3.to, currentVoter: 'delegate', pick: _p3.pick})),
-														_1: {ctor: '[]'}
-													}
-												},
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html$text('Agree'),
-													_1: {ctor: '[]'}
-												}),
-											_1: {
-												ctor: '::',
-												_0: A2(
-													_rundis$elm_bootstrap$Bootstrap_Button$button,
-													{
-														ctor: '::',
-														_0: _rundis$elm_bootstrap$Bootstrap_Button$primary,
-														_1: {
-															ctor: '::',
-															_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(
-																_JQuezada0$eoslondonhackathon$Project_Model$RemoveSuggestion(
-																	{from: 'crowdsale'})),
-															_1: {ctor: '[]'}
-														}
-													},
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html$text('Disagree'),
-														_1: {ctor: '[]'}
-													}),
-												_1: {ctor: '[]'}
-											}
-										}),
-									_1: {ctor: '[]'}
-								}
-							}
-						});
-				}
-			};
-			var _p4 = project.polls;
-			if (_p4.ctor === '[]') {
-				return emptyUi;
-			} else {
-				var _p7 = _p4._0;
-				var _p5 = _p7.votes;
-				if (_p5.ctor === '::') {
-					var _p6 = _p5._0;
-					return _elm_lang$core$Native_Utils.eq(_p6.trvoter, 'delegate') ? alreadyVoted(_p6) : proposalUi(_p7);
-				} else {
-					return proposalUi(_p7);
-				}
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$validationAttribute = function (validation) {
+	return _elm_lang$html$Html_Attributes$class(
+		_rundis$elm_bootstrap$Bootstrap_Form_FormInternal$validationToString(validation));
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$typeAttribute = function (inputType) {
+	return _elm_lang$html$Html_Attributes$type_(
+		function () {
+			var _p0 = inputType;
+			switch (_p0.ctor) {
+				case 'Text':
+					return 'text';
+				case 'Password':
+					return 'password';
+				case 'DatetimeLocal':
+					return 'datetime-local';
+				case 'Date':
+					return 'date';
+				case 'Month':
+					return 'month';
+				case 'Time':
+					return 'time';
+				case 'Week':
+					return 'week';
+				case 'Number':
+					return 'number';
+				case 'Email':
+					return 'email';
+				case 'Url':
+					return 'url';
+				case 'Search':
+					return 'search';
+				case 'Tel':
+					return 'tel';
+				default:
+					return 'color';
 			}
-		} else {
-			var emptyUi = A2(
-				_elm_lang$html$Html$div,
-				{ctor: '[]'},
-				{
+		}());
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$sizeAttribute = function (size) {
+	return A2(
+		_elm_lang$core$Maybe$map,
+		function (s) {
+			return _elm_lang$html$Html_Attributes$class(
+				A2(_elm_lang$core$Basics_ops['++'], 'form-control-', s));
+		},
+		_rundis$elm_bootstrap$Bootstrap_General_Internal$screenSizeOption(size));
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$applyModifier = F2(
+	function (modifier, options) {
+		var _p1 = modifier;
+		switch (_p1.ctor) {
+			case 'Size':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						size: _elm_lang$core$Maybe$Just(_p1._0)
+					});
+			case 'Id':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						id: _elm_lang$core$Maybe$Just(_p1._0)
+					});
+			case 'Type':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{tipe: _p1._0});
+			case 'Disabled':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{disabled: _p1._0});
+			case 'Value':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						value: _elm_lang$core$Maybe$Just(_p1._0)
+					});
+			case 'DefaultValue':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						defaultValue: _elm_lang$core$Maybe$Just(_p1._0)
+					});
+			case 'Placeholder':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						placeholder: _elm_lang$core$Maybe$Just(_p1._0)
+					});
+			case 'OnInput':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						onInput: _elm_lang$core$Maybe$Just(_p1._0)
+					});
+			case 'Validation':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						validation: _elm_lang$core$Maybe$Just(_p1._0)
+					});
+			case 'Readonly':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{readonly: _p1._0});
+			default:
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						attributes: A2(_elm_lang$core$Basics_ops['++'], options.attributes, _p1._0)
+					});
+		}
+	});
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Options = function (a) {
+	return function (b) {
+		return function (c) {
+			return function (d) {
+				return function (e) {
+					return function (f) {
+						return function (g) {
+							return function (h) {
+								return function (i) {
+									return function (j) {
+										return function (k) {
+											return {tipe: a, id: b, size: c, disabled: d, value: e, defaultValue: f, placeholder: g, onInput: h, validation: i, readonly: j, attributes: k};
+										};
+									};
+								};
+							};
+						};
+					};
+				};
+			};
+		};
+	};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Input = function (a) {
+	return {ctor: 'Input', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Attrs = function (a) {
+	return {ctor: 'Attrs', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$attrs = function (attrs) {
+	return _rundis$elm_bootstrap$Bootstrap_Form_Input$Attrs(attrs);
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Readonly = function (a) {
+	return {ctor: 'Readonly', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$readonly = function (readonly) {
+	return _rundis$elm_bootstrap$Bootstrap_Form_Input$Readonly(readonly);
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Placeholder = function (a) {
+	return {ctor: 'Placeholder', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$placeholder = function (value) {
+	return _rundis$elm_bootstrap$Bootstrap_Form_Input$Placeholder(value);
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Validation = function (a) {
+	return {ctor: 'Validation', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$success = _rundis$elm_bootstrap$Bootstrap_Form_Input$Validation(_rundis$elm_bootstrap$Bootstrap_Form_FormInternal$Success);
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$danger = _rundis$elm_bootstrap$Bootstrap_Form_Input$Validation(_rundis$elm_bootstrap$Bootstrap_Form_FormInternal$Danger);
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$OnInput = function (a) {
+	return {ctor: 'OnInput', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$onInput = function (toMsg) {
+	return _rundis$elm_bootstrap$Bootstrap_Form_Input$OnInput(toMsg);
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$DefaultValue = function (a) {
+	return {ctor: 'DefaultValue', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$defaultValue = function (value) {
+	return _rundis$elm_bootstrap$Bootstrap_Form_Input$DefaultValue(value);
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Value = function (a) {
+	return {ctor: 'Value', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$value = function (value) {
+	return _rundis$elm_bootstrap$Bootstrap_Form_Input$Value(value);
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Disabled = function (a) {
+	return {ctor: 'Disabled', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$disabled = function (disabled) {
+	return _rundis$elm_bootstrap$Bootstrap_Form_Input$Disabled(disabled);
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Type = function (a) {
+	return {ctor: 'Type', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$create = F2(
+	function (tipe, options) {
+		return _rundis$elm_bootstrap$Bootstrap_Form_Input$Input(
+			{
+				options: {
 					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$div,
-						{ctor: '[]'},
-						{
-							ctor: '::',
-							_0: A2(
-								_rundis$elm_bootstrap$Bootstrap_Button$button,
-								{
-									ctor: '::',
-									_0: _rundis$elm_bootstrap$Bootstrap_Button$primary,
-									_1: {
-										ctor: '::',
-										_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(
-											_JQuezada0$eoslondonhackathon$Project_Model$UpdateSelectedVotingMethod(
-												_elm_lang$core$Maybe$Just(_JQuezada0$eoslondonhackathon$Project_Model$IdAccountVote))),
-										_1: {ctor: '[]'}
-									}
-								},
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html$text('Vote from my verified ID Account'),
-									_1: {ctor: '[]'}
-								}),
-							_1: {ctor: '[]'}
-						}),
+					_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$Type(tipe),
+					_1: options
+				}
+			});
+	});
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Id = function (a) {
+	return {ctor: 'Id', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$id = function (id) {
+	return _rundis$elm_bootstrap$Bootstrap_Form_Input$Id(id);
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Size = function (a) {
+	return {ctor: 'Size', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$small = _rundis$elm_bootstrap$Bootstrap_Form_Input$Size(_rundis$elm_bootstrap$Bootstrap_General_Internal$SM);
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$large = _rundis$elm_bootstrap$Bootstrap_Form_Input$Size(_rundis$elm_bootstrap$Bootstrap_General_Internal$LG);
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Color = {ctor: 'Color'};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Tel = {ctor: 'Tel'};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Search = {ctor: 'Search'};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Url = {ctor: 'Url'};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Email = {ctor: 'Email'};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Number = {ctor: 'Number'};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Week = {ctor: 'Week'};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Time = {ctor: 'Time'};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Month = {ctor: 'Month'};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Date = {ctor: 'Date'};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$DatetimeLocal = {ctor: 'DatetimeLocal'};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Password = {ctor: 'Password'};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Text = {ctor: 'Text'};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$defaultOptions = {
+	tipe: _rundis$elm_bootstrap$Bootstrap_Form_Input$Text,
+	id: _elm_lang$core$Maybe$Nothing,
+	size: _elm_lang$core$Maybe$Nothing,
+	disabled: false,
+	value: _elm_lang$core$Maybe$Nothing,
+	defaultValue: _elm_lang$core$Maybe$Nothing,
+	placeholder: _elm_lang$core$Maybe$Nothing,
+	onInput: _elm_lang$core$Maybe$Nothing,
+	validation: _elm_lang$core$Maybe$Nothing,
+	readonly: false,
+	attributes: {ctor: '[]'}
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$toAttributes = function (modifiers) {
+	var options = A3(_elm_lang$core$List$foldl, _rundis$elm_bootstrap$Bootstrap_Form_Input$applyModifier, _rundis$elm_bootstrap$Bootstrap_Form_Input$defaultOptions, modifiers);
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('form-control'),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$disabled(options.disabled),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$readonly(options.readonly),
 					_1: {
 						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$div,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('mt-2'),
-								_1: {ctor: '[]'}
-							},
-							{
-								ctor: '::',
-								_0: A2(
-									_rundis$elm_bootstrap$Bootstrap_Button$button,
-									{
-										ctor: '::',
-										_0: _rundis$elm_bootstrap$Bootstrap_Button$primary,
-										_1: {
-											ctor: '::',
-											_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(
-												_JQuezada0$eoslondonhackathon$Project_Model$UpdateSelectedVotingMethod(
-													_elm_lang$core$Maybe$Just(_JQuezada0$eoslondonhackathon$Project_Model$DelegateVote))),
-											_1: {ctor: '[]'}
-										}
-									},
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html$text('Propose a vote on behalf of an alternate account'),
-										_1: {ctor: '[]'}
-									}),
-								_1: {ctor: '[]'}
-							}),
+						_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$typeAttribute(options.tipe),
 						_1: {ctor: '[]'}
 					}
-				});
-			var _p8 = project.polls;
-			if (_p8.ctor === '[]') {
-				return emptyUi;
-			} else {
-				var _p11 = _p8._0;
-				var _p9 = _p11.voteProposals;
-				if (_p9.ctor === '[]') {
-					return emptyUi;
-				} else {
-					if (_elm_lang$core$Native_Utils.eq(_p9._0.to, 'idaccount')) {
-						return A2(
-							_elm_lang$html$Html$div,
-							{ctor: '[]'},
-							{
+				}
+			}
+		},
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			A2(
+				_elm_lang$core$List$filterMap,
+				_elm_lang$core$Basics$identity,
+				{
+					ctor: '::',
+					_0: A2(_elm_lang$core$Maybe$map, _elm_lang$html$Html_Attributes$id, options.id),
+					_1: {
+						ctor: '::',
+						_0: A2(_elm_lang$core$Maybe$andThen, _rundis$elm_bootstrap$Bootstrap_Form_Input$sizeAttribute, options.size),
+						_1: {
+							ctor: '::',
+							_0: A2(_elm_lang$core$Maybe$map, _elm_lang$html$Html_Attributes$value, options.value),
+							_1: {
 								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$h4,
-									{ctor: '[]'},
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html$text('Looks like you\'ve already suggested a vote for an alternate account. Please confirm from your alternate account'),
-										_1: {ctor: '[]'}
-									}),
+								_0: A2(_elm_lang$core$Maybe$map, _elm_lang$html$Html_Attributes$defaultValue, options.defaultValue),
 								_1: {
 									ctor: '::',
-									_0: A2(
-										_rundis$elm_bootstrap$Bootstrap_Button$button,
-										{
+									_0: A2(_elm_lang$core$Maybe$map, _elm_lang$html$Html_Attributes$placeholder, options.placeholder),
+									_1: {
+										ctor: '::',
+										_0: A2(_elm_lang$core$Maybe$map, _elm_lang$html$Html_Events$onInput, options.onInput),
+										_1: {
 											ctor: '::',
-											_0: _rundis$elm_bootstrap$Bootstrap_Button$danger,
+											_0: A2(_elm_lang$core$Maybe$map, _rundis$elm_bootstrap$Bootstrap_Form_Input$validationAttribute, options.validation),
+											_1: {ctor: '[]'}
+										}
+									}
+								}
+							}
+						}
+					}
+				}),
+			options.attributes));
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$view = function (_p2) {
+	var _p3 = _p2;
+	return A2(
+		_elm_lang$html$Html$input,
+		_rundis$elm_bootstrap$Bootstrap_Form_Input$toAttributes(_p3._0.options),
+		{ctor: '[]'});
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$input = F2(
+	function (tipe, options) {
+		return _rundis$elm_bootstrap$Bootstrap_Form_Input$view(
+			A2(_rundis$elm_bootstrap$Bootstrap_Form_Input$create, tipe, options));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$text = _rundis$elm_bootstrap$Bootstrap_Form_Input$input(_rundis$elm_bootstrap$Bootstrap_Form_Input$Text);
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$password = _rundis$elm_bootstrap$Bootstrap_Form_Input$input(_rundis$elm_bootstrap$Bootstrap_Form_Input$Password);
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$datetimeLocal = _rundis$elm_bootstrap$Bootstrap_Form_Input$input(_rundis$elm_bootstrap$Bootstrap_Form_Input$DatetimeLocal);
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$date = _rundis$elm_bootstrap$Bootstrap_Form_Input$input(_rundis$elm_bootstrap$Bootstrap_Form_Input$Date);
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$month = _rundis$elm_bootstrap$Bootstrap_Form_Input$input(_rundis$elm_bootstrap$Bootstrap_Form_Input$Month);
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$time = _rundis$elm_bootstrap$Bootstrap_Form_Input$input(_rundis$elm_bootstrap$Bootstrap_Form_Input$Time);
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$week = _rundis$elm_bootstrap$Bootstrap_Form_Input$input(_rundis$elm_bootstrap$Bootstrap_Form_Input$Week);
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$number = _rundis$elm_bootstrap$Bootstrap_Form_Input$input(_rundis$elm_bootstrap$Bootstrap_Form_Input$Number);
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$email = _rundis$elm_bootstrap$Bootstrap_Form_Input$input(_rundis$elm_bootstrap$Bootstrap_Form_Input$Email);
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$url = _rundis$elm_bootstrap$Bootstrap_Form_Input$input(_rundis$elm_bootstrap$Bootstrap_Form_Input$Url);
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$search = _rundis$elm_bootstrap$Bootstrap_Form_Input$input(_rundis$elm_bootstrap$Bootstrap_Form_Input$Search);
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$tel = _rundis$elm_bootstrap$Bootstrap_Form_Input$input(_rundis$elm_bootstrap$Bootstrap_Form_Input$Tel);
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$color = _rundis$elm_bootstrap$Bootstrap_Form_Input$input(_rundis$elm_bootstrap$Bootstrap_Form_Input$Color);
+
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$py5Xl = _elm_lang$html$Html_Attributes$class('py-xl-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$py4Xl = _elm_lang$html$Html_Attributes$class('py-xl-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$py3Xl = _elm_lang$html$Html_Attributes$class('py-xl-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$py2Xl = _elm_lang$html$Html_Attributes$class('py-xl-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$py1Xl = _elm_lang$html$Html_Attributes$class('py-xl-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$py0Xl = _elm_lang$html$Html_Attributes$class('py-xl-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$px5Xl = _elm_lang$html$Html_Attributes$class('px-xl-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$px4Xl = _elm_lang$html$Html_Attributes$class('px-xl-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$px3Xl = _elm_lang$html$Html_Attributes$class('px-xl-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$px2Xl = _elm_lang$html$Html_Attributes$class('px-xl-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$px1Xl = _elm_lang$html$Html_Attributes$class('px-xl-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$px0Xl = _elm_lang$html$Html_Attributes$class('px-xl-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pr5Xl = _elm_lang$html$Html_Attributes$class('pr-xl-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pr4Xl = _elm_lang$html$Html_Attributes$class('pr-xl-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pr3Xl = _elm_lang$html$Html_Attributes$class('pr-xl-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pr2Xl = _elm_lang$html$Html_Attributes$class('pr-xl-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pr1Xl = _elm_lang$html$Html_Attributes$class('pr-xl-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pr0Xl = _elm_lang$html$Html_Attributes$class('pr-xl-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pl5Xl = _elm_lang$html$Html_Attributes$class('pl-xl-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pl4Xl = _elm_lang$html$Html_Attributes$class('pl-xl-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pl3Xl = _elm_lang$html$Html_Attributes$class('pl-xl-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pl2Xl = _elm_lang$html$Html_Attributes$class('pl-xl-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pl1Xl = _elm_lang$html$Html_Attributes$class('pl-xl-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pl0Xl = _elm_lang$html$Html_Attributes$class('pl-xl-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pb5Xl = _elm_lang$html$Html_Attributes$class('pb-xl-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pb4Xl = _elm_lang$html$Html_Attributes$class('pb-xl-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pb3Xl = _elm_lang$html$Html_Attributes$class('pb-xl-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pb2Xl = _elm_lang$html$Html_Attributes$class('pb-xl-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pb1Xl = _elm_lang$html$Html_Attributes$class('pb-xl-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pb0Xl = _elm_lang$html$Html_Attributes$class('pb-xl-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pt5Xl = _elm_lang$html$Html_Attributes$class('pt-xl-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pt4Xl = _elm_lang$html$Html_Attributes$class('pt-xl-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pt3Xl = _elm_lang$html$Html_Attributes$class('pt-xl-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pt2Xl = _elm_lang$html$Html_Attributes$class('pt-xl-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pt1Xl = _elm_lang$html$Html_Attributes$class('pt-xl-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pt0Xl = _elm_lang$html$Html_Attributes$class('pt-xl-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$p5Xl = _elm_lang$html$Html_Attributes$class('p-xl-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$p4Xl = _elm_lang$html$Html_Attributes$class('p-xl-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$p3Xl = _elm_lang$html$Html_Attributes$class('p-xl-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$p2Xl = _elm_lang$html$Html_Attributes$class('p-xl-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$p1Xl = _elm_lang$html$Html_Attributes$class('p-xl-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$p0Xl = _elm_lang$html$Html_Attributes$class('p-xl-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$py5Lg = _elm_lang$html$Html_Attributes$class('py-lg-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$py4Lg = _elm_lang$html$Html_Attributes$class('py-lg-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$py3Lg = _elm_lang$html$Html_Attributes$class('py-lg-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$py2Lg = _elm_lang$html$Html_Attributes$class('py-lg-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$py1Lg = _elm_lang$html$Html_Attributes$class('py-lg-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$py0Lg = _elm_lang$html$Html_Attributes$class('py-lg-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$px5Lg = _elm_lang$html$Html_Attributes$class('px-lg-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$px4Lg = _elm_lang$html$Html_Attributes$class('px-lg-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$px3Lg = _elm_lang$html$Html_Attributes$class('px-lg-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$px2Lg = _elm_lang$html$Html_Attributes$class('px-lg-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$px1Lg = _elm_lang$html$Html_Attributes$class('px-lg-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$px0Lg = _elm_lang$html$Html_Attributes$class('px-lg-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pr5Lg = _elm_lang$html$Html_Attributes$class('pr-lg-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pr4Lg = _elm_lang$html$Html_Attributes$class('pr-lg-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pr3Lg = _elm_lang$html$Html_Attributes$class('pr-lg-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pr2Lg = _elm_lang$html$Html_Attributes$class('pr-lg-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pr1Lg = _elm_lang$html$Html_Attributes$class('pr-lg-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pr0Lg = _elm_lang$html$Html_Attributes$class('pr-lg-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pl5Lg = _elm_lang$html$Html_Attributes$class('pl-lg-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pl4Lg = _elm_lang$html$Html_Attributes$class('pl-lg-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pl3Lg = _elm_lang$html$Html_Attributes$class('pl-lg-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pl2Lg = _elm_lang$html$Html_Attributes$class('pl-lg-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pl1Lg = _elm_lang$html$Html_Attributes$class('pl-lg-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pl0Lg = _elm_lang$html$Html_Attributes$class('pl-lg-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pb5Lg = _elm_lang$html$Html_Attributes$class('pb-lg-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pb4Lg = _elm_lang$html$Html_Attributes$class('pb-lg-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pb3Lg = _elm_lang$html$Html_Attributes$class('pb-lg-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pb2Lg = _elm_lang$html$Html_Attributes$class('pb-lg-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pb1Lg = _elm_lang$html$Html_Attributes$class('pb-lg-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pb0Lg = _elm_lang$html$Html_Attributes$class('pb-lg-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pt5Lg = _elm_lang$html$Html_Attributes$class('pt-lg-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pt4Lg = _elm_lang$html$Html_Attributes$class('pt-lg-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pt3Lg = _elm_lang$html$Html_Attributes$class('pt-lg-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pt2Lg = _elm_lang$html$Html_Attributes$class('pt-lg-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pt1Lg = _elm_lang$html$Html_Attributes$class('pt-lg-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pt0Lg = _elm_lang$html$Html_Attributes$class('pt-lg-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$p5Lg = _elm_lang$html$Html_Attributes$class('p-lg-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$p4Lg = _elm_lang$html$Html_Attributes$class('p-lg-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$p3Lg = _elm_lang$html$Html_Attributes$class('p-lg-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$p2Lg = _elm_lang$html$Html_Attributes$class('p-lg-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$p1Lg = _elm_lang$html$Html_Attributes$class('p-lg-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$p0Lg = _elm_lang$html$Html_Attributes$class('p-lg-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$py5Md = _elm_lang$html$Html_Attributes$class('py-md-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$py4Md = _elm_lang$html$Html_Attributes$class('py-md-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$py3Md = _elm_lang$html$Html_Attributes$class('py-md-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$py2Md = _elm_lang$html$Html_Attributes$class('py-md-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$py1Md = _elm_lang$html$Html_Attributes$class('py-md-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$py0Md = _elm_lang$html$Html_Attributes$class('py-md-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$px5Md = _elm_lang$html$Html_Attributes$class('px-md-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$px4Md = _elm_lang$html$Html_Attributes$class('px-md-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$px3Md = _elm_lang$html$Html_Attributes$class('px-md-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$px2Md = _elm_lang$html$Html_Attributes$class('px-md-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$px1Md = _elm_lang$html$Html_Attributes$class('px-md-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$px0Md = _elm_lang$html$Html_Attributes$class('px-md-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pr5Md = _elm_lang$html$Html_Attributes$class('pr-md-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pr4Md = _elm_lang$html$Html_Attributes$class('pr-md-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pr3Md = _elm_lang$html$Html_Attributes$class('pr-md-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pr2Md = _elm_lang$html$Html_Attributes$class('pr-md-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pr1Md = _elm_lang$html$Html_Attributes$class('pr-md-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pr0Md = _elm_lang$html$Html_Attributes$class('pr-md-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pl5Md = _elm_lang$html$Html_Attributes$class('pl-md-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pl4Md = _elm_lang$html$Html_Attributes$class('pl-md-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pl3Md = _elm_lang$html$Html_Attributes$class('pl-md-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pl2Md = _elm_lang$html$Html_Attributes$class('pl-md-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pl1Md = _elm_lang$html$Html_Attributes$class('pl-md-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pl0Md = _elm_lang$html$Html_Attributes$class('pl-md-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pb5Md = _elm_lang$html$Html_Attributes$class('pb-md-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pb4Md = _elm_lang$html$Html_Attributes$class('pb-md-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pb3Md = _elm_lang$html$Html_Attributes$class('pb-md-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pb2Md = _elm_lang$html$Html_Attributes$class('pb-md-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pb1Md = _elm_lang$html$Html_Attributes$class('pb-md-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pb0Md = _elm_lang$html$Html_Attributes$class('pb-md-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pt5Md = _elm_lang$html$Html_Attributes$class('pt-md-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pt4Md = _elm_lang$html$Html_Attributes$class('pt-md-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pt3Md = _elm_lang$html$Html_Attributes$class('pt-md-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pt2Md = _elm_lang$html$Html_Attributes$class('pt-md-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pt1Md = _elm_lang$html$Html_Attributes$class('pt-md-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pt0Md = _elm_lang$html$Html_Attributes$class('pt-md-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$p5Md = _elm_lang$html$Html_Attributes$class('p-md-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$p4Md = _elm_lang$html$Html_Attributes$class('p-md-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$p3Md = _elm_lang$html$Html_Attributes$class('p-md-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$p2Md = _elm_lang$html$Html_Attributes$class('p-md-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$p1Md = _elm_lang$html$Html_Attributes$class('p-md-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$p0Md = _elm_lang$html$Html_Attributes$class('p-md-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$py5Sm = _elm_lang$html$Html_Attributes$class('py-sm-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$py4Sm = _elm_lang$html$Html_Attributes$class('py-sm-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$py3Sm = _elm_lang$html$Html_Attributes$class('py-sm-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$py2Sm = _elm_lang$html$Html_Attributes$class('py-sm-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$py1Sm = _elm_lang$html$Html_Attributes$class('py-sm-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$py0Sm = _elm_lang$html$Html_Attributes$class('py-sm-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$px5Sm = _elm_lang$html$Html_Attributes$class('px-sm-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$px4Sm = _elm_lang$html$Html_Attributes$class('px-sm-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$px3Sm = _elm_lang$html$Html_Attributes$class('px-sm-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$px2Sm = _elm_lang$html$Html_Attributes$class('px-sm-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$px1Sm = _elm_lang$html$Html_Attributes$class('px-sm-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$px0Sm = _elm_lang$html$Html_Attributes$class('px-sm-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pr5Sm = _elm_lang$html$Html_Attributes$class('pr-sm-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pr4Sm = _elm_lang$html$Html_Attributes$class('pr-sm-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pr3Sm = _elm_lang$html$Html_Attributes$class('pr-sm-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pr2Sm = _elm_lang$html$Html_Attributes$class('pr-sm-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pr1Sm = _elm_lang$html$Html_Attributes$class('pr-sm-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pr0Sm = _elm_lang$html$Html_Attributes$class('pr-sm-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pl5Sm = _elm_lang$html$Html_Attributes$class('pl-sm-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pl4Sm = _elm_lang$html$Html_Attributes$class('pl-sm-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pl3Sm = _elm_lang$html$Html_Attributes$class('pl-sm-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pl2Sm = _elm_lang$html$Html_Attributes$class('pl-sm-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pl1Sm = _elm_lang$html$Html_Attributes$class('pl-sm-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pl0Sm = _elm_lang$html$Html_Attributes$class('pl-sm-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pb5Sm = _elm_lang$html$Html_Attributes$class('pb-sm-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pb4Sm = _elm_lang$html$Html_Attributes$class('pb-sm-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pb3Sm = _elm_lang$html$Html_Attributes$class('pb-sm-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pb2Sm = _elm_lang$html$Html_Attributes$class('pb-sm-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pb1Sm = _elm_lang$html$Html_Attributes$class('pb-sm-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pb0Sm = _elm_lang$html$Html_Attributes$class('pb-sm-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pt5Sm = _elm_lang$html$Html_Attributes$class('pt-sm-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pt4Sm = _elm_lang$html$Html_Attributes$class('pt-sm-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pt3Sm = _elm_lang$html$Html_Attributes$class('pt-sm-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pt2Sm = _elm_lang$html$Html_Attributes$class('pt-sm-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pt1Sm = _elm_lang$html$Html_Attributes$class('pt-sm-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pt0Sm = _elm_lang$html$Html_Attributes$class('pt-sm-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$p5Sm = _elm_lang$html$Html_Attributes$class('p-sm-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$p4Sm = _elm_lang$html$Html_Attributes$class('p-sm-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$p3Sm = _elm_lang$html$Html_Attributes$class('p-sm-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$p2Sm = _elm_lang$html$Html_Attributes$class('p-sm-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$p1Sm = _elm_lang$html$Html_Attributes$class('p-sm-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$p0Sm = _elm_lang$html$Html_Attributes$class('p-sm-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$py5 = _elm_lang$html$Html_Attributes$class('py-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$py4 = _elm_lang$html$Html_Attributes$class('py-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$py3 = _elm_lang$html$Html_Attributes$class('py-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$py2 = _elm_lang$html$Html_Attributes$class('py-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$py1 = _elm_lang$html$Html_Attributes$class('py-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$py0 = _elm_lang$html$Html_Attributes$class('py-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$px5 = _elm_lang$html$Html_Attributes$class('px-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$px4 = _elm_lang$html$Html_Attributes$class('px-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$px3 = _elm_lang$html$Html_Attributes$class('px-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$px2 = _elm_lang$html$Html_Attributes$class('px-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$px1 = _elm_lang$html$Html_Attributes$class('px-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$px0 = _elm_lang$html$Html_Attributes$class('px-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pr5 = _elm_lang$html$Html_Attributes$class('pr-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pr4 = _elm_lang$html$Html_Attributes$class('pr-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pr3 = _elm_lang$html$Html_Attributes$class('pr-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pr2 = _elm_lang$html$Html_Attributes$class('pr-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pr1 = _elm_lang$html$Html_Attributes$class('pr-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pr0 = _elm_lang$html$Html_Attributes$class('pr-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pl5 = _elm_lang$html$Html_Attributes$class('pl-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pl4 = _elm_lang$html$Html_Attributes$class('pl-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pl3 = _elm_lang$html$Html_Attributes$class('pl-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pl2 = _elm_lang$html$Html_Attributes$class('pl-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pl1 = _elm_lang$html$Html_Attributes$class('pl-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pl0 = _elm_lang$html$Html_Attributes$class('pl-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pb5 = _elm_lang$html$Html_Attributes$class('pb-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pb4 = _elm_lang$html$Html_Attributes$class('pb-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pb3 = _elm_lang$html$Html_Attributes$class('pb-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pb2 = _elm_lang$html$Html_Attributes$class('pb-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pb1 = _elm_lang$html$Html_Attributes$class('pb-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pb0 = _elm_lang$html$Html_Attributes$class('pb-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pt5 = _elm_lang$html$Html_Attributes$class('pt-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pt4 = _elm_lang$html$Html_Attributes$class('pt-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pt3 = _elm_lang$html$Html_Attributes$class('pt-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pt2 = _elm_lang$html$Html_Attributes$class('pt-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pt1 = _elm_lang$html$Html_Attributes$class('pt-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pt0 = _elm_lang$html$Html_Attributes$class('pt-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$p5 = _elm_lang$html$Html_Attributes$class('p-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$p4 = _elm_lang$html$Html_Attributes$class('p-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$p3 = _elm_lang$html$Html_Attributes$class('p-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$p2 = _elm_lang$html$Html_Attributes$class('p-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$p1 = _elm_lang$html$Html_Attributes$class('p-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$p0 = _elm_lang$html$Html_Attributes$class('p-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$myAutoXl = _elm_lang$html$Html_Attributes$class('my-xl-auto');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$my5Xl = _elm_lang$html$Html_Attributes$class('my-xl-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$my4Xl = _elm_lang$html$Html_Attributes$class('my-xl-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$my3Xl = _elm_lang$html$Html_Attributes$class('my-xl-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$my2Xl = _elm_lang$html$Html_Attributes$class('my-xl-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$my1Xl = _elm_lang$html$Html_Attributes$class('my-xl-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$my0Xl = _elm_lang$html$Html_Attributes$class('my-xl-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mxAutoXl = _elm_lang$html$Html_Attributes$class('mx-xl-auto');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mx5Xl = _elm_lang$html$Html_Attributes$class('mx-xl-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mx4Xl = _elm_lang$html$Html_Attributes$class('mx-xl-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mx3Xl = _elm_lang$html$Html_Attributes$class('mx-xl-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mx2Xl = _elm_lang$html$Html_Attributes$class('mx-xl-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mx1Xl = _elm_lang$html$Html_Attributes$class('mx-xl-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mx0Xl = _elm_lang$html$Html_Attributes$class('mx-xl-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mrAutoXl = _elm_lang$html$Html_Attributes$class('mr-xl-auto');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mr5Xl = _elm_lang$html$Html_Attributes$class('mr-xl-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mr4Xl = _elm_lang$html$Html_Attributes$class('mr-xl-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mr3Xl = _elm_lang$html$Html_Attributes$class('mr-xl-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mr2Xl = _elm_lang$html$Html_Attributes$class('mr-xl-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mr1Xl = _elm_lang$html$Html_Attributes$class('mr-xl-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mr0Xl = _elm_lang$html$Html_Attributes$class('mr-xl-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mlAutoXl = _elm_lang$html$Html_Attributes$class('ml-xl-auto');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$ml5Xl = _elm_lang$html$Html_Attributes$class('ml-xl-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$ml4Xl = _elm_lang$html$Html_Attributes$class('ml-xl-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$ml3Xl = _elm_lang$html$Html_Attributes$class('ml-xl-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$ml2Xl = _elm_lang$html$Html_Attributes$class('ml-xl-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$ml1Xl = _elm_lang$html$Html_Attributes$class('ml-xl-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$ml0Xl = _elm_lang$html$Html_Attributes$class('ml-xl-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mbAutoXl = _elm_lang$html$Html_Attributes$class('mb-xl-auto');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mb5Xl = _elm_lang$html$Html_Attributes$class('mb-xl-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mb4Xl = _elm_lang$html$Html_Attributes$class('mb-xl-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mb3Xl = _elm_lang$html$Html_Attributes$class('mb-xl-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mb2Xl = _elm_lang$html$Html_Attributes$class('mb-xl-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mb1Xl = _elm_lang$html$Html_Attributes$class('mb-xl-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mb0Xl = _elm_lang$html$Html_Attributes$class('mb-xl-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mtAutoXl = _elm_lang$html$Html_Attributes$class('mt-xl-auto');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mt5Xl = _elm_lang$html$Html_Attributes$class('mt-xl-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mt4Xl = _elm_lang$html$Html_Attributes$class('mt-xl-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mt3Xl = _elm_lang$html$Html_Attributes$class('mt-xl-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mt2Xl = _elm_lang$html$Html_Attributes$class('mt-xl-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mt1Xl = _elm_lang$html$Html_Attributes$class('mt-xl-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mt0Xl = _elm_lang$html$Html_Attributes$class('mt-xl-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mAutoXl = _elm_lang$html$Html_Attributes$class('m-xl-auto');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$m5Xl = _elm_lang$html$Html_Attributes$class('m-xl-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$m4Xl = _elm_lang$html$Html_Attributes$class('m-xl-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$m3Xl = _elm_lang$html$Html_Attributes$class('m-xl-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$m2Xl = _elm_lang$html$Html_Attributes$class('m-xl-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$m1Xl = _elm_lang$html$Html_Attributes$class('m-xl-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$m0Xl = _elm_lang$html$Html_Attributes$class('m-xl-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$myAutoLg = _elm_lang$html$Html_Attributes$class('my-lg-auto');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$my5Lg = _elm_lang$html$Html_Attributes$class('my-lg-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$my4Lg = _elm_lang$html$Html_Attributes$class('my-lg-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$my3Lg = _elm_lang$html$Html_Attributes$class('my-lg-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$my2Lg = _elm_lang$html$Html_Attributes$class('my-lg-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$my1Lg = _elm_lang$html$Html_Attributes$class('my-lg-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$my0Lg = _elm_lang$html$Html_Attributes$class('my-lg-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mxAutoLg = _elm_lang$html$Html_Attributes$class('mx-lg-auto');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mx5Lg = _elm_lang$html$Html_Attributes$class('mx-lg-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mx4Lg = _elm_lang$html$Html_Attributes$class('mx-lg-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mx3Lg = _elm_lang$html$Html_Attributes$class('mx-lg-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mx2Lg = _elm_lang$html$Html_Attributes$class('mx-lg-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mx1Lg = _elm_lang$html$Html_Attributes$class('mx-lg-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mx0Lg = _elm_lang$html$Html_Attributes$class('mx-lg-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mrAutoLg = _elm_lang$html$Html_Attributes$class('mr-lg-auto');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mr5Lg = _elm_lang$html$Html_Attributes$class('mr-lg-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mr4Lg = _elm_lang$html$Html_Attributes$class('mr-lg-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mr3Lg = _elm_lang$html$Html_Attributes$class('mr-lg-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mr2Lg = _elm_lang$html$Html_Attributes$class('mr-lg-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mr1Lg = _elm_lang$html$Html_Attributes$class('mr-lg-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mr0Lg = _elm_lang$html$Html_Attributes$class('mr-lg-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mlAutoLg = _elm_lang$html$Html_Attributes$class('ml-lg-auto');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$ml5Lg = _elm_lang$html$Html_Attributes$class('ml-lg-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$ml4Lg = _elm_lang$html$Html_Attributes$class('ml-lg-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$ml3Lg = _elm_lang$html$Html_Attributes$class('ml-lg-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$ml2Lg = _elm_lang$html$Html_Attributes$class('ml-lg-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$ml1Lg = _elm_lang$html$Html_Attributes$class('ml-lg-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$ml0Lg = _elm_lang$html$Html_Attributes$class('ml-lg-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mbAutoLg = _elm_lang$html$Html_Attributes$class('mb-lg-auto');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mb5Lg = _elm_lang$html$Html_Attributes$class('mb-lg-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mb4Lg = _elm_lang$html$Html_Attributes$class('mb-lg-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mb3Lg = _elm_lang$html$Html_Attributes$class('mb-lg-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mb2Lg = _elm_lang$html$Html_Attributes$class('mb-lg-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mb1Lg = _elm_lang$html$Html_Attributes$class('mb-lg-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mb0Lg = _elm_lang$html$Html_Attributes$class('mb-lg-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mtAutoLg = _elm_lang$html$Html_Attributes$class('mt-lg-auto');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mt5Lg = _elm_lang$html$Html_Attributes$class('mt-lg-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mt4Lg = _elm_lang$html$Html_Attributes$class('mt-lg-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mt3Lg = _elm_lang$html$Html_Attributes$class('mt-lg-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mt2Lg = _elm_lang$html$Html_Attributes$class('mt-lg-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mt1Lg = _elm_lang$html$Html_Attributes$class('mt-lg-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mt0Lg = _elm_lang$html$Html_Attributes$class('mt-lg-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mAutoLg = _elm_lang$html$Html_Attributes$class('m-lg-auto');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$m5Lg = _elm_lang$html$Html_Attributes$class('m-lg-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$m4Lg = _elm_lang$html$Html_Attributes$class('m-lg-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$m3Lg = _elm_lang$html$Html_Attributes$class('m-lg-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$m2Lg = _elm_lang$html$Html_Attributes$class('m-lg-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$m1Lg = _elm_lang$html$Html_Attributes$class('m-lg-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$m0Lg = _elm_lang$html$Html_Attributes$class('m-lg-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$myAutoMd = _elm_lang$html$Html_Attributes$class('my-md-auto');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$my5Md = _elm_lang$html$Html_Attributes$class('my-md-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$my4Md = _elm_lang$html$Html_Attributes$class('my-md-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$my3Md = _elm_lang$html$Html_Attributes$class('my-md-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$my2Md = _elm_lang$html$Html_Attributes$class('my-md-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$my1Md = _elm_lang$html$Html_Attributes$class('my-md-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$my0Md = _elm_lang$html$Html_Attributes$class('my-md-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mxAutoMd = _elm_lang$html$Html_Attributes$class('mx-md-auto');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mx5Md = _elm_lang$html$Html_Attributes$class('mx-md-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mx4Md = _elm_lang$html$Html_Attributes$class('mx-md-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mx3Md = _elm_lang$html$Html_Attributes$class('mx-md-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mx2Md = _elm_lang$html$Html_Attributes$class('mx-md-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mx1Md = _elm_lang$html$Html_Attributes$class('mx-md-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mx0Md = _elm_lang$html$Html_Attributes$class('mx-md-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mrAutoMd = _elm_lang$html$Html_Attributes$class('mr-md-auto');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mr5Md = _elm_lang$html$Html_Attributes$class('mr-md-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mr4Md = _elm_lang$html$Html_Attributes$class('mr-md-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mr3Md = _elm_lang$html$Html_Attributes$class('mr-md-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mr2Md = _elm_lang$html$Html_Attributes$class('mr-md-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mr1Md = _elm_lang$html$Html_Attributes$class('mr-md-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mr0Md = _elm_lang$html$Html_Attributes$class('mr-md-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mlAutoMd = _elm_lang$html$Html_Attributes$class('ml-md-auto');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$ml5Md = _elm_lang$html$Html_Attributes$class('ml-md-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$ml4Md = _elm_lang$html$Html_Attributes$class('ml-md-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$ml3Md = _elm_lang$html$Html_Attributes$class('ml-md-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$ml2Md = _elm_lang$html$Html_Attributes$class('ml-md-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$ml1Md = _elm_lang$html$Html_Attributes$class('ml-md-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$ml0Md = _elm_lang$html$Html_Attributes$class('ml-md-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mbAutoMd = _elm_lang$html$Html_Attributes$class('mb-md-auto');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mb5Md = _elm_lang$html$Html_Attributes$class('mb-md-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mb4Md = _elm_lang$html$Html_Attributes$class('mb-md-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mb3Md = _elm_lang$html$Html_Attributes$class('mb-md-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mb2Md = _elm_lang$html$Html_Attributes$class('mb-md-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mb1Md = _elm_lang$html$Html_Attributes$class('mb-md-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mb0Md = _elm_lang$html$Html_Attributes$class('mb-md-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mtAutoMd = _elm_lang$html$Html_Attributes$class('mt-md-auto');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mt5Md = _elm_lang$html$Html_Attributes$class('mt-md-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mt4Md = _elm_lang$html$Html_Attributes$class('mt-md-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mt3Md = _elm_lang$html$Html_Attributes$class('mt-md-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mt2Md = _elm_lang$html$Html_Attributes$class('mt-md-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mt1Md = _elm_lang$html$Html_Attributes$class('mt-md-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mt0Md = _elm_lang$html$Html_Attributes$class('mt-md-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mAutoMd = _elm_lang$html$Html_Attributes$class('m-md-auto');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$m5Md = _elm_lang$html$Html_Attributes$class('m-md-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$m4Md = _elm_lang$html$Html_Attributes$class('m-md-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$m3Md = _elm_lang$html$Html_Attributes$class('m-md-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$m2Md = _elm_lang$html$Html_Attributes$class('m-md-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$m1Md = _elm_lang$html$Html_Attributes$class('m-md-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$m0Md = _elm_lang$html$Html_Attributes$class('m-md-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$myAutoSm = _elm_lang$html$Html_Attributes$class('my-sm-auto');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$my5Sm = _elm_lang$html$Html_Attributes$class('my-sm-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$my4Sm = _elm_lang$html$Html_Attributes$class('my-sm-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$my3Sm = _elm_lang$html$Html_Attributes$class('my-sm-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$my2Sm = _elm_lang$html$Html_Attributes$class('my-sm-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$my1Sm = _elm_lang$html$Html_Attributes$class('my-sm-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$my0Sm = _elm_lang$html$Html_Attributes$class('my-sm-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mxAutoSm = _elm_lang$html$Html_Attributes$class('mx-sm-auto');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mx5Sm = _elm_lang$html$Html_Attributes$class('mx-sm-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mx4Sm = _elm_lang$html$Html_Attributes$class('mx-sm-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mx3Sm = _elm_lang$html$Html_Attributes$class('mx-sm-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mx2Sm = _elm_lang$html$Html_Attributes$class('mx-sm-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mx1Sm = _elm_lang$html$Html_Attributes$class('mx-sm-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mx0Sm = _elm_lang$html$Html_Attributes$class('mx-sm-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mrAutoSm = _elm_lang$html$Html_Attributes$class('mr-sm-auto');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mr5Sm = _elm_lang$html$Html_Attributes$class('mr-sm-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mr4Sm = _elm_lang$html$Html_Attributes$class('mr-sm-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mr3Sm = _elm_lang$html$Html_Attributes$class('mr-sm-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mr2Sm = _elm_lang$html$Html_Attributes$class('mr-sm-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mr1Sm = _elm_lang$html$Html_Attributes$class('mr-sm-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mr0Sm = _elm_lang$html$Html_Attributes$class('mr-sm-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mlAutoSm = _elm_lang$html$Html_Attributes$class('ml-sm-auto');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$ml5Sm = _elm_lang$html$Html_Attributes$class('ml-sm-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$ml4Sm = _elm_lang$html$Html_Attributes$class('ml-sm-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$ml3Sm = _elm_lang$html$Html_Attributes$class('ml-sm-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$ml2Sm = _elm_lang$html$Html_Attributes$class('ml-sm-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$ml1Sm = _elm_lang$html$Html_Attributes$class('ml-sm-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$ml0Sm = _elm_lang$html$Html_Attributes$class('ml-sm-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mbAutoSm = _elm_lang$html$Html_Attributes$class('mb-sm-auto');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mb5Sm = _elm_lang$html$Html_Attributes$class('mb-sm-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mb4Sm = _elm_lang$html$Html_Attributes$class('mb-sm-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mb3Sm = _elm_lang$html$Html_Attributes$class('mb-sm-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mb2Sm = _elm_lang$html$Html_Attributes$class('mb-sm-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mb1Sm = _elm_lang$html$Html_Attributes$class('mb-sm-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mb0Sm = _elm_lang$html$Html_Attributes$class('mb-sm-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mtAutoSm = _elm_lang$html$Html_Attributes$class('mt-sm-auto');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mt5Sm = _elm_lang$html$Html_Attributes$class('mt-sm-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mt4Sm = _elm_lang$html$Html_Attributes$class('mt-sm-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mt3Sm = _elm_lang$html$Html_Attributes$class('mt-sm-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mt2Sm = _elm_lang$html$Html_Attributes$class('mt-sm-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mt1Sm = _elm_lang$html$Html_Attributes$class('mt-sm-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mt0Sm = _elm_lang$html$Html_Attributes$class('mt-sm-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mAutoSm = _elm_lang$html$Html_Attributes$class('m-sm-auto');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$m5Sm = _elm_lang$html$Html_Attributes$class('m-sm-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$m4Sm = _elm_lang$html$Html_Attributes$class('m-sm-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$m3Sm = _elm_lang$html$Html_Attributes$class('m-sm-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$m2Sm = _elm_lang$html$Html_Attributes$class('m-sm-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$m1Sm = _elm_lang$html$Html_Attributes$class('m-sm-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$m0Sm = _elm_lang$html$Html_Attributes$class('m-sm-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$myAuto = _elm_lang$html$Html_Attributes$class('my-auto');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$my5 = _elm_lang$html$Html_Attributes$class('my-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$my4 = _elm_lang$html$Html_Attributes$class('my-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$my3 = _elm_lang$html$Html_Attributes$class('my-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$my2 = _elm_lang$html$Html_Attributes$class('my-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$my1 = _elm_lang$html$Html_Attributes$class('my-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$my0 = _elm_lang$html$Html_Attributes$class('my-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mxAuto = _elm_lang$html$Html_Attributes$class('mx-auto');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mx5 = _elm_lang$html$Html_Attributes$class('mx-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mx4 = _elm_lang$html$Html_Attributes$class('mx-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mx3 = _elm_lang$html$Html_Attributes$class('mx-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mx2 = _elm_lang$html$Html_Attributes$class('mx-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mx1 = _elm_lang$html$Html_Attributes$class('mx-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mx0 = _elm_lang$html$Html_Attributes$class('mx-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mrAuto = _elm_lang$html$Html_Attributes$class('mr-auto');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mr5 = _elm_lang$html$Html_Attributes$class('mr-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mr4 = _elm_lang$html$Html_Attributes$class('mr-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mr3 = _elm_lang$html$Html_Attributes$class('mr-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mr2 = _elm_lang$html$Html_Attributes$class('mr-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mr1 = _elm_lang$html$Html_Attributes$class('mr-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mr0 = _elm_lang$html$Html_Attributes$class('mr-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mlAuto = _elm_lang$html$Html_Attributes$class('ml-auto');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$ml5 = _elm_lang$html$Html_Attributes$class('ml-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$ml4 = _elm_lang$html$Html_Attributes$class('ml-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$ml3 = _elm_lang$html$Html_Attributes$class('ml-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$ml2 = _elm_lang$html$Html_Attributes$class('ml-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$ml1 = _elm_lang$html$Html_Attributes$class('ml-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$ml0 = _elm_lang$html$Html_Attributes$class('ml-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mbAuto = _elm_lang$html$Html_Attributes$class('mb-auto');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mb5 = _elm_lang$html$Html_Attributes$class('mb-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mb4 = _elm_lang$html$Html_Attributes$class('mb-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mb3 = _elm_lang$html$Html_Attributes$class('mb-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mb2 = _elm_lang$html$Html_Attributes$class('mb-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mb1 = _elm_lang$html$Html_Attributes$class('mb-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mb0 = _elm_lang$html$Html_Attributes$class('mb-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mtAuto = _elm_lang$html$Html_Attributes$class('mt-auto');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mt5 = _elm_lang$html$Html_Attributes$class('mt-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mt4 = _elm_lang$html$Html_Attributes$class('mt-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mt3 = _elm_lang$html$Html_Attributes$class('mt-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mt2 = _elm_lang$html$Html_Attributes$class('mt-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mt1 = _elm_lang$html$Html_Attributes$class('mt-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mt0 = _elm_lang$html$Html_Attributes$class('mt-0');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mAuto = _elm_lang$html$Html_Attributes$class('m-auto');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$m5 = _elm_lang$html$Html_Attributes$class('m-5');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$m4 = _elm_lang$html$Html_Attributes$class('m-4');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$m3 = _elm_lang$html$Html_Attributes$class('m-3');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$m2 = _elm_lang$html$Html_Attributes$class('m-2');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$m1 = _elm_lang$html$Html_Attributes$class('m-1');
+var _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$m0 = _elm_lang$html$Html_Attributes$class('m-0');
+
+var _elm_community$maybe_extra$Maybe_Extra$foldrValues = F2(
+	function (item, list) {
+		var _p0 = item;
+		if (_p0.ctor === 'Nothing') {
+			return list;
+		} else {
+			return {ctor: '::', _0: _p0._0, _1: list};
+		}
+	});
+var _elm_community$maybe_extra$Maybe_Extra$values = A2(
+	_elm_lang$core$List$foldr,
+	_elm_community$maybe_extra$Maybe_Extra$foldrValues,
+	{ctor: '[]'});
+var _elm_community$maybe_extra$Maybe_Extra$filter = F2(
+	function (f, m) {
+		var _p1 = A2(_elm_lang$core$Maybe$map, f, m);
+		if ((_p1.ctor === 'Just') && (_p1._0 === true)) {
+			return m;
+		} else {
+			return _elm_lang$core$Maybe$Nothing;
+		}
+	});
+var _elm_community$maybe_extra$Maybe_Extra$traverseArray = function (f) {
+	var step = F2(
+		function (e, acc) {
+			var _p2 = f(e);
+			if (_p2.ctor === 'Nothing') {
+				return _elm_lang$core$Maybe$Nothing;
+			} else {
+				return A2(
+					_elm_lang$core$Maybe$map,
+					_elm_lang$core$Array$push(_p2._0),
+					acc);
+			}
+		});
+	return A2(
+		_elm_lang$core$Array$foldl,
+		step,
+		_elm_lang$core$Maybe$Just(_elm_lang$core$Array$empty));
+};
+var _elm_community$maybe_extra$Maybe_Extra$combineArray = _elm_community$maybe_extra$Maybe_Extra$traverseArray(_elm_lang$core$Basics$identity);
+var _elm_community$maybe_extra$Maybe_Extra$traverse = function (f) {
+	var step = F2(
+		function (e, acc) {
+			var _p3 = f(e);
+			if (_p3.ctor === 'Nothing') {
+				return _elm_lang$core$Maybe$Nothing;
+			} else {
+				return A2(
+					_elm_lang$core$Maybe$map,
+					F2(
+						function (x, y) {
+							return {ctor: '::', _0: x, _1: y};
+						})(_p3._0),
+					acc);
+			}
+		});
+	return A2(
+		_elm_lang$core$List$foldr,
+		step,
+		_elm_lang$core$Maybe$Just(
+			{ctor: '[]'}));
+};
+var _elm_community$maybe_extra$Maybe_Extra$combine = _elm_community$maybe_extra$Maybe_Extra$traverse(_elm_lang$core$Basics$identity);
+var _elm_community$maybe_extra$Maybe_Extra$toArray = function (m) {
+	var _p4 = m;
+	if (_p4.ctor === 'Nothing') {
+		return _elm_lang$core$Array$empty;
+	} else {
+		return A2(_elm_lang$core$Array$repeat, 1, _p4._0);
+	}
+};
+var _elm_community$maybe_extra$Maybe_Extra$toList = function (m) {
+	var _p5 = m;
+	if (_p5.ctor === 'Nothing') {
+		return {ctor: '[]'};
+	} else {
+		return {
+			ctor: '::',
+			_0: _p5._0,
+			_1: {ctor: '[]'}
+		};
+	}
+};
+var _elm_community$maybe_extra$Maybe_Extra$orElse = F2(
+	function (ma, mb) {
+		var _p6 = mb;
+		if (_p6.ctor === 'Nothing') {
+			return ma;
+		} else {
+			return mb;
+		}
+	});
+var _elm_community$maybe_extra$Maybe_Extra$orElseLazy = F2(
+	function (fma, mb) {
+		var _p7 = mb;
+		if (_p7.ctor === 'Nothing') {
+			return fma(
+				{ctor: '_Tuple0'});
+		} else {
+			return mb;
+		}
+	});
+var _elm_community$maybe_extra$Maybe_Extra$orLazy = F2(
+	function (ma, fmb) {
+		var _p8 = ma;
+		if (_p8.ctor === 'Nothing') {
+			return fmb(
+				{ctor: '_Tuple0'});
+		} else {
+			return ma;
+		}
+	});
+var _elm_community$maybe_extra$Maybe_Extra$or = F2(
+	function (ma, mb) {
+		var _p9 = ma;
+		if (_p9.ctor === 'Nothing') {
+			return mb;
+		} else {
+			return ma;
+		}
+	});
+var _elm_community$maybe_extra$Maybe_Extra$prev = _elm_lang$core$Maybe$map2(_elm_lang$core$Basics$always);
+var _elm_community$maybe_extra$Maybe_Extra$next = _elm_lang$core$Maybe$map2(
+	_elm_lang$core$Basics$flip(_elm_lang$core$Basics$always));
+var _elm_community$maybe_extra$Maybe_Extra$andMap = _elm_lang$core$Maybe$map2(
+	F2(
+		function (x, y) {
+			return y(x);
+		}));
+var _elm_community$maybe_extra$Maybe_Extra$unpack = F3(
+	function (d, f, m) {
+		var _p10 = m;
+		if (_p10.ctor === 'Nothing') {
+			return d(
+				{ctor: '_Tuple0'});
+		} else {
+			return f(_p10._0);
+		}
+	});
+var _elm_community$maybe_extra$Maybe_Extra$unwrap = F3(
+	function (d, f, m) {
+		var _p11 = m;
+		if (_p11.ctor === 'Nothing') {
+			return d;
+		} else {
+			return f(_p11._0);
+		}
+	});
+var _elm_community$maybe_extra$Maybe_Extra$isJust = function (m) {
+	var _p12 = m;
+	if (_p12.ctor === 'Nothing') {
+		return false;
+	} else {
+		return true;
+	}
+};
+var _elm_community$maybe_extra$Maybe_Extra$isNothing = function (m) {
+	var _p13 = m;
+	if (_p13.ctor === 'Nothing') {
+		return true;
+	} else {
+		return false;
+	}
+};
+var _elm_community$maybe_extra$Maybe_Extra$join = function (mx) {
+	var _p14 = mx;
+	if (_p14.ctor === 'Just') {
+		return _p14._0;
+	} else {
+		return _elm_lang$core$Maybe$Nothing;
+	}
+};
+var _elm_community$maybe_extra$Maybe_Extra_ops = _elm_community$maybe_extra$Maybe_Extra_ops || {};
+_elm_community$maybe_extra$Maybe_Extra_ops['?'] = F2(
+	function (mx, x) {
+		return A2(_elm_lang$core$Maybe$withDefault, x, mx);
+	});
+
+//import Maybe, Native.List //
+
+var _elm_lang$core$Native_Regex = function() {
+
+function escape(str)
+{
+	return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+}
+function caseInsensitive(re)
+{
+	return new RegExp(re.source, 'gi');
+}
+function regex(raw)
+{
+	return new RegExp(raw, 'g');
+}
+
+function contains(re, string)
+{
+	return string.match(re) !== null;
+}
+
+function find(n, re, str)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	var out = [];
+	var number = 0;
+	var string = str;
+	var lastIndex = re.lastIndex;
+	var prevLastIndex = -1;
+	var result;
+	while (number++ < n && (result = re.exec(string)))
+	{
+		if (prevLastIndex === re.lastIndex) break;
+		var i = result.length - 1;
+		var subs = new Array(i);
+		while (i > 0)
+		{
+			var submatch = result[i];
+			subs[--i] = submatch === undefined
+				? _elm_lang$core$Maybe$Nothing
+				: _elm_lang$core$Maybe$Just(submatch);
+		}
+		out.push({
+			match: result[0],
+			submatches: _elm_lang$core$Native_List.fromArray(subs),
+			index: result.index,
+			number: number
+		});
+		prevLastIndex = re.lastIndex;
+	}
+	re.lastIndex = lastIndex;
+	return _elm_lang$core$Native_List.fromArray(out);
+}
+
+function replace(n, re, replacer, string)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	var count = 0;
+	function jsReplacer(match)
+	{
+		if (count++ >= n)
+		{
+			return match;
+		}
+		var i = arguments.length - 3;
+		var submatches = new Array(i);
+		while (i > 0)
+		{
+			var submatch = arguments[i];
+			submatches[--i] = submatch === undefined
+				? _elm_lang$core$Maybe$Nothing
+				: _elm_lang$core$Maybe$Just(submatch);
+		}
+		return replacer({
+			match: match,
+			submatches: _elm_lang$core$Native_List.fromArray(submatches),
+			index: arguments[arguments.length - 2],
+			number: count
+		});
+	}
+	return string.replace(re, jsReplacer);
+}
+
+function split(n, re, str)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	if (n === Infinity)
+	{
+		return _elm_lang$core$Native_List.fromArray(str.split(re));
+	}
+	var string = str;
+	var result;
+	var out = [];
+	var start = re.lastIndex;
+	var restoreLastIndex = re.lastIndex;
+	while (n--)
+	{
+		if (!(result = re.exec(string))) break;
+		out.push(string.slice(start, result.index));
+		start = re.lastIndex;
+	}
+	out.push(string.slice(start));
+	re.lastIndex = restoreLastIndex;
+	return _elm_lang$core$Native_List.fromArray(out);
+}
+
+return {
+	regex: regex,
+	caseInsensitive: caseInsensitive,
+	escape: escape,
+
+	contains: F2(contains),
+	find: F3(find),
+	replace: F4(replace),
+	split: F3(split)
+};
+
+}();
+
+var _elm_lang$core$Regex$split = _elm_lang$core$Native_Regex.split;
+var _elm_lang$core$Regex$replace = _elm_lang$core$Native_Regex.replace;
+var _elm_lang$core$Regex$find = _elm_lang$core$Native_Regex.find;
+var _elm_lang$core$Regex$contains = _elm_lang$core$Native_Regex.contains;
+var _elm_lang$core$Regex$caseInsensitive = _elm_lang$core$Native_Regex.caseInsensitive;
+var _elm_lang$core$Regex$regex = _elm_lang$core$Native_Regex.regex;
+var _elm_lang$core$Regex$escape = _elm_lang$core$Native_Regex.escape;
+var _elm_lang$core$Regex$Match = F4(
+	function (a, b, c, d) {
+		return {match: a, submatches: b, index: c, number: d};
+	});
+var _elm_lang$core$Regex$Regex = {ctor: 'Regex'};
+var _elm_lang$core$Regex$AtMost = function (a) {
+	return {ctor: 'AtMost', _0: a};
+};
+var _elm_lang$core$Regex$All = {ctor: 'All'};
+
+var _elm_lang$core$Native_Bitwise = function() {
+
+return {
+	and: F2(function and(a, b) { return a & b; }),
+	or: F2(function or(a, b) { return a | b; }),
+	xor: F2(function xor(a, b) { return a ^ b; }),
+	complement: function complement(a) { return ~a; },
+	shiftLeftBy: F2(function(offset, a) { return a << offset; }),
+	shiftRightBy: F2(function(offset, a) { return a >> offset; }),
+	shiftRightZfBy: F2(function(offset, a) { return a >>> offset; })
+};
+
+}();
+
+var _elm_lang$core$Bitwise$shiftRightZfBy = _elm_lang$core$Native_Bitwise.shiftRightZfBy;
+var _elm_lang$core$Bitwise$shiftRightBy = _elm_lang$core$Native_Bitwise.shiftRightBy;
+var _elm_lang$core$Bitwise$shiftLeftBy = _elm_lang$core$Native_Bitwise.shiftLeftBy;
+var _elm_lang$core$Bitwise$complement = _elm_lang$core$Native_Bitwise.complement;
+var _elm_lang$core$Bitwise$xor = _elm_lang$core$Native_Bitwise.xor;
+var _elm_lang$core$Bitwise$or = _elm_lang$core$Native_Bitwise.or;
+var _elm_lang$core$Bitwise$and = _elm_lang$core$Native_Bitwise.and;
+
+var _elm_community$string_extra$String_Extra$accentRegex = function () {
+	var matches = {
+		ctor: '::',
+		_0: {ctor: '_Tuple2', _0: '[à-æ]', _1: 'a'},
+		_1: {
+			ctor: '::',
+			_0: {ctor: '_Tuple2', _0: '[À-Æ]', _1: 'A'},
+			_1: {
+				ctor: '::',
+				_0: {ctor: '_Tuple2', _0: 'ç', _1: 'c'},
+				_1: {
+					ctor: '::',
+					_0: {ctor: '_Tuple2', _0: 'Ç', _1: 'C'},
+					_1: {
+						ctor: '::',
+						_0: {ctor: '_Tuple2', _0: '[è-ë]', _1: 'e'},
+						_1: {
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: '[È-Ë]', _1: 'E'},
+							_1: {
+								ctor: '::',
+								_0: {ctor: '_Tuple2', _0: '[ì-ï]', _1: 'i'},
+								_1: {
+									ctor: '::',
+									_0: {ctor: '_Tuple2', _0: '[Ì-Ï]', _1: 'I'},
+									_1: {
+										ctor: '::',
+										_0: {ctor: '_Tuple2', _0: 'ñ', _1: 'n'},
+										_1: {
+											ctor: '::',
+											_0: {ctor: '_Tuple2', _0: 'Ñ', _1: 'N'},
 											_1: {
 												ctor: '::',
-												_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(
-													_JQuezada0$eoslondonhackathon$Project_Model$RemoveSuggestion(
-														{from: 'crowdsale'})),
-												_1: {ctor: '[]'}
+												_0: {ctor: '_Tuple2', _0: '[ò-ö]', _1: 'o'},
+												_1: {
+													ctor: '::',
+													_0: {ctor: '_Tuple2', _0: '[Ò-Ö]', _1: 'O'},
+													_1: {
+														ctor: '::',
+														_0: {ctor: '_Tuple2', _0: '[ù-ü]', _1: 'u'},
+														_1: {
+															ctor: '::',
+															_0: {ctor: '_Tuple2', _0: '[Ù-Ü]', _1: 'U'},
+															_1: {
+																ctor: '::',
+																_0: {ctor: '_Tuple2', _0: 'ý', _1: 'y'},
+																_1: {
+																	ctor: '::',
+																	_0: {ctor: '_Tuple2', _0: 'ÿ', _1: 'y'},
+																	_1: {
+																		ctor: '::',
+																		_0: {ctor: '_Tuple2', _0: 'Ý', _1: 'Y'},
+																		_1: {ctor: '[]'}
+																	}
+																}
+															}
+														}
+													}
+												}
 											}
-										},
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html$text('Revoke'),
-											_1: {ctor: '[]'}
-										}),
-									_1: {ctor: '[]'}
+										}
+									}
 								}
-							});
-					} else {
-						var _p10 = _p11.votes;
-						if (_p10.ctor === '[]') {
-							return emptyUi;
-						} else {
-							return _elm_lang$html$Html$text(
-								A2(
-									_elm_lang$core$Basics_ops['++'],
-									'Congrats! You voted. Your choice was ',
-									_elm_lang$core$Basics$toString(_p10._0.pick)));
+							}
 						}
 					}
 				}
 			}
 		}
-	});
-var _JQuezada0$eoslondonhackathon$Project_View$viewSuccess = F2(
-	function (model, project) {
+	};
+	return A2(
+		_elm_lang$core$List$map,
+		function (_p0) {
+			var _p1 = _p0;
+			return {
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Regex$regex(_p1._0),
+				_1: _p1._1
+			};
+		},
+		matches);
+}();
+var _elm_community$string_extra$String_Extra$removeAccents = function (string) {
+	if (_elm_lang$core$String$isEmpty(string)) {
+		return string;
+	} else {
+		var do_regex_to_remove_acents = function (_p2) {
+			var _p3 = _p2;
+			return A3(
+				_elm_lang$core$Regex$replace,
+				_elm_lang$core$Regex$All,
+				_p3._0,
+				function (_p4) {
+					return _p3._1;
+				});
+		};
+		return A3(_elm_lang$core$List$foldl, do_regex_to_remove_acents, string, _elm_community$string_extra$String_Extra$accentRegex);
+	}
+};
+var _elm_community$string_extra$String_Extra$nonEmpty = function (string) {
+	return _elm_lang$core$String$isEmpty(string) ? _elm_lang$core$Maybe$Nothing : _elm_lang$core$Maybe$Just(string);
+};
+var _elm_community$string_extra$String_Extra$replacementCodePoint = 65533;
+var _elm_community$string_extra$String_Extra$toCodePoints = function (string) {
+	var allCodeUnits = A2(
+		_elm_lang$core$List$map,
+		_elm_lang$core$Char$toCode,
+		_elm_lang$core$String$toList(string));
+	var combineAndReverse = F2(
+		function (codeUnits, accumulated) {
+			combineAndReverse:
+			while (true) {
+				var _p5 = codeUnits;
+				if (_p5.ctor === '[]') {
+					return accumulated;
+				} else {
+					var _p9 = _p5._0;
+					var _p8 = _p5._1;
+					if ((_elm_lang$core$Native_Utils.cmp(_p9, 0) > -1) && (_elm_lang$core$Native_Utils.cmp(_p9, 55295) < 1)) {
+						var _v3 = _p8,
+							_v4 = {ctor: '::', _0: _p9, _1: accumulated};
+						codeUnits = _v3;
+						accumulated = _v4;
+						continue combineAndReverse;
+					} else {
+						if ((_elm_lang$core$Native_Utils.cmp(_p9, 55296) > -1) && (_elm_lang$core$Native_Utils.cmp(_p9, 56319) < 1)) {
+							var _p6 = _p8;
+							if (_p6.ctor === '[]') {
+								return {ctor: '::', _0: _elm_community$string_extra$String_Extra$replacementCodePoint, _1: accumulated};
+							} else {
+								var _p7 = _p6._0;
+								if ((_elm_lang$core$Native_Utils.cmp(_p7, 56320) > -1) && (_elm_lang$core$Native_Utils.cmp(_p7, 57343) < 1)) {
+									var codePoint = (65536 + ((_p9 - 55296) * 1024)) + (_p7 - 56320);
+									var _v6 = _p6._1,
+										_v7 = {ctor: '::', _0: codePoint, _1: accumulated};
+									codeUnits = _v6;
+									accumulated = _v7;
+									continue combineAndReverse;
+								} else {
+									var _v8 = _p8,
+										_v9 = {ctor: '::', _0: _elm_community$string_extra$String_Extra$replacementCodePoint, _1: accumulated};
+									codeUnits = _v8;
+									accumulated = _v9;
+									continue combineAndReverse;
+								}
+							}
+						} else {
+							if ((_elm_lang$core$Native_Utils.cmp(_p9, 57344) > -1) && (_elm_lang$core$Native_Utils.cmp(_p9, 65535) < 1)) {
+								var _v10 = _p8,
+									_v11 = {ctor: '::', _0: _p9, _1: accumulated};
+								codeUnits = _v10;
+								accumulated = _v11;
+								continue combineAndReverse;
+							} else {
+								var _v12 = _p8,
+									_v13 = {ctor: '::', _0: _elm_community$string_extra$String_Extra$replacementCodePoint, _1: accumulated};
+								codeUnits = _v12;
+								accumulated = _v13;
+								continue combineAndReverse;
+							}
+						}
+					}
+				}
+			}
+		});
+	return _elm_lang$core$List$reverse(
+		A2(
+			combineAndReverse,
+			allCodeUnits,
+			{ctor: '[]'}));
+};
+var _elm_community$string_extra$String_Extra$fromCodePoints = function (allCodePoints) {
+	var splitAndReverse = F2(
+		function (codePoints, accumulated) {
+			splitAndReverse:
+			while (true) {
+				var _p10 = codePoints;
+				if (_p10.ctor === '[]') {
+					return accumulated;
+				} else {
+					var _p12 = _p10._1;
+					var _p11 = _p10._0;
+					if ((_elm_lang$core$Native_Utils.cmp(_p11, 0) > -1) && (_elm_lang$core$Native_Utils.cmp(_p11, 55295) < 1)) {
+						var _v15 = _p12,
+							_v16 = {ctor: '::', _0: _p11, _1: accumulated};
+						codePoints = _v15;
+						accumulated = _v16;
+						continue splitAndReverse;
+					} else {
+						if ((_elm_lang$core$Native_Utils.cmp(_p11, 65536) > -1) && (_elm_lang$core$Native_Utils.cmp(_p11, 1114111) < 1)) {
+							var subtracted = _p11 - 65536;
+							var leading = (subtracted >> 10) + 55296;
+							var trailing = (subtracted & 1023) + 56320;
+							var _v17 = _p12,
+								_v18 = {
+								ctor: '::',
+								_0: trailing,
+								_1: {ctor: '::', _0: leading, _1: accumulated}
+							};
+							codePoints = _v17;
+							accumulated = _v18;
+							continue splitAndReverse;
+						} else {
+							if ((_elm_lang$core$Native_Utils.cmp(_p11, 57344) > -1) && (_elm_lang$core$Native_Utils.cmp(_p11, 65535) < 1)) {
+								var _v19 = _p12,
+									_v20 = {ctor: '::', _0: _p11, _1: accumulated};
+								codePoints = _v19;
+								accumulated = _v20;
+								continue splitAndReverse;
+							} else {
+								var _v21 = _p12,
+									_v22 = {ctor: '::', _0: _elm_community$string_extra$String_Extra$replacementCodePoint, _1: accumulated};
+								codePoints = _v21;
+								accumulated = _v22;
+								continue splitAndReverse;
+							}
+						}
+					}
+				}
+			}
+		});
+	var allCodeUnits = _elm_lang$core$List$reverse(
+		A2(
+			splitAndReverse,
+			allCodePoints,
+			{ctor: '[]'}));
+	return _elm_lang$core$String$fromList(
+		A2(_elm_lang$core$List$map, _elm_lang$core$Char$fromCode, allCodeUnits));
+};
+var _elm_community$string_extra$String_Extra$fromFloat = _elm_lang$core$Basics$toString;
+var _elm_community$string_extra$String_Extra$fromInt = _elm_lang$core$Basics$toString;
+var _elm_community$string_extra$String_Extra$leftOfBack = F2(
+	function (pattern, string) {
 		return A2(
-			_elm_lang$html$Html$div,
-			{
+			_elm_lang$core$Maybe$withDefault,
+			'',
+			A2(
+				_elm_lang$core$Maybe$map,
+				A2(_elm_lang$core$Basics$flip, _elm_lang$core$String$left, string),
+				_elm_lang$core$List$head(
+					_elm_lang$core$List$reverse(
+						A2(_elm_lang$core$String$indexes, pattern, string)))));
+	});
+var _elm_community$string_extra$String_Extra$rightOfBack = F2(
+	function (pattern, string) {
+		return A2(
+			_elm_lang$core$Maybe$withDefault,
+			'',
+			A2(
+				_elm_lang$core$Maybe$map,
+				function (_p13) {
+					return A3(
+						_elm_lang$core$Basics$flip,
+						_elm_lang$core$String$dropLeft,
+						string,
+						A2(
+							F2(
+								function (x, y) {
+									return x + y;
+								}),
+							_elm_lang$core$String$length(pattern),
+							_p13));
+				},
+				_elm_lang$core$List$head(
+					_elm_lang$core$List$reverse(
+						A2(_elm_lang$core$String$indexes, pattern, string)))));
+	});
+var _elm_community$string_extra$String_Extra$firstResultHelp = F2(
+	function ($default, list) {
+		firstResultHelp:
+		while (true) {
+			var _p14 = list;
+			if (_p14.ctor === '[]') {
+				return $default;
+			} else {
+				if (_p14._0.ctor === 'Just') {
+					return _p14._0._0;
+				} else {
+					var _v24 = $default,
+						_v25 = _p14._1;
+					$default = _v24;
+					list = _v25;
+					continue firstResultHelp;
+				}
+			}
+		}
+	});
+var _elm_community$string_extra$String_Extra$firstResult = function (list) {
+	return A2(_elm_community$string_extra$String_Extra$firstResultHelp, '', list);
+};
+var _elm_community$string_extra$String_Extra$leftOf = F2(
+	function (pattern, string) {
+		return A2(
+			_elm_lang$core$String$join,
+			'',
+			A2(
+				_elm_lang$core$List$map,
+				function (_p15) {
+					return _elm_community$string_extra$String_Extra$firstResult(
+						function (_) {
+							return _.submatches;
+						}(_p15));
+				},
+				A3(
+					_elm_lang$core$Regex$find,
+					_elm_lang$core$Regex$AtMost(1),
+					_elm_lang$core$Regex$regex(
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							'^(.*?)',
+							_elm_lang$core$Regex$escape(pattern))),
+					string)));
+	});
+var _elm_community$string_extra$String_Extra$rightOf = F2(
+	function (pattern, string) {
+		return A2(
+			_elm_lang$core$String$join,
+			'',
+			A2(
+				_elm_lang$core$List$map,
+				function (_p16) {
+					return _elm_community$string_extra$String_Extra$firstResult(
+						function (_) {
+							return _.submatches;
+						}(_p16));
+				},
+				A3(
+					_elm_lang$core$Regex$find,
+					_elm_lang$core$Regex$AtMost(1),
+					_elm_lang$core$Regex$regex(
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_elm_lang$core$Regex$escape(pattern),
+							'(.*)$')),
+					string)));
+	});
+var _elm_community$string_extra$String_Extra$pluralize = F3(
+	function (singular, plural, count) {
+		return _elm_lang$core$Native_Utils.eq(count, 1) ? A2(_elm_lang$core$Basics_ops['++'], '1 ', singular) : A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Basics$toString(count),
+			A2(_elm_lang$core$Basics_ops['++'], ' ', plural));
+	});
+var _elm_community$string_extra$String_Extra$stripTags = function (string) {
+	return A4(
+		_elm_lang$core$Regex$replace,
+		_elm_lang$core$Regex$All,
+		_elm_lang$core$Regex$regex('<\\/?[^>]+>'),
+		_elm_lang$core$Basics$always(''),
+		string);
+};
+var _elm_community$string_extra$String_Extra$toSentenceHelper = F3(
+	function (lastPart, sentence, list) {
+		toSentenceHelper:
+		while (true) {
+			var _p17 = list;
+			if (_p17.ctor === '[]') {
+				return sentence;
+			} else {
+				if (_p17._1.ctor === '[]') {
+					return A2(
+						_elm_lang$core$Basics_ops['++'],
+						sentence,
+						A2(_elm_lang$core$Basics_ops['++'], lastPart, _p17._0));
+				} else {
+					var _v27 = lastPart,
+						_v28 = A2(
+						_elm_lang$core$Basics_ops['++'],
+						sentence,
+						A2(_elm_lang$core$Basics_ops['++'], ', ', _p17._0)),
+						_v29 = _p17._1;
+					lastPart = _v27;
+					sentence = _v28;
+					list = _v29;
+					continue toSentenceHelper;
+				}
+			}
+		}
+	});
+var _elm_community$string_extra$String_Extra$toSentenceBaseCase = function (list) {
+	var _p18 = list;
+	_v30_2:
+	do {
+		if (_p18.ctor === '::') {
+			if (_p18._1.ctor === '[]') {
+				return _p18._0;
+			} else {
+				if (_p18._1._1.ctor === '[]') {
+					return A2(
+						_elm_lang$core$Basics_ops['++'],
+						_p18._0,
+						A2(_elm_lang$core$Basics_ops['++'], ' and ', _p18._1._0));
+				} else {
+					break _v30_2;
+				}
+			}
+		} else {
+			break _v30_2;
+		}
+	} while(false);
+	return '';
+};
+var _elm_community$string_extra$String_Extra$toSentenceOxford = function (list) {
+	var _p19 = list;
+	if (((_p19.ctor === '::') && (_p19._1.ctor === '::')) && (_p19._1._1.ctor === '::')) {
+		return A3(
+			_elm_community$string_extra$String_Extra$toSentenceHelper,
+			', and ',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_p19._0,
+				A2(_elm_lang$core$Basics_ops['++'], ', ', _p19._1._0)),
+			{ctor: '::', _0: _p19._1._1._0, _1: _p19._1._1._1});
+	} else {
+		return _elm_community$string_extra$String_Extra$toSentenceBaseCase(list);
+	}
+};
+var _elm_community$string_extra$String_Extra$toSentence = function (list) {
+	var _p20 = list;
+	if (((_p20.ctor === '::') && (_p20._1.ctor === '::')) && (_p20._1._1.ctor === '::')) {
+		return A3(
+			_elm_community$string_extra$String_Extra$toSentenceHelper,
+			' and ',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_p20._0,
+				A2(_elm_lang$core$Basics_ops['++'], ', ', _p20._1._0)),
+			{ctor: '::', _0: _p20._1._1._0, _1: _p20._1._1._1});
+	} else {
+		return _elm_community$string_extra$String_Extra$toSentenceBaseCase(list);
+	}
+};
+var _elm_community$string_extra$String_Extra$ellipsisWith = F3(
+	function (howLong, append, string) {
+		return (_elm_lang$core$Native_Utils.cmp(
+			_elm_lang$core$String$length(string),
+			howLong) < 1) ? string : A2(
+			_elm_lang$core$Basics_ops['++'],
+			A2(
+				_elm_lang$core$String$left,
+				howLong - _elm_lang$core$String$length(append),
+				string),
+			append);
+	});
+var _elm_community$string_extra$String_Extra$ellipsis = F2(
+	function (howLong, string) {
+		return A3(_elm_community$string_extra$String_Extra$ellipsisWith, howLong, '...', string);
+	});
+var _elm_community$string_extra$String_Extra$countOccurrences = F2(
+	function (needle, haystack) {
+		return (_elm_lang$core$Native_Utils.eq(
+			_elm_lang$core$String$length(needle),
+			0) || _elm_lang$core$Native_Utils.eq(
+			_elm_lang$core$String$length(haystack),
+			0)) ? 0 : _elm_lang$core$List$length(
+			A2(_elm_lang$core$String$indexes, needle, haystack));
+	});
+var _elm_community$string_extra$String_Extra$unindent = function (multilineSting) {
+	var isNotWhitespace = function ($char) {
+		return (!_elm_lang$core$Native_Utils.eq(
+			$char,
+			_elm_lang$core$Native_Utils.chr(' '))) && (!_elm_lang$core$Native_Utils.eq(
+			$char,
+			_elm_lang$core$Native_Utils.chr('\t')));
+	};
+	var countLeadingWhitespace = F2(
+		function (count, line) {
+			countLeadingWhitespace:
+			while (true) {
+				var _p21 = _elm_lang$core$String$uncons(line);
+				if (_p21.ctor === 'Nothing') {
+					return count;
+				} else {
+					var _p23 = _p21._0._1;
+					var _p22 = _p21._0._0;
+					switch (_p22.valueOf()) {
+						case ' ':
+							var _v35 = count + 1,
+								_v36 = _p23;
+							count = _v35;
+							line = _v36;
+							continue countLeadingWhitespace;
+						case '\t':
+							var _v37 = count + 1,
+								_v38 = _p23;
+							count = _v37;
+							line = _v38;
+							continue countLeadingWhitespace;
+						default:
+							return count;
+					}
+				}
+			}
+		});
+	var lines = _elm_lang$core$String$lines(multilineSting);
+	var minLead = A2(
+		_elm_lang$core$Maybe$withDefault,
+		0,
+		_elm_lang$core$List$minimum(
+			A2(
+				_elm_lang$core$List$map,
+				countLeadingWhitespace(0),
+				A2(
+					_elm_lang$core$List$filter,
+					_elm_lang$core$String$any(isNotWhitespace),
+					lines))));
+	return A2(
+		_elm_lang$core$String$join,
+		'\n',
+		A2(
+			_elm_lang$core$List$map,
+			_elm_lang$core$String$dropLeft(minLead),
+			lines));
+};
+var _elm_community$string_extra$String_Extra$dasherize = function (string) {
+	return _elm_lang$core$String$toLower(
+		A4(
+			_elm_lang$core$Regex$replace,
+			_elm_lang$core$Regex$All,
+			_elm_lang$core$Regex$regex('[_-\\s]+'),
+			_elm_lang$core$Basics$always('-'),
+			A4(
+				_elm_lang$core$Regex$replace,
+				_elm_lang$core$Regex$All,
+				_elm_lang$core$Regex$regex('([A-Z])'),
+				function (_p24) {
+					return A2(
+						_elm_lang$core$String$append,
+						'-',
+						function (_) {
+							return _.match;
+						}(_p24));
+				},
+				_elm_lang$core$String$trim(string))));
+};
+var _elm_community$string_extra$String_Extra$underscored = function (string) {
+	return _elm_lang$core$String$toLower(
+		A4(
+			_elm_lang$core$Regex$replace,
+			_elm_lang$core$Regex$All,
+			_elm_lang$core$Regex$regex('[_-\\s]+'),
+			_elm_lang$core$Basics$always('_'),
+			A4(
+				_elm_lang$core$Regex$replace,
+				_elm_lang$core$Regex$All,
+				_elm_lang$core$Regex$regex('([a-z\\d])([A-Z]+)'),
+				function (_p25) {
+					return A2(
+						_elm_lang$core$String$join,
+						'_',
+						A2(
+							_elm_lang$core$List$filterMap,
+							_elm_lang$core$Basics$identity,
+							function (_) {
+								return _.submatches;
+							}(_p25)));
+				},
+				_elm_lang$core$String$trim(string))));
+};
+var _elm_community$string_extra$String_Extra$unsurround = F2(
+	function (wrap, string) {
+		if (A2(_elm_lang$core$String$startsWith, wrap, string) && A2(_elm_lang$core$String$endsWith, wrap, string)) {
+			var length = _elm_lang$core$String$length(wrap);
+			return A2(
+				_elm_lang$core$String$dropRight,
+				length,
+				A2(_elm_lang$core$String$dropLeft, length, string));
+		} else {
+			return string;
+		}
+	});
+var _elm_community$string_extra$String_Extra$unquote = function (string) {
+	return A2(_elm_community$string_extra$String_Extra$unsurround, '\"', string);
+};
+var _elm_community$string_extra$String_Extra$surround = F2(
+	function (wrap, string) {
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			wrap,
+			A2(_elm_lang$core$Basics_ops['++'], string, wrap));
+	});
+var _elm_community$string_extra$String_Extra$quote = function (string) {
+	return A2(_elm_community$string_extra$String_Extra$surround, '\"', string);
+};
+var _elm_community$string_extra$String_Extra$camelize = function (string) {
+	return A4(
+		_elm_lang$core$Regex$replace,
+		_elm_lang$core$Regex$All,
+		_elm_lang$core$Regex$regex('[-_\\s]+(.)?'),
+		function (_p26) {
+			var _p27 = _p26;
+			var _p28 = _p27.submatches;
+			if ((_p28.ctor === '::') && (_p28._0.ctor === 'Just')) {
+				return _elm_lang$core$String$toUpper(_p28._0._0);
+			} else {
+				return '';
+			}
+		},
+		_elm_lang$core$String$trim(string));
+};
+var _elm_community$string_extra$String_Extra$isBlank = function (string) {
+	return A2(
+		_elm_lang$core$Regex$contains,
+		_elm_lang$core$Regex$regex('^\\s*$'),
+		string);
+};
+var _elm_community$string_extra$String_Extra$nonBlank = function (string) {
+	return _elm_community$string_extra$String_Extra$isBlank(string) ? _elm_lang$core$Maybe$Nothing : _elm_lang$core$Maybe$Just(string);
+};
+var _elm_community$string_extra$String_Extra$clean = function (string) {
+	return _elm_lang$core$String$trim(
+		A4(
+			_elm_lang$core$Regex$replace,
+			_elm_lang$core$Regex$All,
+			_elm_lang$core$Regex$regex('\\s\\s+'),
+			_elm_lang$core$Basics$always(' '),
+			string));
+};
+var _elm_community$string_extra$String_Extra$softBreakRegexp = function (width) {
+	return _elm_lang$core$Regex$regex(
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			'.{1,',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_elm_lang$core$Basics$toString(width),
+				'}(\\s+|$)|\\S+?(\\s+|$)')));
+};
+var _elm_community$string_extra$String_Extra$softEllipsis = F2(
+	function (howLong, string) {
+		return (_elm_lang$core$Native_Utils.cmp(
+			_elm_lang$core$String$length(string),
+			howLong) < 1) ? string : A3(
+			_elm_lang$core$Basics$flip,
+			_elm_lang$core$String$append,
+			'...',
+			A4(
+				_elm_lang$core$Regex$replace,
+				_elm_lang$core$Regex$All,
+				_elm_lang$core$Regex$regex('([\\.,;:\\s])+$'),
+				_elm_lang$core$Basics$always(''),
+				A2(
+					_elm_lang$core$String$join,
+					'',
+					A2(
+						_elm_lang$core$List$map,
+						function (_) {
+							return _.match;
+						},
+						A3(
+							_elm_lang$core$Regex$find,
+							_elm_lang$core$Regex$AtMost(1),
+							_elm_community$string_extra$String_Extra$softBreakRegexp(howLong),
+							string)))));
+	});
+var _elm_community$string_extra$String_Extra$softBreak = F2(
+	function (width, string) {
+		return (_elm_lang$core$Native_Utils.cmp(width, 0) < 1) ? {ctor: '[]'} : A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.match;
+			},
+			A3(
+				_elm_lang$core$Regex$find,
+				_elm_lang$core$Regex$All,
+				_elm_community$string_extra$String_Extra$softBreakRegexp(width),
+				string));
+	});
+var _elm_community$string_extra$String_Extra$softWrapWith = F3(
+	function (width, separator, string) {
+		return A2(
+			_elm_lang$core$String$join,
+			separator,
+			A2(_elm_community$string_extra$String_Extra$softBreak, width, string));
+	});
+var _elm_community$string_extra$String_Extra$softWrap = F2(
+	function (width, string) {
+		return A3(_elm_community$string_extra$String_Extra$softWrapWith, width, '\n', string);
+	});
+var _elm_community$string_extra$String_Extra$breaker = F3(
+	function (width, string, acc) {
+		breaker:
+		while (true) {
+			var _p29 = string;
+			if (_p29 === '') {
+				return _elm_lang$core$List$reverse(acc);
+			} else {
+				var _v42 = width,
+					_v43 = A2(_elm_lang$core$String$dropLeft, width, string),
+					_v44 = {
+					ctor: '::',
+					_0: A3(_elm_lang$core$String$slice, 0, width, string),
+					_1: acc
+				};
+				width = _v42;
+				string = _v43;
+				acc = _v44;
+				continue breaker;
+			}
+		}
+	});
+var _elm_community$string_extra$String_Extra$break = F2(
+	function (width, string) {
+		return (_elm_lang$core$Native_Utils.eq(width, 0) || _elm_lang$core$Native_Utils.eq(string, '')) ? {
+			ctor: '::',
+			_0: string,
+			_1: {ctor: '[]'}
+		} : A3(
+			_elm_community$string_extra$String_Extra$breaker,
+			width,
+			string,
+			{ctor: '[]'});
+	});
+var _elm_community$string_extra$String_Extra$wrapWith = F3(
+	function (width, separator, string) {
+		return A2(
+			_elm_lang$core$String$join,
+			separator,
+			A2(_elm_community$string_extra$String_Extra$break, width, string));
+	});
+var _elm_community$string_extra$String_Extra$wrap = F2(
+	function (width, string) {
+		return A3(_elm_community$string_extra$String_Extra$wrapWith, width, '\n', string);
+	});
+var _elm_community$string_extra$String_Extra$replaceSlice = F4(
+	function (substitution, start, end, string) {
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			A3(_elm_lang$core$String$slice, 0, start, string),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				substitution,
+				A3(
+					_elm_lang$core$String$slice,
+					end,
+					_elm_lang$core$String$length(string),
+					string)));
+	});
+var _elm_community$string_extra$String_Extra$insertAt = F3(
+	function (insert, pos, string) {
+		return A4(_elm_community$string_extra$String_Extra$replaceSlice, insert, pos, pos, string);
+	});
+var _elm_community$string_extra$String_Extra$replace = F3(
+	function (search, substitution, string) {
+		return A4(
+			_elm_lang$core$Regex$replace,
+			_elm_lang$core$Regex$All,
+			_elm_lang$core$Regex$regex(
+				_elm_lang$core$Regex$escape(search)),
+			function (_p30) {
+				return substitution;
+			},
+			string);
+	});
+var _elm_community$string_extra$String_Extra$changeCase = F2(
+	function (mutator, word) {
+		return A2(
+			_elm_lang$core$Maybe$withDefault,
+			'',
+			A2(
+				_elm_lang$core$Maybe$map,
+				function (_p31) {
+					var _p32 = _p31;
+					return A2(
+						_elm_lang$core$String$cons,
+						mutator(_p32._0),
+						_p32._1);
+				},
+				_elm_lang$core$String$uncons(word)));
+	});
+var _elm_community$string_extra$String_Extra$toSentenceCase = function (word) {
+	return A2(_elm_community$string_extra$String_Extra$changeCase, _elm_lang$core$Char$toUpper, word);
+};
+var _elm_community$string_extra$String_Extra$toTitleCase = function (ws) {
+	var uppercaseMatch = A3(
+		_elm_lang$core$Regex$replace,
+		_elm_lang$core$Regex$All,
+		_elm_lang$core$Regex$regex('\\w+'),
+		function (_p33) {
+			return _elm_community$string_extra$String_Extra$toSentenceCase(
+				function (_) {
+					return _.match;
+				}(_p33));
+		});
+	return A4(
+		_elm_lang$core$Regex$replace,
+		_elm_lang$core$Regex$All,
+		_elm_lang$core$Regex$regex('^([a-z])|\\s+([a-z])'),
+		function (_p34) {
+			return uppercaseMatch(
+				function (_) {
+					return _.match;
+				}(_p34));
+		},
+		ws);
+};
+var _elm_community$string_extra$String_Extra$classify = function (string) {
+	return _elm_community$string_extra$String_Extra$toSentenceCase(
+		A3(
+			_elm_community$string_extra$String_Extra$replace,
+			' ',
+			'',
+			_elm_community$string_extra$String_Extra$camelize(
+				A4(
+					_elm_lang$core$Regex$replace,
+					_elm_lang$core$Regex$All,
+					_elm_lang$core$Regex$regex('[\\W_]'),
+					_elm_lang$core$Basics$always(' '),
+					string))));
+};
+var _elm_community$string_extra$String_Extra$humanize = function (string) {
+	return _elm_community$string_extra$String_Extra$toSentenceCase(
+		_elm_lang$core$String$toLower(
+			_elm_lang$core$String$trim(
+				A4(
+					_elm_lang$core$Regex$replace,
+					_elm_lang$core$Regex$All,
+					_elm_lang$core$Regex$regex('_id$|[-_\\s]+'),
+					_elm_lang$core$Basics$always(' '),
+					A4(
+						_elm_lang$core$Regex$replace,
+						_elm_lang$core$Regex$All,
+						_elm_lang$core$Regex$regex('[A-Z]'),
+						function (_p35) {
+							return A2(
+								_elm_lang$core$String$append,
+								'-',
+								function (_) {
+									return _.match;
+								}(_p35));
+						},
+						string)))));
+};
+var _elm_community$string_extra$String_Extra$decapitalize = function (word) {
+	return A2(_elm_community$string_extra$String_Extra$changeCase, _elm_lang$core$Char$toLower, word);
+};
+
+var _JQuezada0$eoslondonhackathon$Lib_Number$nonZeroFloat = function ($float) {
+	return (_elm_lang$core$Native_Utils.cmp($float, 0) > 0) ? _elm_lang$core$Maybe$Just($float) : _elm_lang$core$Maybe$Nothing;
+};
+
+var _rluiten$elm_date_extra$Date_Extra_Internal2$prevMonth = function (month) {
+	var _p0 = month;
+	switch (_p0.ctor) {
+		case 'Jan':
+			return _elm_lang$core$Date$Dec;
+		case 'Feb':
+			return _elm_lang$core$Date$Jan;
+		case 'Mar':
+			return _elm_lang$core$Date$Feb;
+		case 'Apr':
+			return _elm_lang$core$Date$Mar;
+		case 'May':
+			return _elm_lang$core$Date$Apr;
+		case 'Jun':
+			return _elm_lang$core$Date$May;
+		case 'Jul':
+			return _elm_lang$core$Date$Jun;
+		case 'Aug':
+			return _elm_lang$core$Date$Jul;
+		case 'Sep':
+			return _elm_lang$core$Date$Aug;
+		case 'Oct':
+			return _elm_lang$core$Date$Sep;
+		case 'Nov':
+			return _elm_lang$core$Date$Oct;
+		default:
+			return _elm_lang$core$Date$Nov;
+	}
+};
+var _rluiten$elm_date_extra$Date_Extra_Internal2$nextMonth = function (month) {
+	var _p1 = month;
+	switch (_p1.ctor) {
+		case 'Jan':
+			return _elm_lang$core$Date$Feb;
+		case 'Feb':
+			return _elm_lang$core$Date$Mar;
+		case 'Mar':
+			return _elm_lang$core$Date$Apr;
+		case 'Apr':
+			return _elm_lang$core$Date$May;
+		case 'May':
+			return _elm_lang$core$Date$Jun;
+		case 'Jun':
+			return _elm_lang$core$Date$Jul;
+		case 'Jul':
+			return _elm_lang$core$Date$Aug;
+		case 'Aug':
+			return _elm_lang$core$Date$Sep;
+		case 'Sep':
+			return _elm_lang$core$Date$Oct;
+		case 'Oct':
+			return _elm_lang$core$Date$Nov;
+		case 'Nov':
+			return _elm_lang$core$Date$Dec;
+		default:
+			return _elm_lang$core$Date$Jan;
+	}
+};
+var _rluiten$elm_date_extra$Date_Extra_Internal2$intToMonth = function (month) {
+	return (_elm_lang$core$Native_Utils.cmp(month, 1) < 1) ? _elm_lang$core$Date$Jan : (_elm_lang$core$Native_Utils.eq(month, 2) ? _elm_lang$core$Date$Feb : (_elm_lang$core$Native_Utils.eq(month, 3) ? _elm_lang$core$Date$Mar : (_elm_lang$core$Native_Utils.eq(month, 4) ? _elm_lang$core$Date$Apr : (_elm_lang$core$Native_Utils.eq(month, 5) ? _elm_lang$core$Date$May : (_elm_lang$core$Native_Utils.eq(month, 6) ? _elm_lang$core$Date$Jun : (_elm_lang$core$Native_Utils.eq(month, 7) ? _elm_lang$core$Date$Jul : (_elm_lang$core$Native_Utils.eq(month, 8) ? _elm_lang$core$Date$Aug : (_elm_lang$core$Native_Utils.eq(month, 9) ? _elm_lang$core$Date$Sep : (_elm_lang$core$Native_Utils.eq(month, 10) ? _elm_lang$core$Date$Oct : (_elm_lang$core$Native_Utils.eq(month, 11) ? _elm_lang$core$Date$Nov : _elm_lang$core$Date$Dec))))))))));
+};
+var _rluiten$elm_date_extra$Date_Extra_Internal2$monthToInt = function (month) {
+	var _p2 = month;
+	switch (_p2.ctor) {
+		case 'Jan':
+			return 1;
+		case 'Feb':
+			return 2;
+		case 'Mar':
+			return 3;
+		case 'Apr':
+			return 4;
+		case 'May':
+			return 5;
+		case 'Jun':
+			return 6;
+		case 'Jul':
+			return 7;
+		case 'Aug':
+			return 8;
+		case 'Sep':
+			return 9;
+		case 'Oct':
+			return 10;
+		case 'Nov':
+			return 11;
+		default:
+			return 12;
+	}
+};
+var _rluiten$elm_date_extra$Date_Extra_Internal2$isLeapYear = function (year) {
+	return (_elm_lang$core$Native_Utils.eq(
+		A2(_elm_lang$core$Basics_ops['%'], year, 4),
+		0) && (!_elm_lang$core$Native_Utils.eq(
+		A2(_elm_lang$core$Basics_ops['%'], year, 100),
+		0))) || _elm_lang$core$Native_Utils.eq(
+		A2(_elm_lang$core$Basics_ops['%'], year, 400),
+		0);
+};
+var _rluiten$elm_date_extra$Date_Extra_Internal2$isLeapYearDate = function (date) {
+	return _rluiten$elm_date_extra$Date_Extra_Internal2$isLeapYear(
+		_elm_lang$core$Date$year(date));
+};
+var _rluiten$elm_date_extra$Date_Extra_Internal2$yearToDayLength = function (year) {
+	return _rluiten$elm_date_extra$Date_Extra_Internal2$isLeapYear(year) ? 366 : 365;
+};
+var _rluiten$elm_date_extra$Date_Extra_Internal2$daysInMonth = F2(
+	function (year, month) {
+		var _p3 = month;
+		switch (_p3.ctor) {
+			case 'Jan':
+				return 31;
+			case 'Feb':
+				return _rluiten$elm_date_extra$Date_Extra_Internal2$isLeapYear(year) ? 29 : 28;
+			case 'Mar':
+				return 31;
+			case 'Apr':
+				return 30;
+			case 'May':
+				return 31;
+			case 'Jun':
+				return 30;
+			case 'Jul':
+				return 31;
+			case 'Aug':
+				return 31;
+			case 'Sep':
+				return 30;
+			case 'Oct':
+				return 31;
+			case 'Nov':
+				return 30;
+			default:
+				return 31;
+		}
+	});
+var _rluiten$elm_date_extra$Date_Extra_Internal2$daysInMonthDate = function (date) {
+	return A2(
+		_rluiten$elm_date_extra$Date_Extra_Internal2$daysInMonth,
+		_elm_lang$core$Date$year(date),
+		_elm_lang$core$Date$month(date));
+};
+var _rluiten$elm_date_extra$Date_Extra_Internal2$monthList = {
+	ctor: '::',
+	_0: _elm_lang$core$Date$Jan,
+	_1: {
+		ctor: '::',
+		_0: _elm_lang$core$Date$Feb,
+		_1: {
+			ctor: '::',
+			_0: _elm_lang$core$Date$Mar,
+			_1: {
 				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('image-container set-full-height'),
+				_0: _elm_lang$core$Date$Apr,
 				_1: {
 					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$style(
+					_0: _elm_lang$core$Date$May,
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$core$Date$Jun,
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$core$Date$Jul,
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$core$Date$Aug,
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$core$Date$Sep,
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$core$Date$Oct,
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$core$Date$Nov,
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$core$Date$Dec,
+												_1: {ctor: '[]'}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+};
+var _rluiten$elm_date_extra$Date_Extra_Internal2$toTime = function (_p4) {
+	return _elm_lang$core$Basics$floor(
+		_elm_lang$core$Date$toTime(_p4));
+};
+var _rluiten$elm_date_extra$Date_Extra_Internal2$fromTime = function (_p5) {
+	return _elm_lang$core$Date$fromTime(
+		_elm_lang$core$Basics$toFloat(_p5));
+};
+var _rluiten$elm_date_extra$Date_Extra_Internal2$prevDay = function (day) {
+	var _p6 = day;
+	switch (_p6.ctor) {
+		case 'Mon':
+			return _elm_lang$core$Date$Sun;
+		case 'Tue':
+			return _elm_lang$core$Date$Mon;
+		case 'Wed':
+			return _elm_lang$core$Date$Tue;
+		case 'Thu':
+			return _elm_lang$core$Date$Wed;
+		case 'Fri':
+			return _elm_lang$core$Date$Thu;
+		case 'Sat':
+			return _elm_lang$core$Date$Fri;
+		default:
+			return _elm_lang$core$Date$Sat;
+	}
+};
+var _rluiten$elm_date_extra$Date_Extra_Internal2$nextDay = function (day) {
+	var _p7 = day;
+	switch (_p7.ctor) {
+		case 'Mon':
+			return _elm_lang$core$Date$Tue;
+		case 'Tue':
+			return _elm_lang$core$Date$Wed;
+		case 'Wed':
+			return _elm_lang$core$Date$Thu;
+		case 'Thu':
+			return _elm_lang$core$Date$Fri;
+		case 'Fri':
+			return _elm_lang$core$Date$Sat;
+		case 'Sat':
+			return _elm_lang$core$Date$Sun;
+		default:
+			return _elm_lang$core$Date$Mon;
+	}
+};
+var _rluiten$elm_date_extra$Date_Extra_Internal2$isoDayOfWeek = function (day) {
+	var _p8 = day;
+	switch (_p8.ctor) {
+		case 'Mon':
+			return 1;
+		case 'Tue':
+			return 2;
+		case 'Wed':
+			return 3;
+		case 'Thu':
+			return 4;
+		case 'Fri':
+			return 5;
+		case 'Sat':
+			return 6;
+		default:
+			return 7;
+	}
+};
+var _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAMillisecond = _elm_lang$core$Basics$floor(_elm_lang$core$Time$millisecond);
+var _rluiten$elm_date_extra$Date_Extra_Internal2$ticksASecond = _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAMillisecond * 1000;
+var _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAMinute = _rluiten$elm_date_extra$Date_Extra_Internal2$ticksASecond * 60;
+var _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAnHour = _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAMinute * 60;
+var _rluiten$elm_date_extra$Date_Extra_Internal2$ticksADay = _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAnHour * 24;
+var _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAWeek = _rluiten$elm_date_extra$Date_Extra_Internal2$ticksADay * 7;
+var _rluiten$elm_date_extra$Date_Extra_Internal2$lastOfMonthTicks = function (date) {
+	var dateTicks = _rluiten$elm_date_extra$Date_Extra_Internal2$toTime(date);
+	var day = _elm_lang$core$Date$day(date);
+	var month = _elm_lang$core$Date$month(date);
+	var year = _elm_lang$core$Date$year(date);
+	var daysInMonthVal = A2(_rluiten$elm_date_extra$Date_Extra_Internal2$daysInMonth, year, month);
+	var addDays = daysInMonthVal - day;
+	return dateTicks + (addDays * _rluiten$elm_date_extra$Date_Extra_Internal2$ticksADay);
+};
+var _rluiten$elm_date_extra$Date_Extra_Internal2$firstOfNextMonthDate = function (date) {
+	return _rluiten$elm_date_extra$Date_Extra_Internal2$fromTime(
+		_rluiten$elm_date_extra$Date_Extra_Internal2$lastOfMonthTicks(date) + _rluiten$elm_date_extra$Date_Extra_Internal2$ticksADay);
+};
+var _rluiten$elm_date_extra$Date_Extra_Internal2$daysInNextMonth = function (date) {
+	return _rluiten$elm_date_extra$Date_Extra_Internal2$daysInMonthDate(
+		_rluiten$elm_date_extra$Date_Extra_Internal2$firstOfNextMonthDate(date));
+};
+var _rluiten$elm_date_extra$Date_Extra_Internal2$firstOfMonthTicks = function (date) {
+	var dateTicks = _rluiten$elm_date_extra$Date_Extra_Internal2$toTime(date);
+	var day = _elm_lang$core$Date$day(date);
+	return dateTicks + ((1 - day) * _rluiten$elm_date_extra$Date_Extra_Internal2$ticksADay);
+};
+var _rluiten$elm_date_extra$Date_Extra_Internal2$lastOfPrevMonthDate = function (date) {
+	return _rluiten$elm_date_extra$Date_Extra_Internal2$fromTime(
+		_rluiten$elm_date_extra$Date_Extra_Internal2$firstOfMonthTicks(date) - _rluiten$elm_date_extra$Date_Extra_Internal2$ticksADay);
+};
+var _rluiten$elm_date_extra$Date_Extra_Internal2$daysInPrevMonth = function (date) {
+	return _rluiten$elm_date_extra$Date_Extra_Internal2$daysInMonthDate(
+		_rluiten$elm_date_extra$Date_Extra_Internal2$lastOfPrevMonthDate(date));
+};
+var _rluiten$elm_date_extra$Date_Extra_Internal2$epochDateStr = '1970-01-01T00:00:00Z';
+
+var _rluiten$elm_date_extra$Date_Extra_Period$diff = F2(
+	function (date1, date2) {
+		var millisecondDiff = _elm_lang$core$Date$millisecond(date1) - _elm_lang$core$Date$millisecond(date2);
+		var secondDiff = _elm_lang$core$Date$second(date1) - _elm_lang$core$Date$second(date2);
+		var minuteDiff = _elm_lang$core$Date$minute(date1) - _elm_lang$core$Date$minute(date2);
+		var hourDiff = _elm_lang$core$Date$hour(date1) - _elm_lang$core$Date$hour(date2);
+		var ticksDiff = _rluiten$elm_date_extra$Date_Extra_Internal2$toTime(date1) - _rluiten$elm_date_extra$Date_Extra_Internal2$toTime(date2);
+		var ticksDayDiff = (((ticksDiff - (hourDiff * _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAnHour)) - (minuteDiff * _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAMinute)) - (secondDiff * _rluiten$elm_date_extra$Date_Extra_Internal2$ticksASecond)) - (millisecondDiff * _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAMillisecond);
+		var onlyDaysDiff = (ticksDayDiff / _rluiten$elm_date_extra$Date_Extra_Internal2$ticksADay) | 0;
+		var _p0 = function () {
+			if (_elm_lang$core$Native_Utils.cmp(onlyDaysDiff, 0) < 0) {
+				var absDayDiff = _elm_lang$core$Basics$abs(onlyDaysDiff);
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Basics$negate((absDayDiff / 7) | 0),
+					_1: _elm_lang$core$Basics$negate(
+						A2(_elm_lang$core$Basics_ops['%'], absDayDiff, 7))
+				};
+			} else {
+				return {
+					ctor: '_Tuple2',
+					_0: (onlyDaysDiff / 7) | 0,
+					_1: A2(_elm_lang$core$Basics_ops['%'], onlyDaysDiff, 7)
+				};
+			}
+		}();
+		var weekDiff = _p0._0;
+		var dayDiff = _p0._1;
+		return {week: weekDiff, day: dayDiff, hour: hourDiff, minute: minuteDiff, second: secondDiff, millisecond: millisecondDiff};
+	});
+var _rluiten$elm_date_extra$Date_Extra_Period$addTimeUnit = F3(
+	function (unit, addend, date) {
+		return _rluiten$elm_date_extra$Date_Extra_Internal2$fromTime(
+			A2(
+				F2(
+					function (x, y) {
+						return x + y;
+					}),
+				addend * unit,
+				_rluiten$elm_date_extra$Date_Extra_Internal2$toTime(date)));
+	});
+var _rluiten$elm_date_extra$Date_Extra_Period$toTicks = function (period) {
+	var _p1 = period;
+	switch (_p1.ctor) {
+		case 'Millisecond':
+			return _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAMillisecond;
+		case 'Second':
+			return _rluiten$elm_date_extra$Date_Extra_Internal2$ticksASecond;
+		case 'Minute':
+			return _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAMinute;
+		case 'Hour':
+			return _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAnHour;
+		case 'Day':
+			return _rluiten$elm_date_extra$Date_Extra_Internal2$ticksADay;
+		case 'Week':
+			return _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAWeek;
+		default:
+			var _p2 = _p1._0;
+			return (((((_rluiten$elm_date_extra$Date_Extra_Internal2$ticksAMillisecond * _p2.millisecond) + (_rluiten$elm_date_extra$Date_Extra_Internal2$ticksASecond * _p2.second)) + (_rluiten$elm_date_extra$Date_Extra_Internal2$ticksAMinute * _p2.minute)) + (_rluiten$elm_date_extra$Date_Extra_Internal2$ticksAnHour * _p2.hour)) + (_rluiten$elm_date_extra$Date_Extra_Internal2$ticksADay * _p2.day)) + (_rluiten$elm_date_extra$Date_Extra_Internal2$ticksAWeek * _p2.week);
+	}
+};
+var _rluiten$elm_date_extra$Date_Extra_Period$add = function (period) {
+	return _rluiten$elm_date_extra$Date_Extra_Period$addTimeUnit(
+		_rluiten$elm_date_extra$Date_Extra_Period$toTicks(period));
+};
+var _rluiten$elm_date_extra$Date_Extra_Period$zeroDelta = {week: 0, day: 0, hour: 0, minute: 0, second: 0, millisecond: 0};
+var _rluiten$elm_date_extra$Date_Extra_Period$DeltaRecord = F6(
+	function (a, b, c, d, e, f) {
+		return {week: a, day: b, hour: c, minute: d, second: e, millisecond: f};
+	});
+var _rluiten$elm_date_extra$Date_Extra_Period$Delta = function (a) {
+	return {ctor: 'Delta', _0: a};
+};
+var _rluiten$elm_date_extra$Date_Extra_Period$Week = {ctor: 'Week'};
+var _rluiten$elm_date_extra$Date_Extra_Period$Day = {ctor: 'Day'};
+var _rluiten$elm_date_extra$Date_Extra_Period$Hour = {ctor: 'Hour'};
+var _rluiten$elm_date_extra$Date_Extra_Period$Minute = {ctor: 'Minute'};
+var _rluiten$elm_date_extra$Date_Extra_Period$Second = {ctor: 'Second'};
+var _rluiten$elm_date_extra$Date_Extra_Period$Millisecond = {ctor: 'Millisecond'};
+
+var _rluiten$elm_date_extra$Date_Extra_TypeAlias$TimeFromFields = F4(
+	function (a, b, c, d) {
+		return {hour: a, minute: b, second: c, millisecond: d};
+	});
+var _rluiten$elm_date_extra$Date_Extra_TypeAlias$DateFromFields = F7(
+	function (a, b, c, d, e, f, g) {
+		return {year: a, month: b, day: c, hour: d, minute: e, second: f, millisecond: g};
+	});
+
+var _rluiten$elm_date_extra$Date_Extra_Internal$daysFromCivil = F3(
+	function (year, month, day) {
+		var doy = (((((153 * (month + ((_elm_lang$core$Native_Utils.cmp(month, 2) > 0) ? -3 : 9))) + 2) / 5) | 0) + day) - 1;
+		var y = year - ((_elm_lang$core$Native_Utils.cmp(month, 2) < 1) ? 1 : 0);
+		var era = (((_elm_lang$core$Native_Utils.cmp(y, 0) > -1) ? y : (y - 399)) / 400) | 0;
+		var yoe = y - (era * 400);
+		var doe = (((yoe * 365) + ((yoe / 4) | 0)) - ((yoe / 100) | 0)) + doy;
+		return ((era * 146097) + doe) - 719468;
+	});
+var _rluiten$elm_date_extra$Date_Extra_Internal$ticksFromFields = F7(
+	function (year, month, day, hour, minute, second, millisecond) {
+		var monthInt = _rluiten$elm_date_extra$Date_Extra_Internal2$monthToInt(month);
+		var clampYear = (_elm_lang$core$Native_Utils.cmp(year, 0) < 0) ? 0 : year;
+		var clampDay = A3(
+			_elm_lang$core$Basics$clamp,
+			1,
+			A2(_rluiten$elm_date_extra$Date_Extra_Internal2$daysInMonth, clampYear, month),
+			day);
+		var dayCount = A3(_rluiten$elm_date_extra$Date_Extra_Internal$daysFromCivil, clampYear, monthInt, clampDay);
+		return _rluiten$elm_date_extra$Date_Extra_Period$toTicks(
+			_rluiten$elm_date_extra$Date_Extra_Period$Delta(
+				{
+					millisecond: A3(_elm_lang$core$Basics$clamp, 0, 999, millisecond),
+					second: A3(_elm_lang$core$Basics$clamp, 0, 59, second),
+					minute: A3(_elm_lang$core$Basics$clamp, 0, 59, minute),
+					hour: A3(_elm_lang$core$Basics$clamp, 0, 23, hour),
+					day: dayCount,
+					week: 0
+				}));
+	});
+var _rluiten$elm_date_extra$Date_Extra_Internal$ticksFromDateFields = function (date) {
+	return A7(
+		_rluiten$elm_date_extra$Date_Extra_Internal$ticksFromFields,
+		_elm_lang$core$Date$year(date),
+		_elm_lang$core$Date$month(date),
+		_elm_lang$core$Date$day(date),
+		_elm_lang$core$Date$hour(date),
+		_elm_lang$core$Date$minute(date),
+		_elm_lang$core$Date$second(date),
+		_elm_lang$core$Date$millisecond(date));
+};
+var _rluiten$elm_date_extra$Date_Extra_Internal$getTimezoneOffset = function (date) {
+	var v1Ticks = _rluiten$elm_date_extra$Date_Extra_Internal$ticksFromDateFields(date);
+	var dateTicks = _elm_lang$core$Basics$floor(
+		_elm_lang$core$Date$toTime(date));
+	return ((dateTicks - v1Ticks) / _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAMinute) | 0;
+};
+var _rluiten$elm_date_extra$Date_Extra_Internal$ticksFromFieldsRecord = function (_p0) {
+	var _p1 = _p0;
+	return A7(_rluiten$elm_date_extra$Date_Extra_Internal$ticksFromFields, _p1.year, _p1.month, _p1.day, _p1.hour, _p1.minute, _p1.second, _p1.millisecond);
+};
+var _rluiten$elm_date_extra$Date_Extra_Internal$hackDateAsOffset = F2(
+	function (offsetMinutes, date) {
+		return _rluiten$elm_date_extra$Date_Extra_Internal2$fromTime(
+			A2(
+				F2(
+					function (x, y) {
+						return x + y;
+					}),
+				offsetMinutes * _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAMinute,
+				_rluiten$elm_date_extra$Date_Extra_Internal2$toTime(date)));
+	});
+var _rluiten$elm_date_extra$Date_Extra_Internal$hackDateAsUtc = function (date) {
+	var offset = _rluiten$elm_date_extra$Date_Extra_Internal$getTimezoneOffset(date);
+	var oHours = (offset / _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAnHour) | 0;
+	var oMinutes = ((offset - (oHours * _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAnHour)) / _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAMinute) | 0;
+	return A2(_rluiten$elm_date_extra$Date_Extra_Internal$hackDateAsOffset, offset, date);
+};
+
+var _rluiten$elm_date_extra$Date_Extra_Core$compensateZoneOffset = F2(
+	function (date1, date2) {
+		return A3(
+			_rluiten$elm_date_extra$Date_Extra_Period$add,
+			_rluiten$elm_date_extra$Date_Extra_Period$Minute,
+			_rluiten$elm_date_extra$Date_Extra_Internal$getTimezoneOffset(date2) - _rluiten$elm_date_extra$Date_Extra_Internal$getTimezoneOffset(date1),
+			date2);
+	});
+var _rluiten$elm_date_extra$Date_Extra_Core$lastOfMonthDate = function (date) {
+	return A2(
+		_rluiten$elm_date_extra$Date_Extra_Core$compensateZoneOffset,
+		date,
+		_rluiten$elm_date_extra$Date_Extra_Internal2$fromTime(
+			_rluiten$elm_date_extra$Date_Extra_Internal2$lastOfMonthTicks(date)));
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$toFirstOfMonth = function (date) {
+	return A2(
+		_rluiten$elm_date_extra$Date_Extra_Core$compensateZoneOffset,
+		date,
+		_rluiten$elm_date_extra$Date_Extra_Internal2$fromTime(
+			_rluiten$elm_date_extra$Date_Extra_Internal2$firstOfMonthTicks(date)));
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$lastOfPrevMonthDate = function (date) {
+	return A2(
+		_rluiten$elm_date_extra$Date_Extra_Core$compensateZoneOffset,
+		date,
+		_rluiten$elm_date_extra$Date_Extra_Internal2$lastOfPrevMonthDate(date));
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$firstOfNextMonthDate = function (date) {
+	return A2(
+		_rluiten$elm_date_extra$Date_Extra_Core$compensateZoneOffset,
+		date,
+		_rluiten$elm_date_extra$Date_Extra_Internal2$firstOfNextMonthDate(date));
+};
+var _rluiten$elm_date_extra$Date_Extra_Core$yearToDayLength = _rluiten$elm_date_extra$Date_Extra_Internal2$yearToDayLength;
+var _rluiten$elm_date_extra$Date_Extra_Core$toTime = _rluiten$elm_date_extra$Date_Extra_Internal2$toTime;
+var _rluiten$elm_date_extra$Date_Extra_Core$ticksAWeek = _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAWeek;
+var _rluiten$elm_date_extra$Date_Extra_Core$ticksASecond = _rluiten$elm_date_extra$Date_Extra_Internal2$ticksASecond;
+var _rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute = _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAMinute;
+var _rluiten$elm_date_extra$Date_Extra_Core$ticksAMillisecond = _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAMillisecond;
+var _rluiten$elm_date_extra$Date_Extra_Core$ticksADay = _rluiten$elm_date_extra$Date_Extra_Internal2$ticksADay;
+var _rluiten$elm_date_extra$Date_Extra_Core$ticksAnHour = _rluiten$elm_date_extra$Date_Extra_Internal2$ticksAnHour;
+var _rluiten$elm_date_extra$Date_Extra_Core$prevMonth = _rluiten$elm_date_extra$Date_Extra_Internal2$prevMonth;
+var _rluiten$elm_date_extra$Date_Extra_Core$prevDay = _rluiten$elm_date_extra$Date_Extra_Internal2$prevDay;
+var _rluiten$elm_date_extra$Date_Extra_Core$nextMonth = _rluiten$elm_date_extra$Date_Extra_Internal2$nextMonth;
+var _rluiten$elm_date_extra$Date_Extra_Core$nextDay = _rluiten$elm_date_extra$Date_Extra_Internal2$nextDay;
+var _rluiten$elm_date_extra$Date_Extra_Core$monthToInt = _rluiten$elm_date_extra$Date_Extra_Internal2$monthToInt;
+var _rluiten$elm_date_extra$Date_Extra_Core$monthList = _rluiten$elm_date_extra$Date_Extra_Internal2$monthList;
+var _rluiten$elm_date_extra$Date_Extra_Core$isoDayOfWeek = _rluiten$elm_date_extra$Date_Extra_Internal2$isoDayOfWeek;
+var _rluiten$elm_date_extra$Date_Extra_Core$daysBackToStartOfWeek = F2(
+	function (dateDay, startOfWeekDay) {
+		var startOfWeekDayIndex = _rluiten$elm_date_extra$Date_Extra_Core$isoDayOfWeek(startOfWeekDay);
+		var dateDayIndex = _rluiten$elm_date_extra$Date_Extra_Core$isoDayOfWeek(dateDay);
+		return (_elm_lang$core$Native_Utils.cmp(dateDayIndex, startOfWeekDayIndex) < 0) ? ((7 + dateDayIndex) - startOfWeekDayIndex) : (dateDayIndex - startOfWeekDayIndex);
+	});
+var _rluiten$elm_date_extra$Date_Extra_Core$isLeapYearDate = _rluiten$elm_date_extra$Date_Extra_Internal2$isLeapYearDate;
+var _rluiten$elm_date_extra$Date_Extra_Core$isLeapYear = _rluiten$elm_date_extra$Date_Extra_Internal2$isLeapYear;
+var _rluiten$elm_date_extra$Date_Extra_Core$intToMonth = _rluiten$elm_date_extra$Date_Extra_Internal2$intToMonth;
+var _rluiten$elm_date_extra$Date_Extra_Core$fromTime = _rluiten$elm_date_extra$Date_Extra_Internal2$fromTime;
+var _rluiten$elm_date_extra$Date_Extra_Core$epochDateStr = _rluiten$elm_date_extra$Date_Extra_Internal2$epochDateStr;
+var _rluiten$elm_date_extra$Date_Extra_Core$daysInMonthDate = _rluiten$elm_date_extra$Date_Extra_Internal2$daysInMonthDate;
+var _rluiten$elm_date_extra$Date_Extra_Core$daysInPrevMonth = _rluiten$elm_date_extra$Date_Extra_Internal2$daysInPrevMonth;
+var _rluiten$elm_date_extra$Date_Extra_Core$daysInNextMonth = _rluiten$elm_date_extra$Date_Extra_Internal2$daysInNextMonth;
+var _rluiten$elm_date_extra$Date_Extra_Core$daysInMonth = _rluiten$elm_date_extra$Date_Extra_Internal2$daysInMonth;
+
+var _rluiten$elm_date_extra$Date_Extra_Compare$is3 = F4(
+	function (comp, date1, date2, date3) {
+		var time3 = _rluiten$elm_date_extra$Date_Extra_Core$toTime(date3);
+		var time2 = _rluiten$elm_date_extra$Date_Extra_Core$toTime(date2);
+		var highBound = A2(_elm_lang$core$Basics$max, time2, time3);
+		var lowBound = A2(_elm_lang$core$Basics$min, time2, time3);
+		var time1 = _rluiten$elm_date_extra$Date_Extra_Core$toTime(date1);
+		var _p0 = comp;
+		switch (_p0.ctor) {
+			case 'Between':
+				return (_elm_lang$core$Native_Utils.cmp(time1, lowBound) > 0) && (_elm_lang$core$Native_Utils.cmp(time1, highBound) < 0);
+			case 'BetweenOpenStart':
+				return (_elm_lang$core$Native_Utils.cmp(time1, lowBound) > -1) && (_elm_lang$core$Native_Utils.cmp(time1, highBound) < 0);
+			case 'BetweenOpenEnd':
+				return (_elm_lang$core$Native_Utils.cmp(time1, lowBound) > 0) && (_elm_lang$core$Native_Utils.cmp(time1, highBound) < 1);
+			default:
+				return (_elm_lang$core$Native_Utils.cmp(time1, lowBound) > -1) && (_elm_lang$core$Native_Utils.cmp(time1, highBound) < 1);
+		}
+	});
+var _rluiten$elm_date_extra$Date_Extra_Compare$is = F3(
+	function (comp, date1, date2) {
+		var time2 = _rluiten$elm_date_extra$Date_Extra_Core$toTime(date2);
+		var time1 = _rluiten$elm_date_extra$Date_Extra_Core$toTime(date1);
+		var _p1 = comp;
+		switch (_p1.ctor) {
+			case 'Before':
+				return _elm_lang$core$Native_Utils.cmp(time1, time2) < 0;
+			case 'After':
+				return _elm_lang$core$Native_Utils.cmp(time1, time2) > 0;
+			case 'Same':
+				return _elm_lang$core$Native_Utils.eq(time1, time2);
+			case 'SameOrBefore':
+				return _elm_lang$core$Native_Utils.cmp(time1, time2) < 1;
+			default:
+				return _elm_lang$core$Native_Utils.cmp(time1, time2) > -1;
+		}
+	});
+var _rluiten$elm_date_extra$Date_Extra_Compare$SameOrBefore = {ctor: 'SameOrBefore'};
+var _rluiten$elm_date_extra$Date_Extra_Compare$SameOrAfter = {ctor: 'SameOrAfter'};
+var _rluiten$elm_date_extra$Date_Extra_Compare$Same = {ctor: 'Same'};
+var _rluiten$elm_date_extra$Date_Extra_Compare$Before = {ctor: 'Before'};
+var _rluiten$elm_date_extra$Date_Extra_Compare$After = {ctor: 'After'};
+var _rluiten$elm_date_extra$Date_Extra_Compare$BetweenOpen = {ctor: 'BetweenOpen'};
+var _rluiten$elm_date_extra$Date_Extra_Compare$BetweenOpenEnd = {ctor: 'BetweenOpenEnd'};
+var _rluiten$elm_date_extra$Date_Extra_Compare$BetweenOpenStart = {ctor: 'BetweenOpenStart'};
+var _rluiten$elm_date_extra$Date_Extra_Compare$Between = {ctor: 'Between'};
+
+var _rluiten$elm_date_extra$Date_Extra_Create$epochDate = _elm_lang$core$Date$fromTime(0);
+var _rluiten$elm_date_extra$Date_Extra_Create$epochTimezoneOffset = function () {
+	var inMinutes = (_elm_lang$core$Date$hour(_rluiten$elm_date_extra$Date_Extra_Create$epochDate) * 60) + _elm_lang$core$Date$minute(_rluiten$elm_date_extra$Date_Extra_Create$epochDate);
+	return _elm_lang$core$Native_Utils.eq(
+		_elm_lang$core$Date$year(_rluiten$elm_date_extra$Date_Extra_Create$epochDate),
+		1969) ? (0 - (inMinutes - (24 * 60))) : (0 - inMinutes);
+}();
+var _rluiten$elm_date_extra$Date_Extra_Create$getTimezoneOffset = _rluiten$elm_date_extra$Date_Extra_Internal$getTimezoneOffset;
+var _rluiten$elm_date_extra$Date_Extra_Create$adjustedTicksToDate = function (ticks) {
+	var date = A3(_rluiten$elm_date_extra$Date_Extra_Period$add, _rluiten$elm_date_extra$Date_Extra_Period$Millisecond, ticks + (_rluiten$elm_date_extra$Date_Extra_Create$epochTimezoneOffset * _rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute), _rluiten$elm_date_extra$Date_Extra_Create$epochDate);
+	var dateOffset = _rluiten$elm_date_extra$Date_Extra_Create$getTimezoneOffset(date);
+	return _elm_lang$core$Native_Utils.eq(dateOffset, _rluiten$elm_date_extra$Date_Extra_Create$epochTimezoneOffset) ? date : A3(_rluiten$elm_date_extra$Date_Extra_Period$add, _rluiten$elm_date_extra$Date_Extra_Period$Minute, dateOffset - _rluiten$elm_date_extra$Date_Extra_Create$epochTimezoneOffset, date);
+};
+var _rluiten$elm_date_extra$Date_Extra_Create$dateFromFields = F7(
+	function (year, month, day, hour, minute, second, millisecond) {
+		return _rluiten$elm_date_extra$Date_Extra_Create$adjustedTicksToDate(
+			A7(_rluiten$elm_date_extra$Date_Extra_Internal$ticksFromFields, year, month, day, hour, minute, second, millisecond));
+	});
+var _rluiten$elm_date_extra$Date_Extra_Create$timeFromFields = A3(_rluiten$elm_date_extra$Date_Extra_Create$dateFromFields, 1970, _elm_lang$core$Date$Jan, 1);
+var _rluiten$elm_date_extra$Date_Extra_Create$timeFromFieldsRecord = function (_p0) {
+	var _p1 = _p0;
+	return A7(_rluiten$elm_date_extra$Date_Extra_Create$dateFromFields, 1970, _elm_lang$core$Date$Jan, 1, _p1.hour, _p1.minute, _p1.second, _p1.millisecond);
+};
+var _rluiten$elm_date_extra$Date_Extra_Create$dateFromFieldsRecord = function (_p2) {
+	return _rluiten$elm_date_extra$Date_Extra_Create$adjustedTicksToDate(
+		_rluiten$elm_date_extra$Date_Extra_Internal$ticksFromFieldsRecord(_p2));
+};
+
+var _rluiten$elm_date_extra$Date_Extra_Duration$positiveDiffDays = F3(
+	function (date1, date2, multiplier) {
+		var date2DaysFromCivil = A3(
+			_rluiten$elm_date_extra$Date_Extra_Internal$daysFromCivil,
+			_elm_lang$core$Date$year(date2),
+			_rluiten$elm_date_extra$Date_Extra_Core$monthToInt(
+				_elm_lang$core$Date$month(date2)),
+			_elm_lang$core$Date$day(date2));
+		var date1DaysFromCivil = A3(
+			_rluiten$elm_date_extra$Date_Extra_Internal$daysFromCivil,
+			_elm_lang$core$Date$year(date1),
+			_rluiten$elm_date_extra$Date_Extra_Core$monthToInt(
+				_elm_lang$core$Date$month(date1)),
+			_elm_lang$core$Date$day(date1));
+		return (date1DaysFromCivil - date2DaysFromCivil) * multiplier;
+	});
+var _rluiten$elm_date_extra$Date_Extra_Duration$diffDays = F2(
+	function (date1, date2) {
+		return A3(_rluiten$elm_date_extra$Date_Extra_Compare$is, _rluiten$elm_date_extra$Date_Extra_Compare$After, date1, date2) ? A3(_rluiten$elm_date_extra$Date_Extra_Duration$positiveDiffDays, date1, date2, 1) : A3(_rluiten$elm_date_extra$Date_Extra_Duration$positiveDiffDays, date2, date1, -1);
+	});
+var _rluiten$elm_date_extra$Date_Extra_Duration$positiveDiff = F3(
+	function (date1, date2, multiplier) {
+		var propogateCarry = F3(
+			function (current, carry, maxVal) {
+				var adjusted = current + carry;
+				return (_elm_lang$core$Native_Utils.cmp(adjusted, 0) < 0) ? {ctor: '_Tuple2', _0: maxVal + adjusted, _1: -1} : {ctor: '_Tuple2', _0: adjusted, _1: 0};
+			});
+		var accumulatedDiff = F4(
+			function (acc, v1, v2, maxV2) {
+				return (_elm_lang$core$Native_Utils.cmp(v1, v2) < 0) ? {ctor: '_Tuple2', _0: acc - 1, _1: (maxV2 + v1) - v2} : {ctor: '_Tuple2', _0: acc, _1: v1 - v2};
+			});
+		var msec2 = _elm_lang$core$Date$millisecond(date2);
+		var msec1 = _elm_lang$core$Date$millisecond(date1);
+		var second2 = _elm_lang$core$Date$second(date2);
+		var second1 = _elm_lang$core$Date$second(date1);
+		var minute2 = _elm_lang$core$Date$minute(date2);
+		var minute1 = _elm_lang$core$Date$minute(date1);
+		var hour2 = _elm_lang$core$Date$hour(date2);
+		var hour1 = _elm_lang$core$Date$hour(date1);
+		var day2 = _elm_lang$core$Date$day(date2);
+		var day1 = _elm_lang$core$Date$day(date1);
+		var month2Mon = _elm_lang$core$Date$month(date2);
+		var month2 = _rluiten$elm_date_extra$Date_Extra_Core$monthToInt(month2Mon);
+		var month1Mon = _elm_lang$core$Date$month(date1);
+		var month1 = _rluiten$elm_date_extra$Date_Extra_Core$monthToInt(month1Mon);
+		var year2 = _elm_lang$core$Date$year(date2);
+		var daysInDate2Month = A2(_rluiten$elm_date_extra$Date_Extra_Core$daysInMonth, year2, month2Mon);
+		var year1 = _elm_lang$core$Date$year(date1);
+		var daysInDate1Month = A2(_rluiten$elm_date_extra$Date_Extra_Core$daysInMonth, year1, month1Mon);
+		var _p0 = A4(accumulatedDiff, year1 - year2, month1, month2, 12);
+		var yearDiff = _p0._0;
+		var monthDiffA = _p0._1;
+		var _p1 = A4(accumulatedDiff, monthDiffA, day1, day2, daysInDate2Month);
+		var monthDiff = _p1._0;
+		var dayDiffA = _p1._1;
+		var _p2 = A4(accumulatedDiff, dayDiffA, hour1, hour2, 24);
+		var dayDiff = _p2._0;
+		var hourDiffA = _p2._1;
+		var _p3 = A4(accumulatedDiff, hourDiffA, minute1, minute2, 60);
+		var hourDiff = _p3._0;
+		var minuteDiffA = _p3._1;
+		var _p4 = A4(accumulatedDiff, minuteDiffA, second1, second2, 60);
+		var minuteDiff = _p4._0;
+		var secondDiffA = _p4._1;
+		var _p5 = A4(accumulatedDiff, secondDiffA, msec1, msec2, 1000);
+		var secondDiff = _p5._0;
+		var msecDiff = _p5._1;
+		var _p6 = A3(propogateCarry, msecDiff, 0, 1000);
+		var msecX = _p6._0;
+		var secondCarry = _p6._1;
+		var _p7 = A3(propogateCarry, secondDiff, secondCarry, 60);
+		var secondX = _p7._0;
+		var minuteCarry = _p7._1;
+		var _p8 = A3(propogateCarry, minuteDiff, minuteCarry, 60);
+		var minuteX = _p8._0;
+		var hourCarry = _p8._1;
+		var _p9 = A3(propogateCarry, hourDiff, hourCarry, 60);
+		var hourX = _p9._0;
+		var dayCarry = _p9._1;
+		var _p10 = A3(propogateCarry, dayDiff, dayCarry, daysInDate1Month);
+		var dayX = _p10._0;
+		var monthCarry = _p10._1;
+		var _p11 = A3(propogateCarry, monthDiff, monthCarry, 12);
+		var monthX = _p11._0;
+		var yearCarry = _p11._1;
+		var _p12 = A3(propogateCarry, yearDiff, yearCarry, 0);
+		var yearX = _p12._0;
+		return {year: yearX * multiplier, month: monthX * multiplier, day: dayX * multiplier, hour: hourX * multiplier, minute: minuteX * multiplier, second: secondX * multiplier, millisecond: msecX * multiplier};
+	});
+var _rluiten$elm_date_extra$Date_Extra_Duration$diff = F2(
+	function (date1, date2) {
+		return A3(_rluiten$elm_date_extra$Date_Extra_Compare$is, _rluiten$elm_date_extra$Date_Extra_Compare$After, date1, date2) ? A3(_rluiten$elm_date_extra$Date_Extra_Duration$positiveDiff, date1, date2, 1) : A3(_rluiten$elm_date_extra$Date_Extra_Duration$positiveDiff, date2, date1, -1);
+	});
+var _rluiten$elm_date_extra$Date_Extra_Duration$addMonth = F2(
+	function (monthCount, date) {
+		var day = _elm_lang$core$Date$day(date);
+		var monthInt = _rluiten$elm_date_extra$Date_Extra_Core$monthToInt(
+			_elm_lang$core$Date$month(date));
+		var newMonthInt = monthInt + monthCount;
+		var targetMonthInt = A2(_elm_lang$core$Basics_ops['%'], newMonthInt, 12);
+		var yearOffset = ((_elm_lang$core$Native_Utils.cmp(newMonthInt, 0) < 0) && (!_elm_lang$core$Native_Utils.eq(targetMonthInt, 0))) ? (((newMonthInt / 12) | 0) - 1) : ((newMonthInt / 12) | 0);
+		var year = _elm_lang$core$Date$year(date);
+		var inputCivil = A3(_rluiten$elm_date_extra$Date_Extra_Internal$daysFromCivil, year, monthInt, day);
+		var newYear = year + yearOffset;
+		var newDay = A2(
+			_elm_lang$core$Basics$min,
+			A2(
+				_rluiten$elm_date_extra$Date_Extra_Core$daysInMonth,
+				newYear,
+				_rluiten$elm_date_extra$Date_Extra_Core$intToMonth(newMonthInt)),
+			day);
+		var newCivil = A3(_rluiten$elm_date_extra$Date_Extra_Internal$daysFromCivil, newYear, targetMonthInt, newDay);
+		var daysDifferent = newCivil - inputCivil;
+		return A3(_rluiten$elm_date_extra$Date_Extra_Period$add, _rluiten$elm_date_extra$Date_Extra_Period$Day, daysDifferent, date);
+	});
+var _rluiten$elm_date_extra$Date_Extra_Duration$addYear = F2(
+	function (yearCount, date) {
+		return A2(_rluiten$elm_date_extra$Date_Extra_Duration$addMonth, 12 * yearCount, date);
+	});
+var _rluiten$elm_date_extra$Date_Extra_Duration$daylightOffsetCompensate = F2(
+	function (dateBefore, dateAfter) {
+		var offsetAfter = _rluiten$elm_date_extra$Date_Extra_Create$getTimezoneOffset(dateAfter);
+		var offsetBefore = _rluiten$elm_date_extra$Date_Extra_Create$getTimezoneOffset(dateBefore);
+		if (!_elm_lang$core$Native_Utils.eq(offsetBefore, offsetAfter)) {
+			var adjustedDate = A3(_rluiten$elm_date_extra$Date_Extra_Period$add, _rluiten$elm_date_extra$Date_Extra_Period$Millisecond, (offsetAfter - offsetBefore) * _rluiten$elm_date_extra$Date_Extra_Core$ticksAMinute, dateAfter);
+			var adjustedOffset = _rluiten$elm_date_extra$Date_Extra_Create$getTimezoneOffset(adjustedDate);
+			return (!_elm_lang$core$Native_Utils.eq(adjustedOffset, offsetAfter)) ? dateAfter : adjustedDate;
+		} else {
+			return dateAfter;
+		}
+	});
+var _rluiten$elm_date_extra$Date_Extra_Duration$requireDaylightCompensateInAdd = function (duration) {
+	var _p13 = duration;
+	switch (_p13.ctor) {
+		case 'Millisecond':
+			return false;
+		case 'Second':
+			return false;
+		case 'Minute':
+			return false;
+		case 'Hour':
+			return false;
+		case 'Day':
+			return true;
+		case 'Week':
+			return true;
+		case 'Month':
+			return true;
+		case 'Year':
+			return true;
+		default:
+			var _p14 = _p13._0;
+			return (!_elm_lang$core$Native_Utils.eq(_p14.day, 0)) || ((!_elm_lang$core$Native_Utils.eq(_p14.month, 0)) || (!_elm_lang$core$Native_Utils.eq(_p14.year, 0)));
+	}
+};
+var _rluiten$elm_date_extra$Date_Extra_Duration$zeroDelta = {year: 0, month: 0, day: 0, hour: 0, minute: 0, second: 0, millisecond: 0};
+var _rluiten$elm_date_extra$Date_Extra_Duration$DeltaRecord = F7(
+	function (a, b, c, d, e, f, g) {
+		return {year: a, month: b, day: c, hour: d, minute: e, second: f, millisecond: g};
+	});
+var _rluiten$elm_date_extra$Date_Extra_Duration$Delta = function (a) {
+	return {ctor: 'Delta', _0: a};
+};
+var _rluiten$elm_date_extra$Date_Extra_Duration$Year = {ctor: 'Year'};
+var _rluiten$elm_date_extra$Date_Extra_Duration$Month = {ctor: 'Month'};
+var _rluiten$elm_date_extra$Date_Extra_Duration$doAdd = F3(
+	function (duration, addend, date) {
+		var _p15 = duration;
+		switch (_p15.ctor) {
+			case 'Millisecond':
+				return A3(_rluiten$elm_date_extra$Date_Extra_Period$add, _rluiten$elm_date_extra$Date_Extra_Period$Millisecond, addend, date);
+			case 'Second':
+				return A3(_rluiten$elm_date_extra$Date_Extra_Period$add, _rluiten$elm_date_extra$Date_Extra_Period$Second, addend, date);
+			case 'Minute':
+				return A3(_rluiten$elm_date_extra$Date_Extra_Period$add, _rluiten$elm_date_extra$Date_Extra_Period$Minute, addend, date);
+			case 'Hour':
+				return A3(_rluiten$elm_date_extra$Date_Extra_Period$add, _rluiten$elm_date_extra$Date_Extra_Period$Hour, addend, date);
+			case 'Day':
+				return A3(_rluiten$elm_date_extra$Date_Extra_Period$add, _rluiten$elm_date_extra$Date_Extra_Period$Day, addend, date);
+			case 'Week':
+				return A3(_rluiten$elm_date_extra$Date_Extra_Period$add, _rluiten$elm_date_extra$Date_Extra_Period$Week, addend, date);
+			case 'Month':
+				return A2(_rluiten$elm_date_extra$Date_Extra_Duration$addMonth, addend, date);
+			case 'Year':
+				return A2(_rluiten$elm_date_extra$Date_Extra_Duration$addYear, addend, date);
+			default:
+				var _p16 = _p15._0;
+				return A3(
+					_rluiten$elm_date_extra$Date_Extra_Period$add,
+					_rluiten$elm_date_extra$Date_Extra_Period$Delta(
+						{week: 0, day: _p16.day, hour: _p16.hour, minute: _p16.minute, second: _p16.second, millisecond: _p16.millisecond}),
+					addend,
+					A3(
+						_rluiten$elm_date_extra$Date_Extra_Duration$doAdd,
+						_rluiten$elm_date_extra$Date_Extra_Duration$Month,
+						_p16.month,
+						A3(_rluiten$elm_date_extra$Date_Extra_Duration$doAdd, _rluiten$elm_date_extra$Date_Extra_Duration$Year, _p16.year, date)));
+		}
+	});
+var _rluiten$elm_date_extra$Date_Extra_Duration$add = F3(
+	function (duration, addend, date) {
+		var outputDate = A3(_rluiten$elm_date_extra$Date_Extra_Duration$doAdd, duration, addend, date);
+		return _rluiten$elm_date_extra$Date_Extra_Duration$requireDaylightCompensateInAdd(duration) ? A2(_rluiten$elm_date_extra$Date_Extra_Duration$daylightOffsetCompensate, date, outputDate) : outputDate;
+	});
+var _rluiten$elm_date_extra$Date_Extra_Duration$Week = {ctor: 'Week'};
+var _rluiten$elm_date_extra$Date_Extra_Duration$Day = {ctor: 'Day'};
+var _rluiten$elm_date_extra$Date_Extra_Duration$Hour = {ctor: 'Hour'};
+var _rluiten$elm_date_extra$Date_Extra_Duration$Minute = {ctor: 'Minute'};
+var _rluiten$elm_date_extra$Date_Extra_Duration$Second = {ctor: 'Second'};
+var _rluiten$elm_date_extra$Date_Extra_Duration$Millisecond = {ctor: 'Millisecond'};
+
+var _rluiten$elm_date_extra$Date_Extra_Field$dayOfWeekToDate = F3(
+	function (newDayOfWeek, startOfWeekDay, date) {
+		var targetIsoDay = _rluiten$elm_date_extra$Date_Extra_Core$isoDayOfWeek(newDayOfWeek);
+		var dayOfWeek = _elm_lang$core$Date$dayOfWeek(date);
+		var daysToStartOfWeek = A2(_rluiten$elm_date_extra$Date_Extra_Core$daysBackToStartOfWeek, dayOfWeek, startOfWeekDay);
+		var isoDay = _rluiten$elm_date_extra$Date_Extra_Core$isoDayOfWeek(dayOfWeek);
+		var dayDiff = targetIsoDay - isoDay;
+		var adjustedDiff = (_elm_lang$core$Native_Utils.cmp(daysToStartOfWeek + dayDiff, 0) < 0) ? (dayDiff + 7) : dayDiff;
+		return A3(_rluiten$elm_date_extra$Date_Extra_Duration$add, _rluiten$elm_date_extra$Date_Extra_Duration$Day, adjustedDiff, date);
+	});
+var _rluiten$elm_date_extra$Date_Extra_Field$monthToDate = F2(
+	function (month, date) {
+		var monthInt = _rluiten$elm_date_extra$Date_Extra_Core$monthToInt(
+			_elm_lang$core$Date$month(date));
+		var targetMonthInt = _rluiten$elm_date_extra$Date_Extra_Core$monthToInt(month);
+		return A3(_rluiten$elm_date_extra$Date_Extra_Duration$add, _rluiten$elm_date_extra$Date_Extra_Duration$Month, targetMonthInt - monthInt, date);
+	});
+var _rluiten$elm_date_extra$Date_Extra_Field$fieldToDateClamp = F2(
+	function (field, date) {
+		var _p0 = field;
+		switch (_p0.ctor) {
+			case 'Millisecond':
+				return A3(
+					_rluiten$elm_date_extra$Date_Extra_Duration$add,
+					_rluiten$elm_date_extra$Date_Extra_Duration$Millisecond,
+					A3(_elm_lang$core$Basics$clamp, 0, 999, _p0._0) - _elm_lang$core$Date$millisecond(date),
+					date);
+			case 'Second':
+				return A3(
+					_rluiten$elm_date_extra$Date_Extra_Duration$add,
+					_rluiten$elm_date_extra$Date_Extra_Duration$Second,
+					A3(_elm_lang$core$Basics$clamp, 0, 59, _p0._0) - _elm_lang$core$Date$second(date),
+					date);
+			case 'Minute':
+				return A3(
+					_rluiten$elm_date_extra$Date_Extra_Duration$add,
+					_rluiten$elm_date_extra$Date_Extra_Duration$Minute,
+					A3(_elm_lang$core$Basics$clamp, 0, 59, _p0._0) - _elm_lang$core$Date$minute(date),
+					date);
+			case 'Hour':
+				return A3(
+					_rluiten$elm_date_extra$Date_Extra_Duration$add,
+					_rluiten$elm_date_extra$Date_Extra_Duration$Hour,
+					A3(_elm_lang$core$Basics$clamp, 0, 23, _p0._0) - _elm_lang$core$Date$hour(date),
+					date);
+			case 'DayOfWeek':
+				return A3(_rluiten$elm_date_extra$Date_Extra_Field$dayOfWeekToDate, _p0._0._0, _p0._0._1, date);
+			case 'DayOfMonth':
+				var maxDays = _rluiten$elm_date_extra$Date_Extra_Core$daysInMonthDate(date);
+				return A3(
+					_rluiten$elm_date_extra$Date_Extra_Duration$add,
+					_rluiten$elm_date_extra$Date_Extra_Duration$Day,
+					A3(_elm_lang$core$Basics$clamp, 1, maxDays, _p0._0) - _elm_lang$core$Date$day(date),
+					date);
+			case 'Month':
+				return A2(_rluiten$elm_date_extra$Date_Extra_Field$monthToDate, _p0._0, date);
+			default:
+				var _p1 = _p0._0;
+				var minYear = (_elm_lang$core$Native_Utils.cmp(_p1, 0) < 0) ? 0 : _p1;
+				return A3(
+					_rluiten$elm_date_extra$Date_Extra_Duration$add,
+					_rluiten$elm_date_extra$Date_Extra_Duration$Year,
+					minYear - _elm_lang$core$Date$year(date),
+					date);
+		}
+	});
+var _rluiten$elm_date_extra$Date_Extra_Field$fieldToDate = F2(
+	function (field, date) {
+		var _p2 = field;
+		switch (_p2.ctor) {
+			case 'Millisecond':
+				var _p3 = _p2._0;
+				return ((_elm_lang$core$Native_Utils.cmp(_p3, 0) < 0) || (_elm_lang$core$Native_Utils.cmp(_p3, 999) > 0)) ? _elm_lang$core$Maybe$Nothing : _elm_lang$core$Maybe$Just(
+					A3(
+						_rluiten$elm_date_extra$Date_Extra_Duration$add,
+						_rluiten$elm_date_extra$Date_Extra_Duration$Millisecond,
+						_p3 - _elm_lang$core$Date$millisecond(date),
+						date));
+			case 'Second':
+				var _p4 = _p2._0;
+				return ((_elm_lang$core$Native_Utils.cmp(_p4, 0) < 0) || (_elm_lang$core$Native_Utils.cmp(_p4, 59) > 0)) ? _elm_lang$core$Maybe$Nothing : _elm_lang$core$Maybe$Just(
+					A3(
+						_rluiten$elm_date_extra$Date_Extra_Duration$add,
+						_rluiten$elm_date_extra$Date_Extra_Duration$Second,
+						_p4 - _elm_lang$core$Date$second(date),
+						date));
+			case 'Minute':
+				var _p5 = _p2._0;
+				return ((_elm_lang$core$Native_Utils.cmp(_p5, 0) < 0) || (_elm_lang$core$Native_Utils.cmp(_p5, 59) > 0)) ? _elm_lang$core$Maybe$Nothing : _elm_lang$core$Maybe$Just(
+					A3(
+						_rluiten$elm_date_extra$Date_Extra_Duration$add,
+						_rluiten$elm_date_extra$Date_Extra_Duration$Minute,
+						_p5 - _elm_lang$core$Date$minute(date),
+						date));
+			case 'Hour':
+				var _p6 = _p2._0;
+				return ((_elm_lang$core$Native_Utils.cmp(_p6, 0) < 0) || (_elm_lang$core$Native_Utils.cmp(_p6, 23) > 0)) ? _elm_lang$core$Maybe$Nothing : _elm_lang$core$Maybe$Just(
+					A3(
+						_rluiten$elm_date_extra$Date_Extra_Duration$add,
+						_rluiten$elm_date_extra$Date_Extra_Duration$Hour,
+						_p6 - _elm_lang$core$Date$hour(date),
+						date));
+			case 'DayOfWeek':
+				return _elm_lang$core$Maybe$Just(
+					A3(_rluiten$elm_date_extra$Date_Extra_Field$dayOfWeekToDate, _p2._0._0, _p2._0._1, date));
+			case 'DayOfMonth':
+				var _p7 = _p2._0;
+				var maxDays = _rluiten$elm_date_extra$Date_Extra_Core$daysInMonthDate(date);
+				return ((_elm_lang$core$Native_Utils.cmp(_p7, 1) < 0) || (_elm_lang$core$Native_Utils.cmp(_p7, maxDays) > 0)) ? _elm_lang$core$Maybe$Nothing : _elm_lang$core$Maybe$Just(
+					A3(
+						_rluiten$elm_date_extra$Date_Extra_Duration$add,
+						_rluiten$elm_date_extra$Date_Extra_Duration$Day,
+						_p7 - _elm_lang$core$Date$day(date),
+						date));
+			case 'Month':
+				return _elm_lang$core$Maybe$Just(
+					A2(_rluiten$elm_date_extra$Date_Extra_Field$monthToDate, _p2._0, date));
+			default:
+				var _p8 = _p2._0;
+				return (_elm_lang$core$Native_Utils.cmp(_p8, 0) < 0) ? _elm_lang$core$Maybe$Nothing : _elm_lang$core$Maybe$Just(
+					A3(
+						_rluiten$elm_date_extra$Date_Extra_Duration$add,
+						_rluiten$elm_date_extra$Date_Extra_Duration$Year,
+						_p8 - _elm_lang$core$Date$year(date),
+						date));
+		}
+	});
+var _rluiten$elm_date_extra$Date_Extra_Field$Year = function (a) {
+	return {ctor: 'Year', _0: a};
+};
+var _rluiten$elm_date_extra$Date_Extra_Field$Month = function (a) {
+	return {ctor: 'Month', _0: a};
+};
+var _rluiten$elm_date_extra$Date_Extra_Field$DayOfMonth = function (a) {
+	return {ctor: 'DayOfMonth', _0: a};
+};
+var _rluiten$elm_date_extra$Date_Extra_Field$DayOfWeek = function (a) {
+	return {ctor: 'DayOfWeek', _0: a};
+};
+var _rluiten$elm_date_extra$Date_Extra_Field$Hour = function (a) {
+	return {ctor: 'Hour', _0: a};
+};
+var _rluiten$elm_date_extra$Date_Extra_Field$Minute = function (a) {
+	return {ctor: 'Minute', _0: a};
+};
+var _rluiten$elm_date_extra$Date_Extra_Field$Second = function (a) {
+	return {ctor: 'Second', _0: a};
+};
+var _rluiten$elm_date_extra$Date_Extra_Field$Millisecond = function (a) {
+	return {ctor: 'Millisecond', _0: a};
+};
+
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_View$viewStepFour = F4(
+	function (stepOne, stepTwo, stepThree, progress) {
+		var _p0 = progress;
+		var title = _p0.title;
+		var pledgeAmount = _p0.pledgeAmount;
+		var description = _p0.description;
+		var estimatedDeliveryMonth = _p0.estimatedDeliveryMonth;
+		var estimatedDeliveryYear = _p0.estimatedDeliveryYear;
+		return A2(
+			_rundis$elm_bootstrap$Bootstrap_Grid$row,
+			{
+				ctor: '::',
+				_0: _rundis$elm_bootstrap$Bootstrap_Grid_Row$centerXs,
+				_1: {
+					ctor: '::',
+					_0: _rundis$elm_bootstrap$Bootstrap_Grid_Row$attrs(
 						{
 							ctor: '::',
-							_0: {ctor: '_Tuple2', _0: 'background-color', _1: '#1c293a'},
-							_1: {ctor: '[]'}
+							_0: _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pt5,
+							_1: {
+								ctor: '::',
+								_0: _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pb5,
+								_1: {ctor: '[]'}
+							}
 						}),
 					_1: {ctor: '[]'}
 				}
@@ -20977,221 +16444,422 @@ var _JQuezada0$eoslondonhackathon$Project_View$viewSuccess = F2(
 			{
 				ctor: '::',
 				_0: A2(
-					_rundis$elm_bootstrap$Bootstrap_Grid$container,
-					{ctor: '[]'},
+					_rundis$elm_bootstrap$Bootstrap_Grid$col,
+					{
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$xs6,
+						_1: {
+							ctor: '::',
+							_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$middleXs,
+							_1: {ctor: '[]'}
+						}
+					},
 					{
 						ctor: '::',
 						_0: A2(
-							_rundis$elm_bootstrap$Bootstrap_Grid$row,
-							{ctor: '[]'},
+							_elm_lang$html$Html$h2,
 							{
 								ctor: '::',
-								_0: A2(
-									_rundis$elm_bootstrap$Bootstrap_Grid$col,
-									{
+								_0: _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mb0,
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('text-center'),
+									_1: {ctor: '[]'}
+								}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('Inital reward for early backers.'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$h4,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('text-muted text-center'),
+									_1: {
 										ctor: '::',
-										_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm6,
-										_1: {
-											ctor: '::',
-											_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetSm2,
-											_1: {
-												ctor: '::',
-												_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$attrs(
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$class('text-center'),
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$style(
-																{
-																	ctor: '::',
-																	_0: {ctor: '_Tuple2', _0: 'color', _1: 'white'},
-																	_1: {ctor: '[]'}
-																}),
-															_1: {ctor: '[]'}
-														}
-													}),
-												_1: {ctor: '[]'}
-											}
-										}
-									},
+										_0: _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mt1,
+										_1: {ctor: '[]'}
+									}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('And don’t worry, you can edit this later, too.'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_rundis$elm_bootstrap$Bootstrap_Form$group,
+									{ctor: '[]'},
 									{
 										ctor: '::',
 										_0: A2(
-											_elm_lang$html$Html$div,
+											_rundis$elm_bootstrap$Bootstrap_Form$label,
 											{
 												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$style(
-													{
-														ctor: '::',
-														_0: {ctor: '_Tuple2', _0: 'padding-top', _1: '100px'},
-														_1: {ctor: '[]'}
-													}),
+												_0: _elm_lang$html$Html_Attributes$for('step-four-title-input'),
 												_1: {ctor: '[]'}
 											},
 											{
 												ctor: '::',
-												_0: A2(
-													_elm_lang$html$Html$img,
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$src('assets/img/daicogen-logo.png'),
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$width(350),
-															_1: {ctor: '[]'}
-														}
-													},
-													{ctor: '[]'}),
+												_0: _elm_lang$html$Html$text('Title'),
 												_1: {ctor: '[]'}
 											}),
 										_1: {
 											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$h4,
-												{ctor: '[]'},
+											_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$text(
 												{
 													ctor: '::',
-													_0: _elm_lang$html$Html$text(project.name),
-													_1: {ctor: '[]'}
-												}),
-											_1: {
-												ctor: '::',
-												_0: A2(
-													_elm_lang$html$Html$p,
-													{ctor: '[]'},
-													{
+													_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$id('step-four-title-input'),
+													_1: {
 														ctor: '::',
-														_0: _elm_lang$html$Html$text(project.description),
-														_1: {ctor: '[]'}
-													}),
-												_1: {ctor: '[]'}
-											}
+														_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$placeholder('Briefly describe this reward'),
+														_1: {
+															ctor: '::',
+															_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$onInput(
+																function (_p1) {
+																	return _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$RewardTitleUpdated(
+																		_elm_community$string_extra$String_Extra$nonEmpty(_p1));
+																}),
+															_1: {ctor: '[]'}
+														}
+													}
+												}),
+											_1: {ctor: '[]'}
 										}
 									}),
 								_1: {
 									ctor: '::',
 									_0: A2(
-										_rundis$elm_bootstrap$Bootstrap_Grid$col,
-										{
-											ctor: '::',
-											_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm6,
-											_1: {
-												ctor: '::',
-												_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetSm2,
-												_1: {ctor: '[]'}
-											}
-										},
+										_rundis$elm_bootstrap$Bootstrap_Form$group,
+										{ctor: '[]'},
 										{
 											ctor: '::',
 											_0: A2(
-												_elm_lang$html$Html$div,
+												_rundis$elm_bootstrap$Bootstrap_Form$label,
 												{
 													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$class('wizard-container'),
+													_0: _elm_lang$html$Html_Attributes$for('step-four-pledge-amount-input'),
 													_1: {ctor: '[]'}
 												},
 												{
 													ctor: '::',
-													_0: _rundis$elm_bootstrap$Bootstrap_Card$view(
-														A3(
-															_rundis$elm_bootstrap$Bootstrap_Card$block,
+													_0: _elm_lang$html$Html$text('Pledge amount'),
+													_1: {ctor: '[]'}
+												}),
+											_1: {
+												ctor: '::',
+												_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$number(
+													{
+														ctor: '::',
+														_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$id('step-four-pledge-amount-input'),
+														_1: {
+															ctor: '::',
+															_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$placeholder('Set a pledge amount for this reward'),
+															_1: {
+																ctor: '::',
+																_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$onInput(
+																	function (_p2) {
+																		return _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$RewardPledgeAmountUpdated(
+																			A2(
+																				_elm_lang$core$Maybe$andThen,
+																				_JQuezada0$eoslondonhackathon$Lib_Number$nonZeroFloat,
+																				_elm_lang$core$Result$toMaybe(
+																					_elm_lang$core$String$toFloat(_p2))));
+																	}),
+																_1: {ctor: '[]'}
+															}
+														}
+													}),
+												_1: {ctor: '[]'}
+											}
+										}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_rundis$elm_bootstrap$Bootstrap_Form$group,
+											{ctor: '[]'},
+											{
+												ctor: '::',
+												_0: A2(
+													_rundis$elm_bootstrap$Bootstrap_Form$label,
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$for('step-four-description-textarea'),
+														_1: {ctor: '[]'}
+													},
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html$text('Description'),
+														_1: {ctor: '[]'}
+													}),
+												_1: {
+													ctor: '::',
+													_0: _rundis$elm_bootstrap$Bootstrap_Form_Textarea$textarea(
+														{
+															ctor: '::',
+															_0: _rundis$elm_bootstrap$Bootstrap_Form_Textarea$id('step-four-description-textarea'),
+															_1: {
+																ctor: '::',
+																_0: _rundis$elm_bootstrap$Bootstrap_Form_Textarea$rows(3),
+																_1: {
+																	ctor: '::',
+																	_0: _rundis$elm_bootstrap$Bootstrap_Form_Textarea$onInput(
+																		function (_p3) {
+																			return _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$RewardDescriptionUpdated(
+																				_elm_community$string_extra$String_Extra$nonEmpty(_p3));
+																		}),
+																	_1: {
+																		ctor: '::',
+																		_0: _rundis$elm_bootstrap$Bootstrap_Form_Textarea$attrs(
+																			{
+																				ctor: '::',
+																				_0: _elm_lang$html$Html_Attributes$placeholder('Describe this reward in more detail'),
+																				_1: {
+																					ctor: '::',
+																					_0: _elm_lang$html$Html_Attributes$class('p-2'),
+																					_1: {ctor: '[]'}
+																				}
+																			}),
+																		_1: {ctor: '[]'}
+																	}
+																}
+															}
+														}),
+													_1: {ctor: '[]'}
+												}
+											}),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_rundis$elm_bootstrap$Bootstrap_Form$group,
+												{ctor: '[]'},
+												{
+													ctor: '::',
+													_0: A2(
+														_rundis$elm_bootstrap$Bootstrap_Form$label,
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$for('step-four-deliver-fields'),
+															_1: {ctor: '[]'}
+														},
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html$text('Estimated Delivery'),
+															_1: {
+																ctor: '::',
+																_0: A2(
+																	_elm_lang$html$Html$small,
+																	{ctor: '[]'},
+																	{
+																		ctor: '::',
+																		_0: _elm_lang$html$Html$text('Give yourself plenty of time. It\'s better to deliver to backers ahead of schedule than behind.'),
+																		_1: {ctor: '[]'}
+																	}),
+																_1: {ctor: '[]'}
+															}
+														}),
+													_1: {
+														ctor: '::',
+														_0: A2(
+															_rundis$elm_bootstrap$Bootstrap_Form$row,
 															{ctor: '[]'},
 															{
 																ctor: '::',
-																_0: function () {
-																	var poll = function () {
-																		var _p12 = project.polls;
-																		if (_p12.ctor === '[]') {
-																			return _elm_lang$core$Maybe$Nothing;
-																		} else {
-																			return _elm_lang$core$Maybe$Just(_p12._0);
+																_0: A2(
+																	_rundis$elm_bootstrap$Bootstrap_Form$col,
+																	{
+																		ctor: '::',
+																		_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$lg6,
+																		_1: {
+																			ctor: '::',
+																			_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$xs12,
+																			_1: {ctor: '[]'}
 																		}
-																	}();
-																	var _p13 = poll;
-																	if (_p13.ctor === 'Nothing') {
-																		return _rundis$elm_bootstrap$Bootstrap_Card_Block$custom(
-																			_elm_lang$html$Html$text(''));
-																	} else {
-																		var _p18 = _p13._0;
-																		return _rundis$elm_bootstrap$Bootstrap_Card_Block$custom(
-																			A2(
-																				_elm_lang$html$Html$div,
-																				{ctor: '[]'},
-																				{
+																	},
+																	{
+																		ctor: '::',
+																		_0: A2(
+																			_rundis$elm_bootstrap$Bootstrap_Form_Select$select,
+																			{
+																				ctor: '::',
+																				_0: _rundis$elm_bootstrap$Bootstrap_Form_Select$id('step-four-month-select'),
+																				_1: {
+																					ctor: '::',
+																					_0: _rundis$elm_bootstrap$Bootstrap_Form_Select$onChange(
+																						function (_p4) {
+																							return _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$RewardDeliveryMonthUpdated(
+																								_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$monthFromString(_p4));
+																						}),
+																					_1: {
+																						ctor: '::',
+																						_0: _rundis$elm_bootstrap$Bootstrap_Form_Select$large,
+																						_1: {ctor: '[]'}
+																					}
+																				}
+																			},
+																			{
+																				ctor: '::',
+																				_0: A2(
+																					_rundis$elm_bootstrap$Bootstrap_Form_Select$item,
+																					{ctor: '[]'},
+																					{
+																						ctor: '::',
+																						_0: _elm_lang$html$Html$text('Month'),
+																						_1: {ctor: '[]'}
+																					}),
+																				_1: {
 																					ctor: '::',
 																					_0: A2(
-																						_elm_lang$html$Html$h2,
+																						_rundis$elm_bootstrap$Bootstrap_Form_Select$item,
 																						{
 																							ctor: '::',
-																							_0: _elm_lang$html$Html_Attributes$class('text-center mb-4'),
+																							_0: _elm_lang$html$Html_Attributes$value(
+																								_elm_lang$core$Basics$toString(_elm_lang$core$Date$Jan)),
 																							_1: {ctor: '[]'}
 																						},
 																						{
 																							ctor: '::',
-																							_0: function () {
-																								var _p14 = _p18.proposal;
-																								if (_p14 === 'FundsPerCycle') {
-																									return _elm_lang$html$Html$text('Increase Funding per Cycle');
-																								} else {
-																									return _elm_lang$html$Html$text(_p18.proposal);
-																								}
-																							}(),
+																							_0: _elm_lang$html$Html$text('January'),
 																							_1: {ctor: '[]'}
 																						}),
 																					_1: {
 																						ctor: '::',
 																						_0: A2(
-																							_rundis$elm_bootstrap$Bootstrap_Grid$row,
-																							{ctor: '[]'},
+																							_rundis$elm_bootstrap$Bootstrap_Form_Select$item,
 																							{
 																								ctor: '::',
+																								_0: _elm_lang$html$Html_Attributes$value(
+																									_elm_lang$core$Basics$toString(_elm_lang$core$Date$Feb)),
+																								_1: {ctor: '[]'}
+																							},
+																							{
+																								ctor: '::',
+																								_0: _elm_lang$html$Html$text('February'),
+																								_1: {ctor: '[]'}
+																							}),
+																						_1: {
+																							ctor: '::',
+																							_0: A2(
+																								_rundis$elm_bootstrap$Bootstrap_Form_Select$item,
+																								{
+																									ctor: '::',
+																									_0: _elm_lang$html$Html_Attributes$value(
+																										_elm_lang$core$Basics$toString(_elm_lang$core$Date$Mar)),
+																									_1: {ctor: '[]'}
+																								},
+																								{
+																									ctor: '::',
+																									_0: _elm_lang$html$Html$text('March'),
+																									_1: {ctor: '[]'}
+																								}),
+																							_1: {
+																								ctor: '::',
 																								_0: A2(
-																									_rundis$elm_bootstrap$Bootstrap_Grid$col,
+																									_rundis$elm_bootstrap$Bootstrap_Form_Select$item,
 																									{
 																										ctor: '::',
-																										_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$md6,
-																										_1: {
-																											ctor: '::',
-																											_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$attrs(
-																												{
-																													ctor: '::',
-																													_0: _elm_lang$html$Html_Attributes$class('ml-auto mr-auto text-center'),
-																													_1: {ctor: '[]'}
-																												}),
-																											_1: {ctor: '[]'}
-																										}
+																										_0: _elm_lang$html$Html_Attributes$value(
+																											_elm_lang$core$Basics$toString(_elm_lang$core$Date$Apr)),
+																										_1: {ctor: '[]'}
 																									},
 																									{
 																										ctor: '::',
+																										_0: _elm_lang$html$Html$text('April'),
+																										_1: {ctor: '[]'}
+																									}),
+																								_1: {
+																									ctor: '::',
+																									_0: A2(
+																										_rundis$elm_bootstrap$Bootstrap_Form_Select$item,
+																										{
+																											ctor: '::',
+																											_0: _elm_lang$html$Html_Attributes$value(
+																												_elm_lang$core$Basics$toString(_elm_lang$core$Date$May)),
+																											_1: {ctor: '[]'}
+																										},
+																										{
+																											ctor: '::',
+																											_0: _elm_lang$html$Html$text('May'),
+																											_1: {ctor: '[]'}
+																										}),
+																									_1: {
+																										ctor: '::',
 																										_0: A2(
-																											_elm_lang$html$Html$div,
-																											{ctor: '[]'},
+																											_rundis$elm_bootstrap$Bootstrap_Form_Select$item,
 																											{
 																												ctor: '::',
+																												_0: _elm_lang$html$Html_Attributes$value(
+																													_elm_lang$core$Basics$toString(_elm_lang$core$Date$Jun)),
+																												_1: {ctor: '[]'}
+																											},
+																											{
+																												ctor: '::',
+																												_0: _elm_lang$html$Html$text('June'),
+																												_1: {ctor: '[]'}
+																											}),
+																										_1: {
+																											ctor: '::',
+																											_0: A2(
+																												_rundis$elm_bootstrap$Bootstrap_Form_Select$item,
+																												{
+																													ctor: '::',
+																													_0: _elm_lang$html$Html_Attributes$value(
+																														_elm_lang$core$Basics$toString(_elm_lang$core$Date$Jul)),
+																													_1: {ctor: '[]'}
+																												},
+																												{
+																													ctor: '::',
+																													_0: _elm_lang$html$Html$text('July'),
+																													_1: {ctor: '[]'}
+																												}),
+																											_1: {
+																												ctor: '::',
 																												_0: A2(
-																													_rundis$elm_bootstrap$Bootstrap_Form_Select$select,
+																													_rundis$elm_bootstrap$Bootstrap_Form_Select$item,
 																													{
 																														ctor: '::',
-																														_0: _rundis$elm_bootstrap$Bootstrap_Form_Select$id('userSelect'),
-																														_1: {
-																															ctor: '::',
-																															_0: _rundis$elm_bootstrap$Bootstrap_Form_Select$onChange(_JQuezada0$eoslondonhackathon$Project_Model$UpdateUserType),
-																															_1: {ctor: '[]'}
-																														}
+																														_0: _elm_lang$html$Html_Attributes$value(
+																															_elm_lang$core$Basics$toString(_elm_lang$core$Date$Aug)),
+																														_1: {ctor: '[]'}
 																													},
 																													{
+																														ctor: '::',
+																														_0: _elm_lang$html$Html$text('August'),
+																														_1: {ctor: '[]'}
+																													}),
+																												_1: {
+																													ctor: '::',
+																													_0: A2(
+																														_rundis$elm_bootstrap$Bootstrap_Form_Select$item,
+																														{
+																															ctor: '::',
+																															_0: _elm_lang$html$Html_Attributes$value(
+																																_elm_lang$core$Basics$toString(_elm_lang$core$Date$Sep)),
+																															_1: {ctor: '[]'}
+																														},
+																														{
+																															ctor: '::',
+																															_0: _elm_lang$html$Html$text('September'),
+																															_1: {ctor: '[]'}
+																														}),
+																													_1: {
 																														ctor: '::',
 																														_0: A2(
 																															_rundis$elm_bootstrap$Bootstrap_Form_Select$item,
 																															{
 																																ctor: '::',
-																																_0: _elm_lang$html$Html_Attributes$value(''),
+																																_0: _elm_lang$html$Html_Attributes$value(
+																																	_elm_lang$core$Basics$toString(_elm_lang$core$Date$Oct)),
 																																_1: {ctor: '[]'}
 																															},
 																															{
 																																ctor: '::',
-																																_0: _elm_lang$html$Html$text('Select your account'),
+																																_0: _elm_lang$html$Html$text('October'),
 																																_1: {ctor: '[]'}
 																															}),
 																														_1: {
@@ -21201,12 +16869,12 @@ var _JQuezada0$eoslondonhackathon$Project_View$viewSuccess = F2(
 																																{
 																																	ctor: '::',
 																																	_0: _elm_lang$html$Html_Attributes$value(
-																																		_elm_lang$core$Basics$toString(_JQuezada0$eoslondonhackathon$Project_Model$GeneralAccount)),
+																																		_elm_lang$core$Basics$toString(_elm_lang$core$Date$Nov)),
 																																	_1: {ctor: '[]'}
 																																},
 																																{
 																																	ctor: '::',
-																																	_0: _elm_lang$html$Html$text('General Account'),
+																																	_0: _elm_lang$html$Html$text('November'),
 																																	_1: {ctor: '[]'}
 																																}),
 																															_1: {
@@ -21216,408 +16884,1557 @@ var _JQuezada0$eoslondonhackathon$Project_View$viewSuccess = F2(
 																																	{
 																																		ctor: '::',
 																																		_0: _elm_lang$html$Html_Attributes$value(
-																																			_elm_lang$core$Basics$toString(_JQuezada0$eoslondonhackathon$Project_Model$IdAccount)),
+																																			_elm_lang$core$Basics$toString(_elm_lang$core$Date$Dec)),
 																																		_1: {ctor: '[]'}
 																																	},
 																																	{
 																																		ctor: '::',
-																																		_0: _elm_lang$html$Html$text('ID Verified Account'),
+																																		_0: _elm_lang$html$Html$text('December'),
 																																		_1: {ctor: '[]'}
 																																	}),
 																																_1: {ctor: '[]'}
 																															}
 																														}
-																													}),
-																												_1: {ctor: '[]'}
-																											}),
-																										_1: {ctor: '[]'}
-																									}),
+																													}
+																												}
+																											}
+																										}
+																									}
+																								}
+																							}
+																						}
+																					}
+																				}
+																			}),
+																		_1: {ctor: '[]'}
+																	}),
+																_1: {
+																	ctor: '::',
+																	_0: A2(
+																		_rundis$elm_bootstrap$Bootstrap_Form$col,
+																		{
+																			ctor: '::',
+																			_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$lg6,
+																			_1: {
+																				ctor: '::',
+																				_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$xs12,
+																				_1: {ctor: '[]'}
+																			}
+																		},
+																		{
+																			ctor: '::',
+																			_0: A2(
+																				_rundis$elm_bootstrap$Bootstrap_Form_Select$select,
+																				{
+																					ctor: '::',
+																					_0: _rundis$elm_bootstrap$Bootstrap_Form_Select$id('step-four-year-select'),
+																					_1: {
+																						ctor: '::',
+																						_0: _rundis$elm_bootstrap$Bootstrap_Form_Select$onChange(
+																							function (_p5) {
+																								return _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$RewardDeliveryYearUpdated(
+																									_elm_lang$core$Result$toMaybe(
+																										_elm_lang$core$String$toInt(_p5)));
+																							}),
+																						_1: {
+																							ctor: '::',
+																							_0: _rundis$elm_bootstrap$Bootstrap_Form_Select$large,
+																							_1: {ctor: '[]'}
+																						}
+																					}
+																				},
+																				{
+																					ctor: '::',
+																					_0: A2(
+																						_rundis$elm_bootstrap$Bootstrap_Form_Select$item,
+																						{ctor: '[]'},
+																						{
+																							ctor: '::',
+																							_0: _elm_lang$html$Html$text('Year'),
+																							_1: {ctor: '[]'}
+																						}),
+																					_1: {
+																						ctor: '::',
+																						_0: A2(
+																							_rundis$elm_bootstrap$Bootstrap_Form_Select$item,
+																							{
+																								ctor: '::',
+																								_0: _elm_lang$html$Html_Attributes$value('2018'),
+																								_1: {ctor: '[]'}
+																							},
+																							{
+																								ctor: '::',
+																								_0: _elm_lang$html$Html$text('2018'),
 																								_1: {ctor: '[]'}
 																							}),
 																						_1: {
 																							ctor: '::',
-																							_0: function () {
-																								var _p15 = model.selectedVotingMethod;
-																								if (_p15.ctor === 'Nothing') {
-																									return A2(
-																										_rundis$elm_bootstrap$Bootstrap_Grid$row,
+																							_0: A2(
+																								_rundis$elm_bootstrap$Bootstrap_Form_Select$item,
+																								{
+																									ctor: '::',
+																									_0: _elm_lang$html$Html_Attributes$value('2019'),
+																									_1: {ctor: '[]'}
+																								},
+																								{
+																									ctor: '::',
+																									_0: _elm_lang$html$Html$text('2019'),
+																									_1: {ctor: '[]'}
+																								}),
+																							_1: {
+																								ctor: '::',
+																								_0: A2(
+																									_rundis$elm_bootstrap$Bootstrap_Form_Select$item,
+																									{
+																										ctor: '::',
+																										_0: _elm_lang$html$Html_Attributes$value('2020'),
+																										_1: {ctor: '[]'}
+																									},
+																									{
+																										ctor: '::',
+																										_0: _elm_lang$html$Html$text('2020'),
+																										_1: {ctor: '[]'}
+																									}),
+																								_1: {
+																									ctor: '::',
+																									_0: A2(
+																										_rundis$elm_bootstrap$Bootstrap_Form_Select$item,
 																										{
 																											ctor: '::',
-																											_0: _rundis$elm_bootstrap$Bootstrap_Grid_Row$attrs(
-																												{
-																													ctor: '::',
-																													_0: _elm_lang$html$Html_Attributes$class('text-center mt-2'),
-																													_1: {ctor: '[]'}
-																												}),
+																											_0: _elm_lang$html$Html_Attributes$value('2021'),
 																											_1: {ctor: '[]'}
 																										},
 																										{
 																											ctor: '::',
-																											_0: A2(
-																												_rundis$elm_bootstrap$Bootstrap_Grid$col,
-																												{ctor: '[]'},
-																												{
-																													ctor: '::',
-																													_0: A2(
-																														_elm_lang$html$Html$div,
-																														{ctor: '[]'},
-																														{
-																															ctor: '::',
-																															_0: function () {
-																																var _p16 = model.selectedUserType;
-																																if (_p16.ctor === 'Nothing') {
-																																	return _elm_lang$html$Html$text('');
-																																} else {
-																																	return A2(
-																																		_elm_lang$html$Html$div,
-																																		{ctor: '[]'},
-																																		{
-																																			ctor: '::',
-																																			_0: A3(_JQuezada0$eoslondonhackathon$Project_View$viewUserTypeView, model, project, _p16._0),
-																																			_1: {ctor: '[]'}
-																																		});
-																																}
-																															}(),
-																															_1: {ctor: '[]'}
-																														}),
-																													_1: {ctor: '[]'}
-																												}),
+																											_0: _elm_lang$html$Html$text('2021'),
 																											_1: {ctor: '[]'}
-																										});
-																								} else {
-																									return A2(
-																										_elm_lang$html$Html$div,
-																										{ctor: '[]'},
-																										{
-																											ctor: '::',
-																											_0: A2(
-																												_rundis$elm_bootstrap$Bootstrap_Grid$row,
-																												{
-																													ctor: '::',
-																													_0: _rundis$elm_bootstrap$Bootstrap_Grid_Row$attrs(
-																														{
-																															ctor: '::',
-																															_0: _elm_lang$html$Html_Attributes$class('text-center mt-2'),
-																															_1: {ctor: '[]'}
-																														}),
-																													_1: {ctor: '[]'}
-																												},
-																												{
-																													ctor: '::',
-																													_0: function () {
-																														var msg = function (pick) {
-																															var _p17 = _p15._0;
-																															if (_p17.ctor === 'DelegateVote') {
-																																return _JQuezada0$eoslondonhackathon$Project_Model$SubmitSuggestion(
-																																	{icoaccount: 'crowdsale', from: 'delegate', to: 'idaccount', pick: pick});
-																															} else {
-																																return _JQuezada0$eoslondonhackathon$Project_Model$SubmitVote(
-																																	{icoaccount: 'crowdsale', idvoter: 'idaccount', trvoter: 'delegate', currentVoter: 'idaccount', pick: pick});
-																															}
-																														};
-																														return A2(
-																															_rundis$elm_bootstrap$Bootstrap_Grid$col,
-																															{ctor: '[]'},
-																															{
-																																ctor: '::',
-																																_0: A2(
-																																	_rundis$elm_bootstrap$Bootstrap_Button$button,
-																																	{
-																																		ctor: '::',
-																																		_0: _rundis$elm_bootstrap$Bootstrap_Button$primary,
-																																		_1: {
-																																			ctor: '::',
-																																			_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(
-																																				msg(true)),
-																																			_1: {ctor: '[]'}
-																																		}
-																																	},
-																																	{
-																																		ctor: '::',
-																																		_0: _elm_lang$html$Html$text('Yes'),
-																																		_1: {ctor: '[]'}
-																																	}),
-																																_1: {
-																																	ctor: '::',
-																																	_0: A2(
-																																		_rundis$elm_bootstrap$Bootstrap_Button$button,
-																																		{
-																																			ctor: '::',
-																																			_0: _rundis$elm_bootstrap$Bootstrap_Button$primary,
-																																			_1: {
-																																				ctor: '::',
-																																				_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(
-																																					msg(false)),
-																																				_1: {ctor: '[]'}
-																																			}
-																																		},
-																																		{
-																																			ctor: '::',
-																																			_0: _elm_lang$html$Html$text('No'),
-																																			_1: {ctor: '[]'}
-																																		}),
-																																	_1: {ctor: '[]'}
-																																}
-																															});
-																													}(),
-																													_1: {ctor: '[]'}
-																												}),
-																											_1: {
+																										}),
+																									_1: {
+																										ctor: '::',
+																										_0: A2(
+																											_rundis$elm_bootstrap$Bootstrap_Form_Select$item,
+																											{
 																												ctor: '::',
-																												_0: A2(
-																													_rundis$elm_bootstrap$Bootstrap_Grid$row,
-																													{
-																														ctor: '::',
-																														_0: _rundis$elm_bootstrap$Bootstrap_Grid_Row$attrs(
-																															{
-																																ctor: '::',
-																																_0: _elm_lang$html$Html_Attributes$class('mt-2'),
-																																_1: {ctor: '[]'}
-																															}),
-																														_1: {ctor: '[]'}
-																													},
-																													{
-																														ctor: '::',
-																														_0: A2(
-																															_rundis$elm_bootstrap$Bootstrap_Grid$col,
-																															{ctor: '[]'},
-																															{
-																																ctor: '::',
-																																_0: A2(
-																																	_rundis$elm_bootstrap$Bootstrap_Button$button,
-																																	{
-																																		ctor: '::',
-																																		_0: _rundis$elm_bootstrap$Bootstrap_Button$primary,
-																																		_1: {
-																																			ctor: '::',
-																																			_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(
-																																				_JQuezada0$eoslondonhackathon$Project_Model$UpdateSelectedVotingMethod(_elm_lang$core$Maybe$Nothing)),
-																																			_1: {ctor: '[]'}
-																																		}
-																																	},
-																																	{
-																																		ctor: '::',
-																																		_0: _elm_lang$html$Html$text('Cancel'),
-																																		_1: {ctor: '[]'}
-																																	}),
-																																_1: {ctor: '[]'}
-																															}),
-																														_1: {ctor: '[]'}
-																													}),
+																												_0: _elm_lang$html$Html_Attributes$value('2022'),
 																												_1: {ctor: '[]'}
-																											}
-																										});
+																											},
+																											{
+																												ctor: '::',
+																												_0: _elm_lang$html$Html$text('2022'),
+																												_1: {ctor: '[]'}
+																											}),
+																										_1: {ctor: '[]'}
+																									}
 																								}
-																							}(),
-																							_1: {ctor: '[]'}
+																							}
 																						}
 																					}
-																				}));
-																	}
-																}(),
-																_1: {ctor: '[]'}
-															},
-															_rundis$elm_bootstrap$Bootstrap_Card$config(
+																				}),
+																			_1: {ctor: '[]'}
+																		}),
+																	_1: {ctor: '[]'}
+																}
+															}),
+														_1: {ctor: '[]'}
+													}
+												}),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$hr,
+													{
+														ctor: '::',
+														_0: _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mt5,
+														_1: {ctor: '[]'}
+													},
+													{ctor: '[]'}),
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_rundis$elm_bootstrap$Bootstrap_Grid$row,
+														{
+															ctor: '::',
+															_0: _rundis$elm_bootstrap$Bootstrap_Grid_Row$betweenXs,
+															_1: {ctor: '[]'}
+														},
+														{
+															ctor: '::',
+															_0: A2(
+																_rundis$elm_bootstrap$Bootstrap_Grid$col,
 																{
 																	ctor: '::',
-																	_0: _rundis$elm_bootstrap$Bootstrap_Card$attrs(
+																	_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$xsAuto,
+																	_1: {ctor: '[]'}
+																},
+																{
+																	ctor: '::',
+																	_0: A2(
+																		_rundis$elm_bootstrap$Bootstrap_Button$button,
 																		{
 																			ctor: '::',
-																			_0: _elm_lang$html$Html_Attributes$class('wizard-card'),
+																			_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(
+																				_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$ChangeActiveStep(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$StepOne)),
 																			_1: {
 																				ctor: '::',
-																				_0: A2(_elm_lang$html$Html_Attributes$attribute, 'data-color', 'red'),
-																				_1: {
+																				_0: _rundis$elm_bootstrap$Bootstrap_Button$attrs(
+																					{
+																						ctor: '::',
+																						_0: _elm_lang$html$Html_Attributes$class('btn-neutral'),
+																						_1: {ctor: '[]'}
+																					}),
+																				_1: {ctor: '[]'}
+																			}
+																		},
+																		{
+																			ctor: '::',
+																			_0: _elm_lang$html$Html$text('<- Category'),
+																			_1: {ctor: '[]'}
+																		}),
+																	_1: {ctor: '[]'}
+																}),
+															_1: {
+																ctor: '::',
+																_0: A2(
+																	_rundis$elm_bootstrap$Bootstrap_Grid$col,
+																	{
+																		ctor: '::',
+																		_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$xsAuto,
+																		_1: {ctor: '[]'}
+																	},
+																	{
+																		ctor: '::',
+																		_0: function () {
+																			var completeStepFour = function (rewardDetails) {
+																				return A4(
+																					_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$CompleteCampaign,
+																					stepOne,
+																					stepTwo,
+																					stepThree,
+																					_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$StepFourComplete(rewardDetails));
+																			};
+																			var estimatedDelivery = A2(
+																				_elm_lang$core$Maybe$map,
+																				_elm_lang$core$Date$toTime,
+																				_elm_community$maybe_extra$Maybe_Extra$join(
+																					A3(
+																						_elm_lang$core$Maybe$map2,
+																						F2(
+																							function (month, year) {
+																								return _elm_community$maybe_extra$Maybe_Extra$join(
+																									A2(
+																										_elm_lang$core$Maybe$map,
+																										_rluiten$elm_date_extra$Date_Extra_Field$fieldToDate(
+																											_rluiten$elm_date_extra$Date_Extra_Field$Year(year)),
+																										A2(
+																											_rluiten$elm_date_extra$Date_Extra_Field$fieldToDate,
+																											_rluiten$elm_date_extra$Date_Extra_Field$Month(month),
+																											_elm_lang$core$Date$fromTime(0))));
+																							}),
+																						estimatedDeliveryMonth,
+																						estimatedDeliveryYear)));
+																			var rewardDetails = A5(_elm_lang$core$Maybe$map4, _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$RewardDetails, title, pledgeAmount, description, estimatedDelivery);
+																			var buttonType = _rundis$elm_bootstrap$Bootstrap_Button$primary;
+																			var buttonText = 'Complete';
+																			var _p6 = rewardDetails;
+																			if (_p6.ctor === 'Nothing') {
+																				return A2(
+																					_rundis$elm_bootstrap$Bootstrap_Button$button,
+																					{
+																						ctor: '::',
+																						_0: buttonType,
+																						_1: {
+																							ctor: '::',
+																							_0: _rundis$elm_bootstrap$Bootstrap_Button$disabled(true),
+																							_1: {ctor: '[]'}
+																						}
+																					},
+																					{
+																						ctor: '::',
+																						_0: _elm_lang$html$Html$text(buttonText),
+																						_1: {ctor: '[]'}
+																					});
+																			} else {
+																				return A2(
+																					_rundis$elm_bootstrap$Bootstrap_Button$button,
+																					{
+																						ctor: '::',
+																						_0: buttonType,
+																						_1: {
+																							ctor: '::',
+																							_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(
+																								completeStepFour(_p6._0)),
+																							_1: {ctor: '[]'}
+																						}
+																					},
+																					{
+																						ctor: '::',
+																						_0: _elm_lang$html$Html$text(buttonText),
+																						_1: {ctor: '[]'}
+																					});
+																			}
+																		}(),
+																		_1: {ctor: '[]'}
+																	}),
+																_1: {ctor: '[]'}
+															}
+														}),
+													_1: {ctor: '[]'}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}),
+				_1: {ctor: '[]'}
+			});
+	});
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_View$viewStepThree = F3(
+	function (stepOne, stepTwo, progress) {
+		var _p7 = progress;
+		var fundingGoal = _p7.fundingGoal;
+		var campaignStartDate = _p7.campaignStartDate;
+		var campaignEndDate = _p7.campaignEndDate;
+		var campaignDurationStartDatePicker = _p7.campaignDurationStartDatePicker;
+		var campaignDurationEndDatePicker = _p7.campaignDurationEndDatePicker;
+		return A2(
+			_rundis$elm_bootstrap$Bootstrap_Grid$row,
+			{
+				ctor: '::',
+				_0: _rundis$elm_bootstrap$Bootstrap_Grid_Row$centerXs,
+				_1: {
+					ctor: '::',
+					_0: _rundis$elm_bootstrap$Bootstrap_Grid_Row$attrs(
+						{
+							ctor: '::',
+							_0: _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pt5,
+							_1: {
+								ctor: '::',
+								_0: _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pb5,
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {ctor: '[]'}
+				}
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_rundis$elm_bootstrap$Bootstrap_Grid$col,
+					{
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$xs6,
+						_1: {
+							ctor: '::',
+							_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$middleXs,
+							_1: {ctor: '[]'}
+						}
+					},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$h2,
+							{
+								ctor: '::',
+								_0: _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mb0,
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('text-center'),
+									_1: {ctor: '[]'}
+								}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('Design your campaign.'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$h4,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('text-muted text-center'),
+									_1: {
+										ctor: '::',
+										_0: _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mt1,
+										_1: {ctor: '[]'}
+									}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('And don’t worry, you can edit this later, too.'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_rundis$elm_bootstrap$Bootstrap_Form$group,
+									{ctor: '[]'},
+									{
+										ctor: '::',
+										_0: A2(
+											_rundis$elm_bootstrap$Bootstrap_Form$label,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$for('step-three-funding-input'),
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text('Funding Goal'),
+												_1: {ctor: '[]'}
+											}),
+										_1: {
+											ctor: '::',
+											_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$number(
+												{
+													ctor: '::',
+													_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$id('step-three-funding-input'),
+													_1: {
+														ctor: '::',
+														_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$placeholder('0'),
+														_1: {
+															ctor: '::',
+															_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$onInput(
+																function (_p8) {
+																	return _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$FundingGoalUpdated(
+																		A2(
+																			_elm_lang$core$Maybe$andThen,
+																			_JQuezada0$eoslondonhackathon$Lib_Number$nonZeroFloat,
+																			_elm_lang$core$Result$toMaybe(
+																				_elm_lang$core$String$toFloat(_p8))));
+																}),
+															_1: {ctor: '[]'}
+														}
+													}
+												}),
+											_1: {ctor: '[]'}
+										}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_rundis$elm_bootstrap$Bootstrap_Form$group,
+										{ctor: '[]'},
+										{
+											ctor: '::',
+											_0: A2(
+												_rundis$elm_bootstrap$Bootstrap_Form$label,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$for('step-three-startdate-datepicker'),
+													_1: {ctor: '[]'}
+												},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text('Start Date'),
+													_1: {ctor: '[]'}
+												}),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$map,
+													_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$CampaignDurationStartUpdated,
+													A3(_elm_community$elm_datepicker$DatePicker$view, campaignStartDate, _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$startDatePickerSettings, campaignDurationStartDatePicker)),
+												_1: {ctor: '[]'}
+											}
+										}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_rundis$elm_bootstrap$Bootstrap_Form$group,
+											{ctor: '[]'},
+											{
+												ctor: '::',
+												_0: A2(
+													_rundis$elm_bootstrap$Bootstrap_Form$label,
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$for('step-three-enddate-datepicker'),
+														_1: {ctor: '[]'}
+													},
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html$text('End Date'),
+														_1: {ctor: '[]'}
+													}),
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_elm_lang$html$Html$map,
+														_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$CampaignDurationEndUpdated,
+														A3(_elm_community$elm_datepicker$DatePicker$view, campaignEndDate, _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$endDatePickerSettings, campaignDurationEndDatePicker)),
+													_1: {ctor: '[]'}
+												}
+											}),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$hr,
+												{
+													ctor: '::',
+													_0: _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mt5,
+													_1: {ctor: '[]'}
+												},
+												{ctor: '[]'}),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_rundis$elm_bootstrap$Bootstrap_Grid$row,
+													{
+														ctor: '::',
+														_0: _rundis$elm_bootstrap$Bootstrap_Grid_Row$betweenXs,
+														_1: {ctor: '[]'}
+													},
+													{
+														ctor: '::',
+														_0: A2(
+															_rundis$elm_bootstrap$Bootstrap_Grid$col,
+															{
+																ctor: '::',
+																_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$xsAuto,
+																_1: {ctor: '[]'}
+															},
+															{
+																ctor: '::',
+																_0: A2(
+																	_rundis$elm_bootstrap$Bootstrap_Button$button,
+																	{
+																		ctor: '::',
+																		_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(
+																			_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$ChangeActiveStep(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$StepOne)),
+																		_1: {
+																			ctor: '::',
+																			_0: _rundis$elm_bootstrap$Bootstrap_Button$attrs(
+																				{
 																					ctor: '::',
-																					_0: _elm_lang$html$Html_Attributes$id('wizard'),
+																					_0: _elm_lang$html$Html_Attributes$class('btn-neutral'),
 																					_1: {ctor: '[]'}
-																				}
+																				}),
+																			_1: {ctor: '[]'}
+																		}
+																	},
+																	{
+																		ctor: '::',
+																		_0: _elm_lang$html$Html$text('<- Category'),
+																		_1: {ctor: '[]'}
+																	}),
+																_1: {ctor: '[]'}
+															}),
+														_1: {
+															ctor: '::',
+															_0: A2(
+																_rundis$elm_bootstrap$Bootstrap_Grid$col,
+																{
+																	ctor: '::',
+																	_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$xsAuto,
+																	_1: {ctor: '[]'}
+																},
+																{
+																	ctor: '::',
+																	_0: function () {
+																		var completeStepThree = function (campaignDetails) {
+																			return A3(
+																				_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$CompleteStepThree,
+																				stepOne,
+																				stepTwo,
+																				_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$StepThreeComplete(campaignDetails));
+																		};
+																		var campaignDetails = A4(_elm_lang$core$Maybe$map3, _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$CampaignDetails, fundingGoal, campaignStartDate, campaignEndDate);
+																		var buttonType = _rundis$elm_bootstrap$Bootstrap_Button$primary;
+																		var buttonText = 'Next: Reward';
+																		var _p9 = campaignDetails;
+																		if (_p9.ctor === 'Nothing') {
+																			return A2(
+																				_rundis$elm_bootstrap$Bootstrap_Button$button,
+																				{
+																					ctor: '::',
+																					_0: buttonType,
+																					_1: {
+																						ctor: '::',
+																						_0: _rundis$elm_bootstrap$Bootstrap_Button$disabled(true),
+																						_1: {ctor: '[]'}
+																					}
+																				},
+																				{
+																					ctor: '::',
+																					_0: _elm_lang$html$Html$text(buttonText),
+																					_1: {ctor: '[]'}
+																				});
+																		} else {
+																			return A2(
+																				_rundis$elm_bootstrap$Bootstrap_Button$button,
+																				{
+																					ctor: '::',
+																					_0: buttonType,
+																					_1: {
+																						ctor: '::',
+																						_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(
+																							completeStepThree(_p9._0)),
+																						_1: {ctor: '[]'}
+																					}
+																				},
+																				{
+																					ctor: '::',
+																					_0: _elm_lang$html$Html$text(buttonText),
+																					_1: {ctor: '[]'}
+																				});
+																		}
+																	}(),
+																	_1: {ctor: '[]'}
+																}),
+															_1: {ctor: '[]'}
+														}
+													}),
+												_1: {ctor: '[]'}
+											}
+										}
+									}
+								}
+							}
+						}
+					}),
+				_1: {ctor: '[]'}
+			});
+	});
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_View$viewStepTwo = F2(
+	function (stepOne, _p10) {
+		var _p11 = _p10;
+		return A2(
+			_rundis$elm_bootstrap$Bootstrap_Grid$row,
+			{
+				ctor: '::',
+				_0: _rundis$elm_bootstrap$Bootstrap_Grid_Row$centerXs,
+				_1: {
+					ctor: '::',
+					_0: _rundis$elm_bootstrap$Bootstrap_Grid_Row$attrs(
+						{
+							ctor: '::',
+							_0: _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pt5,
+							_1: {
+								ctor: '::',
+								_0: _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pb5,
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {ctor: '[]'}
+				}
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_rundis$elm_bootstrap$Bootstrap_Grid$col,
+					{
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$xs6,
+						_1: {
+							ctor: '::',
+							_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$middleXs,
+							_1: {ctor: '[]'}
+						}
+					},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$h2,
+							{
+								ctor: '::',
+								_0: _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mb0,
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('text-center'),
+									_1: {ctor: '[]'}
+								}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('Describe what you’ll be creating.'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$h4,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('text-muted text-center'),
+									_1: {
+										ctor: '::',
+										_0: _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mt1,
+										_1: {ctor: '[]'}
+									}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('And don’t worry, you can edit this later, too.'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_rundis$elm_bootstrap$Bootstrap_Form$group,
+									{ctor: '[]'},
+									{
+										ctor: '::',
+										_0: A2(
+											_rundis$elm_bootstrap$Bootstrap_Form$label,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$for('step-two-title-input'),
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text('Title'),
+												_1: {ctor: '[]'}
+											}),
+										_1: {
+											ctor: '::',
+											_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$text(
+												{
+													ctor: '::',
+													_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$id('step-two-title-input'),
+													_1: {
+														ctor: '::',
+														_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$placeholder('MaKey MaKey: An Invention Kit For Everyone'),
+														_1: {
+															ctor: '::',
+															_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$onInput(
+																function (_p12) {
+																	return _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$TitleUpdated(
+																		_elm_community$string_extra$String_Extra$nonEmpty(_p12));
+																}),
+															_1: {ctor: '[]'}
+														}
+													}
+												}),
+											_1: {ctor: '[]'}
+										}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_rundis$elm_bootstrap$Bootstrap_Form$group,
+										{ctor: '[]'},
+										{
+											ctor: '::',
+											_0: A2(
+												_rundis$elm_bootstrap$Bootstrap_Form$label,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$for('step-two-description-textarea'),
+													_1: {ctor: '[]'}
+												},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text('Description'),
+													_1: {ctor: '[]'}
+												}),
+											_1: {
+												ctor: '::',
+												_0: _rundis$elm_bootstrap$Bootstrap_Form_Textarea$textarea(
+													{
+														ctor: '::',
+														_0: _rundis$elm_bootstrap$Bootstrap_Form_Textarea$id('step-two-description-textarea'),
+														_1: {
+															ctor: '::',
+															_0: _rundis$elm_bootstrap$Bootstrap_Form_Textarea$rows(3),
+															_1: {
+																ctor: '::',
+																_0: _rundis$elm_bootstrap$Bootstrap_Form_Textarea$onInput(
+																	function (_p13) {
+																		return _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$DescriptionUpdated(
+																			_elm_community$string_extra$String_Extra$nonEmpty(_p13));
+																	}),
+																_1: {
+																	ctor: '::',
+																	_0: _rundis$elm_bootstrap$Bootstrap_Form_Textarea$attrs(
+																		{
+																			ctor: '::',
+																			_0: _elm_lang$html$Html_Attributes$placeholder('A documentary about the history of shoes.'),
+																			_1: {
+																				ctor: '::',
+																				_0: _elm_lang$html$Html_Attributes$class('p-2'),
+																				_1: {ctor: '[]'}
 																			}
 																		}),
 																	_1: {ctor: '[]'}
-																}))),
+																}
+															}
+														}
+													}),
+												_1: {ctor: '[]'}
+											}
+										}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$hr,
+											{
+												ctor: '::',
+												_0: _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mt5,
+												_1: {ctor: '[]'}
+											},
+											{ctor: '[]'}),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_rundis$elm_bootstrap$Bootstrap_Grid$row,
+												{
+													ctor: '::',
+													_0: _rundis$elm_bootstrap$Bootstrap_Grid_Row$betweenXs,
+													_1: {ctor: '[]'}
+												},
+												{
+													ctor: '::',
+													_0: A2(
+														_rundis$elm_bootstrap$Bootstrap_Grid$col,
+														{
+															ctor: '::',
+															_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$xsAuto,
+															_1: {ctor: '[]'}
+														},
+														{
+															ctor: '::',
+															_0: A2(
+																_rundis$elm_bootstrap$Bootstrap_Button$button,
+																{
+																	ctor: '::',
+																	_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(
+																		_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$ChangeActiveStep(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$StepOne)),
+																	_1: {
+																		ctor: '::',
+																		_0: _rundis$elm_bootstrap$Bootstrap_Button$attrs(
+																			{
+																				ctor: '::',
+																				_0: _elm_lang$html$Html_Attributes$class('btn-neutral'),
+																				_1: {ctor: '[]'}
+																			}),
+																		_1: {ctor: '[]'}
+																	}
+																},
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html$text('<- Category'),
+																	_1: {ctor: '[]'}
+																}),
+															_1: {ctor: '[]'}
+														}),
+													_1: {
+														ctor: '::',
+														_0: A2(
+															_rundis$elm_bootstrap$Bootstrap_Grid$col,
+															{
+																ctor: '::',
+																_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$xsAuto,
+																_1: {ctor: '[]'}
+															},
+															{
+																ctor: '::',
+																_0: function () {
+																	var completeStepTwo = function (projectDetails) {
+																		return A2(
+																			_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$CompleteStepTwo,
+																			stepOne,
+																			_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$StepTwoComplete(projectDetails));
+																	};
+																	var projectDetails = A4(_elm_lang$core$Maybe$map3, _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$ProjectDetails, _p11.title, _p11.description, _p11.image);
+																	var buttonType = _rundis$elm_bootstrap$Bootstrap_Button$primary;
+																	var buttonText = 'Next: Campaign';
+																	var _p14 = projectDetails;
+																	if (_p14.ctor === 'Nothing') {
+																		return A2(
+																			_rundis$elm_bootstrap$Bootstrap_Button$button,
+																			{
+																				ctor: '::',
+																				_0: buttonType,
+																				_1: {
+																					ctor: '::',
+																					_0: _rundis$elm_bootstrap$Bootstrap_Button$disabled(true),
+																					_1: {ctor: '[]'}
+																				}
+																			},
+																			{
+																				ctor: '::',
+																				_0: _elm_lang$html$Html$text(buttonText),
+																				_1: {ctor: '[]'}
+																			});
+																	} else {
+																		return A2(
+																			_rundis$elm_bootstrap$Bootstrap_Button$button,
+																			{
+																				ctor: '::',
+																				_0: buttonType,
+																				_1: {
+																					ctor: '::',
+																					_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(
+																						completeStepTwo(_p14._0)),
+																					_1: {ctor: '[]'}
+																				}
+																			},
+																			{
+																				ctor: '::',
+																				_0: _elm_lang$html$Html$text(buttonText),
+																				_1: {ctor: '[]'}
+																			});
+																	}
+																}(),
+																_1: {ctor: '[]'}
+															}),
+														_1: {ctor: '[]'}
+													}
+												}),
+											_1: {ctor: '[]'}
+										}
+									}
+								}
+							}
+						}
+					}),
+				_1: {ctor: '[]'}
+			});
+	});
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_View$viewStepOne = function (_p15) {
+	var _p16 = _p15;
+	return A2(
+		_rundis$elm_bootstrap$Bootstrap_Grid$row,
+		{
+			ctor: '::',
+			_0: _rundis$elm_bootstrap$Bootstrap_Grid_Row$centerXs,
+			_1: {
+				ctor: '::',
+				_0: _rundis$elm_bootstrap$Bootstrap_Grid_Row$attrs(
+					{
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pt5,
+						_1: {
+							ctor: '::',
+							_0: _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$pb5,
+							_1: {ctor: '[]'}
+						}
+					}),
+				_1: {ctor: '[]'}
+			}
+		},
+		{
+			ctor: '::',
+			_0: A2(
+				_rundis$elm_bootstrap$Bootstrap_Grid$col,
+				{
+					ctor: '::',
+					_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$xs6,
+					_1: {
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$textAlign(_rundis$elm_bootstrap$Bootstrap_Text$alignXsCenter),
+						_1: {
+							ctor: '::',
+							_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$middleXs,
+							_1: {ctor: '[]'}
+						}
+					}
+				},
+				{
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$h2,
+						{
+							ctor: '::',
+							_0: _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mb0,
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text('First, let\'s get you set up.'),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$h4,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('text-muted'),
+								_1: {
+									ctor: '::',
+									_0: _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mt1,
+									_1: {ctor: '[]'}
+								}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('Pick a project category to connect with a specific community. You can always update this later.'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_rundis$elm_bootstrap$Bootstrap_Form_Select$select,
+								{
+									ctor: '::',
+									_0: _rundis$elm_bootstrap$Bootstrap_Form_Select$id('step-one-category-select'),
+									_1: {
+										ctor: '::',
+										_0: _rundis$elm_bootstrap$Bootstrap_Form_Select$onChange(
+											function (_p17) {
+												return _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$CategorySelected(
+													_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$categoryFromString(_p17));
+											}),
+										_1: {
+											ctor: '::',
+											_0: _rundis$elm_bootstrap$Bootstrap_Form_Select$large,
+											_1: {ctor: '[]'}
+										}
+									}
+								},
+								{
+									ctor: '::',
+									_0: A2(
+										_rundis$elm_bootstrap$Bootstrap_Form_Select$item,
+										{ctor: '[]'},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('Select your category'),
+											_1: {ctor: '[]'}
+										}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_rundis$elm_bootstrap$Bootstrap_Form_Select$item,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$value(
+													_elm_lang$core$Basics$toString(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Art)),
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text('Art'),
+												_1: {ctor: '[]'}
+											}),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_rundis$elm_bootstrap$Bootstrap_Form_Select$item,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$value(
+														_elm_lang$core$Basics$toString(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Comics)),
+													_1: {ctor: '[]'}
+												},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text('Comics'),
+													_1: {ctor: '[]'}
+												}),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_rundis$elm_bootstrap$Bootstrap_Form_Select$item,
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$value(
+															_elm_lang$core$Basics$toString(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Crafts)),
+														_1: {ctor: '[]'}
+													},
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html$text('Crafts'),
+														_1: {ctor: '[]'}
+													}),
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_rundis$elm_bootstrap$Bootstrap_Form_Select$item,
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$value(
+																_elm_lang$core$Basics$toString(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Dance)),
+															_1: {ctor: '[]'}
+														},
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html$text('Dance'),
+															_1: {ctor: '[]'}
+														}),
+													_1: {
+														ctor: '::',
+														_0: A2(
+															_rundis$elm_bootstrap$Bootstrap_Form_Select$item,
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html_Attributes$value(
+																	_elm_lang$core$Basics$toString(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Design)),
+																_1: {ctor: '[]'}
+															},
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html$text('Design'),
+																_1: {ctor: '[]'}
+															}),
+														_1: {
+															ctor: '::',
+															_0: A2(
+																_rundis$elm_bootstrap$Bootstrap_Form_Select$item,
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Attributes$value(
+																		_elm_lang$core$Basics$toString(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Fashion)),
+																	_1: {ctor: '[]'}
+																},
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html$text('Fashion'),
+																	_1: {ctor: '[]'}
+																}),
+															_1: {
+																ctor: '::',
+																_0: A2(
+																	_rundis$elm_bootstrap$Bootstrap_Form_Select$item,
+																	{
+																		ctor: '::',
+																		_0: _elm_lang$html$Html_Attributes$value(
+																			_elm_lang$core$Basics$toString(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$FilmVideo)),
+																		_1: {ctor: '[]'}
+																	},
+																	{
+																		ctor: '::',
+																		_0: _elm_lang$html$Html$text('Film & Video'),
+																		_1: {ctor: '[]'}
+																	}),
+																_1: {
+																	ctor: '::',
+																	_0: A2(
+																		_rundis$elm_bootstrap$Bootstrap_Form_Select$item,
+																		{
+																			ctor: '::',
+																			_0: _elm_lang$html$Html_Attributes$value(
+																				_elm_lang$core$Basics$toString(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Food)),
+																			_1: {ctor: '[]'}
+																		},
+																		{
+																			ctor: '::',
+																			_0: _elm_lang$html$Html$text('Food'),
+																			_1: {ctor: '[]'}
+																		}),
+																	_1: {
+																		ctor: '::',
+																		_0: A2(
+																			_rundis$elm_bootstrap$Bootstrap_Form_Select$item,
+																			{
+																				ctor: '::',
+																				_0: _elm_lang$html$Html_Attributes$value(
+																					_elm_lang$core$Basics$toString(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Games)),
+																				_1: {ctor: '[]'}
+																			},
+																			{
+																				ctor: '::',
+																				_0: _elm_lang$html$Html$text('Games'),
+																				_1: {ctor: '[]'}
+																			}),
+																		_1: {
+																			ctor: '::',
+																			_0: A2(
+																				_rundis$elm_bootstrap$Bootstrap_Form_Select$item,
+																				{
+																					ctor: '::',
+																					_0: _elm_lang$html$Html_Attributes$value(
+																						_elm_lang$core$Basics$toString(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Journalism)),
+																					_1: {ctor: '[]'}
+																				},
+																				{
+																					ctor: '::',
+																					_0: _elm_lang$html$Html$text('Journalism'),
+																					_1: {ctor: '[]'}
+																				}),
+																			_1: {
+																				ctor: '::',
+																				_0: A2(
+																					_rundis$elm_bootstrap$Bootstrap_Form_Select$item,
+																					{
+																						ctor: '::',
+																						_0: _elm_lang$html$Html_Attributes$value(
+																							_elm_lang$core$Basics$toString(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Music)),
+																						_1: {ctor: '[]'}
+																					},
+																					{
+																						ctor: '::',
+																						_0: _elm_lang$html$Html$text('Music'),
+																						_1: {ctor: '[]'}
+																					}),
+																				_1: {
+																					ctor: '::',
+																					_0: A2(
+																						_rundis$elm_bootstrap$Bootstrap_Form_Select$item,
+																						{
+																							ctor: '::',
+																							_0: _elm_lang$html$Html_Attributes$value(
+																								_elm_lang$core$Basics$toString(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Photography)),
+																							_1: {ctor: '[]'}
+																						},
+																						{
+																							ctor: '::',
+																							_0: _elm_lang$html$Html$text('Photography'),
+																							_1: {ctor: '[]'}
+																						}),
+																					_1: {
+																						ctor: '::',
+																						_0: A2(
+																							_rundis$elm_bootstrap$Bootstrap_Form_Select$item,
+																							{
+																								ctor: '::',
+																								_0: _elm_lang$html$Html_Attributes$value(
+																									_elm_lang$core$Basics$toString(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Publishing)),
+																								_1: {ctor: '[]'}
+																							},
+																							{
+																								ctor: '::',
+																								_0: _elm_lang$html$Html$text('Publishing'),
+																								_1: {ctor: '[]'}
+																							}),
+																						_1: {
+																							ctor: '::',
+																							_0: A2(
+																								_rundis$elm_bootstrap$Bootstrap_Form_Select$item,
+																								{
+																									ctor: '::',
+																									_0: _elm_lang$html$Html_Attributes$value(
+																										_elm_lang$core$Basics$toString(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Technology)),
+																									_1: {ctor: '[]'}
+																								},
+																								{
+																									ctor: '::',
+																									_0: _elm_lang$html$Html$text('Technology'),
+																									_1: {ctor: '[]'}
+																								}),
+																							_1: {
+																								ctor: '::',
+																								_0: A2(
+																									_rundis$elm_bootstrap$Bootstrap_Form_Select$item,
+																									{
+																										ctor: '::',
+																										_0: _elm_lang$html$Html_Attributes$value(
+																											_elm_lang$core$Basics$toString(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$Theatre)),
+																										_1: {ctor: '[]'}
+																									},
+																									{
+																										ctor: '::',
+																										_0: _elm_lang$html$Html$text('Theatre'),
+																										_1: {ctor: '[]'}
+																									}),
+																								_1: {ctor: '[]'}
+																							}
+																						}
+																					}
+																				}
+																			}
+																		}
+																	}
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$hr,
+									{
+										ctor: '::',
+										_0: _rundis$elm_bootstrap$Bootstrap_Utilities_Spacing$mt5,
+										_1: {ctor: '[]'}
+									},
+									{ctor: '[]'}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_rundis$elm_bootstrap$Bootstrap_Grid$row,
+										{
+											ctor: '::',
+											_0: _rundis$elm_bootstrap$Bootstrap_Grid_Row$rightXs,
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: A2(
+												_rundis$elm_bootstrap$Bootstrap_Grid$col,
+												{
+													ctor: '::',
+													_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$xsAuto,
+													_1: {ctor: '[]'}
+												},
+												{
+													ctor: '::',
+													_0: function () {
+														var completeStepOne = function (category) {
+															return _JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$StepOneComplete(
+																_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$CategoryDetails(category));
+														};
+														var buttonType = _rundis$elm_bootstrap$Bootstrap_Button$primary;
+														var buttonText = 'Next: Project idea';
+														var _p18 = _p16.category;
+														if (_p18.ctor === 'Nothing') {
+															return A2(
+																_rundis$elm_bootstrap$Bootstrap_Button$button,
+																{
+																	ctor: '::',
+																	_0: buttonType,
+																	_1: {
+																		ctor: '::',
+																		_0: _rundis$elm_bootstrap$Bootstrap_Button$disabled(true),
+																		_1: {ctor: '[]'}
+																	}
+																},
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html$text(buttonText),
+																	_1: {ctor: '[]'}
+																});
+														} else {
+															return A2(
+																_rundis$elm_bootstrap$Bootstrap_Button$button,
+																{
+																	ctor: '::',
+																	_0: buttonType,
+																	_1: {
+																		ctor: '::',
+																		_0: _rundis$elm_bootstrap$Bootstrap_Button$onClick(
+																			_JQuezada0$eoslondonhackathon$CreateCrowdfund_Model$CompleteStepOne(
+																				completeStepOne(_p18._0))),
+																		_1: {ctor: '[]'}
+																	}
+																},
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html$text(buttonText),
+																	_1: {ctor: '[]'}
+																});
+														}
+													}(),
 													_1: {ctor: '[]'}
 												}),
 											_1: {ctor: '[]'}
 										}),
 									_1: {ctor: '[]'}
 								}
-							}),
-						_1: {ctor: '[]'}
-					}),
-				_1: {ctor: '[]'}
-			});
-	});
-var _JQuezada0$eoslondonhackathon$Project_View$view = function (model) {
-	return A2(
-		_elm_lang$core$Maybe$withDefault,
-		_JQuezada0$eoslondonhackathon$Spinner$view,
-		A2(
-			_elm_lang$core$Maybe$map,
-			function (project) {
-				return A2(_JQuezada0$eoslondonhackathon$Project_View$viewSuccess, model, project);
-			},
-			A2(_elm_lang$core$Maybe$andThen, _elm_lang$core$Result$toMaybe, model.project)));
+							}
+						}
+					}
+				}),
+			_1: {ctor: '[]'}
+		});
 };
-
-var _JQuezada0$eoslondonhackathon$View$viewLanding = A2(
-	_elm_lang$html$Html$div,
-	{
-		ctor: '::',
-		_0: _elm_lang$html$Html_Attributes$class('page-header'),
-		_1: {
-			ctor: '::',
-			_0: A2(_elm_lang$html$Html_Attributes$attribute, 'data-parallax', 'true'),
-			_1: {
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$style(
-					{
-						ctor: '::',
-						_0: {ctor: '_Tuple2', _0: 'background-color', _1: '#1c293a'},
-						_1: {ctor: '[]'}
-					}),
-				_1: {ctor: '[]'}
-			}
-		}
-	},
-	{
-		ctor: '::',
-		_0: A2(
-			_elm_lang$html$Html$div,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('filter'),
-				_1: {ctor: '[]'}
-			},
-			{ctor: '[]'}),
-		_1: {
+var _JQuezada0$eoslondonhackathon$CreateCrowdfund_View$view = function (model) {
+	return A2(
+		_rundis$elm_bootstrap$Bootstrap_Grid$container,
+		{ctor: '[]'},
+		{
 			ctor: '::',
 			_0: A2(
-				_elm_lang$html$Html$div,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('container'),
-					_1: {ctor: '[]'}
-				},
+				_rundis$elm_bootstrap$Bootstrap_Grid$row,
+				{ctor: '[]'},
 				{
 					ctor: '::',
 					_0: A2(
-						_elm_lang$html$Html$div,
+						_rundis$elm_bootstrap$Bootstrap_Grid$col,
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('motto text-center'),
-							_1: {ctor: '[]'}
+							_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$xs12,
+							_1: {
+								ctor: '::',
+								_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$textAlign(_rundis$elm_bootstrap$Bootstrap_Text$alignXsCenter),
+								_1: {ctor: '[]'}
+							}
 						},
 						{
 							ctor: '::',
 							_0: A2(
-								_elm_lang$html$Html$img,
+								_elm_lang$html$Html$h1,
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$src('assets/img/daicogen-logo.png'),
-									_1: {
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$width(750),
-										_1: {ctor: '[]'}
-									}
+									_0: _elm_lang$html$Html_Attributes$class('mb-0'),
+									_1: {ctor: '[]'}
 								},
-								{ctor: '[]'}),
-							_1: {
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$h3,
-									{ctor: '[]'},
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html$text('Generate an honest, socially impactful token sale in minutes'),
-										_1: {ctor: '[]'}
-									}),
-								_1: {
+								{
 									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$br,
-										{ctor: '[]'},
-										{ctor: '[]'}),
-									_1: {
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$button,
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$type_('button'),
-												_1: {
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$class('btn btn-outline-neutral btn-round'),
-													_1: {
-														ctor: '::',
-														_0: _elm_lang$html$Html_Events$onClick(
-															_JQuezada0$eoslondonhackathon$Model$SetActivePage(_JQuezada0$eoslondonhackathon$Model$DaicoTemplatePage)),
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$style(
-																{
-																	ctor: '::',
-																	_0: {ctor: '_Tuple2', _0: 'color', _1: 'white'},
-																	_1: {
-																		ctor: '::',
-																		_0: {ctor: '_Tuple2', _0: 'border-color', _1: 'white'},
-																		_1: {ctor: '[]'}
-																	}
-																}),
-															_1: {ctor: '[]'}
-														}
-													}
-												}
-											},
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html$text('Get Started'),
-												_1: {ctor: '[]'}
-											}),
-										_1: {ctor: '[]'}
-									}
-								}
-							}
+									_0: _elm_lang$html$Html$text('COINSTARTER'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
 						}),
 					_1: {ctor: '[]'}
 				}),
-			_1: {ctor: '[]'}
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_rundis$elm_bootstrap$Bootstrap_Grid$row,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: A2(
+							_rundis$elm_bootstrap$Bootstrap_Grid$col,
+							{
+								ctor: '::',
+								_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$xs12,
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$hr,
+									{ctor: '[]'},
+									{ctor: '[]'}),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_rundis$elm_bootstrap$Bootstrap_Grid$row,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: A2(
+								_rundis$elm_bootstrap$Bootstrap_Grid$col,
+								{
+									ctor: '::',
+									_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$xsAuto,
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('1 of 3'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: function () {
+							var _p19 = model.activeStep;
+							switch (_p19.ctor) {
+								case 'StepOne':
+									return _JQuezada0$eoslondonhackathon$CreateCrowdfund_View$viewStepOne(model.categoryDetailsProgress);
+								case 'StepTwo':
+									return A2(_JQuezada0$eoslondonhackathon$CreateCrowdfund_View$viewStepTwo, _p19._0, model.projectDetailsProgress);
+								case 'StepThree':
+									return A3(_JQuezada0$eoslondonhackathon$CreateCrowdfund_View$viewStepThree, _p19._0, _p19._1, model.campaignDetailsProgress);
+								default:
+									return A4(_JQuezada0$eoslondonhackathon$CreateCrowdfund_View$viewStepFour, _p19._0, _p19._1, _p19._2, model.rewardDetailsProgress);
+							}
+						}(),
+						_1: {ctor: '[]'}
+					}
+				}
+			}
+		});
+};
+
+var _JQuezada0$eoslondonhackathon$Model$Model = function (a) {
+	return {activePage: a};
+};
+var _JQuezada0$eoslondonhackathon$Model$ChildMsg = function (a) {
+	return {ctor: 'ChildMsg', _0: a};
+};
+var _JQuezada0$eoslondonhackathon$Model$SetActivePage = function (a) {
+	return {ctor: 'SetActivePage', _0: a};
+};
+var _JQuezada0$eoslondonhackathon$Model$CreateCrowdfundMsg = function (a) {
+	return {ctor: 'CreateCrowdfundMsg', _0: a};
+};
+var _JQuezada0$eoslondonhackathon$Model$CreateCrowdfund = {ctor: 'CreateCrowdfund'};
+var _JQuezada0$eoslondonhackathon$Model$CreateCrowdfundPage = function (a) {
+	return {ctor: 'CreateCrowdfundPage', _0: a};
+};
+
+var _JQuezada0$eoslondonhackathon$Update$subscriptions = function (model) {
+	var _p0 = model.activePage;
+	return A2(
+		_elm_lang$core$Platform_Sub$map,
+		function (_p1) {
+			return _JQuezada0$eoslondonhackathon$Model$ChildMsg(
+				_JQuezada0$eoslondonhackathon$Model$CreateCrowdfundMsg(_p1));
+		},
+		_JQuezada0$eoslondonhackathon$CreateCrowdfund_Update$subscriptions(_p0._0));
+};
+var _JQuezada0$eoslondonhackathon$Update$update = F2(
+	function (msg, model) {
+		var _p2 = msg;
+		if (_p2.ctor === 'SetActivePage') {
+			var _p3 = _JQuezada0$eoslondonhackathon$CreateCrowdfund_Update$init;
+			var createCrowdfundModel = _p3._0;
+			var createCrowdfundCmd = _p3._1;
+			return A2(
+				_etaque$elm_response$Response$withCmd,
+				A2(
+					_elm_lang$core$Platform_Cmd$map,
+					function (_p4) {
+						return _JQuezada0$eoslondonhackathon$Model$ChildMsg(
+							_JQuezada0$eoslondonhackathon$Model$CreateCrowdfundMsg(_p4));
+					},
+					createCrowdfundCmd),
+				{
+					activePage: _JQuezada0$eoslondonhackathon$Model$CreateCrowdfundPage(createCrowdfundModel)
+				});
+		} else {
+			var _p5 = model.activePage;
+			return A2(
+				_etaque$elm_response$Response$mapCmd,
+				function (_p6) {
+					return _JQuezada0$eoslondonhackathon$Model$ChildMsg(
+						_JQuezada0$eoslondonhackathon$Model$CreateCrowdfundMsg(_p6));
+				},
+				A2(
+					_etaque$elm_response$Response$mapModel,
+					function (createCrowdfundModel) {
+						return _elm_lang$core$Native_Utils.update(
+							model,
+							{
+								activePage: _JQuezada0$eoslondonhackathon$Model$CreateCrowdfundPage(createCrowdfundModel)
+							});
+					},
+					A2(_JQuezada0$eoslondonhackathon$CreateCrowdfund_Update$update, _p2._0._0, _p5._0)));
 		}
 	});
+var _JQuezada0$eoslondonhackathon$Update$init = function () {
+	var _p7 = _JQuezada0$eoslondonhackathon$CreateCrowdfund_Update$init;
+	var createCrowdfundModel = _p7._0;
+	var createCrowdfundCmd = _p7._1;
+	return A2(
+		_etaque$elm_response$Response$withCmd,
+		A2(
+			_elm_lang$core$Platform_Cmd$map,
+			function (_p8) {
+				return _JQuezada0$eoslondonhackathon$Model$ChildMsg(
+					_JQuezada0$eoslondonhackathon$Model$CreateCrowdfundMsg(_p8));
+			},
+			createCrowdfundCmd),
+		{
+			activePage: _JQuezada0$eoslondonhackathon$Model$CreateCrowdfundPage(createCrowdfundModel)
+		});
+}();
+
 var _JQuezada0$eoslondonhackathon$View$view = function (model) {
 	var _p0 = model.activePage;
-	switch (_p0.ctor) {
-		case 'Loading':
-			return _JQuezada0$eoslondonhackathon$Spinner$view;
-		case 'Landing':
-			return _JQuezada0$eoslondonhackathon$View$viewLanding;
-		case 'DaicoTemplate':
-			return A2(
-				_elm_lang$html$Html$map,
-				function (_p1) {
-					return _JQuezada0$eoslondonhackathon$Model$ChildMsg(
-						_JQuezada0$eoslondonhackathon$Model$DaicoTemplateMsg(_p1));
-				},
-				_JQuezada0$eoslondonhackathon$DaicoTemplate_View$view(_p0._0));
-		default:
-			return A2(
-				_elm_lang$html$Html$map,
-				function (_p2) {
-					return _JQuezada0$eoslondonhackathon$Model$ChildMsg(
-						_JQuezada0$eoslondonhackathon$Model$TokensaleMsg(_p2));
-				},
-				_JQuezada0$eoslondonhackathon$Project_View$view(_p0._0));
-	}
+	return A2(
+		_elm_lang$html$Html$map,
+		function (_p1) {
+			return _JQuezada0$eoslondonhackathon$Model$ChildMsg(
+				_JQuezada0$eoslondonhackathon$Model$CreateCrowdfundMsg(_p1));
+		},
+		_JQuezada0$eoslondonhackathon$CreateCrowdfund_View$view(_p0._0));
 };
 
 var _JQuezada0$eoslondonhackathon$Main$main = _elm_lang$html$Html$program(
 	{init: _JQuezada0$eoslondonhackathon$Update$init, view: _JQuezada0$eoslondonhackathon$View$view, update: _JQuezada0$eoslondonhackathon$Update$update, subscriptions: _JQuezada0$eoslondonhackathon$Update$subscriptions})();
 
 var Elm = {};
-Elm['Api'] = Elm['Api'] || {};
-if (typeof _JQuezada0$eoslondonhackathon$Api$main !== 'undefined') {
-    _JQuezada0$eoslondonhackathon$Api$main(Elm['Api'], 'Api', undefined);
-}
 Elm['Main'] = Elm['Main'] || {};
 if (typeof _JQuezada0$eoslondonhackathon$Main$main !== 'undefined') {
     _JQuezada0$eoslondonhackathon$Main$main(Elm['Main'], 'Main', undefined);
@@ -21629,10 +18446,6 @@ if (typeof _JQuezada0$eoslondonhackathon$Model$main !== 'undefined') {
 Elm['Ports'] = Elm['Ports'] || {};
 if (typeof _JQuezada0$eoslondonhackathon$Ports$main !== 'undefined') {
     _JQuezada0$eoslondonhackathon$Ports$main(Elm['Ports'], 'Ports', undefined);
-}
-Elm['Spinner'] = Elm['Spinner'] || {};
-if (typeof _JQuezada0$eoslondonhackathon$Spinner$main !== 'undefined') {
-    _JQuezada0$eoslondonhackathon$Spinner$main(Elm['Spinner'], 'Spinner', undefined);
 }
 Elm['Update'] = Elm['Update'] || {};
 if (typeof _JQuezada0$eoslondonhackathon$Update$main !== 'undefined') {

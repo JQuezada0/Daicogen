@@ -1,81 +1,33 @@
 port module Ports exposing (..)
 
-port submitTemplate :
+import CreateCrowdfund.Model as CreateCrowdfund
+import Date
+
+formatCampaign : CreateCrowdfund.Campaign -> FormattedCampaign
+formatCampaign campaign = 
   {
-    description: {
-      name: String,
-      description: String,
-      url: String,
-      whitepaperUrl: String
+    categoryDetails = {
+      category = toString campaign.categoryDetails.category
     },
-    tokenSale: { 
-      tokenName: String,
-      tokenSymbol: String,
-      tokenSupply: String,
-      tokenValue: Int,
-      tokenSaleAllocation: String,
-      softCap: Int,
-      hardCap: Int,
-      startDate: Float,
-      endDate: Float
+    projectDetails = campaign.projectDetails,
+    campaignDetails = {
+      fundingGoal = campaign.campaignDetails.fundingGoal,
+      campaignStart = Date.toTime campaign.campaignDetails.campaignStart,
+      campaignEnd = Date.toTime campaign.campaignDetails.campaignEnd
     },
-    voting: {
-      tapPoll: {
-        minimumTurnout: Float,
-        threshold: Float,
-        maxTapIncrease: Float,
-        voteDuration: Float
-      },
-      refundPoll: {
-        refundElectionFrequency: Float,
-        maxElections: Int,
-        votingDuration: Float,
-        minimumTurnout: Float,
-        threshold: Float
-      }
+    rewardDetails = campaign.rewardDetails
+  }
+
+type alias FormattedCampaign =
+  {
+    categoryDetails: { category: String },
+    projectDetails: CreateCrowdfund.ProjectDetails,
+    campaignDetails: {
+      fundingGoal: Float,
+      campaignStart: Float,
+      campaignEnd: Float
     },
-    charity: {
-      allocation: Float,
-      numberOfCharities: Int,
-      duration: Float
-    },
-    funding: {
-      tokenSaleStart: Float,
-      fundingCyclePeriod: Float,
-      initialTap: String
-    }
-  } -> Cmd msg
+    rewardDetails: CreateCrowdfund.RewardDetails
+  }
 
-port createVoting : {
-  icoaccount: String,
-  proposal: String
-} -> Cmd msg
-
-port removeVoting : {
-  account: String
-} -> Cmd msg
-
-port vote : {
-  icoaccount: String,
-  idvoter: String,
-  trvoter: String,
-  currentVoter: String,
-  pick: Bool
-} -> Cmd msg
-
-port removeVote : {
-  icoaccount: String
-} -> Cmd msg
-
-port createSuggestion : {
-  icoaccount: String,
-  from: String,
-  to: String,
-  pick: Bool
-} -> Cmd msg
-
-port removeSuggestion : {
-  from: String
-} -> Cmd msg
-
-port transactionComplete : (() -> msg) -> Sub msg
+port submitCampaign : FormattedCampaign -> Cmd msg

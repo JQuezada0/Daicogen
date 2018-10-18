@@ -1,1 +1,1 @@
-FROM eosio/eos-dev:v1.2.5
+FROM eosio/eos:v1.3.1

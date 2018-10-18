@@ -2,87 +2,40 @@ module Update exposing (..)
 
 import Response exposing (..)
 import Model exposing (..)
-import DaicoTemplate.Update as DaicoTemplate
-import Project.Update as TokenSale
-import Api
+import CreateCrowdfund.Update as CreateCrowdfund
 
 init : Response Model Msg
 init = 
-  {
-    activePage = Loading
-  }
-    |> withCmd (Api.projectsExist ExistingProjects)
+  let
+    (createCrowdfundModel, createCrowdfundCmd) = CreateCrowdfund.init
+  in
+    {
+      activePage = CreateCrowdfundPage createCrowdfundModel
+    }
+      |> withCmd (Cmd.map (CreateCrowdfundMsg >> ChildMsg) createCrowdfundCmd)
 
 update : Msg -> Model -> Response Model Msg
 update msg model =
   case msg of
-    SetActivePage LandingPage ->
-      { model |
-        activePage = Landing
-      }
-        |> Response.withNone
-
-    SetActivePage DaicoTemplatePage ->
+    SetActivePage CreateCrowdfund ->
       let
-        (daicoTemplateModel, daicoTemplateCmd) = DaicoTemplate.init
+        (createCrowdfundModel, createCrowdfundCmd) = CreateCrowdfund.init
       in
         {
-          activePage = DaicoTemplate daicoTemplateModel
+          activePage = CreateCrowdfundPage createCrowdfundModel
         }
-          |> withCmd (Cmd.map (DaicoTemplateMsg >> ChildMsg) daicoTemplateCmd)
+          |> withCmd (Cmd.map (CreateCrowdfundMsg >> ChildMsg) createCrowdfundCmd)
 
-    SetActivePage DaicoPage ->
-      let
-        (tokenSaleModel, tokenSaleCmd) = TokenSale.init
-      in
-        {
-          activePage = Daico tokenSaleModel
-        }
-          |> withCmd (Cmd.map (TokensaleMsg >> ChildMsg) tokenSaleCmd)
-
-    ChildMsg (DaicoTemplateMsg msg) -> 
+    ChildMsg (CreateCrowdfundMsg createCrowdfundMsg) ->
       case model.activePage of
-        DaicoTemplate daicoTemplateModel ->
-          daicoTemplateModel
-            |> DaicoTemplate.update msg
-            |> Response.mapModel (\daicoTemplateModel -> { model | activePage = DaicoTemplate daicoTemplateModel })
-            |> Response.mapCmd (DaicoTemplateMsg >> ChildMsg)
-        _ ->
-          model
-            |> withNone
-
-    ChildMsg (TokensaleMsg msg) -> 
-      case model.activePage of
-        Daico tokensaleModel ->
-          tokensaleModel
-            |> TokenSale.update msg
-            |> Response.mapModel (\tokensaleModel -> { model | activePage = Daico tokensaleModel })
-            |> Response.mapCmd (TokensaleMsg >> ChildMsg)
-        _ ->
-          model
-            |> withNone
-
-    ExistingProjects res ->
-      let
-        projectsCount = 
-          res
-            |> Result.withDefault 0
-      in
-        if projectsCount < 1 then
-          model
-            |> update (SetActivePage LandingPage)
-        else
-          model
-            |> update (SetActivePage DaicoPage)
+        CreateCrowdfundPage createCrowdfundModel ->
+          CreateCrowdfund.update createCrowdfundMsg createCrowdfundModel
+            |> mapModel (\createCrowdfundModel -> { model | activePage = CreateCrowdfundPage createCrowdfundModel })
+            |> mapCmd (CreateCrowdfundMsg >> ChildMsg)
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
   case model.activePage of
-    DaicoTemplate daicoTemplateModel ->
-      DaicoTemplate.subscriptions daicoTemplateModel
-        |> Sub.map (DaicoTemplateMsg >> ChildMsg)
-    Daico daicoModel ->
-      TokenSale.subscriptions daicoModel
-        |> Sub.map (TokensaleMsg >> ChildMsg)
-    _ ->
-      Sub.none
+    CreateCrowdfundPage createCrowdfundModel ->
+      CreateCrowdfund.subscriptions createCrowdfundModel
+        |> Sub.map (CreateCrowdfundMsg >> ChildMsg)

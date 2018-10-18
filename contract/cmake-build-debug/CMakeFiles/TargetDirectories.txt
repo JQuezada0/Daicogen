@@ -1,0 +1,3 @@
+/Users/johnilquezada/Projects/EOSLondonHackathon/contract/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/johnilquezada/Projects/EOSLondonHackathon/contract/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/johnilquezada/Projects/EOSLondonHackathon/contract/cmake-build-debug/CMakeFiles/crowdfund.wasm.dir

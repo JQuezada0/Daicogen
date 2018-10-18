@@ -5,21 +5,5 @@
 module Api.Object exposing (..)
 
 
-type Poll
-    = Poll
-
-
-type Project
-    = Project
-
-
-type TokenSale
-    = TokenSale
-
-
-type Vote
-    = Vote
-
-
-type VoteProposal
-    = VoteProposal
+type Campaign
+    = Campaign

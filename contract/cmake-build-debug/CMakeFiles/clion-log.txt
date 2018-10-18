@@ -1,0 +1,33 @@
+/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /Users/johnilquezada/Projects/EOSLondonHackathon/contract
+-- Setting up Eosio Wasm Toolchain
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /Users/johnilquezada/Projects/EOSLondonHackathon/contract/cmake-build-debug
+
+Cannot get compiler information:
+	Compiler exited with error code 255: /usr/local/eosio.cdt/bin/eosio-cpp -xc++ -O3 -I/usr/local/include -g -fpch-preprocess -v -dD -E
+	clang version 7.0.0 (https://github.com/eosio/clang.git 0f0efd6a05ee928dfa1b505c55c0d90ae188488e) (https://github.com/eosio/llvm 31e1613c474cab51a80ac898ec31716273df3729)
+	Target: wasm32
+	Thread model: single
+	InstalledDir: /usr/local/eosio.cdt/bin
+	clang-7: warning: /private/var/folders/6t/jszw2d796l94ynbqdfg9sp980000gn/T/compiler-file: 'linker' input unused [-Wunused-command-line-argument]
+	clang-7: warning: argument unused during compilation: '-ffreestanding' [-Wunused-command-line-argument]
+	clang-7: warning: argument unused during compilation: '-fno-builtin' [-Wunused-command-line-argument]
+	clang-7: warning: argument unused during compilation: '-fno-threadsafe-statics' [-Wunused-command-line-argument]
+	clang-7: warning: argument unused during compilation: '-fno-exceptions' [-Wunused-command-line-argument]
+	clang-7: warning: argument unused during compilation: '-D BOOST_DISABLE_ASSERTS' [-Wunused-command-line-argument]
+	clang-7: warning: argument unused during compilation: '-D BOOST_EXCEPTION_DISABLE' [-Wunused-command-line-argument]
+	clang-7: warning: argument unused during compilation: '-Xclang -load' [-Wunused-command-line-argument]
+	clang-7: warning: argument unused during compilation: '-Xclang /usr/local/eosio.cdt/bin/LLVMEosioApply.dylib' [-Wunused-command-line-argument]
+	clang-7: warning: argument unused during compilation: '-mllvm -use-cfl-aa-in-codegen=both' [-Wunused-command-line-argument]
+	clang-7: warning: argument unused during compilation: '-I /usr/local/eosio.cdt/bin/../include/libcxx' [-Wunused-command-line-argument]
+	clang-7: warning: argument unused during compilation: '-I /usr/local/eosio.cdt/bin/../include/libc' [-Wunused-command-line-argument]
+	clang-7: warning: argument unused during compilation: '-I /usr/local/eosio.cdt/bin/../include' [-Wunused-command-line-argument]
+	clang-7: warning: argument unused during compilation: '-I /usr/local/include' [-Wunused-command-line-argument]
+	clang-7: warning: argument unused during compilation: '-c' [-Wunused-command-line-argument]
+	clang-7: warning: argument unused during compilation: '-dD' [-Wunused-command-line-argument]
+	clang-7: warning: argument unused during compilation: '-D ___CIDR_DEFINITIONS_END' [-Wunused-command-line-argument]
+	clang-7: warning: argument unused during compilation: '-I /usr/local/include' [-Wunused-command-line-argument]
+	clang-7: warning: argument unused during compilation: '-O3' [-Wunused-command-line-argument]
+	
+	

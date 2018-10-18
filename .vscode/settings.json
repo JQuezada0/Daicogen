@@ -1,0 +1,7 @@
+{
+  "files.associations": {
+    "*.graphql": "graphql",
+    "__locale": "cpp",
+    "system_error": "cpp"
+  }
+}

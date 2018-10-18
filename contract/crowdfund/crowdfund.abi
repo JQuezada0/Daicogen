@@ -1,0 +1,162 @@
+{
+    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Fri Oct 12 01:09:29 2018",
+    "version": "eosio::abi/1.0",
+    "structs": [
+        {
+            "name": "campaign",
+            "base": "",
+            "fields": [
+                {
+                    "name": "id",
+                    "type": "uint64"
+                },
+                {
+                    "name": "creator",
+                    "type": "name"
+                },
+                {
+                    "name": "category",
+                    "type": "string"
+                },
+                {
+                    "name": "project_title",
+                    "type": "string"
+                },
+                {
+                    "name": "description",
+                    "type": "string"
+                },
+                {
+                    "name": "image",
+                    "type": "string"
+                },
+                {
+                    "name": "funding_goal",
+                    "type": "uint64"
+                },
+                {
+                    "name": "campaign_start",
+                    "type": "uint64"
+                },
+                {
+                    "name": "campaign_end",
+                    "type": "uint64"
+                },
+                {
+                    "name": "title",
+                    "type": "string"
+                },
+                {
+                    "name": "pledge_amount",
+                    "type": "uint64"
+                },
+                {
+                    "name": "reward_description",
+                    "type": "string"
+                },
+                {
+                    "name": "estimated_delivery",
+                    "type": "uint64"
+                }
+            ]
+        },
+        {
+            "name": "campaigninput",
+            "base": "",
+            "fields": [
+                {
+                    "name": "creator",
+                    "type": "name"
+                },
+                {
+                    "name": "category",
+                    "type": "string"
+                },
+                {
+                    "name": "project_title",
+                    "type": "string"
+                },
+                {
+                    "name": "description",
+                    "type": "string"
+                },
+                {
+                    "name": "image",
+                    "type": "string"
+                },
+                {
+                    "name": "funding_goal",
+                    "type": "uint64"
+                },
+                {
+                    "name": "campaign_start",
+                    "type": "uint64"
+                },
+                {
+                    "name": "campaign_end",
+                    "type": "uint64"
+                },
+                {
+                    "name": "title",
+                    "type": "string"
+                },
+                {
+                    "name": "pledge_amount",
+                    "type": "uint64"
+                },
+                {
+                    "name": "reward_description",
+                    "type": "string"
+                },
+                {
+                    "name": "estimated_delivery",
+                    "type": "uint64"
+                }
+            ]
+        },
+        {
+            "name": "ccampaign",
+            "base": "",
+            "fields": [
+                {
+                    "name": "input",
+                    "type": "campaigninput"
+                }
+            ]
+        },
+        {
+            "name": "rcampaign",
+            "base": "",
+            "fields": [
+                {
+                    "name": "campaignId",
+                    "type": "uint64"
+                }
+            ]
+        }
+    ],
+    "types": [],
+    "actions": [
+        {
+            "name": "ccampaign",
+            "type": "ccampaign",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "rcampaign",
+            "type": "rcampaign",
+            "ricardian_contract": ""
+        }
+    ],
+    "tables": [
+        {
+            "name": "campaign",
+            "type": "campaign",
+            "index_type": "i64",
+            "key_names": [],
+            "key_types": []
+        }
+    ],
+    "ricardian_clauses": [],
+    "abi_extensions": []
+}
